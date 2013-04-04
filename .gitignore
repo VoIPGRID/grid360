@@ -1,1 +1,5 @@
+# PHPStorm IDE
 .idea
+
+# Smarty Compiled Templates
+views/templates_c
