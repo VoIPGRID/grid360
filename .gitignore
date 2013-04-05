@@ -3,3 +3,10 @@
 
 # Smarty Compiled Templates
 views/templates_c
+
+# Configs
+configs/local.php
+configs/production.php
+
+# Test data
+tests/testdata.php
