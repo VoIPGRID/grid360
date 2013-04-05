@@ -1,0 +1,52 @@
+<IfModule mod_rewrite.c>
+    Options +FollowSymlinks
+    Options +Indexes
+    RewriteEngine on
+    RewriteBase /
+
+    # Allow different root for local development
+    <IfModule mod_setenvif.c>
+        RewriteCond %{HTTP_HOST} ^localhost [OR]
+        RewriteCond %{SERVER_ADDR} ^192.168
+        RewriteRule ^ - [E=FRB:/grid360/]
+
+        # Primary RewriteRule if there's support for mod_setenvif
+        RewriteCond %{SCRIPT_FILENAME} !-f
+        RewriteCond %{SCRIPT_FILENAME} !-d
+        RewriteRule ^(.*)$ %{ENV:FRB}index.php?uri=/$1 [NC,L,QSA]
+    </IfModule>
+
+    # Default RewriteRule, assume /
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?uri=/$1 [NC,L,QSA]
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/gif "access plus 2 months"
+    ExpiresByType image/jpeg "access plus 2 months"
+    ExpiresByType image/png "access plus 2 months"
+    ExpiresByType text/css "access plus 2 months"
+    ExpiresByType image/ico "access plus 2 months"
+    ExpiresByType text/javascript "access plus 2 months"
+    ExpiresByType application/x-javascript "access plus 2 months"
+    ExpiresByType application/octet-stream "access plus 2 months"
+</IfModule>
+
+# Prevent access to Smarty templates from world wide access (access via ftp/ssh only)
+<Files *.tpl>
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+# Prevent access to PHP error log from world wide access (access via ftp/ssh only)
+<Files php_errors.log>
+    Order allow,deny
+    Deny from all
+    Satisfy All
+</Files>
+
+# Force utf-8 as charset
+AddDefaultCharset UTF-8

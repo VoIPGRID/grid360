@@ -1,0 +1,51 @@
+.actions form
+{
+    float: left;
+    margin: 0px;
+}
+
+.actions form .btn
+{
+    padding: 0px 5px;
+}
+
+.actionsUser form
+{
+    float: left;
+    margin: 0px;
+}
+
+.actionsUser form .btn
+{
+    padding: 0px 1px;
+}
+
+.control-group .controls label.checkbox
+{
+    display: inline-block;
+}
+
+*,
+input,
+button,
+select,
+textarea {
+    font-family: Arial, sans-serif;
+}
+
+::-moz-placeholder {
+    font-style:italic;
+}
+
+:-moz-placeholder {
+    font-style:italic;
+}
+
+:-ms-input-placeholder {
+    font-style:italic;
+}
+
+::-webkit-input-placeholder {
+    font-style:italic;
+}
+
