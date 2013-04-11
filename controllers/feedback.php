@@ -75,4 +75,21 @@ function feedback_step_3()
 
 function feedback_step_3_post()
 {
+    $reviews = R::dispense('review', count($_POST['competencies']));
+
+    $currentUser = R::load('user', 2);
+    $reviewee = R::load('user', 1);
+
+    $index = 0;
+    foreach( $_POST['competencies'] as $competency)
+    {
+        $reviews[$index]->reviewer = $currentUser;
+        $reviews[$index]->reviewee = $reviewee;
+        $reviews[$index]->competency = R::load('competency', $competency['id']);
+        $reviews[$index]->rating = R::load('rating', $competency['rating']);
+        $reviews[$index]->comment = $competency['comment'];
+        $index++;
+    }
+
+    R::storeAll($reviews);
 }

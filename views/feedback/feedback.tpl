@@ -3,7 +3,7 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
-                    <input type="checkbox" name="competencies[]" value="{$competency.id}" /> {$competency.name}
+                    <input type="checkbox" name="competencies[]" value="{$competency.id}"/> {$competency.name}
                 </label>
             </div>
         </div>
@@ -22,6 +22,7 @@
         {$buttonText = "Cancel"}
     {/if}
     <h3>Select {$text} for {$currentUser.firstname} {$currentUser.lastname}</h3>
+
     <div class="alert alert-info">
         Hover over a competency to read its description
     </div>
@@ -45,24 +46,21 @@
 </div>
 
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    var countChecked = function()
-    {
+    var countChecked = function () {
         var step = "{$step}";
         var count = $("input:checked").length;
-        if(step == 2)
-        {
-            if(count >= 2)
+        if (step == 2) {
+            if (count >= 2)
                 $("input:not(:checked)").attr("disabled", true);
             else
                 $("input:not(:checked)").attr("disabled", false);
         }
-        else
-        {
-            if(count >= 3)
+        else {
+            if (count >= 3)
                 $("input:not(:checked)").attr("disabled", true);
             else
                 $("input:not(:checked)").attr("disabled", false);

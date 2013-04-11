@@ -35,6 +35,7 @@ function checkActive($requestUri, $extra_css_classes = '')
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li <?php checkActive(BASE_URI); ?> ><a href="<?php echo BASE_URI; ?>"><i class="icon-home"></i> Dashboard</a></li>
+                    <li <?php checkActive("report"); ?> ><a href="<?php echo BASE_URI; ?>report"><i class="icon-file"></i> Report</a></li>
                     <li <?php checkActive("feedback"); ?> ><a href="<?php echo BASE_URI; ?>feedback"><i class="icon-bullhorn"></i> Feedback</a></li>
                 </ul>
                 <ul class="nav pull-right">
