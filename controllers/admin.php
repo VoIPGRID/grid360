@@ -12,8 +12,6 @@ function confirmation()
 
 function fill_database()
 {
-    R::setup(CONNECTION, USERNAME, PASSWORD);
-
     R::nuke();
 
     $file = BASE_DIR . 'tests/testdata.php';
@@ -21,4 +19,18 @@ function fill_database()
     {
         include $file;
     }
+
+    return '<div class="container">Database reset!</div>';
+}
+
+function create_round()
+{
+//    global $smarty;
+//
+//    $smarty->display('admin/create_round.tpl');
+}
+
+function start_round()
+{
+
 }

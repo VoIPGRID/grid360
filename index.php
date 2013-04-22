@@ -12,15 +12,16 @@ include_once(VIEWS_DIR . 'menu.php');
 
 function configure()
 {
-    option('base_uri', '/grid360/');  # '/' or same as the RewriteBase or ENV:FRB in your .htaccess
-    option('public_dir', 'public/');
+    option('base_uri', BASE_URI);  # '/' or same as the RewriteBase or ENV:FRB in your .htaccess
+    option('assets_uri', BASE_URI . 'assets/');
     option('views_dir', 'views/');
     option('controllers_dir', 'controllers/');
 
     global $smarty;
-    $smarty->assign('base_uri', option('base_uri'));
-    $smarty->assign('admin_uri', option('base_uri') . "admin");
-    $smarty->assign('manager_uri', option('base_uri') . "manager");
+    $smarty->assign('base_uri', BASE_URI);
+    $smarty->assign('admin_uri', BASE_URI . "admin");
+    $smarty->assign('manager_uri', BASE_URI . "manager");
+    RedBean_Plugin_Cooker::enableBeanLoading(true);
 }
 
 R::setup(CONNECTION, USERNAME, PASSWORD);
@@ -29,7 +30,7 @@ $smarty = new Smarty();
 $smarty->setTemplateDir('views/');
 $smarty->setCompileDir('views/templates_c');
 
-$currentUser = R::load('user', 1);
+$currentUser = R::load('user', 1); // TODO: Remove this
 $smarty->assign('currentUser', $currentUser);
 
 session_start();
@@ -38,6 +39,7 @@ dispatch('/', 'dashboard');
 
 dispatch_post('/admin/reset', 'fill_database');
 dispatch('/admin/reset', 'confirmation');
+dispatch('/admin/round/start', 'start_round');
 
 dispatch('/admin/departments', 'view_departments');
 dispatch('/admin/department/create', 'create_department');
@@ -74,13 +76,18 @@ dispatch('/feedback/2', 'feedback_step_2');
 dispatch_post('/feedback/2', 'feedback_step_2_post');
 dispatch('/feedback/3', 'feedback_step_3');
 dispatch_post('/feedback/3', 'feedback_step_3_post');
-dispatch('/report', 'view_report');
+
+dispatch('/report/:id', 'view_report');
 
 function dashboard()
 {
-    $users = R::findAll('user');
+    $rounds = R::findAll('round');
+    $roundInfo = R::find('roundinfo', ' reviewer_id = ?', array(1)); // TODO: Current logged in user's userID
+    R::preload($roundInfo, array('reviewee' => 'user'));
+
     global $smarty;
-    $smarty->assign('users', $users); // For now just display the users, will be changed to display round data
+    $smarty->assign('rounds', $rounds);
+    $smarty->assign('roundInfo', $roundInfo);
     $smarty->display('dashboard.tpl');
 }
 

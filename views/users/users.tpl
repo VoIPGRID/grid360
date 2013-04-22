@@ -1,6 +1,6 @@
 {include file="views/functions.tpl"}
 
-{function name="printUserInfo"}
+{function printUserInfo}
     <tr>
         <td>{$user.firstname|capitalize}</td>
         <td>{$user.lastname|capitalize}</td>
@@ -12,29 +12,29 @@
     </tr>
 {/function}
 
-{function name = "printAddLink"}
-    <div style="width: 75px; margin-left:auto;">
-        <a href='{$admin_uri}/user/create'><strong>+</strong> Add user</a>
-    </div>
-{/function}
-
 <div class="container">
-	<h2>Users</h2>
-	<table class = "table table-striped">
-	<th>First name</th> <th>Last name</th> <th>Email</th> <th>Department</th> <th>Role</th> <th>User level</th> <th>Actions</th>
-    {if isset($users) && !empty($users)}
-		{foreach $users as $user}
-			{printUserInfo}
-		{/foreach}
-        </table>
-        {printAddLink}
-    {elseif isset($user)}
-        {printUserInfo}
-        </table>
-        {printAddLink}
+    <h2>Users</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Role</th>
+            <th>User level</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        {if isset($users) && !empty($users)}
+        <tbody>
+        {foreach $users as $user}
+            {printUserInfo}
+        {/foreach}
+        </tbody>
+    </table>
     {else}
-        </table>
-        No users found!
-        {printAddLink}
-	{/if}
+    </table>No users found!
+    {/if}
+    {call printAddLink level="admin" type="user"}
 </div>

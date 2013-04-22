@@ -1,22 +1,9 @@
-/*
-
-                   .______.                         
-_______   ____   __| _/\_ |__   ____ _____    ____  
-\_  __ \_/ __ \ / __ |  | __ \_/ __ \\__  \  /    \ 
- |  | \/\  ___// /_/ |  | \_\ \  ___/ / __ \|   |  \
- |__|    \___  >____ |  |___  /\___  >____  /___|  /
-             \/     \/      \/     \/     \/     \/ 
-
-
-
-RedBean Database Objects -
-Written by Gabor de Mooij (c) copyright 2009-2012
-
-RedBean is DUAL Licensed BSD and GPLv2. You may choose the license that fits
+RedBeanPHP 
+Written by Gabor de Mooij (c) copyright 2009-2013
+RedBean is DUAL Licensed New BSD and GPLv2. You may choose the license that fits
 best for your project.
 
-
-BSD/GPLv2 License
+New BSD/GPLv2 License
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -41,12 +28,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-RedBeanPHP is Written by Gabor de Mooij (G.J.G.T de Mooij) Copyright (c) 2011.
-
+RedBeanPHP is Written by Gabor de Mooij (G.J.G.T de Mooij) Copyright (c) 2013.
 
 GPLv2 LICENSE
-
-
         GNU GENERAL PUBLIC LICENSE
            Version 2, June 1991
 
@@ -55,7 +39,7 @@ GPLv2 LICENSE
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
 
-          Preamble
+ Preamble
 
   The licenses for most software are designed to take away your
 freedom to share and change it.  By contrast, the GNU General Public
@@ -325,5 +309,3 @@ TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY
 YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER
 PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGES.
-
-*/

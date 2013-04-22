@@ -6,10 +6,10 @@
 
 function create_user()
 {
-    $departments = array(0 => "----------");
+    $departments = array(0 => '----------');
     $departments += R::$adapter->getAssoc('select id, name from department');
 
-    $roles = array(0 => "----------");
+    $roles = array(0 => '----------');
     $roles += R::$adapter->getAssoc('select id, name from role');
 
     $userLevels = R::$adapter->getAssoc('select id, name from userlevel');
@@ -37,10 +37,10 @@ function edit_user()
     if($user->id == 0)
         return 'User not found!';
 
-    $departments = array(0 => "----------");
+    $departments = array(0 => '----------');
     $departments += R::$adapter->getAssoc('select id, name from department');
 
-    $roles = array(0 => "----------");
+    $roles = array(0 => '----------');
     $roles += R::$adapter->getAssoc('select id, name from role');
 
     $userLevels = R::$adapter->getAssoc('select id, name from userlevel');
@@ -70,7 +70,7 @@ function create_user_post()
 
     global $smarty;
 
-    $smarty->assign('name', $user->firstname . " " . $user->lastname);
+    $smarty->assign('name', $user->firstname . ' ' . $user->lastname);
     $smarty->assign('email', $user->email);
     $smarty->assign('department', $user->department->name);
     $smarty->assign('role', $user->role->name);

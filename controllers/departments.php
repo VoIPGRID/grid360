@@ -72,7 +72,6 @@ function create_department_post()
 
             $index++;
         }
-        print_r($_POST['ownRoles']);
         $department = R::graph($_POST);
         $user = trim($department->user_id);
         if(empty($user) === true)

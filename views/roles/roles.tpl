@@ -10,29 +10,27 @@
     </tr>
 {/function}
 
-{function name="printAddLink"}
-    <div style="width: 70px; margin-left:auto;">
-        <a href='{$manager_uri}/role/create'><strong>+</strong> Add role</a>
-    </div>
-{/function}
-
 <div class="container">
-	<h2>Roles</h2>
-	<table class = "table table-striped">
-	<th>Name</th> <th>Description</th> <th>Department</th> <th>Competency group</th> <th>Actions</th>
-	{if isset($roles) && !empty($roles)}
-		{foreach $roles as $role}
-			{printRoles}
-		{/foreach}
-        </table>
-    {printAddLink}
-	{elseif isset($role)}
+    <h2>Roles</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Department</th>
+            <th>Competency group</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        {if isset($roles) && !empty($roles)}
+        <tbody>
+        {foreach $roles as $role}
             {printRoles}
-        </table>
-    {else}
+        {/foreach}
+        </tbody>
     </table>
-        No roles found!
-    {printAddLink}
-	{/if}
-
+    {else}
+    </table>No roles found!
+    {/if}
+    {call printAddLink level="manager" type="role"}
 </div>
