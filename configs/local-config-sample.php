@@ -2,10 +2,12 @@
 
 error_reporting(E_ALL ^ E_NOTICE);
 
-define('SUB_DIR', '/yoursubdir');
+define('SUB_DIR', '/yoursubdir/');
 
-define('HOSTNAME', 'yourhost.com');
-define('DBNAME', 'yourdatabase');
-define('USERNAME', 'youruser');
-define('PASSWORD', 'yourpass');
-define('CONNECTION', 'mysql:host=' . HOSTNAME . ';dbname=' . DBNAME);
+define('DB_HOSTNAME', 'yourhost.com');
+define('DB_NAME', 'yourdatabase');
+define('DB_USERNAME', 'youruser');
+define('DB_PASSWORD', 'yourpass');
+define('CONNECTION', 'mysql:host=' . DB_HOSTNAME . ';dbname=' . DB_NAME);
+
+define('APPNAME', 'yourappname');

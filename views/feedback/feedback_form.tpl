@@ -16,12 +16,12 @@
             <thead>
             <tr>
                 <th></th>
-                <th>--</th>
-                <th>-</th>
-                <th>-/+</th>
-                <th>+</th>
-                <th>++</th>
-                <th></th>
+                <th><i class="icon-minus"></i> <i class="icon-minus"></i></th>
+                <th><i class="icon-minus"></i></th>
+                <th><i class="icon-minus"></i> / <i class="icon-plus"></i></th>
+                <th><i class="icon-plus"></i></th>
+                <th><i class="icon-plus"></i> <i class="icon-plus"></i></th>
+                <th>Comments</th>
             </tr>
             </thead>
             <tbody>
@@ -40,27 +40,29 @@
     </fieldset>
 {/function}
 
-<div class="container">
-    <div id="feedbackForm">
-        <form class="form-horizontal" action="{$base_uri}feedback/3" method="post">
+<div id="feedbackForm">
+    <form class="form-horizontal" action="{$BASE_URI}feedback/{$reviewee.id}/3" method="post">
 
-            {createForm competencies=$positiveCompetencies disabledFrom=0 disabledTo=2 legend="Positive competencies"}
-            {createForm competencies=$negativeCompetencies disabledFrom=4 disabledTo=5 legend="Points of improvement"}
+        {createForm competencies=$positiveCompetencies disabledFrom=0 disabledTo=2 legend="Positive competencies"}
+        {createForm competencies=$negativeCompetencies disabledFrom=4 disabledTo=5 legend="Points of improvement"}
 
-            <fieldset>
-                <legend>Open comment</legend>
-
-                <div class="control-group">
-                    <label>In welke zin heeft {$currentUser.firstname} {$currentUser.lastname} bijgedragen aan het success van de organisatie?</label>
-                    <textarea name="openQuestion" class="input-xxlarge"></textarea>
-                </div>
-            </fieldset>
-            <div class="form-actions">
-                <button type="button" class="btn" onClick="history.go(-1);return true;">Previous</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
+        <fieldset>
+            <legend>Open comment</legend>
+            <div class="control-group">
+                {if $reviewee.id == $currentUser.id}
+                    <label>In welke zin heb jij bijgedragen aan het success van de organisatie?</label>
+                {else}
+                    <label>In welke zin heeft {$reviewee.firstname} {$reviewee.lastname} bijgedragen aan het success van de organisatie?</label>
+                {/if}
+                <textarea name="openQuestion" class="input-xxlarge"></textarea>
             </div>
-        </form>
-    </div>
+        </fieldset>
+
+        <div class="form-actions">
+            <button type="button" class="btn" onclick="history.go(-1);return true;">Previous</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -68,7 +70,7 @@
 
     $(document).ready(function ()
     {
-        $('[class="btn btn-link"]').bind('click', function ()
+        $('[class="btn btn-link"]').click(function ()
         {
             $(this).siblings('textarea').show();
             $(this).hide();

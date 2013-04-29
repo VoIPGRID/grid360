@@ -1,6 +1,6 @@
 {include file="views/functions.tpl"}
 
-{function name="printCompetencies"}
+{function printCompetencies}
     <tr>
         <td>{$competency.name}</td>
         <td>{$competency.description}</td>
@@ -9,7 +9,7 @@
     </tr>
 {/function}
 
-{function name="printCompetencyGroups"}
+{function printCompetencyGroups}
     <tr>
         <td>{$competencygroup.name}</td>
         <td>{$competencygroup.description}</td>
@@ -17,47 +17,45 @@
     </tr>
 {/function}
 
-<div class="container">
-    <h2>Competency groups</h2>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Group name</th>
-            <th>Description</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        {if isset($competencygroups) && !empty($competencygroups)}
-        <tbody>
-        {foreach $competencygroups as $competencygroup}
-            {printCompetencyGroups}
-        {/foreach}
-        </tbody>
-    </table>
-    {else}
+<h2>Competency groups</h2>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Group name</th>
+        <th>Description</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    {if isset($competencygroups) && !empty($competencygroups)}
+    <tbody>
+    {foreach $competencygroups as $competencygroup}
+        {printCompetencyGroups}
+    {/foreach}
+    </tbody>
+</table>
+{else}
     </table>No competency groups found!
-    {/if}
-    {call printAddLink level="manager" type="competencygroup"}
+{/if}
+{call printAddLink level="manager" type="competencygroup"}
 
-    <h3>Competencies</h3>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Competency group</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        {if isset($competencies) && !empty($competencies)}
-        <tbody>
-        {foreach $competencies as $competency}
-            {printCompetencies}
-        {/foreach}
-        </tbody>
-    </table>
-    {else}
+<h3>Competencies</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Competency group</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    {if isset($competencies) && !empty($competencies)}
+    <tbody>
+    {foreach $competencies as $competency}
+        {printCompetencies}
+    {/foreach}
+    </tbody>
+</table>
+{else}
     </table>No competencies found!
-    {/if}
-    {call printAddLink level="manager" type="competency"}
-</div>
+{/if}
+{call printAddLink level="manager" type="competency"}

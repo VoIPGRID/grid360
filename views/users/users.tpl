@@ -12,29 +12,26 @@
     </tr>
 {/function}
 
-<div class="container">
-    <h2>Users</h2>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Role</th>
-            <th>User level</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        {if isset($users) && !empty($users)}
-        <tbody>
-        {foreach $users as $user}
-            {printUserInfo}
-        {/foreach}
-        </tbody>
-    </table>
-    {else}
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Department</th>
+        <th>Role</th>
+        <th>User level</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    {if isset($users) && !empty($users)}
+    <tbody>
+    {foreach $users as $user}
+        {printUserInfo}
+    {/foreach}
+    </tbody>
+</table>
+{else}
     </table>No users found!
-    {/if}
-    {call printAddLink level="admin" type="user"}
-</div>
+{/if}
+{call printAddLink level="admin" type="user"}

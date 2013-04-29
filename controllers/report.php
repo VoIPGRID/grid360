@@ -17,12 +17,21 @@ function view_report()
     $reviews = R::find('review', ' reviewee_id = ? AND round_id = ?', array($id, $roundId));
     $roundInfo = R::find('roundinfo', ' reviewee_id = ? AND status = 1 AND round_id = ?', array($id, $roundId));
     $round = R::load('round', $roundId);
+    R::preload($reviews, array('reviewer'=>'user'));
 
     $averages = array();
+    $self = array();
 
     foreach($reviews as $review)
     {
-        $averages[$review->competency->id][] = $review->rating->id;
+        if($review->reviewer->id != $id)
+        {
+            $averages[$review->competency->id][] = $review->rating->id;
+        }
+        else
+        {
+            $self[$review->competency->id] = $review->rating->id;
+        }
     }
 
     $averageRatings = array();
@@ -36,6 +45,7 @@ function view_report()
         }
 
         $averageRatings[$key]['average'] = round($total / count($average), 2);
+        $averageRatings[$key]['self'] = $self[$key];
         $averageRatings[$key]['name'] = R::load('competency', $key)->name;
     }
 
@@ -44,5 +54,9 @@ function view_report()
     $smarty->assign('averages', $averageRatings);
     $smarty->assign('roundinfo', $roundInfo);
     $smarty->assign('round', $round);
-    $smarty->display('reports/report.tpl');
+    $smarty->assign('pageTitle', 'Report');
+    $smarty->assign('pageTitleSize', 'h2');
+    set('title', 'Report');
+
+    return html($smarty->fetch('reports/report.tpl'));
 }

@@ -1,8 +1,8 @@
-<div class="container">
-    <fieldset>
-        <legend>Report for {$currentUser.firstname} {$currentUser.lastname} of {$round.description}</legend>
-
-        <div class="row-fluid">
+<script type="text/javascript">
+    $('.page-header {$pageTitleSize}').append(' for {$currentUser.firstname} {$currentUser.lastname} of {$round.description|escape:'html'}');
+</script>
+<fieldset>
+    <div class="row-fluid">
         <span class="span12">
             <label id="optionsLabel">
                 <p class="lead">Options<i class="icon-plus-sign"></i>
@@ -40,19 +40,26 @@
                             <input type="checkbox" name="checkSelf" value="2" />Show self
                         </label>
                     </div>
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" id="checkComparisons" name="checkComparison" value="4" />Show comparisons
+                        </label>
+                    </div>
                 </div>
             </div>
         </span>
-        </div>
-    </fieldset>
+    </div>
+</fieldset>
 
+<div class="row-fluid">
     <span class="span12">
          <div id="chart_div" class="reportChart"></div>
     </span>
+</div>
 
-    <fieldset>
-        <legend>Comments</legend>
-        <div class="row-fluid">
+<fieldset>
+    <legend>Comments</legend>
+    <div class="row-fluid">
         <span class="span12">
              <div class="tabbable">
                  <ul class="nav nav-tabs">
@@ -85,51 +92,62 @@
                  </div>
              </div>
         </span>
-        </div>
-    </fieldset>
-</div>
+    </div>
+</fieldset>
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="//www.google.com/jsapi"></script>
 <script type="text/javascript">
 
     {foreach $reviews as $review}
-    {if !empty($review.comment)}
-        $('#tabAll').find('tbody').append($('<tr>').append($('<td>').append("{$review.comment}")));
-        $('#tab{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append("{$review.comment}")));
-    {/if}
+        {if !empty($review.comment)}
+            $('#tabAll').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
+            $('#tab{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
+        {/if}
     {/foreach}
 
     {foreach $roundinfo as $info}
-    {if !empty($info.answer)}
-    $('#tabAnswers table').find('tbody').append($('<tr>').append($('<td>').append("{$info.answer}")));
-    {/if}
+        {if !empty($info.answer)}
+        $('#tabAnswers table').find('tbody').append($('<tr>').append($('<td>').append('{$info.answer|escape:'html'}')));
+        {/if}
     {/foreach}
 
     {literal}
     google.load('visualization', '1', {packages: ['corechart']});
     function drawChart()
     {
+        var showAnimations = true;
+        if(!showAnimations)
+        {
+            chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        }
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Competency name');
         data.addColumn('number', 'Average');
         data.addColumn('number', 'Self');
 
-        for (var i in averages)
+        for(var i in averages)
         {
             average = averages[i];
-            if (average.enabled == 1)
+            if(average.enabled == 1)
             {
-                if (state == 2)
+                if(state == 2)
                 {
                     data.addRow([average.name, 0, average.self]);
                 }
-                else if (state == 1)
+                else if(state == 1)
                 {
-                    data.addRow([average.name, average.average, 0]);
+                    data.addRow([average.name, average.average, null]);
                 }
-                else if (state == 0)
+                else if(state == 0)
                 {
 
+                }
+                else if(state == 4)
+                {
+                    if(!isNaN(average.self))
+                    {
+                        data.addRow([average.name, average.average, average.self]);
+                    }
                 }
                 else
                 {
@@ -138,10 +156,9 @@
             }
         }
         chart.draw(data, options);
-    }
-    ;
+    };
+    {/literal}
 </script>
-{/literal}
 
 <script type="text/javascript">
     $(document).ready()
@@ -155,35 +172,30 @@
             animation: {
                 duration: 500
             },
-            vAxis: {title: 'Competencies'},
+            vAxis: {title: 'Competenties'},
             hAxis: {
                 viewWindowMode: 'explicit',
                 viewWindow: {
                     max: 5.1, // Set to 5.1 so the number 5 shows on the chart as well
                     min: 0
                 },
-                title: 'Ratings'
+                title: 'Punten'
             }
         };
 
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Competency name');
-        data.addColumn('number', 'Average');
-        data.addColumn('number', 'Self');
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
         {/literal}
 
         var averages = new Array();
 
         {foreach $averages as $key => $average}
-        var average = new Object();
-        average.id = '{$key}';
-        average.name = "{$average.name}";
-        average.average = parseFloat(parseFloat('{$average.average}').toFixed(2));
-        average.self = parseFloat(Math.floor(Math.random() * (5 - 1) + 1));
-        average.enabled = 1;
-        averages[{$key}] = average;
+            var average = new Object();
+            average.id = '{$key}';
+            average.name = '{$average.name|escape:'html'}';
+            average.average = parseFloat(parseFloat('{$average.average}').toFixed(2));
+            average.self = parseFloat('{$average.self}');
+            average.enabled = 1;
+            averages[{$key}] = average;
         {/foreach}
 
         $('.commentBox').bind('mousewheel DOMMouseScroll', function (e)
@@ -198,43 +210,30 @@
             $(this).tab('show');
         });
 
-        $('#selectAll').bind('click', function ()
+        $('#selectAll').click(function ()
         {
             $('#competencyBoxes input:checkbox:not(:checked)').click();
             $('#competencyBoxes input:checkbox:not(:checked)').attr('checked', true);
             checkChecked();
         });
 
-        $('#deselectAll').bind('click', function ()
+        $('#deselectAll').click(function ()
         {
             $('#competencyBoxes input:checked').attr('checked', false);
             checkChecked();
         });
 
-        function checkChecked()
+        $('input[name="checkSelf"]').click(function()
         {
-            state = 0;
-            $('input[type="checkbox"]').each(function ()
-            {
-                if (($(this).attr('name') == 'checkAverage' || $(this).attr('name') == 'checkSelf'))
-                {
-                    if ($(this).is(':checked'))
-                        state += $(this).val();
-                }
-                else if ($(this).is(':checked'))
-                {
-                    averages[$(this).val()].enabled = 1;
-                }
-                else
-                {
-                    averages[$(this).val()].enabled = 0;
-                }
-            })
+            $('input[name="checkComparison"]').attr('checked', false);
+        });
 
-            drawChart();
-        }
+        $('input[name="checkAverage"]').click(function()
+        {
+            $('input[name="checkComparison"]').attr('checked', false);
+        });
 
-        $('#optionsLabel').bind('click', function ()
+        $('#optionsLabel').click(function ()
         {
             $('#options').slideToggle();
             if ($('#optionsLabel i').attr('class') == 'icon-minus-sign')
@@ -249,8 +248,40 @@
             }
         });
 
+        function checkChecked()
+        {
+            state = 0;
+            $('input[type="checkbox"]').each(function ()
+            {
+                if (($(this).attr('name') == 'checkAverage' || $(this).attr('name') == 'checkSelf') || $(this).attr('name') == 'checkComparison')
+                {
+                    if($(this).attr('name') == 'checkComparison')
+                    {
+                        if($(this).is(':checked'))
+                        {
+                            state = 4;
+                            $('input[name="checkAverage"]').attr('checked', false);
+                            $('input[name="checkSelf"]').attr('checked', false);
+                            return;
+                        }
+                    }
+                    if ($(this).is(':checked'))
+                        state += parseInt($(this).val());
+                }
+                else if ($(this).is(':checked'))
+                {
+                    averages[$(this).val()].enabled = 1;
+                }
+                else
+                {
+                    averages[$(this).val()].enabled = 0;
+                }
+            });
 
-        $('input[type=checkbox]').attr('checked', true);
+            drawChart();
+        }
+
+        $('input[type=checkbox]').not('input[name="checkComparison"]').attr('checked', true);
         $('input[type=checkbox]').on('click', checkChecked);
         drawChart();
     }

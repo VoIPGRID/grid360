@@ -1,4 +1,4 @@
-{function name="createCheckBoxes"}
+{function createCheckBoxes}
     {foreach $competencies as $competency}
         <div class="control-group">
             <div class="controls">
@@ -10,67 +10,75 @@
     {/foreach}
 {/function}
 
-<div class="container">
-    {$urlText = ""}
+{$urlText = ""}
 
-    {if isset($step) && $step == 2}
-        {$text = "2 points of improvement"}
-        {$urlText = "/2"}
-        {$buttonText = "Previous"}
+{if isset($step) && $step == 2}
+    {$text = "2 points of improvement"}
+    {$urlText = "/{$reviewee.id}/2"}
+    {$buttonText = "Previous"}
+{else}
+    {$text = "3 positive competencies"}
+    {$urlText = "/{$reviewee.id}"}
+    {$buttonText = "Cancel"}
+{/if}
+<h3>Select {$text} for
+    {if $reviewee.id == $currentUser.id}
+        yourself
     {else}
-        {$text = "3 positive competencies"}
-        {$buttonText = "Cancel"}
+        {$reviewee.firstname} {$reviewee.lastname}
     {/if}
-    <h3>Select {$text} for {$currentUser.firstname} {$currentUser.lastname}</h3>
+</h3>
 
-    <div class="alert alert-info">
-        Hover over a competency to read its description
-    </div>
-
-    <form class="form-horizontal" action="{$base_uri}feedback{$urlText}" method="post">
-        <fieldset>
-            <legend>General competencies</legend>
-            {createCheckBoxes competencies=$generalCompetencies}
-
-            <legend>{$currentUser.role.competencygroup.name}</legend>
-            {createCheckBoxes competencies=$competencies}
-
-            <div class="form-actions">
-                <button type="button" class="btn" onClick="history.go(-1);return true;">{$buttonText}</button>
-                <button type="submit" class="btn btn-primary">Next</button>
-            </div>
-
-        </fieldset>
-    </form>
+<div class="alert alert-info">
+    Hover over a competency to read its description
 </div>
+
+<form class="form-horizontal" action="{$BASE_URI}feedback{$urlText}" method="post">
+    <fieldset>
+        <legend>General competencies</legend>
+        {if isset($step) && $step == 1 && $reviewee.department.id != $currentUser.department.id}
+            <button class="btn-large btn-inverse pull-right">Skip person</button>
+        {/if}
+        {createCheckBoxes competencies=$generalCompetencies}
+    </fieldset>
+
+    <fieldset>
+        <legend>{$reviewee.role.competencygroup.name}</legend>
+        {createCheckBoxes competencies=$competencies}
+    </fieldset>
+
+    <div class="form-actions">
+        <button type="button" class="btn" onclick="history.go(-1);return true;">{$buttonText}</button>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>
 
 <script type="text/javascript">
     $(document).ready(function ()
     {
         $('[data-toggle="tooltip"]').tooltip();
+        $('input[type=checkbox]').click(countChecked);
     });
 
     var countChecked = function ()
     {
-        var step = "{$step}";
-        var count = $("input:checked").length;
+        var step = '{$step}';
+        var count = $('input:checked').length;
         if (step == 2)
         {
             if (count >= 2)
-                $("input:not(:checked)").attr("disabled", true);
+                $('input:not(:checked)').attr('disabled', true);
             else
-                $("input:not(:checked)").attr("disabled", false);
+                $('input:not(:checked)').attr('disabled', false);
         }
         else
         {
             if (count >= 3)
-                $("input:not(:checked)").attr("disabled", true);
+                $("input:not(:checked)").attr('disabled', true);
             else
-                $("input:not(:checked)").attr("disabled", false);
+                $("input:not(:checked)").attr('disabled', false);
         }
     };
 
     countChecked();
-
-    $("input[type=checkbox]").on("click", countChecked);
 </script>

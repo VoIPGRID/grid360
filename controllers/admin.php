@@ -7,30 +7,37 @@
 function confirmation()
 {
     global $smarty;
-    $smarty->display('admin/confirmation.tpl');
+    $smarty->assign('pageTitle', 'Reset database');
+
+    return html($smarty->fetch('admin/confirmation.tpl'));
 }
 
 function fill_database()
 {
     R::nuke();
 
+    $message = 'Database reset!';
+
     $file = BASE_DIR . 'tests/testdata.php';
     if(file_exists($file))
     {
         include $file;
+        $message .= '<br>Test data has been added to the database.';
+    } else
+    {
+        $message .= '<br>No test data has been generated.';
     }
 
-    return '<div class="container">Database reset!</div>';
+    return html($message);
 }
 
 function create_round()
 {
 //    global $smarty;
 //
-//    $smarty->display('admin/create_round.tpl');
+//    return html($smarty->fetch('admin/create_round.tpl'));
 }
 
 function start_round()
 {
-
 }

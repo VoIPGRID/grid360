@@ -6,17 +6,45 @@
 
 function create_department()
 {
-    $managers = R::find('user', 'userlevel_id = ? or userlevel_id = ?', array(2, 1));
-
-    $managerOptions = array();
-    foreach($managers as $manager)
-    {
-        $managerOptions[$manager->id] = $manager->firstname . " " . $manager->lastname;
-    }
-
     global $smarty;
-    $smarty->assign('managerOptions', $managerOptions);
-    $smarty->display('departments/new_department.tpl');
+    $smarty->assign('managerOptions', get_managers());
+
+    return html($smarty->fetch('departments/department.tpl'));
+}
+
+function create_department_post()
+{
+    if(isset($_POST['name']) && !empty($_POST['name']))
+    {
+        foreach($_POST['ownRoles'] as $key => $role)
+        {
+            if(empty($role['name']))
+            {
+                unset($_POST['ownRoles'][$key]);
+            }
+        }
+
+        $department = R::graph($_POST); // TODO: Check if user is not empty
+
+        if($department->user->id == 0)
+        {
+            unset($department->user);
+        }
+
+        R::store($department);
+        global $smarty; // TODO: Add submit page
+
+        if(isset($_POST['id']))
+        {
+            return html('Department with id ' . $_POST['id'] . ' updated');
+        }
+
+        return html('Department created!');
+    }
+    else
+    {
+        return html('No department name given');
+    }
 }
 
 function view_departments()
@@ -24,7 +52,11 @@ function view_departments()
     global $smarty;
     $departments = R::findAll('department');
     $smarty->assign('departments', $departments);
-    $smarty->display('departments/departments.tpl');
+    $smarty->assign('pageTitle', 'Departments');
+    $smarty->assign('pageTitleSize', 'h1');
+    set('title', 'Departments');
+
+    return html($smarty->fetch('departments/departments.tpl'));
 }
 
 function edit_department()
@@ -32,20 +64,14 @@ function edit_department()
     $department = R::load('department', params('id'));
 
     if($department->id == 0)
-        return 'Department not found!';
-
-    $managers = R::find('user', 'userlevel_id = ? or userlevel_id = ?', array(2, 1)); // Hardcoded userlevels for now
-
-    $managerOptions = array();
-    foreach($managers as $manager)
-    {
-        $managerOptions[$manager->id] = $manager->firstname . " " . $manager->lastname;
-    }
+        return html('Department not found!');
 
     global $smarty;
     $smarty->assign('department', $department);
-    $smarty->assign('managerOptions', $managerOptions);
-    $smarty->display('departments/edit_department.tpl');
+    $smarty->assign('managerOptions', get_managers());
+    $smarty->assign('update', 1);
+
+    return html($smarty->fetch('departments/department.tpl'));
 }
 
 function delete_department()
@@ -58,31 +84,11 @@ function delete_department()
     R::trash($department);
 }
 
-function create_department_post()
+function get_managers()
 {
-    if(isset($_POST['name']) && !empty($_POST['name']))
-    {
-        $index = 0;
-        foreach($_POST['ownRoles'] as $role)
-        {
-            if(empty($role['name']))
-            {
-                unset($_POST['ownRoles'][$index]);
-            }
+    $userLevels = array(1, 2);  // TODO: Name these userlevels and make 'em constants or w/e
+    $managers = R::$adapter->getAssoc('select id, CONCAT( firstname, " ", lastname ) as name
+                                       from user where userlevel_id IN (' . R::genSlots($userLevels) . ')', $userLevels);
 
-            $index++;
-        }
-        $department = R::graph($_POST);
-        $user = trim($department->user_id);
-        if(empty($user) === true)
-        {
-            $department->user_id = null;
-        }
-        R::store($department);
-        global $smarty;
-    }
-    else
-    {
-        echo 'No department name given';
-    }
+    return $managers;
 }

@@ -5,58 +5,48 @@
 
 $(document).ready(function ()
 {
-    $('.controls .btn').bind('click', function()
+    $('.controls .btn').click(function(event)
     {
-        add_role();
-        return false;
+        add_role(event);
+    });
+
+    $('#roleList').on('click', 'button', function(event)
+    {
+        event.preventDefault();
+        $(this).parent().slideUp('medium', function()
+        {
+            $(this).remove();
+        });
     });
 });
 
-function add_role()
+function add_role(event)
 {
+    event.preventDefault();
     var optionIndex = $('#roleList .controls').length;
-    var roleList = document.getElementById('roleList');
 
-    var inputType = document.createElement('input');
-    inputType.name = 'ownRoles[' + optionIndex + '][type]';
-    inputType.type = 'hidden';
-    inputType.value = 'role';
+    var inputType = $('<input type="hidden" name="ownRoles[' + optionIndex + '][type]" />').val('role');
+    var newRole = $('<input type="text" name="ownRoles[' + optionIndex + '][name]" placeholder="Role name" class="input-xlarge" />');
 
-    var newRole = document.createElement('input');
-    newRole.name = 'ownRoles[' + optionIndex + '][name]';
-    newRole.type = 'text';
-    newRole.placeholder = 'Role name';
-    newRole.className = 'input-xlarge';
+    var newRoleDescription = $('<textarea name="ownRoles[' +  optionIndex + '][description]" placeholder="Role description" class="input-xxlarge"></textarea>');
 
-    var newRoleDescription = document.createElement('textarea');
-    newRoleDescription.name = 'ownRoles[' + optionIndex + '][description]';
-    newRoleDescription.type = 'text';
-    newRoleDescription.placeholder = 'Role description';
-    newRoleDescription.className = 'input-xxlarge';
+    var roleDiv = $('<div class="controls"></div>');
 
-    var image = document.createElement('i');
-    image.className = 'icon-remove-sign';
+    roleDiv.append(inputType);
+    roleDiv.append(newRole);
+    roleDiv.append('&nbsp;');
+    roleDiv.append(newRoleDescription);
 
-    var roleDiv = document.createElement('div')
-    roleDiv.className = 'controls';
+    var removeButton = $('<button class="btn btn-link"></button>');
+    var image = $('<i class="icon-remove-sign"></i>');
 
-    roleList.appendChild(roleDiv);
-    roleDiv.appendChild(inputType);
-    roleDiv.appendChild(newRole);
-    roleDiv.innerHTML += ' ';
-    roleDiv.appendChild(newRoleDescription);
+    removeButton.append(image);
+    roleDiv.append(removeButton);
+    roleDiv.hide();
 
-    var link = document.createElement('a');
-    link.class = 'removeRoleButton';
-    link.href = '#';
+    $('#roleList').append(roleDiv);
 
-    link.appendChild(image);
-    roleDiv.appendChild(link);
-
-    $(link).bind('click', function()
-    {
-        $(this).parent().remove();
-    });
+    roleDiv.slideDown();
 
     return false;
 }

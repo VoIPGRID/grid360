@@ -5,58 +5,49 @@
 
 $(document).ready(function ()
 {
-    $('.controls .btn').bind('click', function()
+    $('.controls .btn').click(function(event)
     {
-        add_competency();
-        return false;
+        add_competency(event);
+    });
+
+    $('#competencyList').on('click', 'button', function(event)
+    {
+        event.preventDefault();
+        $(this).parent().slideUp('medium', function()
+        {
+            $(this).remove();
+        });
     });
 });
 
-function add_competency()
+function add_competency(event)
 {
+    event.preventDefault();
     var optionIndex = $('#competencyList .controls').length;
-    var competencyList = document.getElementById('competencyList');
 
-    var inputType = document.createElement('input');
-    inputType.name = 'ownCompetencies[' + optionIndex + '][type]';
-    inputType.type = 'hidden';
-    inputType.value = 'competency';
+    var inputType = $('<input type="hidden" name="ownCompetencies[' + optionIndex + '][type]" />').val('role');
+    var newCompetency = $('<input type="text" name="ownCompetencies[' + optionIndex + '][name]" placeholder="Competency name" class="input-xlarge" />');
 
-    var newRole = document.createElement('input');
-    newRole.name = 'ownCompetencies[' + optionIndex + '][name]';
-    newRole.type = 'text';
-    newRole.placeholder = 'Competency name';
-    newRole.className = 'input-xlarge';
+    var newCompetencyDescription = $('<textarea name="ownCompetencies[' +  optionIndex + '][description]" placeholder="Competency description" class="input-xxlarge"></textarea>');
 
-    var newRoleDescription = document.createElement('textarea');
-    newRoleDescription.name = 'ownCompetencies[' + optionIndex + '][description]';
-    newRoleDescription.type = 'text';
-    newRoleDescription.placeholder = 'Competency description';
-    newRoleDescription.className = 'input-xxlarge';
+    var competencyDiv = $('<div class="controls"></div>');
 
-    var image = document.createElement('i');
-    image.setAttribute('class', 'icon-remove-sign');
+    competencyDiv.append(inputType);
+    competencyDiv.append(newCompetency);
+    competencyDiv.append('&nbsp;');
+    competencyDiv.append(newCompetencyDescription);
 
-    var competencyDiv = document.createElement('div')
-    competencyDiv.className = 'controls';
+    var removeButton = $('<button class="btn btn-link"></button>');
+    var image = $('<i class="icon-remove-sign"></i>');
 
-    competencyList.appendChild(competencyDiv);
-    competencyDiv.appendChild(inputType);
-    competencyDiv.appendChild(newRole);
-    competencyDiv.innerHTML += ' ';
-    competencyDiv.appendChild(newRoleDescription);
+    removeButton.append(image);
+    competencyDiv.append(removeButton);
+    competencyDiv.hide();
 
-    var link = document.createElement('a');
-    link.class = 'removeCompetencyButton';
-    link.href = '#';
+    $('#competencyList').append(competencyDiv);
 
-    link.appendChild(image);
-    competencyDiv.appendChild(link);
-
-    $(link).bind('click', function()
-    {
-        $(this).parent().remove();
-    });
+    competencyDiv.slideDown();
 
     return false;
 }
+
