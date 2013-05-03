@@ -1,12 +1,12 @@
-{include file="views/functions.tpl"}
+{include file="lib/functions.tpl"}
 
-{function printRoles}
+{function print_roles}
     <tr>
         <td>{$role.name|capitalize:true}</td>
         <td>{$role.description}</td>
         <td>{$role.department.name}</td>
         <td>{$role.competencygroup.name}</td>
-        {call showActions type="role" level="manager"}
+        {call show_actions type="role" level="manager"}
     </tr>
 {/function}
 
@@ -23,11 +23,11 @@
     {if isset($roles) && !empty($roles)}
     <tbody>
     {foreach $roles as $role}
-        {printRoles}
+        {print_roles}
     {/foreach}
     </tbody>
 </table>
 {else}
     </table>No roles found!
 {/if}
-{call printAddLink level="manager" type="role"}
+{call print_add_link level="manager" type="role"}

@@ -1,8 +1,3 @@
-/**
- * @author epasagic
- * @date 26-3-13
- */
-
 $(document).ready(function ()
 {
     $('.controls .btn').click(function(event)
@@ -10,7 +5,7 @@ $(document).ready(function ()
         add_competency(event);
     });
 
-    $('#competencyList').on('click', 'button', function(event)
+    $('#competency-list').on('click', 'button', function(event)
     {
         event.preventDefault();
         $(this).parent().slideUp('medium', function()
@@ -23,30 +18,30 @@ $(document).ready(function ()
 function add_competency(event)
 {
     event.preventDefault();
-    var optionIndex = $('#competencyList .controls').length;
+    var option_index = $('#competency-list .controls').length;
 
-    var inputType = $('<input type="hidden" name="ownCompetencies[' + optionIndex + '][type]" />').val('role');
-    var newCompetency = $('<input type="text" name="ownCompetencies[' + optionIndex + '][name]" placeholder="Competency name" class="input-xlarge" />');
+    var input_type = $('<input type="hidden" name="ownCompetencies[' + option_index + '][type]" />').val('role');
+    var new_competency = $('<input type="text" name="ownCompetencies[' + option_index + '][name]" placeholder="Competency name" class="input-xlarge" />');
 
-    var newCompetencyDescription = $('<textarea name="ownCompetencies[' +  optionIndex + '][description]" placeholder="Competency description" class="input-xxlarge"></textarea>');
+    var new_competency_description = $('<textarea name="ownCompetencies[' +  option_index + '][description]" placeholder="Competency description" class="input-xxlarge"></textarea>');
 
-    var competencyDiv = $('<div class="controls"></div>');
+    var competency_div = $('<div class="controls"></div>');
 
-    competencyDiv.append(inputType);
-    competencyDiv.append(newCompetency);
-    competencyDiv.append('&nbsp;');
-    competencyDiv.append(newCompetencyDescription);
+    competency_div.append(input_type);
+    competency_div.append(new_competency);
+    competency_div.append('&nbsp;');
+    competency_div.append(new_competency_description);
 
-    var removeButton = $('<button class="btn btn-link"></button>');
+    var remove_button = $('<button class="btn btn-link"></button>');
     var image = $('<i class="icon-remove-sign"></i>');
 
-    removeButton.append(image);
-    competencyDiv.append(removeButton);
-    competencyDiv.hide();
+    remove_button.append(image);
+    competency_div.append(remove_button);
+    competency_div.hide();
 
-    $('#competencyList').append(competencyDiv);
+    $('#competency-list').append(competency_div);
 
-    competencyDiv.slideDown();
+    competency_div.slideDown();
 
     return false;
 }

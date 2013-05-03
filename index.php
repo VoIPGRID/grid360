@@ -1,13 +1,10 @@
 <?php
-/**
- * @author epasagic
- * @date 21-3-13
- */
 
 require_once('config.php');
 require_once(LIB_DIR . 'limonade/lib/limonade.php');
 require_once(LIB_DIR . 'redbeanphp/rb.php');
 require_once(LIB_DIR . 'smarty/libs/Smarty.class.php');
+require_once('constants.php');
 
 function configure()
 {
@@ -20,12 +17,17 @@ function configure()
     $smarty->assign('ADMIN_URI', BASE_URI . 'admin/');
     $smarty->assign('MANAGER_URI', BASE_URI . 'manager/');
     $smarty->assign('ASSETS_URI', ASSETS_URI);
+    $smarty->assign('ADMIN', ADMIN);
+    $smarty->assign('MANAGER', MANAGER);
     RedBean_Plugin_Cooker::enableBeanLoading(true);
 }
 
 function before()
 {
-    layout('layout.php');
+    global $smarty;
+    $smarty->assign('current_user', $_SESSION['current_user']);
+
+    layout('layout/layout.php');
 }
 
 R::setup(CONNECTION, DB_USERNAME, DB_PASSWORD);
@@ -34,15 +36,14 @@ $smarty = new Smarty();
 $smarty->setTemplateDir('views/');
 $smarty->setCompileDir('views/templates_c');
 
-$currentUser = R::load('user', 1); // TODO: Remove this
-$smarty->assign('currentUser', $currentUser);
-
-session_start();
-
 dispatch('/', 'dashboard');
+dispatch('/login', 'login');
+dispatch_post('/login', 'login_post');
+dispatch('/logout', 'logout');
+dispatch('/signup', 'signup');
 
-dispatch_post('/admin/reset', 'fill_database');
 dispatch('/admin/reset', 'confirmation');
+dispatch_post('/admin/reset', 'fill_database');
 dispatch('/admin/round/start', 'start_round');
 
 dispatch('/admin/departments', 'view_departments');
@@ -67,7 +68,7 @@ dispatch('/manager/role/:id', 'edit_role');
 dispatch('/manager/competencygroup/create', 'create_competencygroup');
 dispatch_post('/manager/competencygroup/submit', 'create_competencygroup_post');
 dispatch('/manager/competencygroup/:id', 'edit_competencygroup');
-dispatch_delete('/manager/competencygroup/:id', 'delete_competencyGroup');
+dispatch_delete('/manager/competencygroup/:id', 'delete_competencygroup');
 
 dispatch('/manager/competencies', 'view_competencies');
 dispatch('/manager/competency/create', 'create_competency');

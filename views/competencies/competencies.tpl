@@ -1,19 +1,19 @@
-{include file="views/functions.tpl"}
+{include file="lib/functions.tpl"}
 
-{function printCompetencies}
+{function print_competencies}
     <tr>
         <td>{$competency.name}</td>
         <td>{$competency.description}</td>
         <td>{$competency.competencygroup.name}</td>
-        {call showActions type="competency" level="manager"}
+        {call show_actions type="competency" level="manager"}
     </tr>
 {/function}
 
-{function printCompetencyGroups}
+{function print_competencygroups}
     <tr>
         <td>{$competencygroup.name}</td>
         <td>{$competencygroup.description}</td>
-        {call showActions type="competencygroup" level="manager"}
+        {call show_actions type="competencygroup" level="manager"}
     </tr>
 {/function}
 
@@ -29,14 +29,14 @@
     {if isset($competencygroups) && !empty($competencygroups)}
     <tbody>
     {foreach $competencygroups as $competencygroup}
-        {printCompetencyGroups}
+        {print_competencygroups}
     {/foreach}
     </tbody>
 </table>
 {else}
     </table>No competency groups found!
 {/if}
-{call printAddLink level="manager" type="competencygroup"}
+{call print_add_link level="manager" type="competencygroup"}
 
 <h3>Competencies</h3>
 <table class="table table-striped">
@@ -51,11 +51,11 @@
     {if isset($competencies) && !empty($competencies)}
     <tbody>
     {foreach $competencies as $competency}
-        {printCompetencies}
+        {print_competencies}
     {/foreach}
     </tbody>
 </table>
 {else}
     </table>No competencies found!
 {/if}
-{call printAddLink level="manager" type="competency"}
+{call print_add_link level="manager" type="competency"}

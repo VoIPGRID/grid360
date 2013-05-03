@@ -6,5 +6,4 @@
 <link href="{$ASSETS_URI}css/base.css" rel="stylesheet" />
 <script type="text/javascript" src="{$ASSETS_URI}js/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="{$ASSETS_URI}bootstrap/js/bootstrap.js"></script>
-<script type="text/javascript" src="{$ASSETS_URI}js/gviz-api.js"></script>
 <link rel="icon" type="image/png" href="{$ASSETS_URI}images/favicon.gif" />

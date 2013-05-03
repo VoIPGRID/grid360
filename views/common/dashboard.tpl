@@ -11,7 +11,7 @@
             </thead>
             <tbody>
             {foreach $roundinfo as $info}
-                {if $info.reviewee.id != $currentUser.id}
+                {if $info.reviewee.id != $current_user.id}
                     <tr>
                         <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
                         <td>{$info.reviewee.role.name}</td>

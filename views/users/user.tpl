@@ -12,18 +12,18 @@
                 <input type="hidden" name="id" value="{$user.id}" />
             {/if}
 
-            <label class="control-label" for="firstName">First name</label>
+            <label class="control-label" for="firstname">First name</label>
 
             <div class="controls">
-                <input id="firstName" name="firstname" type="text" placeholder="First name" class="input-large" {if isset($user)}value="{$user.firstname}"{/if} />
+                <input id="firstname" name="firstname" type="text" placeholder="First name" class="input-large" {if isset($user)}value="{$user.firstname}"{/if} />
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="lastName">Last name</label>
+            <label class="control-label" for="lastname">Last name</label>
 
             <div class="controls">
-                <input id="lastName" name="lastname" type="text" placeholder="Last name" class="input-large" {if isset($user)}value="{$user.lastname}"{/if} />
+                <input id="lastname" name="lastname" type="text" placeholder="Last name" class="input-large" {if isset($user)}value="{$user.lastname}"{/if} />
             </div>
         </div>
 
@@ -73,9 +73,9 @@
 
             <div class="controls">
                 {if isset($user)}
-                    {html_options name="userlevel[id]" options=$userLevelOptions|capitalize selected={$user.userlevel.id}}
+                    {html_options name="userlevel[id]" options=$userlevel_options|capitalize selected={$user.userlevel.id}}
                 {else}
-                    {html_options name="userlevel[id]" options=$userLevelOptions|capitalize selected=3}
+                    {html_options name="userlevel[id]" options=$userlevel_options|capitalize selected=3}
                 {/if}
             </div>
         </div>
@@ -98,11 +98,11 @@
     {
         $('select[name="department[id]"]').change(function()
         {
-            var departmentId = $(this).val();
+            var department_id = $(this).val();
 
             $('select[name="role[id]"]').empty();
 
-            if(departmentId == 0)
+            if(department_id == 0)
             {
                 $('select[name="role[id]"]').append('<option value="0">Select role</option>');
 
@@ -110,7 +110,7 @@
             }
 
             {foreach $roles as $role}
-                if('{$role.department.id}' == departmentId)
+                if('{$role.department.id}' == department_id)
                 {
                     var option = $('<option value="{$role.id}">{$role.name}</option>');
                     $('select[name="role[id]"]').append(option);

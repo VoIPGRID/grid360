@@ -1,4 +1,4 @@
-{function createCheckBoxes}
+{function create_checkboxes}
     {foreach $competencies as $competency}
         <div class="control-group">
             <div class="controls">
@@ -10,19 +10,19 @@
     {/foreach}
 {/function}
 
-{$urlText = ""}
+{$url_text = ""}
 
 {if isset($step) && $step == 2}
     {$text = "2 points of improvement"}
-    {$urlText = "/{$reviewee.id}/2"}
-    {$buttonText = "Previous"}
+    {$url_text = "/{$reviewee.id}/2"}
+    {$button_text = "Previous"}
 {else}
     {$text = "3 positive competencies"}
-    {$urlText = "/{$reviewee.id}"}
-    {$buttonText = "Cancel"}
+    {$url_text = "/{$reviewee.id}"}
+    {$button_text = "Cancel"}
 {/if}
 <h3>Select {$text} for
-    {if $reviewee.id == $currentUser.id}
+    {if $reviewee.id == $current_user.id}
         yourself
     {else}
         {$reviewee.firstname} {$reviewee.lastname}
@@ -33,52 +33,80 @@
     Hover over a competency to read its description
 </div>
 
-<form class="form-horizontal" action="{$BASE_URI}feedback{$urlText}" method="post">
+<form class="form-horizontal" action="{$BASE_URI}feedback{$url_text}" method="post">
     <fieldset>
         <legend>General competencies</legend>
-        {if isset($step) && $step == 1 && $reviewee.department.id != $currentUser.department.id}
+        {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
             <button class="btn-large btn-inverse pull-right">Skip person</button>
         {/if}
-        {createCheckBoxes competencies=$generalCompetencies}
+        {create_checkboxes competencies=$general_competencies}
     </fieldset>
 
     <fieldset>
         <legend>{$reviewee.role.competencygroup.name}</legend>
-        {createCheckBoxes competencies=$competencies}
+        {create_checkboxes competencies=$competencies}
     </fieldset>
 
     <div class="form-actions">
-        <button type="button" class="btn" onclick="history.go(-1);return true;">{$buttonText}</button>
-        <button type="submit" class="btn btn-primary">Next</button>
+        <button type="button" class="btn" onclick="history.go(-1);return true;">{$button_text}</button>
+        <button type="submit" class="btn btn-primary" id="submit">Next</button>
     </div>
 </form>
 
 <script type="text/javascript">
-    $(document).ready(function ()
+    $(document).ready(function()
     {
         $('[data-toggle="tooltip"]').tooltip();
-        $('input[type=checkbox]').click(countChecked);
+        $('input[type=checkbox]').click(count_checked);
+
+        $('#submit').click(function()
+        {
+            var step = '{$step}';
+            var count = $('input:checked').length;
+            if (step == 2)
+            {
+                if (!(count >= 2))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (!(count >= 3))
+                {
+                    return false;
+                }
+            }
+        });
     });
 
-    var countChecked = function ()
+    var count_checked = function()
     {
         var step = '{$step}';
         var count = $('input:checked').length;
-        if (step == 2)
+        if(step == 2)
         {
-            if (count >= 2)
+            if(count >= 2)
+            {
                 $('input:not(:checked)').attr('disabled', true);
+            }
             else
+            {
                 $('input:not(:checked)').attr('disabled', false);
+            }
         }
         else
         {
-            if (count >= 3)
+            if(count >= 3)
+            {
                 $("input:not(:checked)").attr('disabled', true);
+            }
             else
+            {
                 $("input:not(:checked)").attr('disabled', false);
+            }
         }
     };
 
-    countChecked();
+    count_checked();
 </script>

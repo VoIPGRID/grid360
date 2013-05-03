@@ -1,8 +1,3 @@
-/**
- * @author epasagic
- * @date 26-3-13
- */
-
 $(document).ready(function ()
 {
     $('.controls .btn').click(function(event)
@@ -10,7 +5,7 @@ $(document).ready(function ()
         add_role(event);
     });
 
-    $('#roleList').on('click', 'button', function(event)
+    $('#role-list').on('click', 'button', function(event)
     {
         event.preventDefault();
         $(this).parent().slideUp('medium', function()
@@ -23,30 +18,30 @@ $(document).ready(function ()
 function add_role(event)
 {
     event.preventDefault();
-    var optionIndex = $('#roleList .controls').length;
+    var option_index = $('#role-list .controls').length;
 
-    var inputType = $('<input type="hidden" name="ownRoles[' + optionIndex + '][type]" />').val('role');
-    var newRole = $('<input type="text" name="ownRoles[' + optionIndex + '][name]" placeholder="Role name" class="input-xlarge" />');
+    var input_type = $('<input type="hidden" name="ownRoles[' + option_index + '][type]" />').val('role');
+    var new_role = $('<input type="text" name="ownRoles[' + option_index + '][name]" placeholder="Role name" class="input-xlarge" />');
 
-    var newRoleDescription = $('<textarea name="ownRoles[' +  optionIndex + '][description]" placeholder="Role description" class="input-xxlarge"></textarea>');
+    var new_role_description = $('<textarea name="ownRoles[' +  option_index + '][description]" placeholder="Role description" class="input-xxlarge"></textarea>');
 
-    var roleDiv = $('<div class="controls"></div>');
+    var role_div = $('<div class="controls"></div>');
 
-    roleDiv.append(inputType);
-    roleDiv.append(newRole);
-    roleDiv.append('&nbsp;');
-    roleDiv.append(newRoleDescription);
+    role_div.append(input_type);
+    role_div.append(new_role);
+    role_div.append('&nbsp;');
+    role_div.append(new_role_description);
 
-    var removeButton = $('<button class="btn btn-link"></button>');
+    var remove_button = $('<button class="btn btn-link"></button>');
     var image = $('<i class="icon-remove-sign"></i>');
 
-    removeButton.append(image);
-    roleDiv.append(removeButton);
-    roleDiv.hide();
+    remove_button.append(image);
+    role_div.append(remove_button);
+    role_div.hide();
 
-    $('#roleList').append(roleDiv);
+    $('#role-list').append(role_div);
 
-    roleDiv.slideDown();
+    role_div.slideDown();
 
     return false;
 }

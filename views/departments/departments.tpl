@@ -1,10 +1,10 @@
-{include file="views/functions.tpl"}
+{include file="lib/functions.tpl"}
 
-{function printDepartments}
+{function print_departments}
     <tr>
         <td>{$department.name|capitalize:true}</td>
         <td>{$department.user.firstname} {$department.user.lastname}</td>
-        {call showActions type="department" level="admin"}
+        {call show_actions type="department" level="admin"}
     </tr>
 {/function}
 
@@ -19,7 +19,7 @@
     {if isset($departments) && !empty($departments)}
         <tbody>
         {foreach $departments as $department}
-            {printDepartments}
+            {print_departments}
         {/foreach}
         </tbody>
     {/if}
@@ -27,4 +27,4 @@
 {if !isset($departments) || count($departments) <= 0}
     No departments found!
 {/if}
-{call printAddLink level="admin" type="department"}
+{call print_add_link level="admin" type="department"}

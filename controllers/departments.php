@@ -1,19 +1,19 @@
 <?php
-/**
- * @author epasagic
- * @date 22-3-13
- */
 
 function create_department()
 {
+    security_authorize();
+
     global $smarty;
-    $smarty->assign('managerOptions', get_managers());
+    $smarty->assign('manager_options', get_managers());
 
     return html($smarty->fetch('departments/department.tpl'));
 }
 
 function create_department_post()
 {
+    security_authorize();
+
     if(isset($_POST['name']) && !empty($_POST['name']))
     {
         foreach($_POST['ownRoles'] as $key => $role)
@@ -24,7 +24,7 @@ function create_department_post()
             }
         }
 
-        $department = R::graph($_POST); // TODO: Check if user is not empty
+        $department = R::graph($_POST);
 
         if($department->user->id == 0)
         {
@@ -49,11 +49,12 @@ function create_department_post()
 
 function view_departments()
 {
+    security_authorize();
+
     global $smarty;
     $departments = R::findAll('department');
     $smarty->assign('departments', $departments);
-    $smarty->assign('pageTitle', 'Departments');
-    $smarty->assign('pageTitleSize', 'h1');
+    $smarty->assign('page_title', 'Departments');
     set('title', 'Departments');
 
     return html($smarty->fetch('departments/departments.tpl'));
@@ -61,14 +62,18 @@ function view_departments()
 
 function edit_department()
 {
+    security_authorize();
+
     $department = R::load('department', params('id'));
 
     if($department->id == 0)
+    {
         return html('Department not found!');
+    }
 
     global $smarty;
     $smarty->assign('department', $department);
-    $smarty->assign('managerOptions', get_managers());
+    $smarty->assign('manager_options', get_managers());
     $smarty->assign('update', 1);
 
     return html($smarty->fetch('departments/department.tpl'));
@@ -76,19 +81,27 @@ function edit_department()
 
 function delete_department()
 {
+    security_authorize();
+
     $department = R::load('department', params('id'));
 
     if($department->id == 0)
+    {
         return 'Department not found!';
+    }
 
     R::trash($department);
+
+    return html('Department deleted! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
 }
 
 function get_managers()
 {
-    $userLevels = array(1, 2);  // TODO: Name these userlevels and make 'em constants or w/e
+    security_authorize();
+
+    $userlevels = array(ADMIN, MANAGER);
     $managers = R::$adapter->getAssoc('select id, CONCAT( firstname, " ", lastname ) as name
-                                       from user where userlevel_id IN (' . R::genSlots($userLevels) . ')', $userLevels);
+                                       from user where userlevel_id IN (' . R::genSlots($userlevels) . ')', $userlevels);
 
     return $managers;
 }

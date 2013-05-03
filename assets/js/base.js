@@ -1,8 +1,3 @@
-/**
- * @author epasagic
- * @date 25-4-13
- */
-
 $(document).ready(function ()
 {
     $('[data-toggle="tooltip"]').tooltip();
@@ -12,22 +7,22 @@ $(document).ready(function ()
         event.preventDefault();
 
         var id = $(this).siblings('input[type="hidden"]').val();
-        var iconClass = $(this).find('i').attr('class');
+        var icon_class = $(this).find('i').attr('class');
         var status = 0;
 
-        if(iconClass == 'icon-play')
+        if(icon_class == 'icon-play')
         {
             status = 1;
         }
-        else if(iconClass == 'icon-pause')
+        else if(icon_class == 'icon-pause')
         {
             status = 0;
         }
 
         $.ajax({
-            type: "POST",
+            type: 'POST',
             data: {id: id, status: status},
-            url: "/grid360/admin/user/status"
+            url: '/grid360/admin/user/status'
         }).done(function()
             {
                 window.location.href = $(location).attr('href');

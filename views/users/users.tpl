@@ -1,6 +1,6 @@
-{include file="views/functions.tpl"}
+{include file="lib/functions.tpl"}
 
-{function printUserInfo}
+{function print_user_info}
     <tr>
         <td>{$user.firstname|capitalize}</td>
         <td>{$user.lastname|capitalize}</td>
@@ -8,7 +8,7 @@
         <td>{$user.department.name|capitalize:true}</td>
         <td>{$user.role.name|capitalize:true}</td>
         <td>{$user.userlevel.name|capitalize}</td>
-        {call showActions type="user" level="admin"}
+        {call show_actions type="user" level="admin"}
     </tr>
 {/function}
 
@@ -27,11 +27,11 @@
     {if isset($users) && !empty($users)}
     <tbody>
     {foreach $users as $user}
-        {printUserInfo}
+        {print_user_info}
     {/foreach}
     </tbody>
 </table>
 {else}
     </table>No users found!
 {/if}
-{call printAddLink level="admin" type="user"}
+{call print_add_link level="admin" type="user"}

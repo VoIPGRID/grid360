@@ -14,18 +14,18 @@
                 <input type="hidden" name="id" value="{$competencygroup.id}" />
             {/if}
 
-            <label class="control-label" for="groupName">Group name</label>
+            <label class="control-label" for="group-name">Group name</label>
 
             <div class="controls">
-                <input id="groupName" name="name" type="text" placeholder="Group name" class="input-large" {if isset($competencygroup)}value="{$competencygroup.name}"{/if} />
+                <input id="group-name" name="name" type="text" placeholder="Group name" class="input-large" {if isset($competencygroup)}value="{$competencygroup.name}"{/if} />
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="groupDescription">Group description</label>
+            <label class="control-label" for="group_description">Group description</label>
 
             <div class="controls">
-                <textarea id="groupDescription" name="description" placeholder="Group description" class="input-xxlarge">{if isset($competencygroup)}value="{$competencygroup.description}"{/if}</textarea>
+                <textarea id="group_description" name="description" placeholder="Group description" class="input-xxlarge">{if isset($competencygroup)}value="{$competencygroup.description}"{/if}</textarea>
             </div>
         </div>
 
@@ -34,8 +34,8 @@
             <label class="control-label">Role</label>
 
             <div class="controls">
-                {if isset($roleOptions) && count($roleOptions) >= 1}
-                    {html_options name="role[id]" options=$roleOptions selected=$competencygroup.role.id}
+                {if isset($role_options) && count($role_options) >= 1}
+                    {html_options name="role[id]" options=$role_options selected=$competencygroup.role.id}
                 {else}
                     No roles found
                 {/if}
@@ -45,7 +45,7 @@
         <div class="control-group">
             <label class="control-label">Competencies</label>
 
-            <div id="competencyList">
+            <div id="competency-list">
                 {if isset($competencygroup) && count($competencygroup.ownCompetency) >= 1}
                     {assign "index" 0}
                     {foreach $competencygroup.ownCompetency as $competency}

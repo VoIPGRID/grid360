@@ -14,24 +14,20 @@
                 <input type="hidden" name="id" value="{$department.id}" />
             {/if}
 
-            <label class="control-label" for="departmentName">Department name</label>
+            <label class="control-label" for="department_name">Department name</label>
 
             <div class="controls">
-                {if isset($department)}
-                    <input id="departmentName" name="name" type="text" placeholder="Department name" class="input-large" value="{$department.name}" />
-                {else}
-                    <input id="departmentName" name="name" type="text" placeholder="Department name" class="input-large" />
-                {/if}
+                <input id="department-name" name="name" type="text" placeholder="Department name" class="input-large" {if isset($department)}value="{$department.name}"{/if}/>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="departmentName">Manager</label>
+            <label class="control-label">Manager</label>
             <input type="hidden" name="user[type]" value="user" />
 
             <div class="controls">
-                {if isset($managerOptions) && count($managerOptions) >= 1}
-                    {html_options name="user[id]" options=$managerOptions selected=$department.user.id}
+                {if isset($manager_options) && count($manager_options) >= 1}
+                    {html_options name="user[id]" options=$manager_options selected=$department.user.id}
                 {else}
                     No managers/admins found
                 {/if}
@@ -41,7 +37,7 @@
         <div class="control-group">
             <label class="control-label">Role(s)</label>
 
-            <div id="roleList">
+            <div id="role-list">
                 {if isset($department) && count($department.ownRole) >= 1}
                     {assign "index" 0}
                     {foreach $department.ownRole as $role}

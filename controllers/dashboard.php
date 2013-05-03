@@ -1,29 +1,25 @@
 <?php
-/**
- * @author epasagic
- * @date 24-4-13
- */
 
 function dashboard()
 {
-    $rounds = R::findAll('round');
-    $roundInfo = R::find('roundinfo', ' reviewer_id = ? && round_id = ?', array(1, 4)); // TODO: Change to currentUser->id and currentRound->id
-    R::preload($roundInfo, array('reviewee' => 'user'));
+    security_authorize();
 
-    foreach($roundInfo as $key => $info)
+    $rounds = R::findAll('round');
+    $roundinfo = R::find('roundinfo', ' reviewer_id = ? && round_id = ?', array($_SESSION['current_user']->id, 4)); // TODO: Change to currentRound->id
+    R::preload($roundinfo, array('reviewee' => 'user'));
+
+    foreach($roundinfo as $key => $info)
     {
         if($info->reviewee->status == 0)
         {
-            unset($roundInfo[$key]);
+            unset($roundinfo[$key]);
         }
     }
 
     global $smarty;
     $smarty->assign('rounds', $rounds);
-    $smarty->assign('roundinfo', $roundInfo);
-    $smarty->assign('pageTitle', 'Dashboard');
+    $smarty->assign('roundinfo', $roundinfo);
+    $smarty->assign('page_title', 'Dashboard');
 
-    return html($smarty->fetch('dashboard.tpl'));
+    return html($smarty->fetch('common/dashboard.tpl'));
 }
-
-return 'iets';

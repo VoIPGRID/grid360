@@ -1,20 +1,20 @@
 <div class="page-header"><h1>Feedback overview</h1></div>
 <div class="row-fluid">
 <span class="span6">
-        {if array_key_exists($currentUser.id, $roundinfo)}
-            {if $roundinfo[$currentUser.id].status == 0}
+        {if array_key_exists($current_user.id, $roundinfo)}
+            {if $roundinfo[$current_user.id].status == 0}
                 <div class="alert alert-info">
-                    You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$currentUser.id}">Click here to review yourself</a>
+                    You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
                 </div>
             {/if}
         {else}
             <div class="alert alert-info">
-                You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$currentUser.id}">Click here to review yourself</a>
+                You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
             </div>
         {/if}
 
     {foreach $roundinfo as $info}
-        {if $info.reviewee.id != $currentUser.id && $info.status == 0}
+        {if $info.reviewee.id != $current_user.id && $info.status == 0}
             <div class="alert alert-info">
                 You have pending reviews! Click the review button next to an open review to review that person.
             </div>
@@ -31,7 +31,7 @@
         </thead>
         <tbody>
         {foreach $roundinfo as $info}
-            {if $info.reviewee.id != $currentUser.id}
+            {if $info.reviewee.id != $current_user.id}
                 <tr>
                     <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
                     <td>

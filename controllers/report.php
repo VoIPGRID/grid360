@@ -1,22 +1,19 @@
 <?php
-/**
- * @author epasagic
- * @date 12-4-13
- */
 
 function view_report()
 {
-    $id = 1;
-    $roundId = params('id');
+    security_authorize();
 
-    if($roundId == null || empty($roundId))
+    $round_id = params('id');
+
+    if($round_id == null || empty($round_id))
     {
-        $roundId = 4; // TODO: Set to current round
+        $round_id = 4; // TODO: Set to current round
     }
 
-    $reviews = R::find('review', ' reviewee_id = ? AND round_id = ?', array($id, $roundId));
-    $roundInfo = R::find('roundinfo', ' reviewee_id = ? AND status = 1 AND round_id = ?', array($id, $roundId));
-    $round = R::load('round', $roundId);
+    $reviews = R::find('review', ' reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $round_id));
+    $roundinfo = R::find('roundinfo', ' reviewee_id = ? AND status = 1 AND round_id = ?', array($_SESSION['current_user']->id, $round_id));
+    $round = R::load('round', $round_id);
     R::preload($reviews, array('reviewer'=>'user'));
 
     $averages = array();
@@ -24,7 +21,7 @@ function view_report()
 
     foreach($reviews as $review)
     {
-        if($review->reviewer->id != $id)
+        if($review->reviewer->id != $_SESSION['current_user']->id)
         {
             $averages[$review->competency->id][] = $review->rating->id;
         }
@@ -34,7 +31,7 @@ function view_report()
         }
     }
 
-    $averageRatings = array();
+    $average_ratings = array();
 
     foreach($averages as $key => $average)
     {
@@ -44,18 +41,38 @@ function view_report()
             $total += $value;
         }
 
-        $averageRatings[$key]['average'] = round($total / count($average), 2);
-        $averageRatings[$key]['self'] = $self[$key];
-        $averageRatings[$key]['name'] = R::load('competency', $key)->name;
+        $average_ratings[$key]['average'] = round($total / count($average), 2);
+        $average_ratings[$key]['self'] = $self[$key];
+        $average_ratings[$key]['name'] = R::load('competency', $key)->name;
+    }
+
+    foreach($self as $key => $self_row)
+    {
+        if(!array_key_exists($key, $averages))
+        {
+            $average_ratings[$key]['average'] = null;
+            $average_ratings[$key]['self'] = $self[$key];
+            $average_ratings[$key]['name'] = R::load('competency', $key)->name;
+        }
+    }
+
+    ksort($average_ratings);
+
+    $has_self = false;
+
+    if(count($self) >= 1)
+    {
+        $has_self = true;
     }
 
     global $smarty;
     $smarty->assign('reviews', $reviews);
-    $smarty->assign('averages', $averageRatings);
-    $smarty->assign('roundinfo', $roundInfo);
+    $smarty->assign('averages', $average_ratings);
+    $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('round', $round);
-    $smarty->assign('pageTitle', 'Report');
-    $smarty->assign('pageTitleSize', 'h2');
+    $smarty->assign('page_title', 'Report');
+    $smarty->assign('page_title_size', 'h2');
+    $smarty->assign('has_self', $has_self);
     set('title', 'Report');
 
     return html($smarty->fetch('reports/report.tpl'));

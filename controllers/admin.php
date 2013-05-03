@@ -1,19 +1,19 @@
 <?php
-/**
- * @author epasagic
- * @date 26-3-13
- */
 
 function confirmation()
 {
+    security_authorize();
+
     global $smarty;
-    $smarty->assign('pageTitle', 'Reset database');
+    $smarty->assign('page_title', 'Reset database');
 
     return html($smarty->fetch('admin/confirmation.tpl'));
 }
 
 function fill_database()
 {
+    security_authorize();
+
     R::nuke();
 
     $message = 'Database reset!';
@@ -33,6 +33,7 @@ function fill_database()
 
 function create_round()
 {
+    security_authorize();
 //    global $smarty;
 //
 //    return html($smarty->fetch('admin/create_round.tpl'));
@@ -40,4 +41,5 @@ function create_round()
 
 function start_round()
 {
+    security_authorize();
 }
