@@ -2,17 +2,17 @@
 
 function create_department()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     global $smarty;
     $smarty->assign('manager_options', get_managers());
 
-    return html($smarty->fetch('departments/department.tpl'));
+    return html($smarty->fetch('department/department.tpl'));
 }
 
 function create_department_post()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     if(isset($_POST['name']) && !empty($_POST['name']))
     {
@@ -49,7 +49,7 @@ function create_department_post()
 
 function view_departments()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     global $smarty;
     $departments = R::findAll('department');
@@ -57,12 +57,12 @@ function view_departments()
     $smarty->assign('page_title', 'Departments');
     set('title', 'Departments');
 
-    return html($smarty->fetch('departments/departments.tpl'));
+    return html($smarty->fetch('department/departments.tpl'));
 }
 
 function edit_department()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     $department = R::load('department', params('id'));
 
@@ -74,20 +74,20 @@ function edit_department()
     global $smarty;
     $smarty->assign('department', $department);
     $smarty->assign('manager_options', get_managers());
-    $smarty->assign('update', 1);
+    $smarty->assign('update', true);
 
-    return html($smarty->fetch('departments/department.tpl'));
+    return html($smarty->fetch('department/department.tpl'));
 }
 
 function delete_department()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     $department = R::load('department', params('id'));
 
     if($department->id == 0)
     {
-        return 'Department not found!';
+        return html('Department not found!');
     }
 
     R::trash($department);
@@ -97,11 +97,13 @@ function delete_department()
 
 function get_managers()
 {
-    security_authorize();
+    $levels = array(ADMIN, MANAGER);
 
-    $userlevels = array(ADMIN, MANAGER);
-    $managers = R::$adapter->getAssoc('select id, CONCAT( firstname, " ", lastname ) as name
-                                       from user where userlevel_id IN (' . R::genSlots($userlevels) . ')', $userlevels);
+    $managers = R::$adapter->getAssoc('select user.id, CONCAT(firstname, " ", lastname) as name
+                                       from user
+                                       left join userlevel
+                                       on userlevel.id = user.userlevel_id
+                                       where userlevel.level IN (' . R::genSlots($levels) . ')', $levels);
 
     return $managers;
 }

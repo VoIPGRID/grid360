@@ -2,7 +2,7 @@
 
 function confirmation()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     global $smarty;
     $smarty->assign('page_title', 'Reset database');
@@ -12,7 +12,7 @@ function confirmation()
 
 function fill_database()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     R::nuke();
 
@@ -25,21 +25,8 @@ function fill_database()
         $message .= '<br>Test data has been added to the database.';
     } else
     {
-        $message .= '<br>No test data has been generated.';
+        $message .= '<br>No test data generated.';
     }
 
     return html($message);
-}
-
-function create_round()
-{
-    security_authorize();
-//    global $smarty;
-//
-//    return html($smarty->fetch('admin/create_round.tpl'));
-}
-
-function start_round()
-{
-    security_authorize();
 }

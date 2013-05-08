@@ -2,7 +2,7 @@
 
 function create_user()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     global $smarty;
     $smarty->assign('departments', R::findAll('department'));
@@ -10,12 +10,17 @@ function create_user()
     $smarty->assign('userlevel_options', get_userlevels());
     set('title', 'Create user');
 
-    return html($smarty->fetch('users/user.tpl'));
+    return html($smarty->fetch('user/user.tpl'));
 }
 
 function create_user_post()
 {
-    security_authorize();
+    security_authorize(ADMIN);
+
+    if((!isset($_POST['firstname']) || empty($_POST['firstname'])) && (!isset($_POST['lastname']) || empty($_POST['lastname'])))
+    {
+        return html('Not all fields were filled in!');
+    }
 
     $user = R::graph($_POST);
 
@@ -40,12 +45,12 @@ function create_user_post()
     $smarty->assign('department', $user->department->name);
     $smarty->assign('role', $user->role->name);
 
-    return html($smarty->fetch('users/submit.tpl'));
+    return html($smarty->fetch('user/submit.tpl'));
 }
 
 function view_users()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     global $smarty;
     $users = R::findAll('user');
@@ -53,12 +58,12 @@ function view_users()
     $smarty->assign('page_title', 'Users');
     set('title', 'Users');
 
-    return html($smarty->fetch('users/users.tpl'));
+    return html($smarty->fetch('user/users.tpl'));
 }
 
 function edit_user()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     $user = R::load('user', params('id'));
 
@@ -72,15 +77,15 @@ function edit_user()
     $smarty->assign('roles', R::findAll('role'));
     $smarty->assign('userlevel_options', get_userlevels());
     $smarty->assign('user', $user);
-    $smarty->assign('update', 1);
+    $smarty->assign('update', true);
     set('title', 'Edit user');
 
-    return html($smarty->fetch('users/user.tpl'));
+    return html($smarty->fetch('user/user.tpl'));
 }
 
 function delete_user()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     $user = R::load('user', params('id'));
 
@@ -96,7 +101,7 @@ function delete_user()
 
 function edit_status()
 {
-    security_authorize();
+    security_authorize(ADMIN);
 
     $user = R::load('user', $_POST['id']);
     $user->status = $_POST['status'];

@@ -4,16 +4,15 @@ function view_report()
 {
     security_authorize();
 
-    $round_id = params('id');
+    $round = R::load('round', params('id'));
 
-    if($round_id == null || empty($round_id))
+    if($round->id == 0)
     {
-        $round_id = 4; // TODO: Set to current round
+        $round = R::load('round', get_current_round()->id);
     }
 
-    $reviews = R::find('review', ' reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $round_id));
-    $roundinfo = R::find('roundinfo', ' reviewee_id = ? AND status = 1 AND round_id = ?', array($_SESSION['current_user']->id, $round_id));
-    $round = R::load('round', $round_id);
+    $reviews = R::find('review', 'reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $round->id));
+    $roundinfo = R::find('roundinfo', 'reviewee_id = ? AND status = 1 AND round_id = ?', array($_SESSION['current_user']->id, $round->id));
     R::preload($reviews, array('reviewer'=>'user'));
 
     $averages = array();
@@ -75,5 +74,5 @@ function view_report()
     $smarty->assign('has_self', $has_self);
     set('title', 'Report');
 
-    return html($smarty->fetch('reports/report.tpl'));
+    return html($smarty->fetch('report/report.tpl'));
 }

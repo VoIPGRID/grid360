@@ -9,6 +9,15 @@
         {/if}
 
         <div class="control-group">
+            <label class="control-label" for="general">Is general?</label>
+
+            <div class="controls">
+                <input type="checkbox" id="general" name="general" {if isset($competencygroup) && $competencygroup.general == 1 || $competencygroup.general == 'on'}checked{/if} />
+                <span><i class="icon-question-sign" data-toggle="tooltip" title="Checking this will display the current competencygroup for everybody" data-placement="right"></i></span>
+            </div>
+        </div>
+
+        <div class="control-group">
             <input type="hidden" name="type" value="competencygroup" />
             {if isset($competencygroup)}
                 <input type="hidden" name="id" value="{$competencygroup.id}" />
@@ -25,20 +34,7 @@
             <label class="control-label" for="group_description">Group description</label>
 
             <div class="controls">
-                <textarea id="group_description" name="description" placeholder="Group description" class="input-xxlarge">{if isset($competencygroup)}value="{$competencygroup.description}"{/if}</textarea>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <input type="hidden" name="role[type]" value="role" />
-            <label class="control-label">Role</label>
-
-            <div class="controls">
-                {if isset($role_options) && count($role_options) >= 1}
-                    {html_options name="role[id]" options=$role_options selected=$competencygroup.role.id}
-                {else}
-                    No roles found
-                {/if}
+                <textarea id="group_description" name="description" placeholder="Group description" class="input-xxlarge">{if isset($competencygroup)}{$competencygroup.description}{/if}</textarea>
             </div>
         </div>
 

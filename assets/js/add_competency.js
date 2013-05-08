@@ -1,4 +1,4 @@
-$(document).ready(function ()
+$(document).ready(function()
 {
     $('.controls .btn').click(function(event)
     {
@@ -13,6 +13,8 @@ $(document).ready(function ()
             $(this).remove();
         });
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 function add_competency(event)

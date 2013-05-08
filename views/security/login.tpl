@@ -1,16 +1,19 @@
 {if isset($error_type) && !empty($error_type)}
-    <div class="alert alert-error">
-        <strong>Error!</strong>
         {if $error_type == 1}
-            Wrong email/password combo!
+            {$error_message = "Wrong email/password combo!"}
         {elseif $error_type == 2}
-            Email can't be empty!
+            {$error_message = "Email can't be empty!"}
         {elseif $error_type == 3}
-            Password can't be empty!
+            {$error_message = "Password can't be empty!"}
         {elseif $error_type == 4}
-            Email and password can't be empty!
+            {$error_message = "Email and password can't be empty!"}
         {/if}
-    </div>
+    {if isset($error_message) && !empty($error_message)}
+        <div class="alert alert-error">
+            <strong>Error!</strong>
+            {$error_message}
+        </div>
+    {/if}
 {/if}
 <div class="row">
     <form class="form-vertical" action="{$BASE_URI}login" method="post">

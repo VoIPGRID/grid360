@@ -1,6 +1,7 @@
 <div class="row-fluid">
     <div class="span5">
         <h4>Review status</h4>
+        {if  isset($roundinfo) && !empty($roundinfo)}
         <table class="table table-striped">
             <thead>
             <tr>
@@ -10,23 +11,26 @@
             </tr>
             </thead>
             <tbody>
-            {foreach $roundinfo as $info}
-                {if $info.reviewee.id != $current_user.id}
-                    <tr>
-                        <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
-                        <td>{$info.reviewee.role.name}</td>
-                        <td>
-                            {if $info.status == 0}
-                                Pending
-                            {else}
-                                Completed
-                            {/if}
-                        </td>
-                    </tr>
-                {/if}
-            {/foreach}
+                {foreach $roundinfo as $info}
+                    {if $info.reviewee.id != $current_user.id}
+                        <tr>
+                            <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
+                            <td>{$info.reviewee.role.name}</td>
+                            <td>
+                                {if $info.status == 0}
+                                    Pending
+                                {else}
+                                    Completed
+                                {/if}
+                            </td>
+                        </tr>
+                    {/if}
+                {/foreach}
             </tbody>
         </table>
+        {else}
+            No reviewee's found
+        {/if}
     </div>
 
     <div class="span4 offset3">

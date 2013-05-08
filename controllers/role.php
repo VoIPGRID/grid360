@@ -2,19 +2,19 @@
 
 function create_role()
 {
-    security_authorize();
+    security_authorize(MANAGER);
 
     $departments = R::$adapter->getAssoc('select id, name from department');
 
     global $smarty;
     $smarty->assign('department_options', $departments);
 
-    return html($smarty->fetch('roles/role.tpl'));
+    return html($smarty->fetch('role/role.tpl'));
 }
 
 function create_role_post()
 {
-    security_authorize();
+    security_authorize(MANAGER);
 
     $role = R::graph($_POST);
     R::store($role);
@@ -24,19 +24,19 @@ function create_role_post()
 
 function view_roles()
 {
-    security_authorize();
+    security_authorize(MANAGER);
 
     global $smarty;
     $roles = R::findAll('role');
     $smarty->assign('roles', $roles);
     $smarty->assign('page_title', 'Roles');
 
-    return html($smarty->fetch('roles/roles.tpl'));
+    return html($smarty->fetch('role/roles.tpl'));
 }
 
 function edit_role()
 {
-    security_authorize();
+    security_authorize(MANAGER);
 
     $role = R::load('role', params('id'));
 
@@ -51,12 +51,12 @@ function edit_role()
     $smarty->assign('department_options', $departments);
     $smarty->assign('role', $role);
 
-    return html($smarty->fetch('roles/role.tpl'));
+    return html($smarty->fetch('role/role.tpl'));
 }
 
 function delete_role()
 {
-    security_authorize();
+    security_authorize(MANAGER);
 
     $role = R::load('role', params('id'));
 

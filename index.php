@@ -11,6 +11,7 @@ function configure()
     option('base_uri', BASE_URI);  # '/' or same as the RewriteBase or ENV:FRB in your .htaccess
     option('views_dir', 'views/');
     option('controllers_dir', 'controllers/');
+    error_layout('layout/layout.php');
 
     global $smarty;
     $smarty->assign('BASE_URI', BASE_URI);
@@ -44,7 +45,11 @@ dispatch('/signup', 'signup');
 
 dispatch('/admin/reset', 'confirmation');
 dispatch_post('/admin/reset', 'fill_database');
-dispatch('/admin/round/start', 'start_round');
+
+dispatch('/admin/rounds', 'round_overview');
+dispatch('/admin/round/create', 'create_round');
+dispatch_post('/admin/round/submit', 'start_round');
+dispatch('/admin/round/end', 'end_round');
 
 dispatch('/admin/departments', 'view_departments');
 dispatch('/admin/department/create', 'create_department');
@@ -77,6 +82,8 @@ dispatch_delete('/manager/competency/:id', 'delete_competency');
 dispatch('/manager/competency/:id', 'edit_competency');
 
 dispatch('/feedback', 'view_feedback_overview');
+dispatch('/feedback/skip/:id', 'skip_confirmation');
+dispatch_post('/feedback/skip', 'skip_person');
 dispatch('/feedback/:id', 'feedback_step_1');
 dispatch_post('/feedback/:id', 'feedback_step_1_post');
 dispatch('/feedback/:id/2', 'feedback_step_2');
@@ -87,3 +94,5 @@ dispatch_post('/feedback/:id/3', 'feedback_step_3_post');
 dispatch('/report/:id', 'view_report');
 
 run();
+
+R::close();

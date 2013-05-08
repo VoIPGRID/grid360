@@ -209,3 +209,9 @@ button i
 {
     display: block !important;
 }
+
+.skip-button
+{
+    width:140px;
+    margin-left: auto;
+}

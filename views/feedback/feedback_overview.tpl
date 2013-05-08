@@ -1,17 +1,14 @@
 <div class="page-header"><h1>Feedback overview</h1></div>
 <div class="row-fluid">
 <span class="span6">
-        {if array_key_exists($current_user.id, $roundinfo)}
-            {if $roundinfo[$current_user.id].status == 0}
-                <div class="alert alert-info">
-                    You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
-                </div>
-            {/if}
-        {else}
+    {foreach $roundinfo as $info}
+        {if $info.reviewee.id == $current_user.id && $info.status == 0}
             <div class="alert alert-info">
                 You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
             </div>
+            {break}
         {/if}
+    {/foreach}
 
     {foreach $roundinfo as $info}
         {if $info.reviewee.id != $current_user.id && $info.status == 0}
@@ -31,7 +28,7 @@
         </thead>
         <tbody>
         {foreach $roundinfo as $info}
-            {if $info.reviewee.id != $current_user.id}
+            {if $info.reviewee.id != $current_user.id && $info.status != 2}
                 <tr>
                     <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
                     <td>

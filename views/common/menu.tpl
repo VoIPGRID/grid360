@@ -11,11 +11,7 @@
 <div class="container">
     <div class="navbar">
         <div class="navbar-inner">
-            {if $current_user.id == 5}
                 <a class="brand" href="//www.voipgrid.nl"><img class="logo" src="{$ASSETS_URI}images/logo.png" /></a>
-            {else}
-                <a class="brand" href="//www.voipgrid.nl"><img class="logo" src="{$ASSETS_URI}images/logo_voys.png" /></a>
-            {/if}
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
             </a>
@@ -40,6 +36,7 @@
                                 {if $current_user.userlevel.id == $ADMIN}
                                     <li><a href="{$ADMIN_URI}departments">Departments</a></li>
                                     <li><a href="{$ADMIN_URI}users">Users</a></li>
+                                    <li><a href="{$ADMIN_URI}rounds">Rounds</a></li>
                                 {/if}
                                 <li><a href="{$MANAGER_URI}roles">Roles</a></li>
                                 <li><a href="{$MANAGER_URI}competencies">Competencies</a></li>
