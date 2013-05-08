@@ -33,19 +33,19 @@
     Hover over a competency to read its description
 </div>
 
-<form class="form-horizontal" action="{$BASE_URI}feedback{$url_text}" method="post">
-    <fieldset>
-        <legend>General competencies</legend>
-        {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
-            <button class="btn-large btn-inverse pull-right">Skip person</button>
-        {/if}
-        {create_checkboxes competencies=$general_competencies}
-    </fieldset>
+{if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
+    <form action="{$BASE_URI}feedback/skip/{$reviewee.id}">
+        <div class="skip-button"><button class="btn-large btn-inverse">Skip person</button></div>
+    </form>
+{/if}
 
-    <fieldset>
-        <legend>{$reviewee.role.competencygroup.name}</legend>
-        {create_checkboxes competencies=$competencies}
-    </fieldset>
+<form class="form-horizontal" action="{$BASE_URI}feedback{$url_text}" method="post">
+    {foreach $competencygroups as $competencygroup}
+        <fieldset>
+            <legend>{$competencygroup.name}</legend>
+            {create_checkboxes competencies=$competencygroup.ownCompetency}
+        </fieldset>
+    {/foreach}
 
     <div class="form-actions">
         <button type="button" class="btn" onclick="history.go(-1);return true;">{$button_text}</button>
@@ -54,59 +54,6 @@
 </form>
 
 <script type="text/javascript">
-    $(document).ready(function()
-    {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('input[type=checkbox]').click(count_checked);
-
-        $('#submit').click(function()
-        {
-            var step = '{$step}';
-            var count = $('input:checked').length;
-            if (step == 2)
-            {
-                if (!(count >= 2))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                if (!(count >= 3))
-                {
-                    return false;
-                }
-            }
-        });
-    });
-
-    var count_checked = function()
-    {
-        var step = '{$step}';
-        var count = $('input:checked').length;
-        if(step == 2)
-        {
-            if(count >= 2)
-            {
-                $('input:not(:checked)').attr('disabled', true);
-            }
-            else
-            {
-                $('input:not(:checked)').attr('disabled', false);
-            }
-        }
-        else
-        {
-            if(count >= 3)
-            {
-                $("input:not(:checked)").attr('disabled', true);
-            }
-            else
-            {
-                $("input:not(:checked)").attr('disabled', false);
-            }
-        }
-    };
-
-    count_checked();
+    var step = '{$step}';
 </script>
+<script type="text/javascript" src="{$ASSETS_URI}js/feedback.js"></script>

@@ -4,7 +4,7 @@ function view_feedback_overview()
 {
     security_authorize();
 
-    $roundinfo = R::find('roundinfo', ' reviewer_id = ? AND round_id = ?', array($_SESSION['current_user']->id, 4)); // TODO: Change to currentRound->id
+    $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ?', array($_SESSION['current_user']->id, get_current_round()->id));
     R::preload($roundinfo, array('reviewee' => 'user'));
 
     foreach($roundinfo as $key => $info)
@@ -32,20 +32,20 @@ function feedback_step_1()
         return html('User not found!');
     }
 
-    $roundinfo = R::findOne('roundinfo', ' reviewee_id = ? AND reviewer_id = ?', array($reviewee->id, $_SESSION['current_user']->id));
+    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id));
 
     if($roundinfo->status == 1)
     {
         return html('Already reviewed this person!');
     }
 
-    $generalCompetencies = R::find('competency', ' competencygroup_id = 5');
+    $competencygroups = array();
+    array_push($competencygroups, get_general_competencies());
+    array_push($competencygroups, $reviewee->role->competencygroup);
 
-    $competencies = R::find('competency', ' competencygroup_id = ?', array($reviewee->role->competencygroup->id));
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
-    $smarty->assign('competencies', $competencies);
-    $smarty->assign('general_competencies', $generalCompetencies);
+    $smarty->assign('competencygroups', $competencygroups);
     $smarty->assign('step', 1);
     set('title', 'Feedback step 1');
 
@@ -78,18 +78,26 @@ function feedback_step_2()
         return html('User not found!');
     }
 
+    $competencygroups = array();
+    array_push($competencygroups, get_general_competencies());
+    array_push($competencygroups, $reviewee->role->competencygroup);
+
     $positive_competencies = $_SESSION['positive_competencies'];
 
-    $general_competencies = R::find('competency', ' competencygroup_id = 5
-    AND id NOT IN (' . R::genSlots($positive_competencies) . ')', $positive_competencies);
-
-    $competencies = R::find('competency', ' competencygroup_id = ?
-    AND id NOT IN (' . R::genSlots($positive_competencies) . ')', array_merge(array($reviewee->role->competencygroup->id), $positive_competencies));
+    foreach($competencygroups as $competencygroup)
+    {
+        foreach($competencygroup->ownCompetency as $key => $competency)
+        {
+            if(in_array($key, $positive_competencies))
+            {
+                unset($competencygroup->ownCompetency[$key]);
+            }
+        }
+    }
 
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
-    $smarty->assign('competencies', $competencies);
-    $smarty->assign('general_competencies', $general_competencies);
+    $smarty->assign('competencygroups',  $competencygroups);
     $smarty->assign('step', 2);
     set('title', 'Feedback step 2');
 
@@ -138,11 +146,25 @@ function feedback_step_3_post()
 {
     security_authorize();
 
+    $count = 0;
+    foreach($_POST['competencies'] as $competency)
+    {
+        if(isset($competency['rating']) && !empty($competency['rating']))
+        {
+            $count++;
+        }
+    }
+
+    if($count != 5)
+    {
+        return html('You haven\'t completely filled in the feedback form!');
+    }
+
     $reviews = R::dispense('review', count($_POST['competencies']));
 
-    $current_user = R::load('user', 1);
+    $current_user = $_SESSION['current_user'];
     $reviewee = R::load('user', params('id'));
-    $round = R::load('round', 4); // TODO: Change to current round
+    $round = R::load('round', get_current_round()->id);
 
     $index = 0;
     foreach($_POST['competencies'] as $competency)
@@ -156,7 +178,7 @@ function feedback_step_3_post()
         $index++;
     }
 
-    $roundinfo = R::findOne('roundinfo', ' reviewer_id = ? AND reviewee_id = ?', array($current_user->id, $reviewee->id));
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $reviewee->id, get_current_round()->id));
     if(!isset($roundinfo))
     {
         $roundinfo = R::dispense('roundinfo');
@@ -172,4 +194,84 @@ function feedback_step_3_post()
     R::storeAll($reviews);
 
     return html('Review saved!');
+}
+
+function skip_confirmation()
+{
+    security_authorize();
+
+    $reviewee = R::load('user', params('id'));
+
+    if($reviewee->id == 0)
+    {
+        return html('User not found');
+    }
+    else if($reviewee->id == $_SESSION['current_user']->id)
+    {
+        return html('Can\'t skip yourself!');
+    }
+    else if($reviewee->department->id == $_SESSION['current_user']->department->id)
+    {
+        return html('Can\'t skip someone of your own department');
+    }
+
+    global $smarty;
+    $smarty->assign('page_title', 'Skip person');
+    $smarty->assign('reviewee', $reviewee);
+
+    return html($smarty->fetch('feedback/skip_confirmation.tpl'));
+}
+
+function skip_person()
+{
+    if(!isset($_POST['reviewee_id']))
+    {
+        return html('No user was given');
+    }
+
+    $reviewee = R::load('user', $_POST['reviewee_id']);
+
+    if($reviewee->id == 0)
+    {
+        return html('User not found');
+    }
+
+    if($reviewee->department->id == $_SESSION['current_user']->department->id)
+    {
+        return html('This user can\'t be skipped');
+    }
+
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $reviewee->id, get_current_round()->id));
+
+    if($roundinfo->id == 0)
+    {
+        return html('Invalid input');
+    }
+
+    $roundinfo->status = REVIEW_SKIPPED;
+
+    $reviewees = R::find('user', 'department_id != ?', array($_SESSION['current_user']->department->id));
+
+    R::store($roundinfo);
+
+    foreach($reviewees as $key => $reviewee)
+    {
+        $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $reviewee->id, get_current_round()->id));
+
+        if($roundinfo->id != 0 || !empty($roundinfo))
+        {
+            unset($reviewees[$key]);
+        }
+    }
+
+    $roundinfo = R::dispense('roundinfo');
+    $roundinfo->status = 0;
+    $roundinfo->answer = '';
+    $roundinfo->round = get_current_round();
+    $roundinfo->reviewer = $_SESSION['current_user'];
+    $roundinfo->reviewee = R::load('user', array_rand($reviewees));
+
+    R::store($roundinfo);
+
+    header('Location:  ' . BASE_URI . 'feedback');
 }

@@ -2,6 +2,15 @@
 
 function login()
 {
+    if(isset($_COOKIE['email']) && isset($_COOKIE['password']))
+    {
+        if(security_login($_COOKIE['email'], $_COOKIE['password'], false, true))
+        {
+            header('Location: ' . BASE_URI);
+            exit;
+        }
+    }
+
     global $smarty;
     $smarty->assign('page_title', 'GRID360');
     $smarty->assign('page_title_size', 'h2');
@@ -18,7 +27,7 @@ function login_post()
 {
     if(!empty($_POST['email']) && !empty($_POST['password']))
     {
-        if(security_login($_POST['email'], $_POST['password'], $_POST['remember_me']))
+        if(security_login($_POST['email'], $_POST['password'], $_POST['remember_me'], false))
         {
             header('Location: ' . BASE_URI);
             exit;
@@ -44,7 +53,7 @@ function login_post()
 
 function logout()
 {
-    session_destroy();
+    security_logout();
 
     header('Location: ' . BASE_URI . 'login');
 }
