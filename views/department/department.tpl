@@ -1,4 +1,7 @@
-<script type="text/javascript" src="{$BASE_URI}assets/js/add_role.js"></script>
+<script type="text/javascript">
+    type = 'role';
+</script>
+<script type="text/javascript" src="{$BASE_URI}assets/js/add_row.js"></script>
 
 <form action="{$ADMIN_URI}department/submit" method="post" class="form-horizontal">
     <fieldset>
@@ -26,7 +29,7 @@
             <input type="hidden" name="user[type]" value="user" />
 
             <div class="controls">
-                {if isset($manager_options) && count($manager_options) >= 1}
+                {if isset($manager_options) && !empty($manager_options)}
                     {html_options name="user[id]" options=$manager_options selected=$department.user.id}
                 {else}
                     No managers/admins found
@@ -38,22 +41,22 @@
             <label class="control-label">Role(s)</label>
 
             <div id="role-list">
-                {if isset($department) && count($department.ownRole) >= 1}
+                {if isset($department) && count($department.ownRole) > 0}
                     {assign "index" 0}
                     {foreach $department.ownRole as $role}
                         <div class="controls">
-                            <input type="hidden" name="ownRoles[{$index}][type]" value="role" />
-                            <input type="hidden" name="ownRoles[{$index}][id]" value="{$role.id}" />
-                            <input name="ownRoles[{$index}][name]" type="text" placeholder="Role name" class="input-xlarge" value="{$role.name}" />
-                            <textarea name="ownRoles[{$index}][description]" placeholder="Role description" class="input-xxlarge">{$role.description}</textarea>
+                            <input type="hidden" name="ownRole[{$index}][type]" value="role" />
+                            <input type="hidden" name="ownRole[{$index}][id]" value="{$role.id}" />
+                            <input name="ownRole[{$index}][name]" type="text" placeholder="Role name" class="input-xlarge" value="{$role.name}" />
+                            <textarea name="ownRole[{$index}][description]" placeholder="Role description" class="input-xxlarge">{$role.description}</textarea>
                         </div>
                         {assign "index" {counter}}
                     {/foreach}
                 {else}
                     <div class="controls">
-                        <input type="hidden" name="ownRoles[0][type]" value="role" />
-                        <input name="ownRoles[0][name]" type="text" placeholder="Role name" class="input-xlarge" />
-                        <textarea name="ownRoles[0][description]" placeholder="Role description" class="input-xxlarge"></textarea>
+                        <input type="hidden" name="ownRole[0][type]" value="role" />
+                        <input name="ownRole[0][name]" type="text" placeholder="Role name" class="input-xlarge" />
+                        <textarea name="ownRole[0][description]" placeholder="Role description" class="input-xxlarge"></textarea>
                     </div>
                 {/if}
             </div>
@@ -61,11 +64,12 @@
 
         <div class="control-group">
             <div class="controls">
-                <button class="btn btn-link"><strong>+</strong> Add role</button>
+                <button id="add-button" class="btn btn-link"><strong>+</strong> Add role</button>
             </div>
         </div>
 
         <div class="form-actions">
+            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     Update department
@@ -73,7 +77,6 @@
                     Create department
                 {/if}
             </button>
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
         </div>
     </fieldset>
 </form>

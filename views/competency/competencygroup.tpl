@@ -1,4 +1,7 @@
-<script type="text/javascript" src="{$BASE_URI}assets/js/add_competency.js"></script>
+<script type="text/javascript">
+    var type = 'competency';
+</script>
+<script type="text/javascript" src="{$BASE_URI}assets/js/add_row.js"></script>
 
 <form action="{$MANAGER_URI}competencygroup/submit" method="POST" class="form-horizontal">
     <fieldset>
@@ -42,22 +45,22 @@
             <label class="control-label">Competencies</label>
 
             <div id="competency-list">
-                {if isset($competencygroup) && count($competencygroup.ownCompetency) >= 1}
+                {if isset($competencygroup) && count($competencygroup.ownCompetency) > 0}
                     {assign "index" 0}
                     {foreach $competencygroup.ownCompetency as $competency}
                         <div class="controls">
-                            <input type="hidden" name="ownCompetencies[{$index}][type]" value="competency" />
-                            <input type="hidden" name="ownCompetencies[{$index}][id]" value="{$competency.id}" />
-                            <input name="ownCompetencies[{$index}][name]" type="text" placeholder="Role name" class="input-xlarge" value="{$competency.name}" />
-                            <textarea name="ownCompetencies[{$index}][description]" type="text" placeholder="Competency description" class="input-xxlarge">{$competency.description}</textarea>
+                            <input type="hidden" name="ownCompetency[{$index}][type]" value="competency" />
+                            <input type="hidden" name="ownCompetency[{$index}][id]" value="{$competency.id}" />
+                            <input name="ownCompetency[{$index}][name]" type="text" placeholder="Role name" class="input-xlarge" value="{$competency.name}" />
+                            <textarea name="ownCompetency[{$index}][description]" type="text" placeholder="Competency description" class="input-xxlarge">{$competency.description}</textarea>
                         </div>
                         {assign "index" {counter}}
                     {/foreach}
                 {else}
                     <div class="controls">
-                        <input type="hidden" name="ownCompetencies[0][type]" value="competency" />
-                        <input name="ownCompetencies[0][name]" type="text" placeholder="Competency name" class="input-xlarge" />
-                        <textarea class="input-xxlarge" name="ownCompetencies[0][description]" placeholder="Competency description"></textarea>
+                        <input type="hidden" name="ownCompetency[0][type]" value="competency" />
+                        <input type="text" name="ownCompetency[0][name]" placeholder="Competency name" class="input-xlarge" />
+                        <textarea class="input-xxlarge" name="ownCompetency[0][description]" placeholder="Competency description"></textarea>
                     </div>
                 {/if}
             </div>
@@ -65,11 +68,12 @@
 
         <div class="control-group">
             <div class="controls">
-                <button class="btn btn-link"><strong>+</strong> Add competency</button>
+                <button id="add-button" class="btn btn-link"><strong>+</strong> Add competency</button>
             </div>
         </div>
 
         <div class="form-actions">
+            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     Update competency group
@@ -77,7 +81,6 @@
                     Create competency group
                 {/if}
             </button>
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
         </div>
     </fieldset>
 </form>

@@ -4,6 +4,7 @@
     <tr>
         <td>{$department.name|capitalize:true}</td>
         <td>{$department.user.firstname} {$department.user.lastname}</td>
+        <td>{$department.created}</td>
         {call show_actions type="department" level="admin"}
     </tr>
 {/function}
@@ -13,6 +14,7 @@
     <tr>
         <th>Department name</th>
         <th>Manager</th>
+        <th>Date created</th>
         <th>Actions</th>
     </tr>
     </thead>

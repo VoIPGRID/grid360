@@ -12,7 +12,7 @@ function login()
     }
 
     global $smarty;
-    $smarty->assign('page_title', 'GRID360');
+    $smarty->assign('page_title', APP_NAME);
     $smarty->assign('page_title_size', 'h2');
 
     if(isset($_GET['error']))

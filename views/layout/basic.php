@@ -10,7 +10,7 @@ if(isset($title) && !empty($title))
 }
 else
 {
-    $smarty->assign('title', APPNAME);
+    $smarty->assign('title', APP_NAME);
 }
 
 $smarty->display('layout/basic.tpl');

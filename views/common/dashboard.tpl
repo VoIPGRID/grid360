@@ -18,7 +18,9 @@
                             <td>{$info.reviewee.role.name}</td>
                             <td>
                                 {if $info.status == 0}
-                                    Pending
+                                    {if $info.status == 0}
+                                        <a href="{$BASE_URI}feedback/{$info.reviewee.id}">Pending</a>
+                                    {/if}
                                 {else}
                                     Completed
                                 {/if}

@@ -5,11 +5,10 @@
     <strong>Warning!</strong> You won't be able to review this person again.
 </div>
 <br />
-
-<div class="form-actions">
-    <form action="{$BASE_URI}feedback/skip" method="post">
+<form action="{$BASE_URI}feedback/skip" method="post">
+    <div class="form-actions">
         <input type="hidden" name="reviewee_id" value="{$reviewee.id}" />
-        <button type="button" class="btn">Cancel</button>
-        <button type="submit" class="btn btn-primary">Yes</button>
-    </form>
-</div>
+        <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
+        <button type="submit" class="btn btn-primary">Skip person</button>
+    </div>
+</form>

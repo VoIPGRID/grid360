@@ -40,11 +40,11 @@ $(document).ready(function()
         {
             if(count >= 3)
             {
-                $("input:not(:checked)").attr('disabled', true);
+                $('input:not(:checked)').attr('disabled', true);
             }
             else
             {
-                $("input:not(:checked)").attr('disabled', false);
+                $('input:not(:checked)').attr('disabled', false);
             }
         }
     };

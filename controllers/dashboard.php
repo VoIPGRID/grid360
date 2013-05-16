@@ -8,11 +8,11 @@ function dashboard()
     $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($_SESSION['current_user']->id, get_current_round()->id, REVIEW_SKIPPED));
     R::preload($roundinfo, array('reviewee' => 'user'));
 
-    foreach($roundinfo as $key => $info)
+    foreach($roundinfo as $roundinfo_id => $info)
     {
         if($info->reviewee->status == 0)
         {
-            unset($roundinfo[$key]);
+            unset($roundinfo[$roundinfo_id]);
         }
     }
 

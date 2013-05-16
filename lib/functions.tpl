@@ -1,5 +1,3 @@
-<script type="text/javascript" src="{$ASSETS_URI}js/base.js"></script>
-
 {function show_actions}
     {if $type eq "user"}
         <td class="actions-user">

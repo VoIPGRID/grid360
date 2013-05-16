@@ -10,4 +10,4 @@ define('DB_USERNAME', 'youruser');
 define('DB_PASSWORD', 'yourpass');
 define('CONNECTION', 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME);
 
-define('APPNAME', 'yourappname');
+define('APP_NAME', 'yourappname');

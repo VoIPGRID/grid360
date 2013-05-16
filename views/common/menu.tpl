@@ -36,10 +36,13 @@
                                 {if $current_user.userlevel.id == $ADMIN}
                                     <li><a href="{$ADMIN_URI}departments">Departments</a></li>
                                     <li><a href="{$ADMIN_URI}users">Users</a></li>
-                                    <li><a href="{$ADMIN_URI}rounds">Rounds</a></li>
                                 {/if}
                                 <li><a href="{$MANAGER_URI}roles">Roles</a></li>
                                 <li><a href="{$MANAGER_URI}competencies">Competencies</a></li>
+                                {if $current_user.userlevel.id == $ADMIN}
+                                    <li class="divider"></li>
+                                    <li><a href="{$ADMIN_URI}rounds">Round overview</a></li>
+                                {/if}
                             </ul>
                         </li>
                     {/if}

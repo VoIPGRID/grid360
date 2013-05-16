@@ -7,11 +7,11 @@ function view_feedback_overview()
     $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ?', array($_SESSION['current_user']->id, get_current_round()->id));
     R::preload($roundinfo, array('reviewee' => 'user'));
 
-    foreach($roundinfo as $key => $info)
+    foreach($roundinfo as $id => $info)
     {
         if($info->reviewee->status == 0)
         {
-            unset($roundinfo[$key]);
+            unset($roundinfo[$id]);
         }
     }
 
@@ -40,8 +40,8 @@ function feedback_step_1()
     }
 
     $competencygroups = array();
-    array_push($competencygroups, get_general_competencies());
-    array_push($competencygroups, $reviewee->role->competencygroup);
+    $competencygroups[] = get_general_competencies();
+    $competencygroups[] = $reviewee->role->competencygroup;
 
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
@@ -79,18 +79,18 @@ function feedback_step_2()
     }
 
     $competencygroups = array();
-    array_push($competencygroups, get_general_competencies());
-    array_push($competencygroups, $reviewee->role->competencygroup);
+    $competencygroups[] = get_general_competencies();
+    $competencygroups[] = $reviewee->role->competencygroup;
 
     $positive_competencies = $_SESSION['positive_competencies'];
 
     foreach($competencygroups as $competencygroup)
     {
-        foreach($competencygroup->ownCompetency as $key => $competency)
+        foreach($competencygroup->ownCompetency as $id => $competency)
         {
-            if(in_array($key, $positive_competencies))
+            if(in_array($id, $positive_competencies))
             {
-                unset($competencygroup->ownCompetency[$key]);
+                unset($competencygroup->ownCompetency[$id]);
             }
         }
     }
@@ -254,13 +254,13 @@ function skip_person()
 
     R::store($roundinfo);
 
-    foreach($reviewees as $key => $reviewee)
+    foreach($reviewees as $id => $reviewee)
     {
         $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $reviewee->id, get_current_round()->id));
 
         if($roundinfo->id != 0 || !empty($roundinfo))
         {
-            unset($reviewees[$key]);
+            unset($reviewees[$id]);
         }
     }
 

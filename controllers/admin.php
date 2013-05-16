@@ -23,7 +23,8 @@ function fill_database()
     {
         include $file;
         $message .= '<br>Test data has been added to the database.';
-    } else
+    }
+    else
     {
         $message .= '<br>No test data generated.';
     }

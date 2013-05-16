@@ -1,7 +1,12 @@
+.navbar
+{
+    padding: 15px 0 0 0;
+}
+
 .actions form
 {
     float: left;
-    margin: 0px;
+    margin: 0;
 }
 
 .actions
@@ -11,23 +16,23 @@
 
 .actions form .btn
 {
-    padding: 0px 5px;
+    padding: 0 5px;
 }
 
 .actions-user form
 {
     float: left;
-    margin: 0px;
+    margin: 0;
 }
 
 .actions-user form .btn
 {
-    padding: 0px 1px;
+    padding: 0 1px;
 }
 
 .actions-user form:first-child + form .btn
 {
-    padding: 0px 5px 0px 5px;
+    padding: 0 5px 0 5px;
 }
 
 .control-group .controls label.checkbox
@@ -149,7 +154,7 @@ button i
 
 #feedback-form input[type="radio"]
 {
-    margin: 0px;
+    margin: 0;
 }
 
 #options
@@ -181,7 +186,7 @@ button i
 
 .container.login .row
 {
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .container.login .control-label
@@ -196,13 +201,13 @@ button i
 
 .container.login .form-vertical
 {
-    background-color: rgb(234, 242, 255);
+    background-color: #eaf2ff;
     padding: 20px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
     width: 250px;
-    margin: 0px auto;
+    margin: 0 auto;
 }
 
 .container.login .checkbox
@@ -214,4 +219,9 @@ button i
 {
     width:140px;
     margin-left: auto;
+}
+
+#competencies tr td:first-child + td
+{
+    width: 60%;
 }

@@ -2,7 +2,7 @@
 
 function security_authorize($required_level = EMPLOYEE)
 {
-    if($required_level !== ANONYMOUS_USER)
+    if($required_level !== ANONYMOUS)
     {
         if($_SESSION['current_user'] == null)
         {
@@ -50,8 +50,8 @@ function security_login($email, $password, $remember_me = false, $cookie_login =
 
     if(!$cookie_login && $remember_me)
     {
-        setcookie('email', $user->email, time() + (60 * 60 * 24 * 7), '/', $_SERVER['HTTP_HOST']);
-        setcookie('password', $user->password, time() + (60 * 60 * 24 * 7), '/', $_SERVER['HTTP_HOST']);
+        setcookie('email', $user->email, time() + (60 * 60 * 24 * 7), $_SERVER['HTTP_HOST']);
+        setcookie('password', $user->password, time() + (60 * 60 * 24 * 7), $_SERVER['HTTP_HOST']);
     }
 
     return true;

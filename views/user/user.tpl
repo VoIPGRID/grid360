@@ -42,11 +42,11 @@
             <div class="controls">
                 <select name="department[id]">
                     <option value="0">Select department</option>
-                    {foreach $departments as $key => $department}
-                        {if isset($user) && $key == $user.department.id}
-                            <option value="{$key}" selected="selected">{$department.name}</option>
+                    {foreach $departments as $id => $department}
+                        {if isset($user) && $id == $user.department.id}
+                            <option value="{$id}" selected="selected">{$department.name}</option>
                         {else}
-                            <option value="{$key}">{$department.name}</option>
+                            <option value="{$id}">{$department.name}</option>
                         {/if}
                     {/foreach}
                 </select>
@@ -59,9 +59,9 @@
 
             <div class="controls">
                 <select name="role[id]" {if isset($user)}selected="{$user.role.id}"{/if}>
-                    <option value="0">Select role</option>
-                    {foreach $roles as $key => $role}
-                        <option value="{$key}">{$role.name}</option>
+                    <option value="0" data-department="0">Select role</option>
+                    {foreach $roles as $id => $role}
+                        <option value="{$id}" data-department="{$role.department.id}">{$role.name}</option>
                     {/foreach}
                 </select>
             </div>
@@ -81,6 +81,7 @@
         </div>
 
         <div class="form-actions">
+            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     Update user
@@ -88,7 +89,6 @@
                     Create user
                 {/if}
             </button>
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
         </div>
     </fieldset>
 </form>
@@ -96,28 +96,18 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-        $('select[name="department[id]"]').change(function()
+        $('[name="department[id]"]').change(function()
         {
-            var department_id = $(this).val();
+            $('[name="role[id]"] option').hide();
 
-            $('select[name="role[id]"]').empty();
+            var role_options = $('[name="role[id]"] option[data-department="' + $(this).val() + '"]');
+            role_options.show();
 
-            if(department_id == 0)
-            {
-                $('select[name="role[id]"]').append('<option value="0">Select role</option>');
+            var selected_option = role_options.first().val();
 
-                return false;
-            }
-
-            {foreach $roles as $role}
-                if('{$role.department.id}' == department_id)
-                {
-                    var option = $('<option value="{$role.id}">{$role.name}</option>');
-                    $('select[name="role[id]"]').append(option);
-                }
-            {/foreach}
+            $('[name="role[id]"]').val(selected_option);
         });
 
-        $('select[name="department[id]"]').change();
+        $('[name="department[id]"]').change();
     });
 </script>

@@ -68,9 +68,9 @@
 <script type="text/javascript">
     $('table textarea').hide();
 
-    $(document).ready(function ()
+    $(document).ready(function()
     {
-        $('[class="btn btn-link"]').click(function ()
+        $('[class="btn btn-link"]').click(function()
         {
             $(this).siblings('textarea').show();
             $(this).hide();

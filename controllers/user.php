@@ -36,6 +36,11 @@ function create_user_post()
 
     $user->status = 0;
 
+    if($user->id == 0)
+    {
+        $user->created = R::isoDateTime();
+    }
+
     R::store($user);
 
     global $smarty;
@@ -83,6 +88,22 @@ function edit_user()
     return html($smarty->fetch('user/user.tpl'));
 }
 
+function edit_status()
+{
+    security_authorize(ADMIN);
+
+    $user = R::load('user', $_POST['id']);
+
+    if($user->id == 0)
+    {
+        return html('User not found!');
+    }
+
+    $user->status = $_POST['status'];
+
+    R::store($user);
+}
+
 function delete_user()
 {
     security_authorize(ADMIN);
@@ -97,14 +118,4 @@ function delete_user()
     R::trash($user);
 
     return html('User deleted <a href="' . ADMIN_URI . 'users">Return to users</a>');
-}
-
-function edit_status()
-{
-    security_authorize(ADMIN);
-
-    $user = R::load('user', $_POST['id']);
-    $user->status = $_POST['status'];
-
-    R::store($user);
 }

@@ -4,7 +4,7 @@
 define('ADMIN', 1);
 define('MANAGER', 2);
 define('EMPLOYEE', 3);
-define('ANONYMOUS_USER', 4);
+define('ANONYMOUS', 4);
 
 // Round specific constants
 define('ROUND_IN_PROGRESS', 1);

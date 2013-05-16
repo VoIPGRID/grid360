@@ -16,11 +16,11 @@ function create_department_post()
 
     if(isset($_POST['name']) && !empty($_POST['name']))
     {
-        foreach($_POST['ownRoles'] as $key => $role)
+        foreach($_POST['ownRole'] as $id => $role)
         {
             if(empty($role['name']))
             {
-                unset($_POST['ownRoles'][$key]);
+                unset($_POST['ownRole'][$id]);
             }
         }
 
@@ -31,6 +31,11 @@ function create_department_post()
             unset($department->user);
         }
 
+        if($department->id == 0)
+        {
+            $department->created = R::isoDateTime();
+        }
+
         R::store($department);
         global $smarty; // TODO: Add submit page
 
@@ -39,11 +44,16 @@ function create_department_post()
             return html('Department with id ' . $_POST['id'] . ' updated');
         }
 
-        return html('Department created!');
+        if(isset($_POST['id']))
+        {
+            return html('Department with id ' . $_POST['id'] . ' updated! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
+        }
+
+        return html('Department created! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
     }
     else
     {
-        return html('No department name given');
+        return html('No department name given <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
     }
 }
 

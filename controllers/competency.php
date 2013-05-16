@@ -18,8 +18,9 @@ function create_competency_post()
 
     if(isset($_POST['name']) && !empty($_POST['name']))
     {
-        $user = R::graph($_POST);
-        R::store($user);
+        $competency = R::graph($_POST);
+
+        R::store($competency);
     }
     else
     {
@@ -45,28 +46,35 @@ function create_competencygroup_post()
 
     if(isset($_POST['name']) && !empty($_POST['name']))
     {
-        foreach($_POST['ownCompetencies'] as $key => $competency)
+        foreach($_POST['ownCompetency'] as $competency_id => $competency)
         {
             if(empty($competency['name']))
             {
-                unset($_POST['ownCompetencies'][$key]);
+                // If the name is empty, remove competency from the list so you don't get an empty competency in the database
+                unset($_POST['ownCompetency'][$competency_id]);
             }
         }
 
-        $group = R::graph($_POST);
+        $competencygroup = R::graph($_POST);
         if($_POST['general'])
         {
-            $group->general = true;
+            $competencygroup->general = true;
         }
         else
         {
-            $group->general = false;
+            $competencygroup->general = false;
         }
 
-        R::store($group);
+        R::store($competencygroup);
+
         global $smarty;
 
-        return html('Competencygroup created! <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
+        if(isset($_POST['id']))
+        {
+            return html('Competency group with id ' . $_POST['id'] . ' updated! <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
+        }
+
+        return html('Competency group created! <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
     }
     else
     {

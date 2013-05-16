@@ -19,34 +19,38 @@
         {/if}
     {/foreach}
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Reviewee name</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        {foreach $roundinfo as $info}
-            {if $info.reviewee.id != $current_user.id && $info.status != 2}
-                <tr>
-                    <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
-                    <td>
-                        {if $info.status == 0}
-                            Pending
-                        {else}
-                            Completed
-                        {/if}
-                    </td>
-                    <td>
-                        {if $info.status == 0}
-                            <a href="{$BASE_URI}feedback/{$info.reviewee.id}">Review</a>
-                        {/if}
-                    </td>
-                </tr>
-            {/if}
-        {/foreach}
-        </tbody>
-    </table>
+    {if isset($roundinfo) && !empty($roundinfo)}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Reviewee name</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach $roundinfo as $info}
+                {if $info.reviewee.id != $current_user.id && $info.status != 2}
+                    <tr>
+                        <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
+                        <td>
+                            {if $info.status == 0}
+                                Pending
+                            {else}
+                                Completed
+                            {/if}
+                        </td>
+                        <td>
+                            {if $info.status == 0}
+                                <a href="{$BASE_URI}feedback/{$info.reviewee.id}">Review</a>
+                            {/if}
+                        </td>
+                    </tr>
+                {/if}
+            {/foreach}
+            </tbody>
+        </table>
+    {else}
+        No round in progress!
+    {/if}
     </span>
 </div>
