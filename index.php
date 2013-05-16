@@ -18,6 +18,7 @@ function configure()
     $smarty->assign('ADMIN_URI', BASE_URI . 'admin/');
     $smarty->assign('MANAGER_URI', BASE_URI . 'manager/');
     $smarty->assign('ASSETS_URI', ASSETS_URI);
+
     $smarty->assign('ADMIN', ADMIN);
     $smarty->assign('MANAGER', MANAGER);
     RedBean_Plugin_Cooker::enableBeanLoading(true);
@@ -48,8 +49,10 @@ dispatch_post('/admin/reset', 'fill_database');
 
 dispatch('/admin/rounds', 'round_overview');
 dispatch('/admin/round/create', 'create_round');
-dispatch_post('/admin/round/submit', 'start_round');
-dispatch('/admin/round/end', 'end_round');
+dispatch_post('/admin/round/confirm', 'start_round_confirmation');
+dispatch_post('/admin/round/start', 'start_round');
+dispatch('/admin/round/end', 'end_round_confirmation');
+dispatch_post('/admin/round/end', 'end_round');
 
 dispatch('/admin/departments', 'view_departments');
 dispatch('/admin/department/create', 'create_department');
@@ -91,7 +94,7 @@ dispatch_post('/feedback/:id/2', 'feedback_step_2_post');
 dispatch('/feedback/:id/3', 'feedback_step_3');
 dispatch_post('/feedback/:id/3', 'feedback_step_3_post');
 
-dispatch('/report/:id', 'view_report');
+dispatch('/report/:round_id/:user_id', 'view_report');
 
 run();
 

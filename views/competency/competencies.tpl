@@ -10,7 +10,7 @@
 {/function}
 
 {function print_competency}
-    <tr>
+    <tr data-group="{$competency.competencygroup.id}">
         <td>{$competency.name}</td>
         <td>{$competency.description}</td>
         <td>{$competency.competencygroup.name}</td>
@@ -41,7 +41,14 @@
 {call print_add_link level="manager" type="competencygroup"}
 
 <h3>Competencies</h3>
-
+<div class="controls">
+    <select id="group-filter">
+        <option value="0">Select all</option>
+        {foreach $competencygroups as $id => $competencygroup}
+                <option value="{$competencygroup.id}">{$competencygroup.name}</option>
+        {/foreach}
+    </select>
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -52,7 +59,7 @@
     </tr>
     </thead>
 {if isset($competencygroups) && !empty($competencygroups)}
-    <tbody>
+    <tbody id="competencies">
     {foreach $competencygroups as $competencygroup}
         {foreach $competencygroup.ownCompetency as $competency}
             {print_competency}
@@ -64,3 +71,24 @@
     </table>No competencies found!
 {/if}
 {call print_add_link level="manager" type="competency"}
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('#group-filter').change(function()
+        {
+            if($(this).val() == 0)
+            {
+                $('#competencies tr').show();
+            }
+            else
+            {
+                $('#competencies tr').hide();
+
+                $('#competencies tr[data-group="' + $(this).val() + '"]').show();
+            }
+        });
+
+        $('select[name="department[id]"]').change();
+    });
+</script>

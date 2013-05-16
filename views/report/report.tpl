@@ -1,19 +1,27 @@
 <script type="text/javascript">
-    $('.page-header {$page_title_size}').append(' for {$current_user.firstname} {$current_user.lastname} of {$round.description|escape:'html'}');
+    $('.page-header {$page_title_size}').append(' for {$user.firstname} {$user.lastname} of {$round.description|escape:'html'}');
 
     averages = new Array();
 
-    {foreach $averages as $key => $average}
+    {foreach $averages as $competency_id => $average}
         var average = new Array();
-        average['id'] = '{$key}';
+        average['id'] = '{$competency_id}';
         average['name'] = '{$average.name|escape:'html'}';
-        average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2));
+        average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2)); // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
         average['self'] = parseFloat('{$average.self}');
         average['enabled'] = true;
-        averages[{$key}] = average;
+        averages[{$competency_id}] = average;
     {/foreach}
 </script>
 
+<ul class="pager">
+    <li class="previous {if $round.id - 1 < 1}disabled{/if}">
+        <a href="{if $round.id - 1 < 1}#{else}{$BASE_URI}report/{$round.id - 1}{/if}">&larr; Previous report</a>
+    </li>
+    <li class="next {if $round.id + 1 > $current_round_id}disabled{/if}">
+        <a href="{if $round.id + 1 > $current_round_id}#{else}{$BASE_URI}report/{$round.id + 1}{/if}">Next report &rarr;</a>
+    </li>
+</ul>
 <fieldset>
     <div class="row-fluid">
         <span class="span12">
@@ -26,10 +34,10 @@
                 <strong>Competencies</strong>
 
                 <div id="competency-boxes" class="well">
-                    {foreach $averages as $key => $average}
+                    {foreach $averages as $competency_id => $average}
                         <div class="controls">
                             <label class="checkbox">
-                                <input type="checkbox" value="{$key}" />{$average.name}
+                                <input type="checkbox" value="{$competency_id}" />{$average.name}
                             </label>
                         </div>
                     {/foreach}
@@ -77,8 +85,8 @@
                  <ul class="nav nav-tabs">
                      <li class="active"><a href="#tab-all" data-toggle="tab">All comments</a></li>
                      <li><a href="#tab-answers" data-toggle="tab">Extra question</a></li>
-                     {foreach $averages as $key => $average}
-                         <li><a href="#tab-{$key}" data-toggle="tab">{$average.name}</a></li>
+                     {foreach $averages as $competency_id => $average}
+                         <li><a href="#tab-{$competency_id}" data-toggle="tab">{$average.name}</a></li>
                      {/foreach}
                  </ul>
                  <div class="comment-box">
@@ -93,8 +101,8 @@
                                  <tbody></tbody>
                              </table>
                          </div>
-                         {foreach $averages as $key => $average}
-                             <div class="tab-pane fade" id="tab-{$key}">
+                         {foreach $averages as $competency_id => $average}
+                             <div class="tab-pane fade" id="tab-{$competency_id}">
                                  <table class="table table-striped">
                                      <tbody></tbody>
                                  </table>
@@ -117,7 +125,7 @@
 
     {foreach $roundinfo as $info}
         {if !empty($info.answer)}
-        $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append('{$info.answer|escape:'html'}')));
+            $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append('{$info.answer|escape:'html'}')));
         {/if}
     {/foreach}
 </script>

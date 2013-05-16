@@ -6,7 +6,6 @@
             <legend>New role</legend>
         {/if}
 
-
         <div class="control-group">
             {if isset($role)}
                 <input type="hidden" name="id" value={$role.id} />
@@ -24,7 +23,7 @@
             <label class="control-label" for="role-description">Role description</label>
 
             <div class="controls">
-                <textarea id="role-description" name="description" placeholder="Role description" class="input-xxlarge">{if isset($role)}value="{$role.description}"{/if}</textarea>
+                <textarea id="role-description" name="description" placeholder="Role description" class="input-xxlarge">{if isset($role)}{$role.description}{/if}</textarea>
             </div>
         </div>
 
@@ -32,17 +31,36 @@
             <label class="control-label">Department</label>
             <input type="hidden" name="department[type]" value="department" />
 
-            <div class="controls">
-                {if isset($department_options) && count($department_options) >= 1}
-                    {html_options name="department[id]" options=$department_options}
-                {else}
-                    No departments found
-                    <input type="hidden" name="department[id]" value=" " />
-                {/if}
+            <div id="competency-list">
+                <div class="controls">
+                    {if isset($department_options) && !empty($department_options)}
+                        {html_options name="department[id]" options=$department_options}
+                    {else}
+                        No departments found
+                        <input type="hidden" name="department[id]" value=" "/>
+                    {/if}
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">Competency group</label>
+            <input type="hidden" name="competencygroup[type]" value="competencygroup" />
+
+            <div id="competency-list">
+                <div class="controls">
+                    {if isset($competencygroup_options) && !empty($competencygroup_options)}
+                        {html_options name="competencygroup[id]" options=$competencygroup_options}
+                    {else}
+                        No competency groups found
+                        <input type="hidden" name="competencygroup[id]" value=" "/>
+                    {/if}
+                </div>
             </div>
         </div>
 
         <div class="form-actions">
+            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     Update role
@@ -50,7 +68,6 @@
                     Create role
                 {/if}
             </button>
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
         </div>
     </fieldset>
 </form>
