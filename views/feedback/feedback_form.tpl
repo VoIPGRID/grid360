@@ -29,19 +29,19 @@
                 <tr>
                     <td><input type="hidden" name="competencies[{$competency.id}][id]" value="{$competency.id}" />{$competency.name}</td>
                     {create_radiobuttons competency=$competency disabled_from=$disabled_from disabled_to=$disabled_to}
-                    <td><textarea class="input-xlarge" name="competencies[{$competency.id}][comment]" placeholder="Add a comment for {$competency.name} here"></textarea>
-                        <button class="btn btn-link"><strong>+</strong> Add comment</button>
+                    <td>
+                        <textarea class="input-xlarge" name="competencies[{$competency.id}][comment]" placeholder="Add a comment for {$competency.name} here"></textarea>
+                        {*<button class="btn btn-link"><strong>+</strong> Add comment</button>*}
                     </td>
                 </tr>
             {/foreach}
-
             </tbody>
         </table>
     </fieldset>
 {/function}
 
 <div id="feedback-form">
-    <form class="form-horizontal" action="{$BASE_URI}feedback/{$reviewee.id}/3" method="post">
+    <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback/{$reviewee.id}/3" method="post">
 
         {create_form competencies=$positive_competencies disabled_from=0 disabled_to=2 legend="Positive competencies"}
         {create_form competencies=$negative_competencies disabled_from=4 disabled_to=5 legend="Points of improvement"}
@@ -65,7 +65,7 @@
     </form>
 </div>
 
-<script type="text/javascript">
+{*<script type="text/javascript">
     $('table textarea').hide();
 
     $(document).ready(function()
@@ -78,4 +78,4 @@
             return false;
         });
     });
-</script>
+</script>*}

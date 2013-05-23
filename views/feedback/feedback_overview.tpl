@@ -4,7 +4,7 @@
     {foreach $roundinfo as $info}
         {if $info.reviewee.id == $current_user.id && $info.status == 0}
             <div class="alert alert-info">
-                You have not reviewed yourself yet! <a href="{$BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
+                You have not reviewed yourself yet! <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
             </div>
             {break}
         {/if}
@@ -41,7 +41,7 @@
                         </td>
                         <td>
                             {if $info.status == 0}
-                                <a href="{$BASE_URI}feedback/{$info.reviewee.id}">Review</a>
+                                <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">Review</a>
                             {/if}
                         </td>
                     </tr>

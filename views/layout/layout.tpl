@@ -6,12 +6,12 @@
 <body>
 {include file="common/menu.tpl"}
 <div class="container">
-{if isset($page_title)}
+{if isset($page_header)}
     <div class="page-header">
-    {if isset($page_title_size)}
-        <{$page_title_size}>{$page_title}</{$page_title_size}>
+    {if isset($page_header_size)}
+        <{$page_header_size}>{$page_header}</{$page_header_size}>
     {else}
-        <h1>{$page_title}</h1>
+        <h1>{$page_header}</h1>
     {/if}
 </div>
 {/if}

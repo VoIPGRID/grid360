@@ -12,8 +12,8 @@ function login()
     }
 
     global $smarty;
-    $smarty->assign('page_title', APP_NAME);
-    $smarty->assign('page_title_size', 'h2');
+    $smarty->assign('page_header', APP_NAME);
+    $smarty->assign('page_header_size', 'h2');
 
     if(isset($_GET['error']))
     {

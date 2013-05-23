@@ -26,7 +26,7 @@
         </tbody>
     {/if}
 </table>
-{if !isset($departments) || count($departments) <= 0}
+{if !isset($departments) || empty($departments)}
     No departments found!
 {/if}
 {call print_add_link level="admin" type="department"}

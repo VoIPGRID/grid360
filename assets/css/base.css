@@ -221,6 +221,11 @@ button i
     margin-left: auto;
 }
 
+#competencies tr td:first-child
+{
+    width: 20%;
+}
+
 #competencies tr td:first-child + td
 {
     width: 60%;

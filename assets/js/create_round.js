@@ -1,6 +1,5 @@
 $(document).ready(function()
 {
-    $('input').numeric({decimal: false});
     $('input').blur(check_inputs);
     $('textarea').blur(check_description);
     $('[type="submit"]').click(check_inputs);

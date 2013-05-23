@@ -3,7 +3,7 @@
         <label class="control-label" for="{$group_name}">{$label_text}</label>
         <div class="controls">
             <div class="input-append">
-                <input type="text" name="{$input_name}" id="{$group_name}" class="input-mini" {if isset(${$input_name})}value="{${$input_name}}"{/if}/>
+                <input type="number" name="{$input_name}" id="{$group_name}" class="input-mini" {if isset($values.{$input_name})}value="{$values.{$input_name}}"{/if}/>
                 <span class="add-on">%</span>
             </div>
             <span class="help-inline"></span>
@@ -12,6 +12,7 @@
 {/function}
 
 {function check_errors}
+    {$error_type = $values.error}
     {if isset($error_type) && !empty($error_type)}
         {if $error_type == 1}
             {$error_message = "Round description can't be empty!"}
@@ -34,7 +35,7 @@
     {/if}
 {/function}
 
-<form action="{$ADMIN_URI}round/confirm" method="post" class="form-horizontal">
+<form action="{$smarty.const.ADMIN_URI}round/confirm" method="post" class="form-horizontal">
     <fieldset>
         <legend>Create round</legend>
 
@@ -45,7 +46,7 @@
             <label class="control-label" for="round-description">Round description</label>
 
             <div class="controls">
-                <textarea id="round-description" name="description" type="text" placeholder="Round description">{if isset($description)}{$description}{/if}</textarea>
+                <textarea id="round-description" name="description" type="text" placeholder="Round description">{$values.description}</textarea>
                 <span class="help-inline"></span>
             </div>
         </div>
@@ -87,5 +88,4 @@
     </fieldset>
 </form>
 
-<script type="text/javascript" src="{$ASSETS_URI}js/jquery.numeric.js"></script>
-<script type="text/javascript" src="{$ASSETS_URI}js/create_round.js"></script>
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/create_round.js"></script>

@@ -4,7 +4,7 @@ function draw_chart()
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Competency name');
     data.addColumn('number', 'Average');
-    data.addColumn('number', 'Self');
+    data.addColumn('number', 'Own');
 
     for(var i in averages)
     {
@@ -22,19 +22,19 @@ function draw_chart()
                     }
                     break;
                 case 2:
-                    if(!isNaN(average['self']))
+                    if(!isNaN(average['own_rating']))
                     {
-                        data.addRow([average['name'], null, average['self']]);
+                        data.addRow([average['name'], 0, average['own_rating']]);
                     }
                     break;
                 case 4:
-                    if(!isNaN(average['self']) && !isNaN(average['average']))
+                    if(!isNaN(average['own_rating']) && !isNaN(average['average']))
                     {
-                        data.addRow([average['name'], average['average'], average['self']]);
+                        data.addRow([average['name'], average['average'], average['own_rating']]);
                     }
                     break;
                 default:
-                    data.addRow([average['name'], average['average'], average['self']]);
+                    data.addRow([average['name'], average['average'], average['own_rating']]);
                     break;
             }
         }
@@ -92,7 +92,7 @@ $(document).ready(function()
         check_checked();
     });
 
-    $('input[name="check_self"]').click(function()
+    $('input[name="check_own"]').click(function()
     {
         $('input[name="check_comparison"]').attr('checked', false);
     });
@@ -107,7 +107,7 @@ $(document).ready(function()
         if($('input[name="check_comparison"]').is(':not(:checked)'))
         {
             $('input[name="check_average"]').click();
-            $('input[name="check_self"]').click();
+            $('input[name="check_own"]').attr('checked', 'checked');
         }
     });
 
@@ -131,7 +131,7 @@ $(document).ready(function()
         state = 0;
         $('input[type="checkbox"]').each(function()
         {
-            if(($(this).attr('name') == 'check_average' || $(this).attr('name') == 'check_self') || $(this).attr('name') == 'check_comparison')
+            if(($(this).attr('name') == 'check_average' || $(this).attr('name') == 'check_own') || $(this).attr('name') == 'check_comparison')
             {
                 if($(this).attr('name') == 'check_comparison')
                 {
@@ -139,7 +139,7 @@ $(document).ready(function()
                     {
                         state = 4;
                         $('input[name="check_average"]').attr('checked', false);
-                        $('input[name="check_self"]').attr('checked', false);
+                        $('input[name="check_own"]').attr('checked', false);
                         return;
                     }
                 }

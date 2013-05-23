@@ -1,12 +1,12 @@
-<form action="{$MANAGER_URI}role/submit" method="POST" class="form-horizontal">
+<form action="{$smarty.const.MANAGER_URI}role/{$role.id}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($role)}
-            <legend>Editing role {$role.name}</legend>
+            <legend>Updating role {$role.name}</legend>
         {else}
-            <legend>New role</legend>
+            <legend>Creating new role</legend>
         {/if}
 
-        <div class="control-group">
+        <div class="control-group {if isset($form_values.name.error)}error{/if}">
             {if isset($role)}
                 <input type="hidden" name="id" value={$role.id} />
             {/if}
@@ -14,12 +14,14 @@
             <label class="control-label" for="role-name">Role name</label>
 
             <div class="controls">
-                <input id="role-name" name="name" type="text" placeholder="Role name" class="input-large" {if isset($role)}value="{$role.name}"{/if} />
+                <input id="role-name" name="name" type="text" placeholder="Role name" class="input-large" required {if isset($role)}value="{$role.name}"{/if} />
+                {if isset($form_values.name.error)}
+                    <span class="help-inline">{$form_values.name.error}</span>
+                {/if}
             </div>
         </div>
 
         <div class="control-group">
-            <input type="hidden" name="type" value="role" />
             <label class="control-label" for="role-description">Role description</label>
 
             <div class="controls">
@@ -37,7 +39,6 @@
                         {html_options name="department[id]" options=$department_options}
                     {else}
                         No departments found
-                        <input type="hidden" name="department[id]" value=" "/>
                     {/if}
                 </div>
             </div>
@@ -53,8 +54,8 @@
                         {html_options name="competencygroup[id]" options=$competencygroup_options}
                     {else}
                         No competency groups found
-                        <input type="hidden" name="competencygroup[id]" value=" "/>
                     {/if}
+                    <button id="create-group" class="btn btn-link"><strong>+</strong> Create new competency group</button>
                 </div>
             </div>
         </div>
@@ -71,3 +72,15 @@
         </div>
     </fieldset>
 </form>
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('#create-group').click(function(event)
+        {
+            $('#myModal').modal();
+            //$('#inline-new-group').slideToggle();
+            event.preventDefault();
+        });
+    });
+</script>

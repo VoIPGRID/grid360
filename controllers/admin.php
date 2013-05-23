@@ -5,7 +5,7 @@ function confirmation()
     security_authorize(ADMIN);
 
     global $smarty;
-    $smarty->assign('page_title', 'Reset database');
+    $smarty->assign('page_header', 'Reset database');
 
     return html($smarty->fetch('admin/confirmation.tpl'));
 }

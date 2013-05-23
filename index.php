@@ -13,14 +13,6 @@ function configure()
     option('controllers_dir', 'controllers/');
     error_layout('layout/layout.php');
 
-    global $smarty;
-    $smarty->assign('BASE_URI', BASE_URI);
-    $smarty->assign('ADMIN_URI', BASE_URI . 'admin/');
-    $smarty->assign('MANAGER_URI', BASE_URI . 'manager/');
-    $smarty->assign('ASSETS_URI', ASSETS_URI);
-
-    $smarty->assign('ADMIN', ADMIN);
-    $smarty->assign('MANAGER', MANAGER);
     RedBean_Plugin_Cooker::enableBeanLoading(true);
 }
 
@@ -33,6 +25,8 @@ function before()
 }
 
 R::setup(CONNECTION, DB_USERNAME, DB_PASSWORD);
+
+// R::freeze(true); // TODO: Enable this
 
 $smarty = new Smarty();
 $smarty->setTemplateDir('views/');
@@ -56,20 +50,20 @@ dispatch_post('/admin/round/end', 'end_round');
 
 dispatch('/admin/departments', 'view_departments');
 dispatch('/admin/department/create', 'create_department');
-dispatch_post('/admin/department/submit', 'create_department_post');
+dispatch_post('/admin/department/:id', 'create_department_post');
 dispatch_delete('/admin/department/:id', 'delete_department');
 dispatch('/admin/department/:id', 'edit_department');
 
 dispatch('/admin/users', 'view_users');
 dispatch('/admin/user/create', 'create_user');
 dispatch_post('/admin/user/status', 'edit_status');
-dispatch_post('/admin/user/submit', 'create_user_post');
+dispatch_post('/admin/user/:id', 'create_user_post');
 dispatch_delete('/admin/user/:id', 'delete_user');
 dispatch('/admin/user/:id', 'edit_user');
 
 dispatch('/manager/roles', 'view_roles');
 dispatch('/manager/role/create', 'create_role');
-dispatch_post('/manager/role/submit', 'create_role_post');
+dispatch_post('/manager/role/:id', 'create_role_post');
 dispatch_delete('/manager/role/:id', 'delete_role');
 dispatch('/manager/role/:id', 'edit_role');
 
@@ -80,7 +74,7 @@ dispatch_delete('/manager/competencygroup/:id', 'delete_competencygroup');
 
 dispatch('/manager/competencies', 'view_competencies');
 dispatch('/manager/competency/create', 'create_competency');
-dispatch_post('/manager/competency/submit', 'create_competency_post');
+dispatch_post('/manager/competency/:id', 'create_competency_post');
 dispatch_delete('/manager/competency/:id', 'delete_competency');
 dispatch('/manager/competency/:id', 'edit_competency');
 
@@ -94,8 +88,16 @@ dispatch_post('/feedback/:id/2', 'feedback_step_2_post');
 dispatch('/feedback/:id/3', 'feedback_step_3');
 dispatch_post('/feedback/:id/3', 'feedback_step_3_post');
 
+dispatch('/report/overview/:user_id', 'report_overview');
 dispatch('/report/:round_id/:user_id', 'view_report');
 
-run();
-
-R::close();
+try
+{
+    run();
+    R::close();
+}
+catch(Exception $e)
+{
+    R::close();
+    halt('Something went wrong');
+}

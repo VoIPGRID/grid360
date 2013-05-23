@@ -1,5 +1,34 @@
 <?php
 
+function report_overview()
+{
+    security_authorize();
+
+    $rounds = R::findAll('round'); // TODO: Add tenant id
+
+    $user_id = params('user_id');
+
+    if(isset($user_id) && $_SESSION['current_user']->userlevel->level != ADMIN)
+    {
+        $user = $_SESSION['current_user'];
+    }
+    else if(isset($user_id) && $_SESSION['current_user']->userlevel->level == ADMIN)
+    {
+        $user = R::load('user', $user_id);
+    }
+    else
+    {
+        $user = $_SESSION['current_user'];
+    }
+
+    global $smarty;
+    $smarty->assign('rounds', $rounds);
+    $smarty->assign('user', $user);
+    $smarty->assign('page_header', 'Report overview for ' . $user->firstname . ' ' . $user->lastname);
+
+    return html($smarty->fetch('report/report_overview.tpl'));
+}
+
 function view_report()
 {
     security_authorize();
@@ -62,7 +91,7 @@ function view_report()
         }
 
         $average_ratings[$competency_id]['average'] = round($total / count($rating), 2);
-        $average_ratings[$competency_id]['self'] = $own_ratings[$competency_id];
+        $average_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
         $average_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
     }
 
@@ -71,18 +100,18 @@ function view_report()
         if(!array_key_exists($competency_id, $ratings))
         {
             $average_ratings[$competency_id]['average'] = null;
-            $average_ratings[$competency_id]['self'] = $own_ratings[$competency_id];
+            $average_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
             $average_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
         }
     }
 
     ksort($average_ratings);
 
-    $has_self = false;
+    $has_own_ratings = false;
 
-    if(count($own_ratings) >= 1)
+    if(!empty($own_ratings))
     {
-        $has_self = true;
+        $has_own_ratings = true;
     }
 
     global $smarty;
@@ -90,9 +119,10 @@ function view_report()
     $smarty->assign('averages', $average_ratings);
     $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('round', $round);
-    $smarty->assign('page_title', 'Report');
-    $smarty->assign('page_title_size', 'h2');
-    $smarty->assign('has_self', $has_self);
+    $header = 'Report for ' . $user->firstname . ' ' . $user->lastname . ' of ' . $round->description;
+    $smarty->assign('page_header', $header);
+    $smarty->assign('page_header_size', 'h2');
+    $smarty->assign('has_own_ratings', $has_own_ratings);
     $smarty->assign('user', $user);
 
     if($current_round->id == 0)
@@ -104,7 +134,7 @@ function view_report()
         $smarty->assign('current_round_id', $current_round->id);
     }
 
-    set('title', 'Report');
+    set('title', $header);
 
     return html($smarty->fetch('report/report.tpl'));
 }

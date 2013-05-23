@@ -2,15 +2,15 @@
     <div class="span5">
         <h4>Review status</h4>
         {if  isset($roundinfo) && !empty($roundinfo)}
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Status</th>
-            </tr>
-            </thead>
-            <tbody>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
                 {foreach $roundinfo as $info}
                     {if $info.reviewee.id != $current_user.id}
                         <tr>
@@ -18,9 +18,7 @@
                             <td>{$info.reviewee.role.name}</td>
                             <td>
                                 {if $info.status == 0}
-                                    {if $info.status == 0}
-                                        <a href="{$BASE_URI}feedback/{$info.reviewee.id}">Pending</a>
-                                    {/if}
+                                    <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">Pending</a>
                                 {else}
                                     Completed
                                 {/if}
@@ -28,8 +26,8 @@
                         </tr>
                     {/if}
                 {/foreach}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         {else}
             No reviewee's found
         {/if}
@@ -50,7 +48,7 @@
                     <td>{$round.description}</td>
                     <td>
                         {if $round.status == 0}
-                            <a href="{$BASE_URI}report/{$round.id}">View</a>
+                            <a href="{$smarty.const.BASE_URI}report/{$round.id}">View</a>
                         {else}
                             In progress
                         {/if}

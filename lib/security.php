@@ -12,7 +12,7 @@ function security_authorize($required_level = EMPLOYEE)
         }
         else if(isset($_SESSION['current_user']) && $_SESSION['current_user']->userlevel->level > $required_level)
         {
-            halt(HTTP_FORBIDDEN, 'You are not authorized to view this page');
+            halt(NOT_FOUND, 'The requested page could not be found, please try again.');
             exit;
         }
     }

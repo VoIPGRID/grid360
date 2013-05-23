@@ -20,7 +20,7 @@
         <th>Actions</th>
     </tr>
     </thead>
-    {if isset($roles) && !empty($roles)}
+{if isset($roles) && !empty($roles)}
     <tbody>
     {foreach $roles as $role}
         {print_roles}

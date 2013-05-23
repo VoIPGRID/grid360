@@ -33,7 +33,7 @@ After you've done these things, restart your apache ```sudo /etc/init.d/apache2 
 Configuring the application
 ---------------------------
 
-Use config file (local.php or production.php)
-Make sure Smarty can read and write templates_c
-Import grid360.sql, otherwise -> SQLState error
+* Use config file (local.php or production.php)
+* Make sure Smarty can read and write templates_c
+* Import grid360.sql, otherwise -> SQLState error
 

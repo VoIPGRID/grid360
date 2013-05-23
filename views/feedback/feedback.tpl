@@ -34,12 +34,12 @@
 </div>
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
-    <form action="{$BASE_URI}feedback/skip/{$reviewee.id}">
+    <form action="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}">
         <div class="skip-button"><button class="btn-large btn-inverse">Skip person</button></div>
     </form>
 {/if}
 
-<form class="form-horizontal" action="{$BASE_URI}feedback{$url_text}" method="post">
+<form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$url_text}" method="post">
     {foreach $competencygroups as $competencygroup}
         <fieldset>
             <legend>{$competencygroup.name}</legend>
@@ -56,4 +56,4 @@
 <script type="text/javascript">
     var step = '{$step}';
 </script>
-<script type="text/javascript" src="{$ASSETS_URI}js/feedback.js"></script>
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/feedback.js"></script>

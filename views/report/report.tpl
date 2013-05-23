@@ -1,6 +1,4 @@
 <script type="text/javascript">
-    $('.page-header {$page_title_size}').append(' for {$user.firstname} {$user.lastname} of {$round.description|escape:'html'}');
-
     averages = new Array();
 
     {foreach $averages as $competency_id => $average}
@@ -8,7 +6,7 @@
         average['id'] = '{$competency_id}';
         average['name'] = '{$average.name|escape:'html'}';
         average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2)); // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
-        average['self'] = parseFloat('{$average.self}');
+        average['own_rating'] = parseFloat('{$average.own_rating}');
         average['enabled'] = true;
         averages[{$competency_id}] = average;
     {/foreach}
@@ -16,10 +14,10 @@
 
 <ul class="pager">
     <li class="previous {if $round.id - 1 < 1}disabled{/if}">
-        <a href="{if $round.id - 1 < 1}#{else}{$BASE_URI}report/{$round.id - 1}{/if}">&larr; Previous report</a>
+        <a href="{if $round.id - 1 < 1}#{else}{$smarty.const.BASE_URI}report/{$round.id - 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">&larr; Previous report</a>
     </li>
     <li class="next {if $round.id + 1 > $current_round_id}disabled{/if}">
-        <a href="{if $round.id + 1 > $current_round_id}#{else}{$BASE_URI}report/{$round.id + 1}{/if}">Next report &rarr;</a>
+        <a href="{if $round.id + 1 > $current_round_id}#{else}{$smarty.const.BASE_URI}report/{$round.id + 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">Next report &rarr;</a>
     </li>
 </ul>
 <fieldset>
@@ -48,7 +46,7 @@
                     </div>
                 </div>
 
-                <strong>Graph options</strong>
+                <strong>Ratings</strong>
                 <div class="well">
                     <div class="controls">
                         <label class="checkbox">
@@ -57,12 +55,12 @@
                     </div>
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" name="check_self" value="2" {if !$has_self}disabled{/if}/>Show self
+                            <input type="checkbox" name="check_own" value="2" {if !$has_own_ratings}disabled{/if}/>Show own
                         </label>
                     </div>
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" name="check_comparison" value="4" {if !$has_self}disabled{/if}/>Show comparisons
+                            <input type="checkbox" name="check_comparison" value="4" {if !$has_own_ratings}disabled{/if}/>Show comparisons
                         </label>
                     </div>
                 </div>
@@ -131,4 +129,4 @@
 </script>
 
 <script type="text/javascript" src="//www.google.com/jsapi"></script>
-<script type="text/javascript" src="{$ASSETS_URI}js/report.js"></script>
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>

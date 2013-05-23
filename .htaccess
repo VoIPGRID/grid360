@@ -2,24 +2,11 @@
     Options +FollowSymlinks
     Options +Indexes
     RewriteEngine on
-    RewriteBase /
-
-    # Allow different root for local development
-    <IfModule mod_setenvif.c>
-        RewriteCond %{HTTP_HOST} ^localhost [OR]
-        RewriteCond %{SERVER_ADDR} ^192.168
-        RewriteRule ^ - [E=FRB:/grid360/]
-
-        # Primary RewriteRule if there's support for mod_setenvif
-        RewriteCond %{SCRIPT_FILENAME} !-f
-        RewriteCond %{SCRIPT_FILENAME} !-d
-        RewriteRule ^(.*)$ %{ENV:FRB}index.php?uri=/$1 [NC,L,QSA]
-    </IfModule>
 
     # Default RewriteRule, assume /
     RewriteCond %{SCRIPT_FILENAME} !-f
     RewriteCond %{SCRIPT_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php?uri=/$1 [NC,L,QSA]
+    RewriteRule ^(.*)$ ./index.php?uri=/$1 [NC,L,QSA]
 </IfModule>
 
 <IfModule mod_expires.c>

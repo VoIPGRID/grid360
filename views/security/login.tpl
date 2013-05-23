@@ -16,7 +16,7 @@
     {/if}
 {/if}
 <div class="row">
-    <form class="form-vertical" action="{$BASE_URI}login" method="post">
+    <form class="form-vertical" action="{$smarty.const.BASE_URI}login" method="post">
         <div class="control-group">
             <label class="control-label" for="email">Email</label>
             <div class="controls">

@@ -1,14 +1,14 @@
 <script type="text/javascript">
-    var type = 'competency';
+    type = 'competency';
 </script>
-<script type="text/javascript" src="{$BASE_URI}assets/js/add_row.js"></script>
+<script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 
-<form action="{$MANAGER_URI}competencygroup/submit" method="POST" class="form-horizontal">
+<form action="{$smarty.const.MANAGER_URI}competencygroup/{$competencygroup.id}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($competencygroup)}
-            <legend>Edit competency group {$competencygroup.name}</legend>
+            <legend>Updating competency group {$competencygroup.name}</legend>
         {else}
-            <legend>Create competency group</legend>
+            <legend>Creating new competency group</legend>
         {/if}
 
         <div class="control-group">
@@ -29,7 +29,7 @@
             <label class="control-label" for="group-name">Group name</label>
 
             <div class="controls">
-                <input id="group-name" name="name" type="text" placeholder="Group name" class="input-large" {if isset($competencygroup)}value="{$competencygroup.name}"{/if} />
+                <input id="group-name" name="name" type="text" placeholder="Group name" class="input-large" required {if isset($competencygroup)}value="{$competencygroup.name}"{/if} />
             </div>
         </div>
 
@@ -45,7 +45,7 @@
             <label class="control-label">Competencies</label>
 
             <div id="competency-list">
-                {if isset($competencygroup) && count($competencygroup.ownCompetency) > 0}
+                {if isset($competencygroup) && count($competencygroup.ownCompetency) > 0}{* Using count > 0 here because !empty doesn't work for some reason *}
                     {assign "index" 0}
                     {foreach $competencygroup.ownCompetency as $competency}
                         <div class="controls">

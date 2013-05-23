@@ -7,7 +7,7 @@
 <br />
 
 <div class="form-actions">
-    <form action="{$ADMIN_URI}reset" method="post">
+    <form action="{$smarty.const.ADMIN_URI}reset" method="post">
         <button type="submit" class="btn btn-danger">Reset database</button>
         <button type="button" class="btn">Cancel</button>
     </form>

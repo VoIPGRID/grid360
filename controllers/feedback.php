@@ -11,6 +11,7 @@ function view_feedback_overview()
     {
         if($info->reviewee->status == 0)
         {
+            // Remove a user from the list if they should be reviewed (status = paused)
             unset($roundinfo[$id]);
         }
     }
@@ -33,6 +34,11 @@ function feedback_step_1()
     }
 
     $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id));
+
+    if($roundinfo->id == 0)
+    {
+        return html('You can\'t review this person!');
+    }
 
     if($roundinfo->status == 1)
     {
@@ -70,6 +76,11 @@ function feedback_step_1_post()
 function feedback_step_2()
 {
     security_authorize();
+
+    if(!isset($_SESSION['positive_competencies']))
+    {
+        return html('Step 1 has to be completed first!');
+    }
 
     $reviewee = R::load('user', params('id'));
 
@@ -123,6 +134,11 @@ function feedback_step_3()
 {
     security_authorize();
 
+    if(!isset($_SESSION['positive_competencies']) || !isset($_SESSION['negative_competencies']))
+    {
+        return html('Step 1 and 2 have to be completed first!');
+    }
+
     $reviewee = R::load('user', params('id'));
 
     if($reviewee->id == 0)
@@ -155,6 +171,7 @@ function feedback_step_3_post()
         }
     }
 
+    // Total of 5 competencies (3 positive, 2 points of improvement) have to be selected
     if($count != 5)
     {
         return html('You haven\'t completely filled in the feedback form!');
@@ -169,6 +186,13 @@ function feedback_step_3_post()
     $index = 0;
     foreach($_POST['competencies'] as $competency)
     {
+        if($competency['rating'] < 1 or $competency['rating'] > 5)
+        {
+            $values = array();
+            $values[''];
+            return html('Ratings must be higher than 1 and lower than 5!');
+        }
+
         $reviews[$index]->reviewer = $current_user;
         $reviews[$index]->reviewee = $reviewee;
         $reviews[$index]->competency = R::load('competency', $competency['id']);
@@ -216,7 +240,7 @@ function skip_confirmation()
     }
 
     global $smarty;
-    $smarty->assign('page_title', 'Skip person');
+    $smarty->assign('page_header', 'Skip person');
     $smarty->assign('reviewee', $reviewee);
 
     return html($smarty->fetch('feedback/skip_confirmation.tpl'));
@@ -248,11 +272,12 @@ function skip_person()
         return html('Invalid input');
     }
 
+    // Set status to skipped, but keep in database
     $roundinfo->status = REVIEW_SKIPPED;
 
-    $reviewees = R::find('user', 'department_id != ?', array($_SESSION['current_user']->department->id));
-
     R::store($roundinfo);
+
+    $reviewees = R::find('user', 'department_id != ?', array($_SESSION['current_user']->department->id));
 
     foreach($reviewees as $id => $reviewee)
     {
@@ -260,6 +285,7 @@ function skip_person()
 
         if($roundinfo->id != 0 || !empty($roundinfo))
         {
+            // If roundinfo with $reviewer and $reviewee already exists, remove this person from the list of potential reviewees
             unset($reviewees[$id]);
         }
     }

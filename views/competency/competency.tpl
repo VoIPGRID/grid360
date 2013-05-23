@@ -1,10 +1,26 @@
-<form action="{$MANAGER_URI}competency/submit" method="POST" class="form-horizontal">
+{function check_errors}
+    {$error_type = $values.error}
+    {if isset($error_type) && !empty($error_type)}
+        {if $error_type == 1}
+            {$error_message = "Competency name can't be empty!"}
+        {/if}
+        {if isset($error_message) && !empty($error_message)}
+            <div class="alert alert-error">
+                {$error_message}
+            </div>
+        {/if}
+    {/if}
+{/function}
+
+<form action="{$smarty.const.MANAGER_URI}competency/{$competency.id}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($competency)}
-            <legend>Edit competency {$competency.name}</legend>
+            <legend>Updating competency {$competency.name}</legend>
         {else}
-            <legend>New competency</legend>
+            <legend>Creating new competency</legend>
         {/if}
+
+        {check_errors}
 
         <div class="control-group">
             <input type="hidden" name="type" value="competency" />
@@ -15,7 +31,7 @@
             <label class="control-label" for="competency-name">Competency name</label>
 
             <div class="controls">
-                <input id="competency-name" name="name" type="text" placeholder="Competency name" class="input-large" {if isset($competency)}value="{$competency.name}"{/if} />
+                <input id="competency-name" name="name" type="text" placeholder="Competency name" class="input-large" required {if isset($competency)}value="{$competency.name}"{/if} />
             </div>
         </div>
 
@@ -32,11 +48,10 @@
             <input type="hidden" name="competencygroup[type]" value="competencygroup" />
 
             <div class="controls">
-                {if isset($group_options) && count($group_options) >= 1}
+                {if isset($group_options) && !empty($group_options)}
                     {html_options name="competencygroup[id]" options=$group_options selected=$competency.competencygroup.id}
                 {else}
                     No competency groups found
-                    <input type="hidden" name="competencygroup[id]" value=" " />
                 {/if}
             </div>
         </div>
