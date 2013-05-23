@@ -16,7 +16,12 @@ function create_competency_post()
 {
     security_authorize(MANAGER);
 
-    if(isset($_POST['name']) && !empty($_POST['name']))
+    if(!isset($_POST['type']) || $_POST['type'] != 'competency')
+    {
+        return html('Error creating competency!');
+    }
+
+    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
     {
         $competency = R::graph($_POST);
 
@@ -24,7 +29,13 @@ function create_competency_post()
     }
     else
     {
-        return html('No competency name given');
+        $values = array();
+        $values['error'] = 1;
+
+        global $smarty;
+        $smarty->assign('values', $values);
+
+        return create_competency();
     }
 }
 
@@ -44,11 +55,16 @@ function create_competencygroup_post()
 {
     security_authorize(MANAGER);
 
-    if(isset($_POST['name']) && !empty($_POST['name']))
+    if(!isset($_POST['type']) || $_POST['type'] != 'competencygroup')
+    {
+        return html('Error creating competency group!');
+    }
+
+    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
     {
         foreach($_POST['ownCompetency'] as $competency_id => $competency)
         {
-            if(empty($competency['name']))
+            if(strlen(trim($competency['name'])) > 0)
             {
                 // If the name is empty, remove competency from the list so you don't get an empty competency in the database
                 unset($_POST['ownCompetency'][$competency_id]);

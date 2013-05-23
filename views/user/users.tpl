@@ -2,15 +2,22 @@
 
 {function print_user_info}
     <tr>
-        <td>{$user.firstname|capitalize}</td>
-        <td>{$user.lastname|capitalize}</td>
+        <td>{$user.firstname|capitalize:true}</td>
+        <td>{$user.lastname|capitalize:true}</td>
         <td>{$user.email}</td>
         <td>{$user.department.name|capitalize:true}</td>
         <td>{$user.role.name|capitalize:true}</td>
         <td>{$user.userlevel.name|capitalize}</td>
+        <td><a href="{$smarty.const.BASE_URI}report/overview/{$user.id}">View</a></td>
         {call show_actions type="user" level="admin"}
     </tr>
 {/function}
+
+{if isset($smarty.get.success)}
+    <div class="alert alert-success">
+        {$smarty.get.success}
+    </div>
+{/if}
 
 <table class="table table-striped">
     <thead>
@@ -21,6 +28,7 @@
         <th>Department</th>
         <th>Role</th>
         <th>User level</th>
+        <th>Reports</th>
         <th>Actions</th>
     </tr>
     </thead>

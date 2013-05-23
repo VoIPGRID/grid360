@@ -14,12 +14,18 @@ function create_department_post()
 {
     security_authorize(ADMIN);
 
-    if(isset($_POST['name']) && !empty($_POST['name']))
+    if(!isset($_POST['type']) || $_POST['type'] != 'department')
+    {
+        return html('Error creating department!');
+    }
+
+    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
     {
         foreach($_POST['ownRole'] as $id => $role)
         {
-            if(empty($role['name']))
+            if(strlen(trim($role['name'])) == 0)
             {
+                // If the name is empty, remove role from the list so you don't get an empty role in the database
                 unset($_POST['ownRole'][$id]);
             }
         }
@@ -28,6 +34,7 @@ function create_department_post()
 
         if($department->user->id == 0)
         {
+            // If no user could be loaded, unset the manager, so you don't get an empty user in the database
             unset($department->user);
         }
 
@@ -41,11 +48,6 @@ function create_department_post()
 
         if(isset($_POST['id']))
         {
-            return html('Department with id ' . $_POST['id'] . ' updated');
-        }
-
-        if(isset($_POST['id']))
-        {
             return html('Department with id ' . $_POST['id'] . ' updated! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
         }
 
@@ -53,7 +55,22 @@ function create_department_post()
     }
     else
     {
-        return html('No department name given <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
+        $form_values = array();
+        $form_values['name']['value'] = $_POST['name'];
+        $form_values['name']['error'] = 'Name is required';
+
+        global $smarty;
+        $smarty->assign('form_values', $form_values);
+
+        $id = params('id');
+
+        if(isset($id) && !empty($id))
+        {
+            $smarty->assign('department', R::load('department', params('id')));
+            $smarty->assign('update', true);
+        }
+
+        return create_department();
     }
 }
 
@@ -64,7 +81,7 @@ function view_departments()
     global $smarty;
     $departments = R::findAll('department');
     $smarty->assign('departments', $departments);
-    $smarty->assign('page_title', 'Departments');
+    $smarty->assign('page_header', 'Departments');
     set('title', 'Departments');
 
     return html($smarty->fetch('department/departments.tpl'));

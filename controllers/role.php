@@ -18,17 +18,44 @@ function create_role_post()
 {
     security_authorize(MANAGER);
 
-    $role = R::graph($_POST);
-    R::store($role);
-
-    global $smarty;
-
-    if(isset($_POST['id']))
+    if(!isset($_POST['type']) || $_POST['type'] != 'role')
     {
-        return html('Role with id ' . $_POST['id'] . ' updated! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
+        return html('Error creating role!');
     }
 
-    return html('Role created! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
+    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
+    {
+        $role = R::graph($_POST);
+
+        R::store($role);
+
+        global $smarty;
+
+        if(isset($_POST['id']))
+        {
+            return html('Role with id ' . $_POST['id'] . ' updated! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
+        }
+
+        return html('Role created! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
+    }
+    else
+    {
+        $form_values = array();
+        $form_values['name']['error'] = 'Name is required';
+
+        global $smarty;
+        $smarty->assign('form_values', $form_values);
+
+        $id = params('id');
+
+        if(isset($id) && !empty($id))
+        {
+            $smarty->assign('role', R::load('role', params('id')));
+            $smarty->assign('update', true);
+        }
+
+        return create_role();
+    }
 }
 
 function view_roles()
@@ -36,9 +63,17 @@ function view_roles()
     security_authorize(MANAGER);
 
     global $smarty;
-    $roles = R::findAll('role');
+
+    if($_SESSION['current_user']->userlevel->level == ADMIN)
+    {
+        $roles = R::findAll('role');
+    }
+    else
+    {
+        $roles = R::find('role', 'department_id = ?', array($_SESSION['current_user']->department->id));
+    }
     $smarty->assign('roles', $roles);
-    $smarty->assign('page_title', 'Roles');
+    $smarty->assign('page_header', 'Roles');
 
     return html($smarty->fetch('role/roles.tpl'));
 }
@@ -47,7 +82,14 @@ function edit_role()
 {
     security_authorize(MANAGER);
 
-    $role = R::load('role', params('id'));
+    if($_SESSION['current_user']->userlevel->level == ADMIN)
+    {
+        $role = R::load('role', params('id'));
+    }
+    else
+    {
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->deparment->id, params('id')));
+    }
 
     if($role->id == 0)
     {
