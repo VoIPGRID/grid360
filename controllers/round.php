@@ -118,6 +118,11 @@ function start_round()
             // Grab $random_number amount of users keys
             $own_department_user_ids = array_rand($own_department_users, $random_number);
 
+            if(!is_array($own_department_user_ids))
+            {
+                $own_department_user_ids = array($own_department_user_ids);
+            }
+
             // Grab the beans with the ids in $user_ids
             $own_random_users = array();
             for($i = 0; $i < count($own_department_user_ids); $i++)
