@@ -106,6 +106,25 @@ function edit_department()
     return html($smarty->fetch('department/department.tpl'));
 }
 
+function delete_department_confirmation()
+{
+    security_authorize(ADMIN);
+
+    $department = R::load('department', params('id'));
+
+    if($department->id == 0)
+    {
+        return html('Department not found!');
+    }
+
+    global $smarty;
+    $smarty->assign('type', 'department');
+    $smarty->assign('department', $department);
+    $smarty->assign('level_uri', ADMIN_URI);
+
+    return html($smarty->fetch('common/delete_confirmation.tpl'));
+}
+
 function delete_department()
 {
     security_authorize(ADMIN);

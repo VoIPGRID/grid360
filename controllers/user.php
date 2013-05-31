@@ -3,6 +3,7 @@
 const INVALID_EMAIL_FORMAT = 'Email is not formatted correctly!';
 const INVALID_DEPARTMENT = 'Invalid department given!';
 const ROLE_DEPARTMENT_MISMATCH = 'Chosen role does not belong to the chosen department!';
+const EMAIL_EXISTS = 'Email already exists!';
 
 function create_user()
 {
@@ -26,7 +27,14 @@ function create_user_post()
         return html('Error creating user!');
     }
 
-    $form_values = validate_user_form();
+    $update = false;
+
+    if(isset($_POST['id']))
+    {
+        $update = true;
+    }
+
+    $form_values = validate_user_form($update);
 
     global $smarty;
 
@@ -57,7 +65,7 @@ function create_user_post()
         unset($user->role);
     }
 
-
+    // Check if it's a new user
     if($user->id == 0)
     {
         $user->status = 0;
@@ -80,7 +88,7 @@ function view_users()
     security_authorize(ADMIN);
 
     global $smarty;
-    $users = R::findAll('user');
+    $users = R::findAll('user', 'ORDER BY department_id');
     $smarty->assign('users', $users);
     $smarty->assign('page_header', 'Users');
     set('title', 'Users');
@@ -110,6 +118,7 @@ function edit_user()
         $form_values['email']['value'] = $user->email;
         $form_values['department']['value'] = $user->department->id;
         $form_values['role']['value'] = $user->role->id;
+        $form_values['userlevel']['value'] = $user->userlevel->level;
 
         $smarty->assign('form_values', $form_values);
     }
@@ -139,6 +148,25 @@ function edit_status()
     R::store($user);
 }
 
+function delete_user_confirmation()
+{
+    security_authorize(ADMIN);
+
+    $user = R::load('user', params('id'));
+
+    if($user->id == 0)
+    {
+        return html('User not found!');
+    }
+
+    global $smarty;
+    $smarty->assign('type', 'user');
+    $smarty->assign('user', $user);
+    $smarty->assign('level_uri', ADMIN_URI);
+
+    return html($smarty->fetch('common/delete_confirmation.tpl'));
+}
+
 function delete_user()
 {
     security_authorize(ADMIN);
@@ -155,13 +183,24 @@ function delete_user()
     return html('User deleted <a href="' . ADMIN_URI . 'users">Return to users</a>');
 }
 
-function validate_user_form()
+function validate_user_form($update = false)
 {
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $email = $_POST['email'];
 
     $form_values = array();
+
+    if(!$update)
+    {
+        $user = R::findOne('user', 'email = ?', array($email));
+
+        if($user->id != 0)
+        {
+            $form_values['email']['error'] = EMAIL_EXISTS;
+        }
+    }
+
     $form_values['id']['value'] = $_POST['id'];
     $form_values['firstname']['value'] = $firstname;
     $form_values['lastname']['value'] = $lastname;

@@ -88,7 +88,7 @@ function edit_role()
     }
     else
     {
-        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->deparment->id, params('id')));
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department->id, params('id')));
     }
 
     if($role->id == 0)
@@ -108,11 +108,44 @@ function edit_role()
     return html($smarty->fetch('role/role.tpl'));
 }
 
+function delete_role_confirmation()
+{
+    security_authorize(MANAGER);
+
+    if($_SESSION['current_user']->userlevel->level == ADMIN)
+    {
+        $role = R::load('role', params('id'));
+    }
+    else
+    {
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department->id, params('id')));
+    }
+
+    if($role->id == 0)
+    {
+        return html('Role not found!');
+    }
+
+    global $smarty;
+    $smarty->assign('type', 'role');
+    $smarty->assign('role', $role);
+    $smarty->assign('level_uri', MANAGER_URI);
+
+    return html($smarty->fetch('common/delete_confirmation.tpl'));
+}
+
 function delete_role()
 {
     security_authorize(MANAGER);
 
-    $role = R::load('role', params('id'));
+    if($_SESSION['current_user']->userlevel->level == ADMIN)
+    {
+        $role = R::load('role', params('id'));
+    }
+    else
+    {
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department->id, params('id')));
+    }
 
     if($role->id == 0)
     {

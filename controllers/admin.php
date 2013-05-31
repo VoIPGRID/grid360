@@ -14,6 +14,9 @@ function fill_database()
 {
     security_authorize(ADMIN);
 
+    $writer = new RedBean_QueryWriter_MySQL(R::$adapter);
+    R::configureFacadeWithToolbox(new RedBean_ToolBox(new RedBean_OODB($writer), R::$adapter, $writer));
+
     R::nuke();
 
     $message = 'Database reset!';

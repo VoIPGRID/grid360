@@ -1,5 +1,112 @@
 <?php
 
+//require_once LIB_DIR . 'LightOpenID/openid.php';
+
+function register()
+{
+    global $smarty;
+    $smarty->assign('page_header', 'Register');
+    $smarty->assign('page_header_size', 'h2');
+
+    return html($smarty->fetch('security/register.tpl'), 'layout/basic.php');
+}
+
+
+const GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id?id=';
+
+function login_google()
+{
+    // openid login
+    $openid = new LightOpenID('localhost');
+    if(!$openid->mode) {
+        $openid->identity = GOOGLE_OPENID_URL;
+
+        // redirect naar $openid->identity voor access krijgen
+        redirect_to($openid->authUrl());
+    }
+
+    // nieuwe $openid->identity opslaan als identity_hash
+    $identity_hash = '';
+    $user = null;
+    if($openid->validate()) {
+        $identity_hash = str_replace(GOOGLE_OPENID_URL, '',  $openid->identity);
+
+        // query existing user
+        $user = R::findOne('user', 'identity = ?', array($identity_hash));
+
+        if($user->id == 0) {
+            // identity hash opslaan
+            $attributes = $openid->getAttributes();
+            if(count($attributes) > 0) {
+                $user = R::findOne('user', 'email = ?', array($attributes['contact/email']));
+                $user->identity = $identity_hash;
+                R::store($user);
+            }
+        } else {
+            // gegevens opslaan
+            $attributes = $openid->getAttributes();
+            if(count($attributes) > 0) {
+                $user->email = $attributes['contact/email'];
+                R::store($user);
+            }
+            $_SESSION['current_user'] = $user;
+            redirect_to('/');
+        }
+
+        // redirect voor openid indien gegevens missen
+        if(!isset($user->email)) {
+            $openid = new LightOpenID('localhost');
+            $openid->identity = GOOGLE_OPENID_URL . $identity_hash;
+            $openid->required = array(
+                'namePerson',
+                'namePerson/friendly',
+                'namePerson/first',
+                'namePerson/last',
+                'contact/email'
+            );
+            redirect_to($openid->authUrl());
+        }
+    }
+}
+
+function register_post()
+{
+    if(isset($_POST['organisation_name']))
+    {
+        $user = R::findOne('user', 'email = ?', array($_POST['email']));
+
+        if(intval($user->id) != 0)
+        {
+            return html('Email already exists!', 'layout/basic.php');
+        }
+
+        $tenant = R::dispense('tenant');
+        $tenant->name = $_POST['organisation_name'];
+
+        R::store($tenant);
+
+        unset($_POST['organisation_name']);
+
+        $user = R::graph($_POST);
+
+        $hasher = new PasswordHash(8, false);
+
+        $user->password = $hasher->HashPassword($user->password);
+        $user->userlevel = R::findOne('userlevel', 'level = ?', array(ADMIN));
+        $user->tenant = $tenant;
+        $user->status = 1;
+        $user->created = R::isoDateTime();
+
+        R::store($user);
+
+        header('Location: ' . BASE_URI . 'login?success=Registration successful!');
+    }
+    else
+    {
+        return html('Organisation name can\'t be empty!', 'layout/basic.php');
+    }
+}
+
 function login()
 {
     if(isset($_COOKIE['email']) && isset($_COOKIE['password']))

@@ -26,6 +26,11 @@ function feedback_step_1()
 {
     security_authorize();
 
+    if(get_current_round()->id == 0)
+    {
+        return html('No round in progress!');
+    }
+
     $reviewee = R::load('user', params('id'));
 
     if($reviewee->id == 0)
@@ -163,41 +168,87 @@ function feedback_step_3_post()
     security_authorize();
 
     $count = 0;
-    foreach($_POST['competencies'] as $competency)
+    foreach($_POST['positive_competencies'] as $form_competency)
     {
-        if(isset($competency['rating']) && !empty($competency['rating']))
+        if(isset($form_competency['rating']) && !empty($form_competency['rating']))
         {
-            $count++;
+            if($form_competency['rating'] >= 3 && $form_competency['rating'] <= 5)
+            {
+                $count++;
+            }
         }
     }
 
-    // Total of 5 competencies (3 positive, 2 points of improvement) have to be selected
-    if($count != 5)
+    $has_errors = false;
+
+    if($count != 3)
     {
-        return html('You haven\'t completely filled in the feedback form!');
+        global $smarty;
+        $smarty->assign('error_positive_competencies', 'Positive competencies error!');
+
+        $has_errors = true;
     }
 
-    $reviews = R::dispense('review', count($_POST['competencies']));
+    $count = 0;
+    foreach($_POST['negative_competencies'] as $form_competency)
+    {
+        if(isset($form_competency['rating']) && !empty($form_competency['rating']))
+        {
+            if($form_competency['rating'] >= 1 && $form_competency['rating'] <= 3)
+            {
+                $count++;
+            }
+        }
+    }
+
+    if($count != 2)
+    {
+        global $smarty;
+        $smarty->assign('error_negative_competencies', 'Points of improvement error!');
+
+        $has_errors = true;
+    }
+
+    if($has_errors)
+    {
+        return feedback_step_3();
+    }
+
+    $reviews = R::dispense('review', 5);
 
     $current_user = $_SESSION['current_user'];
     $reviewee = R::load('user', params('id'));
     $round = R::load('round', get_current_round()->id);
 
+    $competencies = array_merge($_POST['positive_competencies'], $_POST['negative_competencies']);
+
     $index = 0;
-    foreach($_POST['competencies'] as $competency)
+    foreach($competencies as $form_competency)
     {
-        if($competency['rating'] < 1 or $competency['rating'] > 5)
+        if($form_competency['rating'] < 1 or $form_competency['rating'] > 5)
         {
-            $values = array();
-            $values[''];
-            return html('Ratings must be higher than 1 and lower than 5!');
+            return html('Ratings must be higher than 1 and lower than 5! <a href="javascript:history.go(-1);">Click here to go back</a>');
+        }
+
+        $competency = R::load('competency', $form_competency['id']);
+
+        if($competency->id == 0)
+        {
+            return html('An error has occurred! <a href="javascript:history.go(-1);">Click here to go back</a>');
+        }
+
+        $rating = R::load('rating', $form_competency['rating']);
+
+        if($rating->id == 0)
+        {
+            return html('An error has occurred! <a href="javascript:history.go(-1);">Click here to go back</a>');
         }
 
         $reviews[$index]->reviewer = $current_user;
         $reviews[$index]->reviewee = $reviewee;
-        $reviews[$index]->competency = R::load('competency', $competency['id']);
-        $reviews[$index]->rating = R::load('rating', $competency['rating']);
-        $reviews[$index]->comment = $competency['comment'];
+        $reviews[$index]->competency = $competency;
+        $reviews[$index]->rating = $rating;
+        $reviews[$index]->comment = $form_competency['comment'];
         $reviews[$index]->round = $round;
         $index++;
     }
@@ -217,7 +268,7 @@ function feedback_step_3_post()
     R::store($roundinfo);
     R::storeAll($reviews);
 
-    return html('Review saved!');
+    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname . ' ' . $reviewee->lastname));
 }
 
 function skip_confirmation()
@@ -240,7 +291,7 @@ function skip_confirmation()
     }
 
     global $smarty;
-    $smarty->assign('page_header', 'Skip person');
+    $smarty->assign('page_header', FEEDBACK_SKIP_HEADER);
     $smarty->assign('reviewee', $reviewee);
 
     return html($smarty->fetch('feedback/skip_confirmation.tpl'));
