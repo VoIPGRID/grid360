@@ -4,7 +4,7 @@ function report_overview()
 {
     security_authorize();
 
-    $rounds = R::findAll('round'); // TODO: Add tenant id
+    $rounds = R::findAll('round');
 
     $user_id = params('user_id');
 
@@ -52,18 +52,30 @@ function view_report()
 
     if($round->id == 0)
     {
-        $round = R::load('round', $current_round->id);
+        $round = $current_round;
 
         // If there's no round in progress, get the latest round
         if($round->id == 0)
         {
             $round = R::findOne('round', '1 ORDER BY id desc'); // The '1' is needed because RedBean starts with WHERE, so the '1' makes sure the query is valid
+
+            if($round->id == 0)
+            {
+                return html(NO_REPORTS_FOUND);
+            }
         }
     }
 
     $reviews = R::find('review', 'reviewee_id = ? AND round_id = ?', array($user->id, $round->id));
     $roundinfo = R::find('roundinfo', 'reviewee_id = ? AND status = 1 AND round_id = ?', array($user->id, $round->id));
-    R::preload($reviews, array('reviewer'=>'user'));
+    $total_review_count = R::count('roundinfo', 'reviewee_id = ? AND status != 2 AND round_id = ?', array($user->id, $round->id));
+
+    if(count($roundinfo) < 5)
+    {
+        return html(sprintf(REPORT_INSUFFICIENT_DATA, count($roundinfo), $total_review_count));
+    }
+
+    R::preload($reviews, array('reviewer' => 'user'));
 
     $ratings = array();
     $own_ratings = array();
@@ -119,7 +131,7 @@ function view_report()
     $smarty->assign('averages', $average_ratings);
     $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('round', $round);
-    $header = 'Report for ' . $user->firstname . ' ' . $user->lastname . ' of ' . $round->description;
+    $header = sprintf(REPORT_PAGE_HEADER, $user->firstname, $user->lastname, $round->description);
     $smarty->assign('page_header', $header);
     $smarty->assign('page_header_size', 'h2');
     $smarty->assign('has_own_ratings', $has_own_ratings);
@@ -127,12 +139,15 @@ function view_report()
 
     if($current_round->id == 0)
     {
-        $smarty->assign('current_round_id', R::findOne('round', '1 ORDER BY id desc')->id); // The '1' is needed because RedBean starts with WHERE, so the '1' makes sure the query is valid
+        $current_round = R::findOne('round', '1 ORDER BY id desc');
+        $smarty->assign('current_round_id', $current_round->id); // The '1' is needed because RedBean starts with WHERE, so the '1' makes sure the query is valid
     }
     else
     {
         $smarty->assign('current_round_id', $current_round->id);
     }
+
+    $smarty->assign('previous_round', R::load('round', $current_round->id - 1));
 
     set('title', $header);
 

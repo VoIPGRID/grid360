@@ -1,10 +1,17 @@
-<div class="page-header"><h1>Feedback overview</h1></div>
+{if isset($smarty.get.success)}
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {$smarty.get.success}
+    </div>
+{/if}
+
+<div class="page-header"><h1>{$smarty.const.FEEDBACK_OVERVIEW_HEADER}</h1></div>
 <div class="row-fluid">
-<span class="span6">
+<span class="span7">
     {foreach $roundinfo as $info}
         {if $info.reviewee.id == $current_user.id && $info.status == 0}
             <div class="alert alert-info">
-                You have not reviewed yourself yet! <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">Click here to review yourself</a>
+                {$smarty.const.FEEDBACK_INFO_SELF} <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{$smarty.const.FEEDBACK_INFO_SELF_BUTTON}</a>
             </div>
             {break}
         {/if}
@@ -13,7 +20,7 @@
     {foreach $roundinfo as $info}
         {if $info.reviewee.id != $current_user.id && $info.status == 0}
             <div class="alert alert-info">
-                You have pending reviews! Click the review button next to an open review to review that person.
+                {$smarty.const.FEEDBACK_INFO_PENDING}
             </div>
             {break}
         {/if}
@@ -23,7 +30,9 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Reviewee name</th>
+                <th>{$smarty.const.FEEDBACK_REVIEWEE_NAME}</th>
+                <th>{$smarty.const.TH_DEPARTMENT}</th>
+                <th>{$smarty.const.TH_ROLE}</th>
                 <th>Status</th>
             </tr>
             </thead>
@@ -32,16 +41,18 @@
                 {if $info.reviewee.id != $current_user.id && $info.status != 2}
                     <tr>
                         <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
+                        <td>{$info.reviewee.department.name}</td>
+                        <td>{$info.reviewee.role.name}</td>
                         <td>
                             {if $info.status == 0}
-                                Pending
+                                {$smarty.const.TEXT_PENDING}
                             {else}
-                                Completed
+                                {$smarty.const.TEXT_COMPLETED}
                             {/if}
                         </td>
                         <td>
                             {if $info.status == 0}
-                                <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">Review</a>
+                                <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{$smarty.const.FEEDBACK_REVIEW_BUTTON}</a>
                             {/if}
                         </td>
                     </tr>
@@ -50,7 +61,7 @@
             </tbody>
         </table>
     {else}
-        No round in progress!
+        {$smarty.const.FEEDBACK_OVERVIEW_NO_ROUND}
     {/if}
     </span>
 </div>

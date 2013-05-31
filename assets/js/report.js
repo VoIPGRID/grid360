@@ -3,8 +3,8 @@ function draw_chart()
 {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Competency name');
-    data.addColumn('number', 'Average');
-    data.addColumn('number', 'Own');
+    data.addColumn('number', graph_text_average);
+    data.addColumn('number', graph_text_own);
 
     for(var i in averages)
     {
@@ -49,13 +49,13 @@ $(document).ready(function()
 
     options =
     {
-        title: 'Average ratings',
+        title: graph_header,
         fontSize: 12,
         animation:
         {
             duration: 500
         },
-        vAxis: {title: 'Competencies'},
+        vAxis: {title: graph_text_competencies},
         hAxis:
         {
             viewWindowMode: 'explicit',
@@ -63,7 +63,7 @@ $(document).ready(function()
                 max: 5.1, // Set to 5.1 so the number 5 shows on the chart as well
                 min: 0
             },
-            title: 'Points'
+            title: graph_text_points
         }
     };
 
@@ -117,12 +117,12 @@ $(document).ready(function()
         if($('#options-label i').attr('class') == 'icon-minus-sign')
         {
             $('#options-label i').attr('class', 'icon-plus-sign');
-            $('#options-label small').text('(show)');
+            $('#options-label small').text('( ' + text_show + ')');
         }
         else
         {
             $('#options-label i').attr('class', 'icon-minus-sign');
-            $('#options-label small').text('(hide)');
+            $('#options-label small').text('(' + text_hide + ')');
         }
     });
 

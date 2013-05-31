@@ -1,88 +1,74 @@
-<script type="text/javascript">
-    averages = new Array();
-
-    {foreach $averages as $competency_id => $average}
-        var average = new Array();
-        average['id'] = '{$competency_id}';
-        average['name'] = '{$average.name|escape:'html'}';
-        average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2)); // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
-        average['own_rating'] = parseFloat('{$average.own_rating}');
-        average['enabled'] = true;
-        averages[{$competency_id}] = average;
-    {/foreach}
-</script>
-
 <ul class="pager">
-    <li class="previous {if $round.id - 1 < 1}disabled{/if}">
-        <a href="{if $round.id - 1 < 1}#{else}{$smarty.const.BASE_URI}report/{$round.id - 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">&larr; Previous report</a>
+    <li class="previous {if $previous_round.id == 0 || $round.id - 1 < 1}disabled{/if}">
+        <a href="{if $previous_round.id == 0 || $round.id - 1 < 1}#{else}{$smarty.const.BASE_URI}report/{$round.id - 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">&larr; {$smarty.const.REPORT_PREVIOUS}</a>
     </li>
     <li class="next {if $round.id + 1 > $current_round_id}disabled{/if}">
-        <a href="{if $round.id + 1 > $current_round_id}#{else}{$smarty.const.BASE_URI}report/{$round.id + 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">Next report &rarr;</a>
+        <a href="{if $round.id + 1 > $current_round_id}#{else}{$smarty.const.BASE_URI}report/{$round.id + 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">{$smarty.const.REPORT_NEXT} &rarr;</a>
     </li>
 </ul>
-<fieldset>
-    <div class="row-fluid">
+{if !empty($averages)}
+    <fieldset>
+        <div class="row-fluid">
         <span class="span12">
             <label id="options-label">
-                <p class="lead">Options<i class="icon-plus-sign"></i>
-                    <small class="muted">(show)</small>
+                <p class="lead">{$smarty.const.REPORT_OPTIONS_HEADER}<i class="icon-plus-sign"></i>
+                    <small class="muted">({$smarty.const.REPORT_SHOW_OPTIONS})</small>
                 </p>
             </label>
             <div id="options">
-                <strong>Competencies</strong>
+                <strong>{$smarty.const.REPORT_OPTIONS_COMPETENCIES_HEADER}</strong>
 
                 <div id="competency-boxes" class="well">
                     {foreach $averages as $competency_id => $average}
                         <div class="controls">
                             <label class="checkbox">
-                                <input type="checkbox" value="{$competency_id}" />{$average.name}
+                                <input type="checkbox" value="{$competency_id}"/>{$average.name}
                             </label>
                         </div>
                     {/foreach}
                     <div>
-                        <button id="select-all" class="btn btn-link">Select all</button>
+                        <button id="select-all" class="btn btn-link">{$smarty.const.REPORT_OPTIONS_SELECT_ALL}</button>
                         /
-                        <button id="deselect-all" class="btn btn-link">Deselect all</button>
+                        <button id="deselect-all" class="btn btn-link">{$smarty.const.REPORT_OPTIONS_DESELECT_ALL}</button>
                     </div>
                 </div>
 
-                <strong>Ratings</strong>
+                <strong>{$smarty.const.REPORT_OPTIONS_RATINGS_HEADER}</strong>
+
                 <div class="well">
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" name="check_average" value="1" />Show average
+                            <input type="checkbox" name="check_average" value="1"/>{$smarty.const.REPORT_OPTIONS_SHOW_AVERAGE}
                         </label>
                     </div>
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" name="check_own" value="2" {if !$has_own_ratings}disabled{/if}/>Show own
+                            <input type="checkbox" name="check_own" value="2" {if !$has_own_ratings}disabled{/if}/>{$smarty.const.REPORT_OPTIONS_SHOW_OWN}
                         </label>
                     </div>
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" name="check_comparison" value="4" {if !$has_own_ratings}disabled{/if}/>Show comparisons
+                            <input type="checkbox" name="check_comparison" value="4" {if !$has_own_ratings}disabled{/if}/>{$smarty.const.REPORT_OPTIONS_SHOW_COMPARISONS}
                         </label>
                     </div>
                 </div>
             </div>
         </span>
-    </div>
-</fieldset>
-
-<div class="row-fluid">
+        </div>
+    </fieldset>
+    <div class="row-fluid">
     <span class="span12">
          <div id="chart-div" class="report-chart"></div>
     </span>
-</div>
-
-<fieldset>
-    <legend>Comments</legend>
-    <div class="row-fluid">
+    </div>
+    <fieldset>
+        <legend>{$smarty.const.TEXT_COMMENTS}</legend>
+        <div class="row-fluid">
         <span class="span12">
              <div class="tabbable">
                  <ul class="nav nav-tabs">
-                     <li class="active"><a href="#tab-all" data-toggle="tab">All comments</a></li>
-                     <li><a href="#tab-answers" data-toggle="tab">Extra question</a></li>
+                     <li class="active"><a href="#tab-all" data-toggle="tab">{$smarty.const.REPORT_ALL_COMMENTS}</a></li>
+                     <li><a href="#tab-answers" data-toggle="tab">{$smarty.const.REPORT_EXTRA_QUESTION}</a></li>
                      {foreach $averages as $competency_id => $average}
                          <li><a href="#tab-{$competency_id}" data-toggle="tab">{$average.name}</a></li>
                      {/foreach}
@@ -110,23 +96,44 @@
                  </div>
              </div>
         </span>
-    </div>
-</fieldset>
+        </div>
+    </fieldset>
+    <script type="text/javascript">
+        averages = new Array();
 
-<script type="text/javascript">
-    {foreach $reviews as $review}
-        {if !empty($review.comment)}
-            $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
-            $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
-        {/if}
-    {/foreach}
+        {foreach $averages as $competency_id => $average}
+            var average = new Array();
+            average['id'] = '{$competency_id}';
+            average['name'] = '{$average.name|escape:'quotes'}';
+            average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2)); // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
+            average['own_rating'] = parseFloat('{$average.own_rating}');
+            average['enabled'] = true;
+            averages[{$competency_id}] = average;
+        {/foreach}
 
-    {foreach $roundinfo as $info}
-        {if !empty($info.answer)}
-            $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append('{$info.answer|escape:'html'}')));
-        {/if}
-    {/foreach}
-</script>
+        {foreach $reviews as $review}
+            {if !empty($review.comment)}
+                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
+                $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
+            {/if}
+        {/foreach}
 
-<script type="text/javascript" src="//www.google.com/jsapi"></script>
-<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>
+        {foreach $roundinfo as $info}
+            {if !empty($info.answer)}
+                $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append('{$info.answer|escape:'html'}')));
+            {/if}
+        {/foreach}
+
+        text_show = '{$smarty.const.REPORT_SHOW_OPTIONS}';
+        text_hide = '{$smarty.const.REPORT_HIDE_OPTIONS}';
+        graph_header = '{$smarty.const.REPORT_GRAPH_HEADER}';
+        graph_text_average = '{$smarty.const.REPORT_GRAPH_AVERAGE}';
+        graph_text_own = '{$smarty.const.REPORT_GRAPH_OWN}';
+        graph_text_competencies = '{$smarty.const.TEXT_COMPETENCIES}';
+        graph_text_points = '{$smarty.const.REPORT_GRAPH_POINTS}';
+    </script>
+    <script type="text/javascript" src="//www.google.com/jsapi"></script>
+    <script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>
+{else}
+    {$smarty.const.REPORT_NO_REVIEWS}
+{/if}

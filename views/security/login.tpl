@@ -15,6 +15,13 @@
         </div>
     {/if}
 {/if}
+
+{if isset($smarty.get.success)}
+    <div class="alert alert-success">
+        {$smarty.get.success}
+    </div>
+{/if}
+
 <div class="row">
     <form class="form-vertical" action="{$smarty.const.BASE_URI}login" method="post">
         <div class="control-group">
@@ -22,7 +29,7 @@
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-envelope"></i></span>
-                    <input type="text" name="email" id="email" class="input-large">
+                    <input type="email" name="email" id="email" class="input-large" autofocus>
                 </div>
             </div>
         </div>
@@ -46,8 +53,14 @@
                 <button type="submit" class="btn btn-primary" id="login-button">Login</button>
             </div>
         </div>
+
+        {*<a href="{$smarty.const.BASE_URI}register">Register new organisation</a>*}
     </form>
 </div>
+<br />
+{*<form action="{$smarty.const.BASE_URI}login_google" method="get">
+    <button class="btn pull-right">Login with Google</button>
+</form>*}
 
 <script type="text/javascript">
     $(document).ready(function()

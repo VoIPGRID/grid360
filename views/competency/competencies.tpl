@@ -19,6 +19,7 @@
 {/function}
 
 <h2>Competency groups</h2>
+{if isset($competencygroups) && !empty($competencygroups)}
 <table class="table table-striped">
     <thead>
     <tr>
@@ -28,7 +29,6 @@
         <th>Actions</th>
     </tr>
     </thead>
-    {if isset($competencygroups) && !empty($competencygroups)}
     <tbody>
     {foreach $competencygroups as $competencygroup}
         {print_competencygroup}
@@ -36,11 +36,12 @@
     </tbody>
 </table>
 {else}
-    </table>No competency groups found!
+    No competency groups found!
 {/if}
 {call print_add_link level="manager" type="competencygroup"}
 
 <h3>Competencies</h3>
+{if isset($competencygroups) && !empty($competencygroups)}
 <div class="controls">
     <select id="group-filter">
         <option value="0">Select all</option>
@@ -58,7 +59,6 @@
         <th>Actions</th>
     </tr>
     </thead>
-{if isset($competencygroups) && !empty($competencygroups)}
     <tbody>
     {foreach $competencygroups as $competencygroup}
         {foreach $competencygroup.ownCompetency as $competency}

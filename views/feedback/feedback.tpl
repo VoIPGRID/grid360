@@ -13,29 +13,29 @@
 {$url_text = ""}
 
 {if isset($step) && $step == 2}
-    {$text = "2 points of improvement"}
+    {$text = $smarty.const.FEEDBACK_HEADER_STEP_2}
     {$url_text = "/{$reviewee.id}/2"}
-    {$button_text = "Previous"}
+    {$button_text = $smarty.const.BUTTON_PREVIOUS}
 {else}
-    {$text = "3 positive competencies"}
+    {$text =  $smarty.const.FEEDBACK_HEADER_STEP_1}
     {$url_text = "/{$reviewee.id}"}
-    {$button_text = "Cancel"}
+    {$button_text = {$smarty.const.BUTTON_CANCEL}}
 {/if}
-<h3>Select {$text} for
+<h3>{$text}
     {if $reviewee.id == $current_user.id}
-        yourself
+        uzelf
     {else}
         {$reviewee.firstname} {$reviewee.lastname}
     {/if}
 </h3>
 
 <div class="alert alert-info">
-    Hover over a competency to read its description
+    {$smarty.const.FEEDBACK_INFO_COMPETENCY_DESCRIPTION}
 </div>
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
     <form action="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}">
-        <div class="skip-button"><button class="btn-large btn-inverse">Skip person</button></div>
+        <div class="skip-button"><button class="btn-large btn-inverse">{$smarty.const.FEEDBACK_SKIP_BUTTON}</button></div>
     </form>
 {/if}
 
@@ -49,7 +49,7 @@
 
     <div class="form-actions">
         <button type="button" class="btn" onclick="history.go(-1);return true;">{$button_text}</button>
-        <button type="submit" class="btn btn-primary" id="submit">Next</button>
+        <button type="submit" class="btn btn-primary" id="submit">{$smarty.const.BUTTON_NEXT}</button>
     </div>
 </form>
 
