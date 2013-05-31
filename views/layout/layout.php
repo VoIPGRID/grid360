@@ -13,4 +13,5 @@ else
 {
     $smarty->assign('title', APP_NAME);
 }
+
 $smarty->display('layout/layout.tpl');

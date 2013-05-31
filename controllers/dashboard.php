@@ -4,7 +4,7 @@ function dashboard()
 {
     security_authorize();
 
-    $rounds = R::findAll('round'); // TODO: Add tenant id
+    $rounds = R::findAll('round');
     $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($_SESSION['current_user']->id, get_current_round()->id, REVIEW_SKIPPED));
 
     R::preload($roundinfo, array('reviewee' => 'user'));

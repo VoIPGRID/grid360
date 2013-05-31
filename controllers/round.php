@@ -73,13 +73,13 @@ function start_round()
     }
 
     if(get_current_round()->id != 0)
-    {redirect_to('admin/round/create');
+    {
         return html('A round is already in progress!');
     }
 
     $round = R::dispense('round');
     $round->description = $_POST['description'];
-    $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS)); // TODO: Add tenant id
+    $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS));
 
     $min_own = $_POST['min_own'];
     $max_own = $_POST['max_own'];
@@ -87,7 +87,6 @@ function start_round()
     $max_other = $_POST['max_other'];
 
     $index = 0;
-
     foreach($users as $reviewer)
     {
         $reviewees = null;
@@ -104,7 +103,7 @@ function start_round()
             $max = intval($count_own_department * ($max_own / 100));
             $random_number = rand($min, $max);
 
-            // Atleast 2 (atleast 1 from  people need to be reviewed, so set $random_number to 1 incase something silly happens
+            // Atleast 2 (including self)  people need to be reviewed, so set $random_number to 1 incase something silly happens
             if($random_number < 1)
             {
                 $random_number = 1;
@@ -131,10 +130,10 @@ function start_round()
             }
 
             // Get users from other departments and count them
-            $other_department_users = R::find('user', 'department_id != ? AND id != ? AND status != ?', array($reviewer->department->id, $reviewer->id, PAUSE_USER_REVIEWS));
+            $other_department_users = R::find('user', 'department_id != ? AND id != ? AND status != ? LIMIT ', array($reviewer->department->id, $reviewer->id, PAUSE_USER_REVIEWS));
             $count_other_department = count($other_department_users);
 
-            $random_users = array();
+            $other_random_users = array();
             // Get random users of other departments if count > 1
             if($count_other_department > 1)
             {
@@ -143,7 +142,7 @@ function start_round()
                 $max = intval($count_other_department * ($max_other / 100));
                 $random_number = rand($min, $max);
 
-                // Atleast 2 people need to be reviewed, so set $random_number to 2 incase something silly happens
+                // Atleast 2 people (including self) need to be reviewed, so set $random_number to 1 incase something silly happens
                 if($random_number < 1)
                 {
                     $random_number = 1;
@@ -157,16 +156,20 @@ function start_round()
                 // Grab $random_number amount of users
                 $user_ids = array_rand($other_department_users, $random_number);
 
-                // Grab the beans with the ids in $user_ids
+                if(!is_array($user_ids))
+                {
+                    $user_ids = array($user_ids);
+                }
 
+                // Grab the beans with the ids in $user_ids
                 for($i = 0; $i < count($user_ids); $i++)
                 {
-                    $random_users[] = $other_department_users[$user_ids[$i]];
+                    $other_random_users[] = $other_department_users[$user_ids[$i]];
                 }
             }
 
             // Merge all the random users into one reviewee array
-            $reviewees = array_merge($own_random_users, $random_users);
+            $reviewees = array_merge($own_random_users, $other_random_users);
             // You always have to review yourself, so add $reviewer to $reviewees
             $reviewees[] = $reviewer;
 

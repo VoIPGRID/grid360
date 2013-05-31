@@ -2,6 +2,7 @@
 
 include_once('./lib/functions.php');
 include_once('./lib/security.php');
+include_once('./lib/Swift-5.0.0/lib/swift_required.php');
 
 try
 {
@@ -27,6 +28,7 @@ try
     define('ASSETS_URI', BASE_URI . 'assets/');
     define('ADMIN_URI', BASE_URI . 'admin/');
     define('MANAGER_URI', BASE_URI . 'manager/');
+
 } catch(Exception $e)
 {
     show_error($e->getMessage(), 1);

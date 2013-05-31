@@ -5,7 +5,6 @@
         {else}
             <legend>Creating new user</legend>
         {/if}
-
         <div class="control-group {if isset($form_values.firstname.error)}error{/if}">
             <input type="hidden" name="type" value="user" />
             {if isset($form_values.id.value)}
@@ -92,11 +91,7 @@
             <label class="control-label">User level</label>
 
             <div class="controls">
-                {if isset($user)}
-                    {html_options name="userlevel[id]" options=$userlevel_options|capitalize selected={$user.userlevel.id}}
-                {else}
-                    {html_options name="userlevel[id]" options=$userlevel_options|capitalize selected=3}
-                {/if}
+                {html_options name="userlevel[id]" options=$userlevel_options|capitalize selected={$form_values.userlevel.value|default:3}}
             </div>
         </div>
 

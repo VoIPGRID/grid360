@@ -6,7 +6,7 @@ function show_error($error_message, $type = 0)
     if($type == 1)
     {
         echo $error_message . '<br />';
-        echo 'You can fix this error by creating a production.php in your /configs folder and setting it up correctly';
+        echo 'You can fix this error by creating a config file (local.php or production.php) in your /configs folder and setting it up correctly';
     }
     else
     {
@@ -14,8 +14,6 @@ function show_error($error_message, $type = 0)
         echo $error_message;
     }
 }
-
-// TODO: Add tenant id to everything
 
 function get_userlevels()
 {
@@ -31,4 +29,3 @@ function get_general_competencies()
 {
     return R::findOne('competencygroup', 'general = ?', array(1)); // TODO: Multiple general competencies allowed?
 }
-

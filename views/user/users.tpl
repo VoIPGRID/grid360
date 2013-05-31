@@ -1,9 +1,13 @@
 {include file="lib/functions.tpl"}
 
+<script type="text/javascript">
+    var base_uri = {$smarty.const.BASE_URI};
+</script>
+
 {function print_user_info}
     <tr>
         <td>{$user.firstname|capitalize:true}</td>
-        <td>{$user.lastname|capitalize:true}</td>
+        <td>{$user.lastname}</td>
         <td>{$user.email}</td>
         <td>{$user.department.name|capitalize:true}</td>
         <td>{$user.role.name|capitalize:true}</td>
@@ -15,6 +19,7 @@
 
 {if isset($smarty.get.success)}
     <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
         {$smarty.get.success}
     </div>
 {/if}

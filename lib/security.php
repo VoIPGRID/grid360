@@ -4,7 +4,7 @@ function security_authorize($required_level = EMPLOYEE)
 {
     if($required_level !== ANONYMOUS)
     {
-        if($_SESSION['current_user'] == null)
+        if(!isset($_SESSION['current_user']) || $_SESSION['current_user'] == null)
         {
             layout('security/login.tpl');
             header('Location: ' . BASE_URI . 'login');
@@ -20,8 +20,6 @@ function security_authorize($required_level = EMPLOYEE)
 
 function security_login($email, $password, $remember_me = false, $cookie_login = false)
 {
-    require(LIB_DIR . 'phpass-0.3/PasswordHash.php');
-
     $user = R::findOne('user', 'email = ?', array($email));
 
     if($user->id == 0)
@@ -61,6 +59,6 @@ function security_logout()
 {
     session_destroy();
 
-    setcookie('email', '', time() + (60 * 60));
-    setcookie('password', '', time() + (60 * 60));
+    setcookie('email', '', time() - (60 * 60));
+    setcookie('password', '', time() - (60 * 60));
 }

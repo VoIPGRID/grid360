@@ -22,7 +22,7 @@ $(document).ready(function()
         $.ajax({
             type: 'POST',
             data: {id: id, status: status},
-            url: '/grid360/admin/user/status'
+            url: base_uri + 'admin/user/status'
         }).done(function()
             {
                 window.location.href = $(location).attr('href');

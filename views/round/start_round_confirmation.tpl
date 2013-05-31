@@ -12,22 +12,22 @@
                 <tr>
                     <input type="hidden" name="min_own" value="{$values.min_own}"/>
                     <td>Min. own department</td>
-                    <td>{if !empty({$values.min_own})}{$values.min_own}%{else}50%{/if}</td>
+                    <td>{$values.min_own|default:50}%</td>
                 </tr>
                 <tr>
                     <input type="hidden" name="max_own" value="{$values.max_own}"/>
                     <td>Max. own department</td>
-                    <td>{if !empty({$values.max_own})}{$values.max_own}%{else}100%{/if}</td>
+                    <td>{$values.max_own|default:100}%</td>
                 </tr>
                 <tr>
                     <input type="hidden" name="min_other" value="{$values.min_other}"/>
                     <td>Min. other department</td>
-                    <td>{if !empty({$values.min_other})}{$values.min_other}%{else}25%{/if}</td>
+                    <td>{$values.min_other|default:25}%</td>
                 </tr>
                 <tr>
                     <input type="hidden" name="max_other" value="{$values.max_other}"/>
                     <td>Max. other department</td>
-                    <td>{if !empty({$values.max_other})}{$values.max_other}%{else}50%{/if}</td>
+                    <td>{$values.max_other|default:50}%</td>
                 </tr>
             </table>
         </div>
