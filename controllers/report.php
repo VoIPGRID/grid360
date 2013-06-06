@@ -67,28 +67,62 @@ function view_report()
     }
 
     $reviews = R::find('review', 'reviewee_id = ? AND round_id = ?', array($user->id, $round->id));
-    $roundinfo = R::find('roundinfo', 'reviewee_id = ? AND status = 1 AND round_id = ?', array($user->id, $round->id));
-    $total_review_count = R::count('roundinfo', 'reviewee_id = ? AND status != 2 AND round_id = ?', array($user->id, $round->id));
+    R::preload($reviews, array('reviewer' => 'user'));
 
-    if(count($roundinfo) < 5)
+    $roundinfo = R::find('roundinfo', 'reviewee_id = ? AND status = ? AND round_id = ?', array($user->id, REVIEW_COMPLETED, $round->id));
+    R::preload($roundinfo, array('reviewer' => 'user'));
+
+    $total_review_count = R::count('roundinfo', 'reviewee_id = ? AND status != ? AND round_id = ?', array($user->id, REVIEW_SKIPPED,$round->id));
+
+    $own_roundinfo = R::find('roundinfo', 'reviewer_id = ? AND status = ? AND round_id = ?', array($user->id, REVIEW_COMPLETED, $round->id));
+    $total_own_review_count = R::count('roundinfo', 'reviewer_id = ? AND status != ? AND round_id = ?', array($user->id, REVIEW_SKIPPED,$round->id));
+
+    if((count($roundinfo) - 1) < 4)
     {
-        return html(sprintf(REPORT_INSUFFICIENT_DATA, count($roundinfo), $total_review_count));
+        return html(sprintf(REPORT_INSUFFICIENT_DATA, (count($roundinfo) - 1), $total_review_count));
     }
 
-    R::preload($reviews, array('reviewer' => 'user'));
+    if((count($own_roundinfo) - 1) < 5)
+    {
+        return html(sprintf(REPORT_INSUFFICIENT_REVIEWED, count($own_roundinfo), $total_own_review_count));
+    }
 
     $ratings = array();
     $own_ratings = array();
+    $positive_ratings = array();
+    $negative_ratings = array();
 
+    $comment_counts = array();
     foreach($reviews as $review)
     {
         if($review->reviewer->id != $user->id)
         {
+            if($review->is_positive == 1)
+            {
+                $positive_ratings[$review->competency->id][] = $review->rating->id;
+            }
+            elseif($review->is_positive == 0)
+            {
+                $negative_ratings[$review->competency->id][] = $review->rating->id;
+            }
+
             $ratings[$review->competency->id][] = $review->rating->id;
         }
         else
         {
             $own_ratings[$review->competency->id] = $review->rating->id;
+        }
+
+        if($review->comment != '')
+        {
+            if(array_key_exists($review->competency->id, $comment_counts))
+            {
+                $comment_counts[$review->competency->id] += 1;
+            }
+            else
+            {
+                $comment_counts[$review->competency->id] = 1;
+            }
         }
     }
 
@@ -103,6 +137,7 @@ function view_report()
         }
 
         $average_ratings[$competency_id]['average'] = round($total / count($rating), 2);
+        $average_ratings[$competency_id]['count_reviews'] = count($rating);
         $average_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
         $average_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
     }
@@ -136,6 +171,7 @@ function view_report()
     $smarty->assign('page_header_size', 'h2');
     $smarty->assign('has_own_ratings', $has_own_ratings);
     $smarty->assign('user', $user);
+    $smarty->assign('comment_counts', $comment_counts);
 
     if($current_round->id == 0)
     {

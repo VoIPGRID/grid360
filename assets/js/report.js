@@ -4,6 +4,7 @@ function draw_chart()
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Competency name');
     data.addColumn('number', graph_text_average);
+    data.addColumn({type: 'string', role: 'tooltip', 'p': {'html': true}});
     data.addColumn('number', graph_text_own);
 
     for(var i in averages)
@@ -11,6 +12,15 @@ function draw_chart()
         average = averages[i];
         if(average.enabled == true)
         {
+            if(average['count_reviews'] <= 1)
+            {
+                var review_text = graph_text_tooltip_single;
+            }
+            else
+            {
+                var review_text = graph_text_tooltip;
+            }
+            var tooltip = '<div class="graph-tooltip"><b>' + average['name'] + '</b>' + '<br />' + graph_text_average + ': ' + average['average'] + '<br />Gebaseerd op ' + average['count_reviews'] + ' ' + review_text + '</div>';
             switch(state)
             {
                 case 0:
@@ -18,23 +28,23 @@ function draw_chart()
                 case 1:
                     if(!isNaN(average['average']))
                     {
-                        data.addRow([average['name'], average['average'], null]);
+                        data.addRow([average['name'], average['average'], tooltip,  null]);
                     }
                     break;
                 case 2:
                     if(!isNaN(average['own_rating']))
                     {
-                        data.addRow([average['name'], 0, average['own_rating']]);
+                        data.addRow([average['name'], 0, tooltip, average['own_rating']]);
                     }
                     break;
                 case 4:
                     if(!isNaN(average['own_rating']) && !isNaN(average['average']))
                     {
-                        data.addRow([average['name'], average['average'], average['own_rating']]);
+                        data.addRow([average['name'], average['average'], tooltip, average['own_rating']]);
                     }
                     break;
                 default:
-                    data.addRow([average['name'], average['average'], average['own_rating']]);
+                    data.addRow([average['name'], average['average'], tooltip, average['own_rating']]);
                     break;
             }
         }
@@ -50,6 +60,7 @@ $(document).ready(function()
     options =
     {
         title: graph_header,
+        tooltip: {isHtml: true},
         fontSize: 12,
         animation:
         {

@@ -65,36 +65,40 @@
         <legend>{$smarty.const.TEXT_COMMENTS}</legend>
         <div class="row-fluid">
         <span class="span12">
-             <div class="tabbable">
-                 <ul class="nav nav-tabs">
-                     <li class="active"><a href="#tab-all" data-toggle="tab">{$smarty.const.REPORT_ALL_COMMENTS}</a></li>
-                     <li><a href="#tab-answers" data-toggle="tab">{$smarty.const.REPORT_EXTRA_QUESTION}</a></li>
-                     {foreach $averages as $competency_id => $average}
-                         <li><a href="#tab-{$competency_id}" data-toggle="tab">{$average.name}</a></li>
-                     {/foreach}
-                 </ul>
-                 <div class="comment-box">
-                     <div class="tab-content">
-                         <div class="tab-pane active" id="tab-all">
-                             <table class="table table-striped">
-                                 <tbody></tbody>
-                             </table>
-                         </div>
-                         <div class="tab-pane" id="tab-answers">
-                             <table class="table table-striped">
-                                 <tbody></tbody>
-                             </table>
-                         </div>
-                         {foreach $averages as $competency_id => $average}
-                             <div class="tab-pane fade" id="tab-{$competency_id}">
-                                 <table class="table table-striped">
-                                     <tbody></tbody>
-                                 </table>
-                             </div>
-                         {/foreach}
-                     </div>
-                 </div>
-             </div>
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-all" data-toggle="tab">{$smarty.const.REPORT_ALL_COMMENTS}</a></li>
+                    {foreach $averages as $competency_id => $average}
+                        {if array_key_exists($competency_id, $comment_counts)}
+                            <li><a href="#tab-{$competency_id}" data-toggle="tab">{$average.name}</a></li>
+                        {/if}
+                    {/foreach}
+                    <li><a href="#tab-answers" data-toggle="tab">{$smarty.const.REPORT_EXTRA_QUESTION}</a></li>
+                </ul>
+                <div class="comment-box">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-all">
+                            <table class="table table-striped">
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane" id="tab-answers">
+                            <table class="table table-striped">
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        {foreach $averages as $competency_id => $average}
+                            {if array_key_exists($competency_id, $comment_counts)}
+                                <div class="tab-pane fade" id="tab-{$competency_id}">
+                                    <table class="table table-striped">
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            {/if}
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
         </span>
         </div>
     </fieldset>
@@ -105,7 +109,9 @@
             var average = new Array();
             average['id'] = '{$competency_id}';
             average['name'] = '{$average.name|escape:'quotes'}';
-            average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2)); // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
+            // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
+            average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2));
+            average['count_reviews'] = parseInt('{$average.count_reviews}');
             average['own_rating'] = parseFloat('{$average.own_rating}');
             average['enabled'] = true;
             averages[{$competency_id}] = average;
@@ -113,14 +119,23 @@
 
         {foreach $reviews as $review}
             {if !empty($review.comment)}
-                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
-                $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append('{$review.comment|escape:'html'}')));
+                var own_text = '';
+                {if $review.reviewer.id == $smarty.session.current_user.id}
+                    own_text = '<strong>[{$smarty.const.REPORT_GRAPH_OWN}]</strong>';
+                {/if}
+
+                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'html'}')));
+                $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'html'}')));
             {/if}
         {/foreach}
 
         {foreach $roundinfo as $info}
             {if !empty($info.answer)}
-                $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append('{$info.answer|escape:'html'}')));
+            var own_text = '';
+            {if $info.reviewer.id == $smarty.session.current_user.id}
+                own_text = '<strong>[{$smarty.const.REPORT_GRAPH_OWN}]</strong>';
+            {/if}
+                $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$info.answer|escape:'html'}')));
             {/if}
         {/foreach}
 
@@ -131,6 +146,8 @@
         graph_text_own = '{$smarty.const.REPORT_GRAPH_OWN}';
         graph_text_competencies = '{$smarty.const.TEXT_COMPETENCIES}';
         graph_text_points = '{$smarty.const.REPORT_GRAPH_POINTS}';
+        graph_text_tooltip_single = '{$smarty.const.REPORT_GRAPH_REVIEW_TEXT_SINGLE}';
+        graph_text_tooltip = '{$smarty.const.REPORT_GRAPH_REVIEW_TEXT}';
     </script>
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
     <script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>
