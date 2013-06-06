@@ -69,6 +69,8 @@ define('REPORT_GRAPH_HEADER', 'Ratings');
 define('REPORT_GRAPH_POINTS', 'Points');
 define('REPORT_GRAPH_AVERAGE', 'Average');
 define('REPORT_GRAPH_OWN', 'Own');
+define('REPORT_GRAPH_REVIEW_TEXT_SINGLE', 'review');
+define('REPORT_GRAPH_REVIEW_TEXT', 'reviews');
 
 // Feedback overview
 define('FEEDBACK_OVERVIEW_HEADER', 'Round overview');
@@ -78,25 +80,33 @@ define('FEEDBACK_INFO_PENDING', ' You have pending reviews! Click the review but
 define('FEEDBACK_REVIEW_BUTTON', 'Review');
 define('FEEDBACK_REVIEWEE_NAME', 'Name reviewee');
 define('FEEDBACK_OVERVIEW_NO_ROUND', 'No round in progress');
+define('FEEDBACK_OVERVIEW_EDIT', 'Edit comments');
 
 // Feedback steps
 define('FEEDBACK_INFO_COMPETENCY_DESCRIPTION', 'U kunt de beschrijving van een competentie lezen door uw muis over de competentie te bewegen');
 define('FEEDBACK_SKIP_BUTTON', 'Skip person');
 define('FEEDBACK_HEADER_STEP_1', 'Select 3 positive competencies for ');
 define('FEEDBACK_HEADER_STEP_2', 'Select 2 points of improvement for ');
+define('FEEDBACK_HEADER_TEXT_SELF', 'yourself');
 define('FEEDBACK_SKIP_HEADER', 'Skip person');
 define('FEEDBACK_SKIP_TEXT', 'Are you sure you don\'t want to review %s %s?');
 define('FEEDBACK_SKIP_WARNING_BOLD', 'Warning!');
 define('FEEDBACK_SKIP_WARNING_TEXT', 'You won\'t be able to review this person again this round.');
+define('FEEDBACK_STEP_TEXT', 'Step %d of 3');
 
 // Feedback form
+define('FEEDBACK_FORM_HEADER_STEP_3', 'Rate the chosen competencies for %s %s');
 define('FEEDBACK_FORM_POSITIVE_COMPETENCIES', 'Positive competencies');
 define('FEEDBACK_FORM_NEGATIVE_COMPETENCIES', 'Points of improvement');
 define('FEEDBACK_FORM_EXTRA_QUESTION_HEADER', 'Extra question');
 define('FEEDBACK_FORM_EXTRA_QUESTION', 'In what way has %s %s contributed to the success of the organisation?');
 define('FEEDBACK_FORM_EXTRA_QUESTION_SELF', 'In what way have you contributed to the success of the organisation?');
 define('FEEDBACK_FORM_COMMENT_PLACEHOLDER', 'Add a comment for the competency %s here');
-define('FEEDBACK_FORM_INFO', 'Notice: Feedback, positive as well as constructive is directly viewable for your colleagues. Keep this in mind when writing comments');
+define('FEEDBACK_FORM_INFO', '<strong>Notice:</strong> Feedback, positive as well as constructive is directly viewable for your colleagues. Keep this in mind when writing comments');
+define('FEEDBACK_FORM_LOGOUT_WARNING', 'Make sure you submit this form within %d %s. Otherwise you will be automatically logged out.');
+define('FEEDBACK_FORM_LOGOUT_WARNING_MINUTES', 'minutes');
+define('FEEDBACK_FORM_LOGOUT_WARNING_HOUR', 'hour');
+define('FEEDBACK_FORM_LOGOUT_WARNING_HOURS', 'hours');
 
 // Messages
-define('MESSAGE_REVIEW_SUCCESS', 'Your review for %s has been saved');
+define('MESSAGE_REVIEW_SUCCESS', 'Your review for %s %s has been saved');
