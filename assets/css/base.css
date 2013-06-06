@@ -230,3 +230,8 @@ button i
 {
     width: 60%;
 }
+
+.graph-tooltip
+{
+    padding: 5px;
+}

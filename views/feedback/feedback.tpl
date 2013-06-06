@@ -23,11 +23,13 @@
 {/if}
 <h3>{$text}
     {if $reviewee.id == $current_user.id}
-        uzelf
+        {$smarty.const.FEEDBACK_HEADER_TEXT_SELF}
     {else}
         {$reviewee.firstname} {$reviewee.lastname}
     {/if}
 </h3>
+
+<h4>{$smarty.const.FEEDBACK_STEP_TEXT|sprintf:{$step}}</h4>
 
 <div class="alert alert-info">
     {$smarty.const.FEEDBACK_INFO_COMPETENCY_DESCRIPTION}
@@ -40,13 +42,16 @@
 {/if}
 
 <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$url_text}" method="post">
-    {foreach $competencygroups as $competencygroup}
-        <fieldset>
-            <legend>{$competencygroup.name}</legend>
-            {create_checkboxes competencies=$competencygroup.ownCompetency}
-        </fieldset>
-    {/foreach}
-
+    <div class="row-fluid">
+        {foreach $competencygroups as $competencygroup}
+            <span class="span6">
+                <fieldset>
+                    <legend>{$competencygroup.name}</legend>
+                    {create_checkboxes competencies=$competencygroup.ownCompetency}
+                </fieldset>
+            </span>
+        {/foreach}
+    </div>
     <div class="form-actions">
         <button type="button" class="btn" onclick="history.go(-1);return true;">{$button_text}</button>
         <button type="submit" class="btn btn-primary" id="submit">{$smarty.const.BUTTON_NEXT}</button>

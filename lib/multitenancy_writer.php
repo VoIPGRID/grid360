@@ -6,12 +6,9 @@ class Multitenancy_QueryWriter_MySQL extends RedBean_QueryWriter_MySQL
 
     public function selectRecord($type, $conditions, $addSql = null, $delete = null, $inverse = false, $all = false)
     {
-        if(!in_array($type, $this->non_tenant_types))
+        if(!in_array($type, $this->non_tenant_types) && isset($_SESSION['current_user']))
         {
-            if(isset($_SESSION['current_user']))
-            {
-                $conditions['tenant_id'] = $_SESSION['current_user']->tenant_id;
-            }
+            $conditions['tenant_id'] = $_SESSION['current_user']->tenant_id;
         }
 
         return parent::selectRecord($type, $conditions, $addSql, $delete, $inverse, $all);

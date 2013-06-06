@@ -11,50 +11,58 @@ function register()
     return html($smarty->fetch('security/register.tpl'), 'layout/basic.php');
 }
 
-
 const GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id?id=';
 
 function login_google()
 {
-    // openid login
     $openid = new LightOpenID('localhost');
-    if(!$openid->mode) {
+    if(!$openid->mode)
+    {
         $openid->identity = GOOGLE_OPENID_URL;
 
-        // redirect naar $openid->identity voor access krijgen
+        // Redirect to $openid->identity to get permission to use user's info
         redirect_to($openid->authUrl());
     }
 
-    // nieuwe $openid->identity opslaan als identity_hash
+    // Save new $openid->identity
     $identity_hash = '';
     $user = null;
-    if($openid->validate()) {
-        $identity_hash = str_replace(GOOGLE_OPENID_URL, '',  $openid->identity);
+    if($openid->validate())
+    {
+        $identity_hash = str_replace(GOOGLE_OPENID_URL, '', $openid->identity);
 
-        // query existing user
+        // Query existing user
         $user = R::findOne('user', 'identity = ?', array($identity_hash));
 
-        if($user->id == 0) {
-            // identity hash opslaan
+        if($user->id == 0)
+        {
+            // Store identity hash
             $attributes = $openid->getAttributes();
-            if(count($attributes) > 0) {
+            if(count($attributes) > 0)
+            {
                 $user = R::findOne('user', 'email = ?', array($attributes['contact/email']));
                 $user->identity = $identity_hash;
                 R::store($user);
             }
-        } else {
-            // gegevens opslaan
+        }
+        else
+        {
+            // Store user and redirect to frontpage
             $attributes = $openid->getAttributes();
-            if(count($attributes) > 0) {
+            if(count($attributes) > 0)
+            {
                 $user->email = $attributes['contact/email'];
                 R::store($user);
             }
+
             $_SESSION['current_user'] = $user;
+
             redirect_to('/');
         }
 
-        // redirect voor openid indien gegevens missen
-        if(!isset($user->email)) {
+        // Redirect for OpenID incase info is missing
+        if(!isset($user->email))
+        {
             $openid = new LightOpenID('localhost');
             $openid->identity = GOOGLE_OPENID_URL . $identity_hash;
             $openid->required = array(
@@ -64,6 +72,7 @@ function login_google()
                 'namePerson/last',
                 'contact/email'
             );
+
             redirect_to($openid->authUrl());
         }
     }
