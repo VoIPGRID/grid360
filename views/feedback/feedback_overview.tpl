@@ -34,6 +34,7 @@
                 <th>{$smarty.const.TH_DEPARTMENT}</th>
                 <th>{$smarty.const.TH_ROLE}</th>
                 <th>Status</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -44,15 +45,17 @@
                         <td>{$info.reviewee.department.name}</td>
                         <td>{$info.reviewee.role.name}</td>
                         <td>
-                            {if $info.status == 0}
+                            {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
                                 {$smarty.const.TEXT_PENDING}
                             {else}
                                 {$smarty.const.TEXT_COMPLETED}
                             {/if}
                         </td>
                         <td>
-                            {if $info.status == 0}
+                            {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
                                 <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{$smarty.const.FEEDBACK_REVIEW_BUTTON}</a>
+                            {elseif $info.status == $smarty.const.REVIEW_COMPLETED}
+                                <a href="{$smarty.const.BASE_URI}feedback/edit/{$info.reviewee.id}">{$smarty.const.FEEDBACK_OVERVIEW_EDIT}</a>
                             {/if}
                         </td>
                     </tr>

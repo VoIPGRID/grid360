@@ -1,5 +1,67 @@
 <?php
 
+const MINUTES = 60;
+const HOURS = 3600;
+
+function edit_feedback()
+{
+    security_authorize();
+
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND round_id = ? AND reviewee_id = ? AND status = ?', array($_SESSION['current_user']->id, get_current_round()->id, params('id'), REVIEW_COMPLETED));
+
+    if($roundinfo->id == 0)
+    {
+        return html('Can\'t view this person!');
+    }
+
+    $reviews = R::find('review', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, params('id'), get_current_round()->id));
+
+    global $smarty;
+    $smarty->assign('roundinfo', $roundinfo);
+    $smarty->assign('reviews', $reviews);
+    $smarty->assign('reviewee', R::load('user', params('id')));
+
+    return html($smarty->fetch('feedback/edit_feedback.tpl'));
+}
+
+function edit_feedback_post()
+{
+    security_authorize();
+
+    $reviewee = R::load('user', params('id'));
+    $current_round = get_current_round();
+
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ? AND status = ?', array($_SESSION['current_user']->id, $reviewee->id, $current_round->id, REVIEW_COMPLETED));
+
+    if($roundinfo->id == 0)
+    {
+        return html('Can\'t edit this feedback! Error with round info!');
+    }
+
+    $roundinfo->answer = $_POST['roundinfo']['answer'];
+
+    $reviews = array();
+
+    foreach($_POST['reviews'] as $review_row)
+    {
+        $review = R::findOne('review', 'id = ? AND reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($review_row['id'], $_SESSION['current_user']->id, $reviewee->id, $current_round->id));
+
+        if($review->id == 0)
+        {
+            return html('Can\'t edit this feedback! Error with reviews!');
+        }
+
+        $review->comment = $review_row['comment'];
+
+        $reviews[] = $review;
+    }
+
+    R::storeAll($reviews);
+    R::store($roundinfo);
+
+    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname, $reviewee->lastname));
+}
+
 function view_feedback_overview()
 {
     security_authorize();
@@ -158,6 +220,10 @@ function feedback_step_3()
     $smarty->assign('reviewee', $reviewee);
     $smarty->assign('positive_competencies', $positive_competencies);
     $smarty->assign('negative_competencies', $negative_competencies);
+    $smarty->assign('step', 3);
+
+    // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
+    $smarty->assign('session_lifetime', ini_get('session.gc_maxlifetime') / MINUTES);
     set('title', 'Feedback step 3');
 
     return html($smarty->fetch('feedback/feedback_form.tpl'));
@@ -172,7 +238,7 @@ function feedback_step_3_post()
     {
         if(isset($form_competency['rating']) && !empty($form_competency['rating']))
         {
-            if($form_competency['rating'] >= 3 && $form_competency['rating'] <= 5)
+            if($form_competency['rating'] >= 3 && $form_competency['rating'] <= 5 && $form_competency['is_positive'] == 1)
             {
                 $count++;
             }
@@ -194,7 +260,7 @@ function feedback_step_3_post()
     {
         if(isset($form_competency['rating']) && !empty($form_competency['rating']))
         {
-            if($form_competency['rating'] >= 1 && $form_competency['rating'] <= 3)
+            if($form_competency['rating'] >= 1 && $form_competency['rating'] <= 3 && $form_competency['is_positive'] == 0)
             {
                 $count++;
             }
@@ -234,14 +300,14 @@ function feedback_step_3_post()
 
         if($competency->id == 0)
         {
-            return html('An error has occurred! <a href="javascript:history.go(-1);">Click here to go back</a>');
+            return html('An error has occurred regarding competencies! <a href="javascript:history.go(-1);">Click here to go back</a>');
         }
 
         $rating = R::load('rating', $form_competency['rating']);
 
         if($rating->id == 0)
         {
-            return html('An error has occurred! <a href="javascript:history.go(-1);">Click here to go back</a>');
+            return html('An error has occurred regarding ratings! <a href="javascript:history.go(-1);">Click here to go back</a>');
         }
 
         $reviews[$index]->reviewer = $current_user;
@@ -250,6 +316,7 @@ function feedback_step_3_post()
         $reviews[$index]->rating = $rating;
         $reviews[$index]->comment = $form_competency['comment'];
         $reviews[$index]->round = $round;
+        $reviews[$index]->is_positive = $form_competency['is_positive'];
         $index++;
     }
 
@@ -268,7 +335,7 @@ function feedback_step_3_post()
     R::store($roundinfo);
     R::storeAll($reviews);
 
-    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname . ' ' . $reviewee->lastname));
+    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname, $reviewee->lastname));
 }
 
 function skip_confirmation()
@@ -328,7 +395,7 @@ function skip_person()
 
     R::store($roundinfo);
 
-    $reviewees = R::find('user', 'department_id != ?', array($_SESSION['current_user']->department->id));
+    $reviewees = R::find('user', 'department_id != ? AND status != ?', array($_SESSION['current_user']->department->id, PAUSE_USER_REVIEWS));
 
     foreach($reviewees as $id => $reviewee)
     {

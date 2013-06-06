@@ -8,9 +8,24 @@
     {/for}
 {/function}
 
+{if $reviewee.id != $smarty.session.current_user.id}
+    <h3>{$smarty.const.FEEDBACK_FORM_HEADER_STEP_3|sprintf:$reviewee.firstname:$reviewee.lastname}</h3>
+{else}
+    <h3>{$smarty.const.FEEDBACK_FORM_HEADER_STEP_3|sprintf:{$smarty.const.FEEDBACK_HEADER_TEXT_SELF}:''}</h3>
+{/if}
+
+<h4>{$smarty.const.FEEDBACK_STEP_TEXT|sprintf:$step}</h4>
+
 <div class="alert alert-warning">
-    <span>{$smarty.const.FEEDBACK_FORM_INFO}</span>
+    {* Make sure you edit MINUTES to match the text you need (either HOURS or HOUR) *}
+    <span>{$smarty.const.FEEDBACK_FORM_LOGOUT_WARNING|sprintf:$session_lifetime:$smarty.const.FEEDBACK_FORM_LOGOUT_WARNING_MINUTES}</span>
 </div>
+
+{if $reviewee.id != $smarty.session.current_user.id}
+    <div class="alert alert-error">
+        <span>{$smarty.const.FEEDBACK_FORM_INFO}</span>
+    </div>
+{/if}
 
 {function create_form}
     <fieldset>
@@ -37,11 +52,14 @@
             <tbody>
             {foreach $competencies as $competency}
                 <tr>
-                    <td><input type="hidden" name="{$type}[{$competency.id}][id]" value="{$competency.id}" />{$competency.name}</td>
+                    <td>
+                        <input type="hidden" name="{$type}[{$competency.id}][id]" value="{$competency.id}" />
+                        <input type="hidden" name="{$type}[{$competency.id}][is_positive]" value="{$is_positive}" />
+                        <span data-toggle="tooltip" title="{$competency.description}" data-placement="right">{$competency.name}</span>
+                    </td>
                     {create_radiobuttons competency=$competency type=$type disabled_from=$disabled_from disabled_to=$disabled_to}
                     <td>
                         <textarea class="input-xlarge" name="{$type}[{$competency.id}][comment]" placeholder="{$smarty.const.FEEDBACK_FORM_COMMENT_PLACEHOLDER|sprintf:{$competency.name}}"></textarea>
-                        {*<button class="btn btn-link"><strong>+</strong> Add comment</button>*}
                     </td>
                 </tr>
             {/foreach}
@@ -53,8 +71,8 @@
 <div id="feedback-form">
     <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback/{$reviewee.id}/3" method="post">
 
-        {create_form competencies=$positive_competencies type="positive_competencies" disabled_from=0 disabled_to=2 legend=$smarty.const.FEEDBACK_FORM_POSITIVE_COMPETENCIES}
-        {create_form competencies=$negative_competencies type="negative_competencies" disabled_from=4 disabled_to=5 legend=$smarty.const.FEEDBACK_FORM_NEGATIVE_COMPETENCIES}
+        {create_form competencies=$positive_competencies type="positive_competencies" disabled_from=0 disabled_to=2 legend=$smarty.const.FEEDBACK_FORM_POSITIVE_COMPETENCIES is_positive=1}
+        {create_form competencies=$negative_competencies type="negative_competencies" disabled_from=4 disabled_to=5 legend=$smarty.const.FEEDBACK_FORM_NEGATIVE_COMPETENCIES is_positive=0}
 
         <fieldset>
             <legend>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION_HEADER}</legend>
@@ -70,22 +88,32 @@
 
         <div class="form-actions">
             <button type="button" class="btn" onclick="history.go(-1);return true;">{$smarty.const.BUTTON_PREVIOUS}</button>
-            <button type="submit" class="btn btn-primary">{$smarty.const.BUTTON_SUBMIT}</button>
+            <button type="submit" class="btn btn-primary" id="submit" >{$smarty.const.BUTTON_SUBMIT}</button><span id="help-text" style="display:none;" class="help-inline error">Not all fields are filled in</span>
         </div>
     </form>
 </div>
 
-{*<script type="text/javascript">
-    $('table textarea').hide();
-
-    $(document).ready(function()
+<script type="text/javascript">
+    $(document).ready()
     {
-        $('[class="btn btn-link"]').click(function()
+        $('#submit').click(function()
         {
-            $(this).siblings('textarea').show();
-            $(this).hide();
+            var count = 0;
+            $('[type="radio"]').each(function()
+            {
+                if($(this).is(':checked'))
+                {
+                    count++;
+                }
+            });
 
+            if(count == 5)
+            {
+                return true;
+            }
+
+            $('#help-text').show();
             return false;
         });
-    });
-</script>*}
+    }
+</script>
