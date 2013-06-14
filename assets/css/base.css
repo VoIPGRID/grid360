@@ -87,9 +87,22 @@ textarea
     margin-bottom: 0;
 }
 
+.comment-box table tr:first-child td
+{
+    border-top: 0;
+}
+
 ul.nav.nav-tabs
 {
     margin: 0;
+    border-bottom: 0;
+    position: relative;
+}
+
+ul.nav.nav-tabs li.active a
+{
+    border-color: #ccc;
+    border-bottom-color: transparent;
 }
 
 .well .controls
@@ -170,6 +183,7 @@ button i
 .logo
 {
     width: 24px;
+    margin-top: -2px;
 }
 
 #role-list .controls ~ .controls,
@@ -181,7 +195,7 @@ button i
 .container.login
 {
     margin-top: 35px;
-    max-width: 300px;
+    max-width: 500px;
 }
 
 .container.login .row

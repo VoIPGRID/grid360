@@ -124,8 +124,8 @@
                     own_text = '<strong>[{$smarty.const.REPORT_GRAPH_OWN}]</strong>';
                 {/if}
 
-                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'html'}')));
-                $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'html'}')));
+                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'quotes'}')));
+                $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'quotes'}')));
             {/if}
         {/foreach}
 
@@ -135,7 +135,7 @@
             {if $info.reviewer.id == $smarty.session.current_user.id}
                 own_text = '<strong>[{$smarty.const.REPORT_GRAPH_OWN}]</strong>';
             {/if}
-                $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$info.answer|escape:'html'}')));
+                $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$info.answer|escape:'quotes'}')));
             {/if}
         {/foreach}
 
@@ -148,6 +148,7 @@
         graph_text_points = '{$smarty.const.REPORT_GRAPH_POINTS}';
         graph_text_tooltip_single = '{$smarty.const.REPORT_GRAPH_REVIEW_TEXT_SINGLE}';
         graph_text_tooltip = '{$smarty.const.REPORT_GRAPH_REVIEW_TEXT}';
+        $('.nav-pills, .nav-tabs').tabdrop();
     </script>
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
     <script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>
