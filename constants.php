@@ -15,11 +15,15 @@ define('REVIEW_IN_PROGRESS', 0);
 define('REVIEW_COMPLETED', 1);
 define('REVIEW_SKIPPED', 2);
 
-// User specific constant
+// User specific constants
 define('PAUSE_USER_REVIEWS', 0);
 
-// Messages
-define('FIELD_REQUIRED', '%s is required!');
-define('CREATE_SUCCESS', 'Successfully added %s %s');
-define('UPDATE_SUCCESS', 'Successfully updated %s %s');
-define('DELETE_SUCCESS', 'Successfully deleted %s %s');
+// Form messages
+define('FIELD_REQUIRED', _('%s is required!'));
+define('CREATE_SUCCESS', _('Successfully added %s %s'));
+define('UPDATE_SUCCESS', _('Successfully updated %s %s'));
+define('DELETE_SUCCESS', _('Successfully deleted %s %s'));
+
+define('BEAN_NOT_FOUND', _('Error loading %s, please try again.'));
+define('INVALID_EMAIL_FORMAT', _('Email is not formatted correctly!'));
+define('EMAIL_EXISTS', _('Email already exists!'));

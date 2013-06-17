@@ -23,6 +23,7 @@ function before()
 {
     global $smarty;
     $smarty->assign('current_user', $_SESSION['current_user']);
+    $smarty->display('lib/functions.tpl');
 
     layout('layout/layout.php');
 }
@@ -41,17 +42,18 @@ $smarty->setCompileDir('views/templates_c');
 
 dispatch('/', 'dashboard');
 dispatch('/login', 'login');
-//dispatch('/login_google', 'login_google');
-//dispatch('/signup_oid', 'signup_openid');
+dispatch('/login_google', 'login_google');
 dispatch_post('/login', 'login_post');
 dispatch('/logout', 'logout');
-//dispatch('/register', 'register');
-//dispatch_post('/register', 'register_post');
+dispatch('/register', 'register');
+dispatch_post('/register', 'register_post');
+dispatch('/reset', 'reset_password');
+dispatch_post('/reset', 'reset_password_post');
 
 //dispatch('/admin/reset', 'confirmation');
 //dispatch_post('/admin/reset', 'fill_database');
 
-dispatch('/admin/rounds', 'round_overview');
+dispatch('/admin/round', 'round_overview');
 dispatch('/admin/round/create', 'create_round');
 dispatch_post('/admin/round/confirm', 'start_round_confirmation');
 dispatch_post('/admin/round/start', 'start_round');
@@ -81,7 +83,7 @@ dispatch_delete('/manager/role/:id', 'delete_role');
 dispatch('/manager/role/:id', 'edit_role');
 
 dispatch('/manager/competencygroup/create', 'create_competencygroup');
-dispatch_post('/manager/competencygroup/', 'create_competencygroup_post');
+dispatch_post('/manager/competencygroup/:id', 'create_competencygroup_post');
 dispatch('/manager/competencygroup/:id', 'edit_competencygroup');
 dispatch('/manager/competencygroup/delete/:id', 'delete_competencygroup_confirmation');
 dispatch_delete('/manager/competencygroup/:id', 'delete_competencygroup');
