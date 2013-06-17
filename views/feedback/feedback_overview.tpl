@@ -1,10 +1,3 @@
-{if isset($smarty.get.success)}
-    <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {$smarty.get.success}
-    </div>
-{/if}
-
 <div class="page-header"><h1>{$smarty.const.FEEDBACK_OVERVIEW_HEADER}</h1></div>
 <div class="row-fluid">
 <span class="span7">

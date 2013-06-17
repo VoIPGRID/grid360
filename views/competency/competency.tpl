@@ -1,23 +1,13 @@
-{function check_errors}
-    {$error_type = $values.error}
-    {if isset($error_type) && !empty($error_type)}
-        {if $error_type == 1}
-            {$error_message = "Competency name can't be empty!"}
-        {/if}
-        {if isset($error_message) && !empty($error_message)}
-            <div class="alert alert-error">
-                {$error_message}
-            </div>
-        {/if}
-    {/if}
-{/function}
+{if isset($form_values.error)}
+    {print_alert type="error" text=$form_values.error}
+{/if}
 
 <form action="{$smarty.const.MANAGER_URI}competency/{$competency.id}" method="POST" class="form-horizontal">
     <fieldset>
-        {if $update && isset($competency)}
-            <legend>Updating competency {$competency.name}</legend>
+        {if $update && isset($form_values.id.value)}
+            <legend>{t name=$competency_name}Updating competency %1{/t}</legend>
         {else}
-            <legend>Creating new competency</legend>
+            <legend>{t}Creating new competency{/t}</legend>
         {/if}
 
         {check_errors}
@@ -57,12 +47,12 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
-                    Update competency
+                    {t}Update competency{/t}
                 {else}
-                    Create competency
+                    {t}Create competency{/t}
                 {/if}
             </button>
         </div>

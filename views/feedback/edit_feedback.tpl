@@ -8,7 +8,7 @@
                 <thead>
                 <tr>
                     <th>{$smarty.const.TEXT_COMPETENCIES}</th>
-                    <th>Beoordeling</th>
+                    <th>{t}Rating{/t}</th>
                     <th>{$smarty.const.TEXT_COMMENTS}</th>
                 </tr>
                 </thead>

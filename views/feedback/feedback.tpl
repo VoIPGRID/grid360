@@ -3,7 +3,7 @@
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
-                    <input type="checkbox" name="competencies[]" value="{$competency.id}" /> {$competency.name}
+                    <input type="checkbox" id="competency-{$competency.id}" name="competencies[]" value="{$competency.id}" /> {$competency.name}
                 </label>
             </div>
         </div>
@@ -31,9 +31,7 @@
 
 <h4>{$smarty.const.FEEDBACK_STEP_TEXT|sprintf:{$step}}</h4>
 
-<div class="alert alert-info">
-    {$smarty.const.FEEDBACK_INFO_COMPETENCY_DESCRIPTION}
-</div>
+{call print_alert type="info" text="{$smarty.const.FEEDBACK_INFO_COMPETENCY_DESCRIPTION}"}
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
     <form action="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}">
@@ -58,7 +56,31 @@
     </div>
 </form>
 
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/feedback.js"></script>
 <script type="text/javascript">
     var step = '{$step}';
+
+    $(document).ready(function()
+    {
+        if(step == 1)
+        {
+            {foreach $smarty.session.positive_competencies as $competency}
+                $('#competency-' + '{$competency}').attr('checked', true);
+            {/foreach}
+
+            {if count($smarty.session.positive_competencies) == 3}
+                $('input:not(:checked)').attr('disabled', true);
+            {/if}
+        }
+        else if(step == 2)
+        {
+            {foreach $smarty.session.negative_competencies as $competency}
+                $('#competency-' + '{$competency}').attr('checked', true);
+            {/foreach}
+
+            {if count($smarty.session.negative_competencies) == 2}
+                $('input:not(:checked)').attr('disabled', true);
+            {/if}
+        }
+    });
 </script>
-<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/feedback.js"></script>

@@ -1,11 +1,9 @@
-{include file="lib/functions.tpl"}
-
 {function print_competencygroup}
     <tr>
         <td>{$competencygroup.name}</td>
         <td>{$competencygroup.description}</td>
         <td>{if $competencygroup.general}Yes{else}No{/if}</td>
-        {call show_actions type="competencygroup" level="manager"}
+        {call print_actions type="competencygroup" level="manager"}
     </tr>
 {/function}
 
@@ -14,7 +12,7 @@
         <td>{$competency.name}</td>
         <td>{$competency.description}</td>
         <td>{$competency.competencygroup.name}</td>
-        {call show_actions type="competency" level="manager"}
+        {call print_actions type="competency" level="manager"}
     </tr>
 {/function}
 
@@ -36,9 +34,10 @@
     </tbody>
 </table>
 {else}
-    No competency groups found!
+    {t}No competency groups found{/t}!
 {/if}
-{call print_add_link level="manager" type="competencygroup"}
+
+{call print_add_link level="manager" type_var="competencygroup" type="{t}competency group{/t}"}
 
 <h3>Competencies</h3>
 {if isset($competencygroups) && !empty($competencygroups)}
@@ -70,7 +69,8 @@
 {else}
     </table>No competencies found!
 {/if}
-{call print_add_link level="manager" type="competency"}
+
+{call print_add_link level="manager" type_var="competency" type="{t}competency{/t}"}
 
 <script type="text/javascript">
     $(document).ready(function()

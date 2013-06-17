@@ -1,26 +1,24 @@
-{include file="lib/functions.tpl"}
-
 {function print_roles}
     <tr>
         <td>{$role.name|capitalize:true}</td>
         <td>{$role.description}</td>
         <td>{$role.department.name}</td>
         <td>{$role.competencygroup.name}</td>
-        {call show_actions type="role" level="manager"}
+        {call print_actions type="role" level="manager"}
     </tr>
 {/function}
 
+{if isset($roles) && !empty($roles)}
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Department</th>
-        <th>Competency group</th>
-        <th>Actions</th>
+        <th>{t}Name{/t}</th>
+        <th>{t}Description{/t}</th>
+        <th>{t}Department{/t}</th>
+        <th>{t}Competency group{/t}</th>
+        <th>{t}Actions{/t}</th>
     </tr>
     </thead>
-{if isset($roles) && !empty($roles)}
     <tbody>
     {foreach $roles as $role}
         {print_roles}
@@ -28,6 +26,7 @@
     </tbody>
 </table>
 {else}
-    </table>No roles found!
+    {t}No roles found!{/t}
 {/if}
-{call print_add_link level="manager" type="role"}
+
+{call print_add_link level="manager" type_var="role" type="{t}role{/t}"}

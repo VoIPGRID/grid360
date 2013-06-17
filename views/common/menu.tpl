@@ -10,7 +10,9 @@
 <div class="container">
     <div class="navbar">
         <div class="navbar-inner">
-                <a class="brand" href="//www.voys.nl" target="_blank"><img class="logo" src="{$smarty.const.ASSETS_URI}images/logo_voys.png" /></a>
+            <a class="brand" href="//www.voipgrid.nl" target="_blank">
+                <img class="logo" src="{$smarty.const.ASSETS_URI}images/logo.png"/>
+            </a>
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                 <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
             </a>
@@ -40,7 +42,7 @@
                                 <li><a href="{$smarty.const.MANAGER_URI}competencies">{$smarty.const.MENU_ITEM_COMPETENCIES}</a></li>
                                 {if $current_user.userlevel.id == $smarty.const.ADMIN}
                                     <li class="divider"></li>
-                                    <li><a href="{$smarty.const.ADMIN_URI}rounds">{$smarty.const.MENU_ITEM_ROUNDS}</a></li>
+                                    <li><a href="{$smarty.const.ADMIN_URI}round">{$smarty.const.MENU_ITEM_ROUNDS}</a></li>
                                 {/if}
                             </ul>
                         </li>
