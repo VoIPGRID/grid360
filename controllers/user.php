@@ -1,9 +1,7 @@
 <?php
 
-const INVALID_EMAIL_FORMAT = 'Email is not formatted correctly!';
 const INVALID_DEPARTMENT = 'Invalid department given!';
 const ROLE_DEPARTMENT_MISMATCH = 'Chosen role does not belong to the chosen department!';
-const EMAIL_EXISTS = 'Email already exists!';
 
 function create_user()
 {
@@ -22,19 +20,21 @@ function create_user_post()
 {
     security_authorize(ADMIN);
 
-    if(!isset($_POST['type']) || $_POST['type'] != 'user')
+    $keys_to_check = array('firstname' => $_POST['firstname'], 'lastname' => $_POST['lastname'],
+                           'email' => $_POST['email'], 'department' => array('load_bean' => true, 'id' => $_POST['department']['id'], 'type' => 'department'),
+                           'role' => array('load_bean' => true, 'id' => $_POST['role']['id'], 'type' => 'role'),
+                           'userlevel' => array('load_bean' => true, 'id' => $_POST['userlevel']['id'], 'type' => 'userlevel'));
+
+    $id = params('id');
+
+    if(isset($id) && !empty($id))
     {
-        return html('Error creating user!');
+        $_POST['id'] = $id;
+        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'user');
     }
 
-    $update = false;
 
-    if(isset($_POST['id']))
-    {
-        $update = true;
-    }
-
-    $form_values = validate_user_form($update);
+    $form_values = validate_form($keys_to_check);
 
     global $smarty;
 
@@ -68,9 +68,16 @@ function create_user_post()
     // Check if it's a new user
     if($user->id == 0)
     {
+        $hasher = new PasswordHash(8, false);
+        $random_password = rand_string(10);
+
+        $user->password = $hasher->HashPassword($random_password);
         $user->status = 0;
         $user->created = R::isoDateTime();
         $message = sprintf(CREATE_SUCCESS, 'user', $user->firstname . ' ' . $user->lastname);
+
+//        send_mail('Your ' . APP_NAME . ' account' , 'admin@grid360.nl', $user->email,
+//            'Dear ' . $user->firstname . ' ' . $user->lastname . ", \n\n" .  ' you can now log in with: ' . "\nEmail: " . $user->email . "\nPassword: " . $random_password);
     }
     else
     {
@@ -80,7 +87,6 @@ function create_user_post()
     R::store($user);
 
     header('Location:' . ADMIN_URI . 'users?success=' . $message);
-    exit;
 }
 
 function view_users()
@@ -104,7 +110,8 @@ function edit_user()
 
     if($user->id == 0)
     {
-        return html('User not found!');
+        header('Location: ' . ADMIN_URI . 'users?error=' . sprintf(BEAN_NOT_FOUND, _('user')));
+        exit;
     }
 
     global $smarty;
@@ -123,6 +130,7 @@ function edit_user()
         $smarty->assign('form_values', $form_values);
     }
 
+    $smarty->assign('user_name', $user->name);
     $smarty->assign('departments', R::findAll('department'));
     $smarty->assign('roles', R::findAll('role'));
     $smarty->assign('userlevel_options', get_userlevels());
@@ -140,7 +148,8 @@ function edit_status()
 
     if($user->id == 0)
     {
-        return html('User not found!');
+        header('Location: ' . ADMIN_URI . 'users?error=' . sprintf(BEAN_NOT_FOUND, _('user')));
+        exit;
     }
 
     $user->status = $_POST['status'];
@@ -156,11 +165,12 @@ function delete_user_confirmation()
 
     if($user->id == 0)
     {
-        return html('User not found!');
+        header('Location: ' . ADMIN_URI . 'users?error=' . sprintf(BEAN_NOT_FOUND, _('user')));
     }
 
     global $smarty;
-    $smarty->assign('type', 'user');
+    $smarty->assign('type', _('user'));
+    $smarty->assign('type_var', 'user');
     $smarty->assign('user', $user);
     $smarty->assign('level_uri', ADMIN_URI);
 
@@ -175,12 +185,14 @@ function delete_user()
 
     if($user->id == 0)
     {
-        return html('User not found!');
+        header('Location: ' . ADMIN_URI . 'users?error=' . sprintf(BEAN_NOT_FOUND, _('user')));
+        exit;
     }
 
     R::trash($user);
 
-    return html('User deleted <a href="' . ADMIN_URI . 'users">Return to users</a>');
+    $message = sprintf(DELETE_SUCCESS, 'user', $user->firstname . ' ' . $user->lastname);
+    header('Location:' . ADMIN_URI . 'users?success=' . $message);
 }
 
 function validate_user_form($update = false)

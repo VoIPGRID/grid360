@@ -3,64 +3,65 @@
 </script>
 <script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 
-<form action="{$smarty.const.MANAGER_URI}competencygroup/{$competencygroup.id}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal">
     <fieldset>
-        {if $update && isset($competencygroup)}
-            <legend>Updating competency group {$competencygroup.name}</legend>
+        {if $update && isset($form_values.id.value)}
+            <legend>{t name=$competency_name}Updating competency group %1{/t}</legend>
         {else}
-            <legend>Creating new competency group</legend>
+            <legend>{t}Creating new competency group{/t}</legend>
         {/if}
 
         <div class="control-group">
-            <label class="control-label" for="general">Is general?</label>
+            <label class="control-label" for="general">{t}Is general{/t}?</label>
 
             <div class="controls">
-                <input type="checkbox" id="general" name="general" {if isset($competencygroup) && $competencygroup.general == 1 || $competencygroup.general == 'on'}checked{/if} />
-                <span><i class="icon-question-sign" data-toggle="tooltip" title="Checking this will display the current competencygroup for everybody" data-placement="right"></i></span>
+                <input type="checkbox" id="general" name="general" {if isset($form_values.is_general.value) && $form_values.is_general.value == 1 || $form_values.is_general.value == 'on'}checked{/if} />
+                <span><i class="icon-question-sign" data-toggle="tooltip" title="{t}Checking this will display the current competency group for everybody{/t}" data-placement="right"></i></span>
             </div>
         </div>
 
-        <div class="control-group">
+        <div class="control-group {if isset($form_values.name.error)}error{/if}">
             <input type="hidden" name="type" value="competencygroup" />
-            {if isset($competencygroup)}
-                <input type="hidden" name="id" value="{$competencygroup.id}" />
+            {if isset($form_values.id.value)}
+                <input type="hidden" name="id" value="{$form_values.id.value}" />
             {/if}
 
-            <label class="control-label" for="group-name">Group name</label>
+            <label class="control-label" for="group-name">{t}Group name{/t}</label>
 
             <div class="controls">
-                <input id="group-name" name="name" type="text" placeholder="Group name" class="input-large" required {if isset($competencygroup)}value="{$competencygroup.name}"{/if} />
+                <input id="group-name" name="name" type="text" placeholder="{t}Group name{/t}" class="input-large" required value="{$form_values.name.value}" />
+                {check_if_error var_name="name"}
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="group_description">Group description</label>
+            <label class="control-label" for="group_description">{t}Group description{/t}</label>
 
             <div class="controls">
-                <textarea id="group_description" name="description" placeholder="Group description" class="input-xxlarge">{if isset($competencygroup)}{$competencygroup.description}{/if}</textarea>
+                <textarea id="group_description" name="description" placeholder="{t}Group description{/t}" class="input-xxlarge">{$form_values.description.value}</textarea>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label">Competencies</label>
+            <label class="control-label">{t}Competencies{/t}</label>
 
             <div id="competency-list">
-                {if isset($competencygroup) && count($competencygroup.ownCompetency) > 0}{* Using count > 0 here because !empty doesn't work for some reason *}
+                {if isset($form_values.ownCompetency.value) && count($form_values.ownCompetency.value) > 0}{* Using count > 0 here because !empty doesn't work for some reason *}
                     {assign "index" 0}
-                    {foreach $competencygroup.ownCompetency as $competency}
+                    {foreach $form_values.ownCompetency.value as $competency}
                         <div class="controls">
                             <input type="hidden" name="ownCompetency[{$index}][type]" value="competency" />
                             <input type="hidden" name="ownCompetency[{$index}][id]" value="{$competency.id}" />
-                            <input name="ownCompetency[{$index}][name]" type="text" placeholder="Role name" class="input-xlarge" value="{$competency.name}" />
-                            <textarea name="ownCompetency[{$index}][description]" type="text" placeholder="Competency description" class="input-xxlarge">{$competency.description}</textarea>
+                            <input name="ownCompetency[{$index}][name]" type="text" placeholder="{t}Competency name{/t}" class="input-xlarge" value="{$competency.name}" />
+                            <textarea name="ownCompetency[{$index}][description]" type="text" placeholder="{t}Competency description{/t}" class="input-xxlarge">{$competency.description}</textarea>
                         </div>
                         {assign "index" {counter}}
                     {/foreach}
                 {else}
                     <div class="controls">
                         <input type="hidden" name="ownCompetency[0][type]" value="competency" />
-                        <input type="text" name="ownCompetency[0][name]" placeholder="Competency name" class="input-xlarge" />
-                        <textarea class="input-xxlarge" name="ownCompetency[0][description]" placeholder="Competency description"></textarea>
+                        <input type="text" name="ownCompetency[0][name]" placeholder="{t}Competency name{/t}" class="input-xlarge" />
+                        <textarea class="input-xxlarge" name="ownCompetency[0][description]" placeholder="{t}Competency description{/t}"></textarea>
                     </div>
                 {/if}
             </div>
@@ -68,17 +69,17 @@
 
         <div class="control-group">
             <div class="controls">
-                <button id="add-button" class="btn btn-link"><strong>+</strong> Add competency</button>
+                <button id="add-button" class="btn btn-link"><strong>+</strong> {t}Add competency{/t}</button>
             </div>
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
-                    Update competency group
+                    {t}Update competency group{/t}
                 {else}
-                    Create competency group
+                    {t}Create competency group{/t}
                 {/if}
             </button>
         </div>

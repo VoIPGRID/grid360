@@ -4,8 +4,8 @@ function create_role()
 {
     security_authorize(MANAGER);
 
-    $departments = R::$adapter->getAssoc('select id, name from department');
-    $competencygroups = R::$adapter->getAssoc('select id, name from competencygroup where general != 1');
+    $departments = get_departments_assoc();
+    $competencygroups = get_competencygroups_assoc();
 
     global $smarty;
     $smarty->assign('department_options', $departments);
@@ -18,44 +18,60 @@ function create_role_post()
 {
     security_authorize(MANAGER);
 
-    if(!isset($_POST['type']) || $_POST['type'] != 'role')
+    $keys_to_check = array('name' => $_POST['name'],
+        'department' => array('load_bean' => true, 'id' => $_POST['department']['id'], 'type' => 'department'),
+        'competencygroup' => array('load_bean' => true, 'id' => $_POST['competencygroup']['id'], 'type' => 'competencygroup'));
+
+    $id = params('id');
+
+    if(isset($id) && !empty($id))
     {
-        return html('Error creating role!');
+        $_POST['id'] = $id;
+        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'role');
     }
 
-    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
+    $form_values = validate_form($keys_to_check);
+
+    global $smarty;
+
+    $has_errors = false;
+    foreach($form_values as $form_value)
     {
-        $role = R::graph($_POST);
+        if(isset($form_value['error']))
+        {
+            $has_errors = true;
+            break;
+        }
+    }
 
-        R::store($role);
-
-        global $smarty;
+    // Set the form values so they can be used again in the form
+    if($has_errors || isset($form_values['error']))
+    {
+        $smarty->assign('form_values', $form_values);
 
         if(isset($_POST['id']))
         {
-            return html('Role with id ' . $_POST['id'] . ' updated! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
-        }
-
-        return html('Role created! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
-    }
-    else
-    {
-        $form_values = array();
-        $form_values['name']['error'] = 'Name is required';
-
-        global $smarty;
-        $smarty->assign('form_values', $form_values);
-
-        $id = params('id');
-
-        if(isset($id) && !empty($id))
-        {
-            $smarty->assign('role', R::load('role', params('id')));
-            $smarty->assign('update', true);
+            return edit_role();
         }
 
         return create_role();
     }
+
+    $role = R::graph($_POST);
+
+    // Check if the department is a new department
+    if($role->id != 0)
+    {
+        $message = sprintf(UPDATE_SUCCESS, _('role'), $role->name);
+    }
+    else
+    {
+        $message = sprintf(CREATE_SUCCESS, _('role'), $role->name);
+    }
+
+    R::store($role);
+
+    header('Location: ' . MANAGER_URI . 'roles?success=' . $message);
 }
 
 function view_roles()
@@ -73,7 +89,7 @@ function view_roles()
         $roles = R::find('role', 'department_id = ?', array($_SESSION['current_user']->department->id));
     }
     $smarty->assign('roles', $roles);
-    $smarty->assign('page_header', 'Roles');
+    $smarty->assign('page_header', _('Roles'));
 
     return html($smarty->fetch('role/roles.tpl'));
 }
@@ -93,16 +109,30 @@ function edit_role()
 
     if($role->id == 0)
     {
-        return html('Role not found! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
+        header('Location: ' . ADMIN_URI . 'roles?error=' . sprintf(BEAN_NOT_FOUND, _('role')));
+        exit;
     }
 
-    $departments = R::$adapter->getAssoc('select id, name from department');
-    $competencygroups = R::$adapter->getAssoc('select id, name from competencygroup where general != 1');
+    $departments = get_departments_assoc();
+    $competencygroups = get_competencygroups_assoc();
 
     global $smarty;
+
+    if(!$smarty->getTemplateVars('form_values'))
+    {
+        $form_values = array();
+        $form_values['id']['value'] = $role->id;
+        $form_values['name']['value'] = $role->name;
+        $form_values['description']['value'] = $role->description;
+        $form_values['department']['value'] = $role->department->id;
+        $form_values['competencygroup']['value'] = $role->competencygroup->id;
+
+        $smarty->assign('form_values', $form_values);
+    }
+
+    $smarty->assign('role_name', $role->name);
     $smarty->assign('department_options', $departments);
     $smarty->assign('competencygroup_options', $competencygroups);
-    $smarty->assign('role', $role);
     $smarty->assign('update', true);
 
     return html($smarty->fetch('role/role.tpl'));
@@ -127,7 +157,8 @@ function delete_role_confirmation()
     }
 
     global $smarty;
-    $smarty->assign('type', 'role');
+    $smarty->assign('type', _('role'));
+    $smarty->assign('type_var', 'role');
     $smarty->assign('role', $role);
     $smarty->assign('level_uri', MANAGER_URI);
 
@@ -154,5 +185,51 @@ function delete_role()
 
     R::trash($role);
 
-    return html('Role deleted! <a href="' . MANAGER_URI . 'roles">Return to roles</a>');
+    $message = sprintf(DELETE_SUCCESS, _('role'), $role->name);
+
+    header('Location: ' . MANAGER_URI . 'roles?success=' . $message);
+    exit;
+}
+
+function validate_role_form()
+{
+    $form_values = array();
+
+    $form_values['id']['value'] = $_POST['id'];
+    $form_values['name']['value'] = $_POST['name'];
+    $form_values['manager']['value'] = $_POST['user']['id'];
+    $form_values['roles']['value'] = $_POST['ownRole'];
+
+    if(!isset($_POST['type']) || $_POST['type'] != 'role')
+    {
+        $form_values['error'] = _('Error creating role');
+    }
+    if(!isset($_POST['name']) || strlen(trim($_POST['name'])) == 0)
+    {
+        $form_values['name']['error'] = sprintf(FIELD_REQUIRED, _('Role name'));
+    }
+    if(!isset($_POST['department']['id']))
+    {
+        $form_values['department']['error'] = _('Invalid department specified');
+    }
+    if(!isset($_POST['competencygroup']['id']))
+    {
+        $form_values['competencygroup']['error'] = _('Invalid competency group specified');
+    }
+
+    return $form_values;
+}
+
+function get_departments_assoc()
+{
+    $departments = R::$adapter->getAssoc('select id, name from department where tenant_id = ' . $_SESSION['current_user']->tenant_id);
+
+    return $departments;
+}
+
+function get_competencygroups_assoc()
+{
+    $competencygroups = R::$adapter->getAssoc('select id, name from competencygroup where general != 1 AND tenant_id = ' . $_SESSION['current_user']->tenant_id);
+
+    return $competencygroups;
 }

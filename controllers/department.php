@@ -14,64 +14,69 @@ function create_department_post()
 {
     security_authorize(ADMIN);
 
-    if(!isset($_POST['type']) || $_POST['type'] != 'department')
+    foreach($_POST['ownRole'] as $id => $role)
     {
-        return html('Error creating department!');
+        // If the role name is empty, remove role from the list so you don't get an empty role in the database
+        if(strlen(trim($role['name'])) == 0)
+        {
+            unset($_POST['ownRole'][$id]);
+        }
     }
 
-    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
+    $keys_to_check = array('name' => $_POST['name'],
+                           'user' => array('load_bean' => true, 'id' => $_POST['user']['id'], 'type' => 'user'));
+
+    $id = params('id');
+
+    if(isset($id) && !empty($id))
     {
-        foreach($_POST['ownRole'] as $id => $role)
+        $_POST['id'] = $id;
+        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'department');
+    }
+
+    $form_values = validate_form($keys_to_check);
+
+    global $smarty;
+
+    $has_errors = false;
+    foreach($form_values as $form_value)
+    {
+        if(isset($form_value['error']))
         {
-            if(strlen(trim($role['name'])) == 0)
-            {
-                // If the name is empty, remove role from the list so you don't get an empty role in the database
-                unset($_POST['ownRole'][$id]);
-            }
+            $has_errors = true;
+            break;
         }
+    }
 
-        $department = R::graph($_POST);
-
-        if($department->user->id == 0)
-        {
-            // If no user could be loaded, unset the manager, so you don't get an empty user in the database
-            unset($department->user);
-        }
-
-        if($department->id == 0)
-        {
-            $department->created = R::isoDateTime();
-        }
-
-        R::store($department);
-        global $smarty; // TODO: Add submit page
+    // Set the form values so they can be used again in the form
+    if($has_errors || isset($form_values['error']))
+    {
+        $smarty->assign('form_values', $form_values);
 
         if(isset($_POST['id']))
         {
-            return html('Department with id ' . $_POST['id'] . ' updated! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
-        }
-
-        return html('Department created! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
-    }
-    else
-    {
-        $form_values = array();
-        $form_values['name']['value'] = $_POST['name'];
-        $form_values['name']['error'] = 'Name is required';
-
-        global $smarty;
-        $smarty->assign('form_values', $form_values);
-
-        $id = params('id');
-
-        if(isset($id) && !empty($id))
-        {
-            $smarty->assign('department', R::load('department', params('id')));
-            $smarty->assign('update', true);
+            return edit_department();
         }
 
         return create_department();
     }
+
+    $department = R::graph($_POST);
+
+    // Check if the department is a new department
+    if($department->id != 0)
+    {
+        $message = sprintf(UPDATE_SUCCESS, _('department'), $department->name);
+    }
+    else
+    {
+        $department->created = R::isoDateTime();
+        $message = sprintf(CREATE_SUCCESS, _('department'), $department->name);
+    }
+
+    R::store($department);
+
+    header('Location: ' . ADMIN_URI . 'departments?success=' . $message);
 }
 
 function view_departments()
@@ -81,8 +86,8 @@ function view_departments()
     global $smarty;
     $departments = R::findAll('department');
     $smarty->assign('departments', $departments);
-    $smarty->assign('page_header', 'Departments');
-    set('title', 'Departments');
+    $smarty->assign('page_header', _('Departments'));
+    set('title', _('Departments'));
 
     return html($smarty->fetch('department/departments.tpl'));
 }
@@ -95,11 +100,24 @@ function edit_department()
 
     if($department->id == 0)
     {
-        return html('Department not found!');
+        header('Location: ' . ADMIN_URI . 'departments?error=' . sprintf(BEAN_NOT_FOUND, _('department')));
+        exit;
     }
 
     global $smarty;
-    $smarty->assign('department', $department);
+
+    if(!$smarty->getTemplateVars('form_values'))
+    {
+        $form_values = array();
+        $form_values['id']['value'] = $department->id;
+        $form_values['name']['value'] = $department->name;
+        $form_values['user']['value'] = $department->user->id;
+        $form_values['roles']['value'] = $department->ownRole;
+
+        $smarty->assign('form_values', $form_values);
+    }
+
+    $smarty->assign('department_name', $department->name);
     $smarty->assign('manager_options', get_managers());
     $smarty->assign('update', true);
 
@@ -114,11 +132,12 @@ function delete_department_confirmation()
 
     if($department->id == 0)
     {
-        return html('Department not found!');
+        header('Location: ' . ADMIN_URI . 'departments?error=' . sprintf(BEAN_NOT_FOUND, _('department')));
     }
 
     global $smarty;
-    $smarty->assign('type', 'department');
+    $smarty->assign('type', _('department'));
+    $smarty->assign('type_var', 'department');
     $smarty->assign('department', $department);
     $smarty->assign('level_uri', ADMIN_URI);
 
@@ -133,12 +152,13 @@ function delete_department()
 
     if($department->id == 0)
     {
-        return html('Department not found!');
+        header('Location: ' . ADMIN_URI . 'departments?error=' . sprintf(BEAN_NOT_FOUND, _('department')));
+        exit;
     }
 
     R::trash($department);
 
-    return html('Department deleted! <a href="' . ADMIN_URI . 'departments">Return to departments</a>');
+    header('Location: ' . ADMIN_URI . 'departments?success=' . sprintf(DELETE_SUCCESS, _('department'), $department->name));
 }
 
 function get_managers()
@@ -149,7 +169,8 @@ function get_managers()
                                        from user
                                        left join userlevel
                                        on userlevel.id = user.userlevel_id
-                                       where userlevel.level IN (' . R::genSlots($levels) . ')', $levels);
+                                       where userlevel.level IN (' . R::genSlots($levels) . ')
+                                       AND user.tenant_id = ' . $_SESSION['current_user']->tenant_id, $levels);
 
     return $managers;
 }

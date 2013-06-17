@@ -4,7 +4,7 @@ function create_competency()
 {
     security_authorize(MANAGER);
 
-    $competencygroups = R::$adapter->getAssoc('select id, name from competencygroup');
+    $competencygroups = get_competencygroups_assoc();
 
     global $smarty;
     $smarty->assign('group_options', $competencygroups);
@@ -16,87 +16,59 @@ function create_competency_post()
 {
     security_authorize(MANAGER);
 
-    if(!isset($_POST['type']) || $_POST['type'] != 'competency')
+    $keys_to_check = array('name' => $_POST['name'],
+        'competencygroup' => array('load_bean' => true, 'id' => $_POST['competencygroup']['id'], 'type' => 'competencygroup'));
+
+    $id = params('id');
+
+    if(isset($id) && !empty($id))
     {
-        return html('Error creating competency!');
+        $_POST['id'] = $id;
+        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'competency');
     }
 
-    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
-    {
-        $competency = R::graph($_POST);
-
-        R::store($competency);
-    }
-    else
-    {
-        $values = array();
-        $values['error'] = 1;
-
-        global $smarty;
-        $smarty->assign('values', $values);
-
-        return create_competency();
-    }
-}
-
-function create_competencygroup()
-{
-    security_authorize(MANAGER);
-
-    $roles = R::$adapter->getAssoc('select id, name from role');
+    $form_values = validate_form($keys_to_check);
 
     global $smarty;
-    $smarty->assign('role_options', $roles);
 
-    return html($smarty->fetch('competency/competencygroup.tpl'));
-}
-
-function create_competencygroup_post()
-{
-    security_authorize(MANAGER);
-
-    if(!isset($_POST['type']) || $_POST['type'] != 'competencygroup')
+    $has_errors = false;
+    foreach($form_values as $form_value)
     {
-        return html('Error creating competency group!');
+        if(isset($form_value['error']))
+        {
+            $has_errors = true;
+            break;
+        }
     }
 
-    if(isset($_POST['name']) && strlen(trim($_POST['name'])) > 0)
+    // Set the form values so they can be used again in the form
+    if($has_errors || isset($form_values['error']))
     {
-        foreach($_POST['ownCompetency'] as $competency_id => $competency)
-        {
-            if(strlen(trim($competency['name'])) == 0)
-            {
-                // If the name is empty, remove competency from the list so you don't get an empty competency in the database
-                unset($_POST['ownCompetency'][$competency_id]);
-            }
-        }
-
-        $competencygroup = R::graph($_POST);
-
-        if($_POST['general'])
-        {
-            $competencygroup->general = true;
-        }
-        else
-        {
-            $competencygroup->general = false;
-        }
-
-        R::store($competencygroup);
-
-        global $smarty;
+        $smarty->assign('form_values', $form_values);
 
         if(isset($_POST['id']))
         {
-            return html('Competency group with id ' . $_POST['id'] . ' updated! <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
+            return edit_competency();
         }
 
-        return html('Competency group created! <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
+        return create_competency();
+    }
+
+    $competency = R::graph($_POST);
+
+    // Check if the department is a new department
+    if($competency->id != 0)
+    {
+        $message = sprintf(UPDATE_SUCCESS, _('competency'), $competency->name);
     }
     else
     {
-        return html('No competency group name given');
+        $message = sprintf(CREATE_SUCCESS, _('competency'), $competency->name);
     }
+
+    R::store($competency);
+
+    header('Location: ' . MANAGER_URI . 'competencies?success=' . $message);
 }
 
 function view_competencies()
@@ -121,37 +93,18 @@ function edit_competency()
 
     if($competency->id == 0)
     {
-        return html('Competency not found');
+        header('Location: ' . ADMIN_URI . 'competencies?error=' . sprintf(BEAN_NOT_FOUND, _('competency')));
+        exit;
     }
 
-    $competencygroups = R::$adapter->getAssoc('select id, name from competencygroup');
+    $competencygroups = get_competencygroups_assoc();
 
     global $smarty;
     $smarty->assign('group_options', $competencygroups);
-    $smarty->assign('competency', $competency);
-
-    return html($smarty->fetch('competency/competency.tpl'));
-}
-
-function edit_competencygroup()
-{
-    security_authorize(MANAGER);
-
-    $competencygroup = R::load('competencygroup', params('id'));
-
-    if($competencygroup->id == 0)
-    {
-        return html('Competency not found');
-    }
-
-    $roles = R::$adapter->getAssoc('select id, name from role');
-
-    global $smarty;
-    $smarty->assign('competencygroup', $competencygroup);
-    $smarty->assign('role_options', $roles);
+    $smarty->assign('competency_name', $competency->name);
     $smarty->assign('update', true);
 
-    return html($smarty->fetch('competency/competencygroup.tpl'));
+    return html($smarty->fetch('competency/competency.tpl'));
 }
 
 function delete_competency_confirmation()
@@ -162,7 +115,8 @@ function delete_competency_confirmation()
 
     if($competency->id == 0)
     {
-        return html('Competency not found!');
+        $message = sprintf(BEAN_NOT_FOUND, 'competency');
+        header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
     }
 
     global $smarty;
@@ -181,45 +135,13 @@ function delete_competency()
 
     if($competency->id == 0)
     {
-        return html('Competency not found');
+        $message = sprintf(BEAN_NOT_FOUND, 'competency');
+        header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
+        exit;
     }
 
     R::trash($competency);
 
-    return html('Competency deleted! <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
-}
-
-function delete_competencygroup_confirmation()
-{
-    security_authorize(MANAGER);
-
-    $competencygroup = R::load('competencygroup', params('id'));
-
-    if($competencygroup->id == 0)
-    {
-        return html('Competency group not found!');
-    }
-
-    global $smarty;
-    $smarty->assign('type', 'competencygroup');
-    $smarty->assign('competencygroup', $competencygroup);
-    $smarty->assign('level_uri', MANAGER_URI);
-
-    return html($smarty->fetch('common/delete_confirmation.tpl'));
-}
-
-function delete_competencygroup()
-{
-    security_authorize(MANAGER);
-
-    $competencygroup = R::load('competencygroup', params('id'));
-
-    if($competencygroup->id == 0)
-    {
-        return html('Competency not found');
-    }
-
-    R::trash($competencygroup);
-
-    return html('Competency group deleted <a href="' . MANAGER_URI . 'competencies">Return to competencies</a>');
+    $message = sprintf(DELETE_SUCCESS, 'competency', $competency->name);
+    header('Location: ' . MANAGER_URI . 'competencies?success=' . $message);
 }

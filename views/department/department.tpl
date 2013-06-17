@@ -3,63 +3,64 @@
 </script>
 <script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 
-<form action="{$smarty.const.ADMIN_URI}department/{$department.id}" method="post" class="form-horizontal">
+{if isset($form_values.error)}
+    {call print_alert type="error" text="{$form_values.error}"}
+{/if}
+
+<form action="{$smarty.const.ADMIN_URI}department/{$form_values.id.value}" method="post" class="form-horizontal">
     <fieldset>
-        {if $update && isset($department)}
-            <legend>Updating department {$department.name}</legend>
+        {if $update && isset($form_values.id.value)}
+            <legend>{t name=$competency_name}Updating department %1{/t}</legend>
         {else}
-            <legend>Creating new department</legend>
+            <legend>{t}Creating new department{/t}</legend>
         {/if}
 
         <div class="control-group {if isset($form_values.name.error)}error{/if}">
             <input type="hidden" name="type" value="department" />
-            {if isset($department)}
-                <input type="hidden" name="id" value="{$department.id}" />
-            {/if}
+            {*<input type="hidden" name="id" value="{$form_values.id.value}" />*}
 
-            <label class="control-label" for="department_name">Department name</label>
+            <label class="control-label" for="department_name">{t}Department name{/t}</label>
 
             <div class="controls">
-                <input id="department-name" name="name" type="text" placeholder="Department name" class="input-large" required {if isset($department)}value="{$department.name}"{/if} />
-                {if isset($form_values.name.error)}
-                    <span class="help-inline">{$form_values.name.error}</span>
-                {/if}
+                <input id="department-name" name="name" type="text" placeholder="{t}Department name{/t}" class="input-large" required value="{$form_values.name.value}" />
+                {check_if_error var_name="name"}
             </div>
         </div>
 
-        <div class="control-group">
+        <div class="control-group {if isset($form_values.user.error)}error{/if}">
             <label class="control-label">Manager</label>
             <input type="hidden" name="user[type]" value="user" />
 
             <div class="controls">
                 {if isset($manager_options) && !empty($manager_options)}
-                    {html_options name="user[id]" options=$manager_options selected=$department.user.id}
+                    {html_options name="user[id]" options=$manager_options selected=$form_values.user.value}
                 {else}
-                    No managers/admins found
+                    {t}No managers/admins found{/t}
                 {/if}
+                {check_if_error var_name="user"}
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label">Role(s)</label>
+            <label class="control-label">{t}Role(s){/t}</label>
 
             <div id="role-list">
-                {if isset($department) && count($department.ownRole) > 0} {* Using count > 0 here because !empty doesn't work for some reason *}
+                {if isset($form_values.roles.value) && count($form_values.roles.value) > 0} {* Using count > 0 here because !empty doesn't work for some reason *}
                     {assign "index" 0}
-                    {foreach $department.ownRole as $role}
+                    {foreach $form_values.roles.value as $role}
                         <div class="controls">
                             <input type="hidden" name="ownRole[{$index}][type]" value="role" />
                             <input type="hidden" name="ownRole[{$index}][id]" value="{$role.id}" />
-                            <input name="ownRole[{$index}][name]" type="text" placeholder="Role name" class="input-xlarge" value="{$role.name}" />
-                            <textarea name="ownRole[{$index}][description]" placeholder="Role description" class="input-xxlarge">{$role.description}</textarea>
+                            <input name="ownRole[{$index}][name]" type="text" placeholder="{t}Role name{/t}" class="input-xlarge" value="{$role.name}" />
+                            <textarea name="ownRole[{$index}][description]" placeholder="{t}Role description{/t}" class="input-xxlarge">{$role.description}</textarea>
                         </div>
                         {assign "index" {counter}}
                     {/foreach}
                 {else}
                     <div class="controls">
                         <input type="hidden" name="ownRole[0][type]" value="role" />
-                        <input name="ownRole[0][name]" type="text" placeholder="Role name" class="input-xlarge" />
-                        <textarea name="ownRole[0][description]" placeholder="Role description" class="input-xxlarge"></textarea>
+                        <input name="ownRole[0][name]" type="text" placeholder="{t}Role name{/t}" class="input-xlarge" />
+                        <textarea name="ownRole[0][description]" placeholder="{t}Role description{/t}" class="input-xxlarge"></textarea>
                     </div>
                 {/if}
             </div>
@@ -67,17 +68,17 @@
 
         <div class="control-group">
             <div class="controls">
-                <button id="add-button" class="btn btn-link"><strong>+</strong> Add role</button>
+                <button id="add-button" class="btn btn-link"><strong>+</strong> {t}Add role{/t}</button>
             </div>
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
-                    Update department
+                    {t}Update department{/t}
                 {else}
-                    Create department
+                    {t}Create new department{/t}
                 {/if}
             </button>
         </div>
