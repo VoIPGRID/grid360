@@ -110,3 +110,4 @@ define('FEEDBACK_FORM_LOGOUT_WARNING_HOUR', 'uur');
 
 // Messages
 define('MESSAGE_REVIEW_SUCCESS', 'Uw beoordeling voor %s %s is opgeslagen');
+define('MESSAGE_REVIEW_EDIT_SUCCESS', 'Uw beoordeling voor %s %s is aangepast');

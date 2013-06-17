@@ -27,7 +27,7 @@ fi
 
 # Find translatables like {t}Translatables{/t} in all Smarty templates and write to >messages_tpl.po<
 echo "2   :   Finding translations in Smarty templates"
-php ./lib/smarty-gettext-1.0b1/tsmarty2c.php views > $LOCALE_TMP_DIR/messages_tpl.c
+php ./lib/smarty-gettext-1.0b1/tsmarty2c.php . > $LOCALE_TMP_DIR/messages_tpl.c
 if [ -f $LOCALE_TMP_DIR/messages_tpl.c ]; then
     xgettext $LOCALE_TMP_DIR/messages_tpl.c --from-code=UTF-8 --add-comments --output $LOCALE_TMP_DIR/messages_tpl.po
     # Fix charset

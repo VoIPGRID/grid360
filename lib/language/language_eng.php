@@ -110,3 +110,4 @@ define('FEEDBACK_FORM_LOGOUT_WARNING_HOURS', 'hours');
 
 // Messages
 define('MESSAGE_REVIEW_SUCCESS', 'Your review for %s %s has been saved');
+define('MESSAGE_REVIEW_EDIT_SUCCESS', 'Your review for %s %s has been edited');
