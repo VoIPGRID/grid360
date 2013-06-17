@@ -7,7 +7,7 @@ function edit_feedback()
 {
     security_authorize();
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND round_id = ? AND reviewee_id = ? AND status = ?', array($_SESSION['current_user']->id, get_current_round()->id, params('id'), REVIEW_COMPLETED));
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ? AND status = ?', array($_SESSION['current_user']->id, params('id'), get_current_round()->id, REVIEW_COMPLETED));
 
     if($roundinfo->id == 0)
     {
@@ -38,7 +38,7 @@ function edit_feedback_post()
         return html('Can\'t edit this feedback! Error with round info!');
     }
 
-    $roundinfo->answer = $_POST['roundinfo']['answer'];
+    $roundinfo->answer = nl2br2($_POST['roundinfo']['answer']);
 
     $reviews = array();
 
@@ -51,7 +51,7 @@ function edit_feedback_post()
             return html('Can\'t edit this feedback! Error with reviews!');
         }
 
-        $review->comment = $review_row['comment'];
+        $review->comment = nl2br2($review_row['comment']);
 
         $reviews[] = $review;
     }
@@ -59,7 +59,7 @@ function edit_feedback_post()
     R::storeAll($reviews);
     R::store($roundinfo);
 
-    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname, $reviewee->lastname));
+    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_EDIT_SUCCESS, $reviewee->firstname, $reviewee->lastname));
 }
 
 function view_feedback_overview()
@@ -73,7 +73,7 @@ function view_feedback_overview()
     {
         if($info->reviewee->status == 0)
         {
-            // Remove a user from the list if they should be reviewed (status = paused)
+            // Remove a user from the list if they shouldn't be reviewed (status = paused)
             unset($roundinfo[$id]);
         }
     }
@@ -100,7 +100,15 @@ function feedback_step_1()
         return html('User not found!');
     }
 
-    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id));
+    // We don't want the competencies we selected for the previous person to be set for the next one, so clear them
+    if($_SESSION['current_reviewee_id'] != $reviewee->id)
+    {
+        unset($_SESSION['positive_competencies']);
+        unset($_SESSION['negative_competencies']);
+        $_SESSION['current_reviewee_id'] = $reviewee->id;
+    }
+
+    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
 
     if($roundinfo->id == 0)
     {
@@ -154,6 +162,13 @@ function feedback_step_2()
     if($reviewee->id == 0)
     {
         return html('User not found!');
+    }
+
+    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
+
+    if($roundinfo->id == 0)
+    {
+        return html('You can\'t review this person!');
     }
 
     $competencygroups = array();
@@ -213,6 +228,13 @@ function feedback_step_3()
         return html('User not found!');
     }
 
+    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
+
+    if($roundinfo->id == 0)
+    {
+        return html('You can\'t review this person!');
+    }
+
     $positive_competencies = R::batch('competency', $_SESSION['positive_competencies']);
     $negative_competencies = R::batch('competency', $_SESSION['negative_competencies']);
 
@@ -233,7 +255,17 @@ function feedback_step_3_post()
 {
     security_authorize();
 
+    $current_user = $_SESSION['current_user'];
+    $reviewee = R::load('user', params('id'));
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $reviewee->id, get_current_round()->id));
+
+    if($roundinfo->id == 0)
+    {
+        return feedback_step_3();
+    }
+
     $count = 0;
+
     foreach($_POST['positive_competencies'] as $form_competency)
     {
         if(isset($form_competency['rating']) && !empty($form_competency['rating']))
@@ -246,16 +278,18 @@ function feedback_step_3_post()
     }
 
     $has_errors = false;
+    global $smarty;
 
+    // If there aren't 3 positive competencies, return an error
     if($count != 3)
     {
-        global $smarty;
         $smarty->assign('error_positive_competencies', 'Positive competencies error!');
 
         $has_errors = true;
     }
 
     $count = 0;
+
     foreach($_POST['negative_competencies'] as $form_competency)
     {
         if(isset($form_competency['rating']) && !empty($form_competency['rating']))
@@ -267,9 +301,9 @@ function feedback_step_3_post()
         }
     }
 
+    // If there aren't 2 points of improvement, return an error
     if($count != 2)
     {
-        global $smarty;
         $smarty->assign('error_negative_competencies', 'Points of improvement error!');
 
         $has_errors = true;
@@ -281,9 +315,6 @@ function feedback_step_3_post()
     }
 
     $reviews = R::dispense('review', 5);
-
-    $current_user = $_SESSION['current_user'];
-    $reviewee = R::load('user', params('id'));
     $round = R::load('round', get_current_round()->id);
 
     $competencies = array_merge($_POST['positive_competencies'], $_POST['negative_competencies']);
@@ -296,7 +327,7 @@ function feedback_step_3_post()
             return html('Ratings must be higher than 1 and lower than 5! <a href="javascript:history.go(-1);">Click here to go back</a>');
         }
 
-        $competency = R::load('competency', $form_competency['id']);
+        $competency = R::findOne('competency', 'id = ? AND (competencygroup_id = ? OR competencygroup_id = ?)', array($form_competency['id'], $reviewee->role->competencygroup->id, get_general_competencies()->id));
 
         if($competency->id == 0)
         {
@@ -314,23 +345,14 @@ function feedback_step_3_post()
         $reviews[$index]->reviewee = $reviewee;
         $reviews[$index]->competency = $competency;
         $reviews[$index]->rating = $rating;
-        $reviews[$index]->comment = $form_competency['comment'];
+        $reviews[$index]->comment = nl2br2($form_competency['comment']);
         $reviews[$index]->round = $round;
         $reviews[$index]->is_positive = $form_competency['is_positive'];
         $index++;
     }
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $reviewee->id, get_current_round()->id));
-    if(!isset($roundinfo))
-    {
-        $roundinfo = R::dispense('roundinfo');
-        $roundinfo->reviewee = $reviewee;
-        $roundinfo->reviewer = $current_user;
-        $roundinfo->round = $round;
-    }
-
     $roundinfo->status = 1;
-    $roundinfo->answer = $_POST['extra_question'];
+    $roundinfo->answer = nl2br2($_POST['extra_question']);
 
     R::store($roundinfo);
     R::storeAll($reviews);
@@ -418,4 +440,10 @@ function skip_person()
     R::store($roundinfo);
 
     header('Location:  ' . BASE_URI . 'feedback');
+}
+
+function nl2br2($string)
+{
+    $string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
+    return $string;
 }

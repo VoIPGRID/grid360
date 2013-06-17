@@ -8,13 +8,21 @@
 <div class="container">
 {if isset($page_header)}
     <div class="page-header">
-    {if isset($page_header_size)}
-        <{$page_header_size}>{$page_header}</{$page_header_size}>
-    {else}
-        <h1>{$page_header}</h1>
-    {/if}
-</div>
+        <{$page_header_size|default:'h1'}>
+            {$page_header|ucfirst}
+            {if isset($page_header_subtext)}
+                <br /><small>{$page_header_subtext}</small>
+            {/if}
+        </{$page_header_size|default:'h1'}>
+    </div>
 {/if}
+
+{if isset($smarty.get.success)}
+    {call show_alert type="success" text="{$smarty.get.success}"}
+{elseif isset($smarty.get.error)}
+    {call show_alert type="error" text="{$smarty.get.error}"}
+{/if}
+
 {$content}
 </div>
 </body>

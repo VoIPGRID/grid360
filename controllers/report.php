@@ -24,7 +24,7 @@ function report_overview()
     global $smarty;
     $smarty->assign('rounds', $rounds);
     $smarty->assign('user', $user);
-    $smarty->assign('page_header', 'Report overview for ' . $user->firstname . ' ' . $user->lastname);
+    $smarty->assign('page_header', _('Report overview for ') . $user->firstname . ' ' . $user->lastname);
 
     return html($smarty->fetch('report/report_overview.tpl'));
 }
@@ -72,27 +72,44 @@ function view_report()
     $roundinfo = R::find('roundinfo', 'reviewee_id = ? AND status = ? AND round_id = ?', array($user->id, REVIEW_COMPLETED, $round->id));
     R::preload($roundinfo, array('reviewer' => 'user'));
 
-    $total_review_count = R::count('roundinfo', 'reviewee_id = ? AND status != ? AND round_id = ?', array($user->id, REVIEW_SKIPPED,$round->id));
+    // Check the amount of people that have reviewed the user
+    $amount_reviewed_by = count($roundinfo);
 
-    $own_roundinfo = R::find('roundinfo', 'reviewer_id = ? AND status = ? AND round_id = ?', array($user->id, REVIEW_COMPLETED, $round->id));
-    $total_own_review_count = R::count('roundinfo', 'reviewer_id = ? AND status != ? AND round_id = ?', array($user->id, REVIEW_SKIPPED,$round->id));
+    // Count the total amount of people that have to review the user
+    $total_review_count = R::count('roundinfo', 'reviewer_id != ? AND reviewee_id = ? AND status != ? AND round_id = ?', array($user->id, $user->id, REVIEW_SKIPPED,$round->id));
 
-    if((count($roundinfo) - 1) < 4)
+    // Count the amount of people the user has reviewed
+    $own_review_completed_count = R::count('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status = ? AND round_id = ?', array($user->id, $user->id, REVIEW_COMPLETED, $round->id));
+
+    // Count the total amount of people the user has to review
+    $total_own_review_count = R::count('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status != ? AND round_id = ?', array($user->id, $user->id, REVIEW_SKIPPED,$round->id));
+
+    // Check if roundinfo contains own review, if so, deduct 1 from the amount reviewed by
+    foreach($roundinfo as $info)
     {
-        return html(sprintf(REPORT_INSUFFICIENT_DATA, (count($roundinfo) - 1), $total_review_count));
+        if($info->reviewer->id == $user->id)
+        {
+            $amount_reviewed_by -= 1;
+            break;
+        }
     }
 
-    if((count($own_roundinfo) - 1) < 5)
+    if($amount_reviewed_by < 5)
     {
-        return html(sprintf(REPORT_INSUFFICIENT_REVIEWED, count($own_roundinfo), $total_own_review_count));
+        return html(sprintf(REPORT_INSUFFICIENT_DATA, $amount_reviewed_by, $total_review_count));
+    }
+
+    if($own_review_completed_count < 5)
+    {
+        return html(sprintf(REPORT_INSUFFICIENT_REVIEWED, $own_review_completed_count, $total_own_review_count));
     }
 
     $ratings = array();
     $own_ratings = array();
     $positive_ratings = array();
     $negative_ratings = array();
-
     $comment_counts = array();
+
     foreach($reviews as $review)
     {
         if($review->reviewer->id != $user->id)
@@ -166,8 +183,13 @@ function view_report()
     $smarty->assign('averages', $average_ratings);
     $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('round', $round);
+
+    // Set the page headers
     $header = sprintf(REPORT_PAGE_HEADER, $user->firstname, $user->lastname, $round->description);
+    $header_subtext =  sprintf(_('You have been reviewed by %d of %d people'), $amount_reviewed_by, $total_review_count);
+
     $smarty->assign('page_header', $header);
+    $smarty->assign('page_header_subtext', $header_subtext);
     $smarty->assign('page_header_size', 'h2');
     $smarty->assign('has_own_ratings', $has_own_ratings);
     $smarty->assign('user', $user);

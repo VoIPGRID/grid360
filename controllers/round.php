@@ -81,6 +81,11 @@ function start_round()
     $round->description = $_POST['description'];
     $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS));
 
+    if(count($users) < 4)
+    {
+        return html('Not enough people in your organisation to start a round. You need atleast 4 people.');
+    }
+
     $min_own = $_POST['min_own'];
     $max_own = $_POST['max_own'];
     $min_other = $_POST['min_other'];
@@ -130,7 +135,7 @@ function start_round()
             }
 
             // Get users from other departments and count them
-            $other_department_users = R::find('user', 'department_id != ? AND id != ? AND status != ? LIMIT ', array($reviewer->department->id, $reviewer->id, PAUSE_USER_REVIEWS));
+            $other_department_users = R::find('user', 'department_id != ? AND id != ? AND status != ?', array($reviewer->department->id, $reviewer->id, PAUSE_USER_REVIEWS));
             $count_other_department = count($other_department_users);
 
             $other_random_users = array();
@@ -189,6 +194,8 @@ function start_round()
 
             R::storeAll($roundinfo);
         }
+
+       // send_mail('Feedback round started', 'admin@grid360.nl', $reviewer->email, 'Round started, log in and review people.'); // TODO: Move this one line up and enable it
     }
 
     $round->status = 1;
@@ -229,6 +236,13 @@ function end_round()
     $round->status = ROUND_COMPLETED;
 
     R::store($round);
+
+    $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS));
+
+    foreach($users as $user)
+    {
+       // send_mail('Feedback round ended', 'admin@grid360.nl', $user->email, 'Round ended, you can now log in and view your report.'); // TODO: Move this one line up and enable it
+    }
 
     return html('Round ended!');
 }
