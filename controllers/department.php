@@ -23,18 +23,33 @@ function create_department_post()
         }
     }
 
-    $keys_to_check = array('name' => $_POST['name'],
-                           'user' => array('load_bean' => true, 'id' => $_POST['user']['id'], 'type' => 'user'));
+    $keys_to_check = array
+    (
+        'name' => $_POST['name'],
+        'user' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['user']['id'],
+            'type' => 'user'
+        )
+    );
 
     $id = params('id');
 
     if(isset($id) && !empty($id))
     {
         $_POST['id'] = $id;
-        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'department');
+        $keys_to_check['id'] = array
+        (
+            'load_bean' => true,
+            'id' => $_POST['id'],
+            'type' => 'department'
+        );
     }
 
     $form_values = validate_form($keys_to_check);
+
+    $form_values['roles']['value'] = $_POST['ownRole'];
 
     global $smarty;
 

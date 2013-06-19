@@ -31,9 +31,21 @@ function send_mail($subject, $from, $to, $body)
 function validate_form($keys_to_check)
 {
     $form_values = array();
-    $labels = array('name' => _('name'), 'firstname' => _('first name'), 'lastname' => _('last name'), 'email' => _('email'),
-                    'department' => _('department'), 'competencygroup' => _('competency group'),
-                    'competency' => _('competency'), 'role' => _('role'), 'userlevel' => _('user level'), 'user' => _('user'));
+
+    // This array is used to provide translations for the various fields
+    $labels = array
+    (
+        'name' => _('name'),
+        'firstname' => _('first name'),
+        'lastname' => _('last name'),
+        'email' => _('email'),
+        'department' => _('department'),
+        'competencygroup' => _('competency group'),
+        'competency' => _('competency'),
+        'role' => _('role'),
+        'userlevel' => _('user level'),
+        'user' => _('user')
+    );
 
     foreach($keys_to_check as $key => $value)
     {
@@ -44,7 +56,7 @@ function validate_form($keys_to_check)
                 $bean = R::load($value['type'], $value['id']);
 
                 // Check if the bean could be loaded and also check if the type is correct, if not, set the form error for this key
-                if($bean->id == 0 || $value['type'] != $_POST[$key]['type'])
+                if($bean->id == 0 || ($key == 'id' && $value['type'] != $_POST['type']) || ($key != 'id' && $value['type'] != $_POST[$key]['type']))
                 {
                     $form_values[$key]['error'] = sprintf(BEAN_NOT_FOUND, $labels[$value['type']]);
                 }
@@ -79,7 +91,7 @@ function validate_form($keys_to_check)
 
 function get_userlevels()
 {
-    return R::$adapter->getAssoc('select id, name from userlevel');
+    return R::$adapter->getAssoc('SELECT id, name FROM userlevel');
 }
 
 function get_current_round()

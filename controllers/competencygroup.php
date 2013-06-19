@@ -16,17 +16,28 @@ function create_competencygroup_post()
 {
     security_authorize(MANAGER);
 
-    $keys_to_check = array('name' => $_POST['name']);
+    $keys_to_check = array
+    (
+        'name' => $_POST['name']
+    );
 
     $id = params('id');
 
     if(isset($id) && !empty($id))
     {
         $_POST['id'] = $id;
-        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'competencygroup');
+        $keys_to_check['id'] = array
+        (
+            'load_bean' => true,
+            'id' => $_POST['id'],
+            'type' => 'competencygroup'
+        );
     }
 
     $form_values = validate_form($keys_to_check);
+
+    $form_values['description']['value'] = $_POST['description'];
+    $form_values['competencies']['value'] = $_POST['ownCompetency'];
 
     global $smarty;
 
@@ -146,7 +157,7 @@ function delete_competencygroup()
 
 function get_roles_assoc()
 {
-    $roles = R::$adapter->getAssoc('select id, name from role where tenant_id = ' . $_SESSION['current_user']->tenant_id);
+    $roles = R::$adapter->getAssoc('SELECT id, name FROM role WHERE tenant_id = ?', array($_SESSION['current_user']->tenant_id));
 
     return $roles;
 }

@@ -18,19 +18,39 @@ function create_role_post()
 {
     security_authorize(MANAGER);
 
-    $keys_to_check = array('name' => $_POST['name'],
-        'department' => array('load_bean' => true, 'id' => $_POST['department']['id'], 'type' => 'department'),
-        'competencygroup' => array('load_bean' => true, 'id' => $_POST['competencygroup']['id'], 'type' => 'competencygroup'));
+    $keys_to_check = array
+    (
+        'name' => $_POST['name'],
+        'department' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['department']['id'],
+            'type' => 'department'
+        ),
+        'competencygroup' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['competencygroup']['id'],
+            'type' => 'competencygroup'
+        )
+    );
 
     $id = params('id');
 
     if(isset($id) && !empty($id))
     {
         $_POST['id'] = $id;
-        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'role');
+        $keys_to_check['id'] = array
+        (
+            'load_bean' => true,
+            'id' => $_POST['id'],
+            'type' => 'role'
+        );
     }
 
     $form_values = validate_form($keys_to_check);
+
+    $form_values['description']['value'] = $_POST['description'];
 
     global $smarty;
 
@@ -222,14 +242,14 @@ function validate_role_form()
 
 function get_departments_assoc()
 {
-    $departments = R::$adapter->getAssoc('select id, name from department where tenant_id = ' . $_SESSION['current_user']->tenant_id);
+    $departments = R::$adapter->getAssoc('SELECT id, name FROM department WHERE tenant_id = ' . $_SESSION['current_user']->tenant_id);
 
     return $departments;
 }
 
 function get_competencygroups_assoc()
 {
-    $competencygroups = R::$adapter->getAssoc('select id, name from competencygroup where general != 1 AND tenant_id = ' . $_SESSION['current_user']->tenant_id);
+    $competencygroups = R::$adapter->getAssoc('SELECT id, name FROM competencygroup WHERE general != 1 AND tenant_id = ' . $_SESSION['current_user']->tenant_id);
 
     return $competencygroups;
 }

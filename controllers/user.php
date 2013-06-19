@@ -20,19 +20,43 @@ function create_user_post()
 {
     security_authorize(ADMIN);
 
-    $keys_to_check = array('firstname' => $_POST['firstname'], 'lastname' => $_POST['lastname'],
-                           'email' => $_POST['email'], 'department' => array('load_bean' => true, 'id' => $_POST['department']['id'], 'type' => 'department'),
-                           'role' => array('load_bean' => true, 'id' => $_POST['role']['id'], 'type' => 'role'),
-                           'userlevel' => array('load_bean' => true, 'id' => $_POST['userlevel']['id'], 'type' => 'userlevel'));
+    $keys_to_check = array
+    (
+        'firstname' => $_POST['firstname'],
+        'lastname' => $_POST['lastname'],
+        'email' => $_POST['email'],
+        'department' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['department']['id'],
+            'type' => 'department'
+        ),
+        'role' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['role']['id'],
+            'type' => 'role'
+        ),
+        'userlevel' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['userlevel']['id'],
+            'type' => 'userlevel'
+        )
+    );
 
     $id = params('id');
 
     if(isset($id) && !empty($id))
     {
         $_POST['id'] = $id;
-        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'user');
+        $keys_to_check['id'] = array
+        (
+            'load_bean' => true,
+            'id' => $_POST['id'],
+            'type' => 'user'
+        );
     }
-
 
     $form_values = validate_form($keys_to_check);
 

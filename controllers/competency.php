@@ -16,15 +16,28 @@ function create_competency_post()
 {
     security_authorize(MANAGER);
 
-    $keys_to_check = array('name' => $_POST['name'],
-        'competencygroup' => array('load_bean' => true, 'id' => $_POST['competencygroup']['id'], 'type' => 'competencygroup'));
+    $keys_to_check = array
+    (
+        'name' => $_POST['name'],
+        'competencygroup' => array
+        (
+            'load_bean' => true,
+            'id' => $_POST['competencygroup']['id'],
+            'type' => 'competencygroup'
+        )
+    );
 
     $id = params('id');
 
     if(isset($id) && !empty($id))
     {
         $_POST['id'] = $id;
-        $keys_to_check['id'] = array('load_bean' => true, 'id' => $_POST['id'], 'type' => 'competency');
+        $keys_to_check['id'] = array
+        (
+            'load_bean' => true,
+            'id' => $_POST['id'],
+            'type' => 'competency'
+        );
     }
 
     $form_values = validate_form($keys_to_check);
