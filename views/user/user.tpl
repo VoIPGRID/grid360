@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <form action="{$smarty.const.ADMIN_URI}user/{$form_values.id.value}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
@@ -16,7 +18,7 @@
 
             <div class="controls">
                 <input id="firstname" name="firstname" type="text" placeholder="{t}First name{/t}" class="input-large" required value="{$form_values.firstname.value}" />
-                {check_if_error var_name="firstname"}
+                {call check_if_error var_name="firstname"}
             </div>
         </div>
 
@@ -25,7 +27,7 @@
 
             <div class="controls">
                 <input id="lastname" name="lastname" type="text" placeholder="{t}Last name{/t}" class="input-large" required value="{$form_values.lastname.value}" />
-                {check_if_error var_name="lastname"}
+                {call check_if_error var_name="lastname"}
             </div>
         </div>
 
@@ -34,7 +36,7 @@
 
             <div class="controls">
                 <input id="email" name="email" type="email" placeholder="{t}example@email.com{/t}" class="input-large" required value="{$form_values.email.value}" />
-                {check_if_error var_name="email"}
+                {call check_if_error var_name="email"}
             </div>
         </div>
 
@@ -54,7 +56,7 @@
                         {/if}
                     {/foreach}
                 </select>
-                {check_if_error var_name="department"}
+                {call check_if_error var_name="department"}
             </div>
         </div>
 
@@ -73,7 +75,7 @@
                         {/if}
                     {/foreach}
                 </select>
-                {check_if_error var_name="role"}
+                {call check_if_error var_name="role"}
             </div>
         </div>
 
@@ -84,7 +86,7 @@
             <div class="controls">
                 {html_options name="userlevel[id]" options=$userlevel_options|capitalize selected={$form_values.userlevel.value|default:3}}
 
-                {check_if_error var_name="userlevel"}
+                {call check_if_error var_name="userlevel"}
             </div>
         </div>
 

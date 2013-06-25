@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <script type="text/javascript">
     type = 'role';
 </script>
@@ -23,7 +25,7 @@
 
             <div class="controls">
                 <input id="department-name" name="name" type="text" placeholder="{t}Department name{/t}" class="input-large" required value="{$form_values.name.value}" />
-                {check_if_error var_name="name"}
+                {call check_if_error var_name="name"}
             </div>
         </div>
 
@@ -37,7 +39,7 @@
                 {else}
                     {t}No managers/admins found{/t}
                 {/if}
-                {check_if_error var_name="user"}
+                {call check_if_error var_name="user"}
             </div>
         </div>
 

@@ -1,5 +1,7 @@
+{include file="lib/functions.tpl"}
+
 {if isset($form_values.error)}
-    {print_alert type="error" text=$form_values.error}
+    {call print_alert type="error" text=$form_values.error}
 {/if}
 
 <form action="{$smarty.const.MANAGER_URI}competency/{$competency.id}" method="POST" class="form-horizontal">
@@ -9,8 +11,6 @@
         {else}
             <legend>{t}Creating new competency{/t}</legend>
         {/if}
-
-        {check_errors}
 
         <div class="control-group {if isset($form_values.name.error)}error{/if}">
             <input type="hidden" name="type" value="competency" />
@@ -22,7 +22,7 @@
 
             <div class="controls">
                 <input id="competency-name" name="name" type="text" placeholder="{t}Competency name{/t}" class="input-large" required {if isset($competency)}value="{$competency.name}"{/if} />
-                {check_if_error var_name="name"}
+                {call check_if_error var_name="name"}
             </div>
         </div>
 

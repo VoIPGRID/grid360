@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <h4>{t}Are you sure you want to delete the{/t} {if $type == "user"}{$type} {$user.firstname} {$user.lastname}{else}{$type} {${$type_var}.name}{/if}</h4>
 <br />
 

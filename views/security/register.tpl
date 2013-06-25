@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <div class="row">
     <form class="form-vertical" action="{$smarty.const.BASE_URI}register" method="post">
         <fieldset>
@@ -9,7 +11,7 @@
                         <span class="add-on"><i class="icon-sitemap"></i></span>
                         <input type="text" name="organisation_name" id="organisation-name" class="input-large" value="{$form_values.organisation_name.value}" />
                     </div>
-                    {check_if_error var_name="organisation_name"}
+                    {call check_if_error var_name="organisation_name"}
                 </div>
             </div>
         </fieldset>
@@ -23,7 +25,7 @@
 
                 <div class="controls">
                     <input id="firstname" name="firstname" type="text" placeholder="{t}First name{/t}" class="input-large" required value="{$form_values.firstname.value}" />
-                    {check_if_error var_name="firstname"}
+                    {call check_if_error var_name="firstname"}
                 </div>
             </div>
 
@@ -32,7 +34,7 @@
 
                 <div class="controls">
                     <input type="text" name="lastname" id="lastname" placeholder="{t}Last name{/t}" class="input-large" required value="{$form_values.lastname.value}" />
-                    {check_if_error var_name="lastname"}
+                    {call check_if_error var_name="lastname"}
                 </div>
             </div>
 
@@ -44,7 +46,7 @@
                         <span class="add-on"><i class="icon-envelope"></i></span>
                         <input type="email" name="email" id="email" placeholder="{t}example@email.com{/t}" class="input-large" value="{$form_values.email.value}" />
                     </div>
-                    {check_if_error var_name="email"}
+                    {call check_if_error var_name="email"}
                 </div>
             </div>
 
@@ -56,7 +58,7 @@
                         <span class="add-on"><i class="icon-lock"></i></span>
                         <input type="password" name="password" id="password" class="input-large" value="{$form_values.password.value}"/>
                     </div>
-                    {check_if_error var_name="password"}
+                    {call check_if_error var_name="password"}
                 </div>
             </div>
 

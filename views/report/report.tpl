@@ -109,7 +109,7 @@
             var average = new Array();
             average['id'] = '{$competency_id}';
             average['name'] = '{$average.name|escape:'quotes'}';
-            // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for chart
+            // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for the chart
             average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2));
             average['count_reviews'] = parseInt('{$average.count_reviews}');
             average['own_rating'] = parseFloat('{$average.own_rating}');
@@ -124,7 +124,7 @@
                     own_text = '<strong>[{$smarty.const.REPORT_GRAPH_OWN}]</strong>';
                 {/if}
 
-                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'quotes'}')));
+                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append(own_text + '[{$review.competency.name}]' + ' {$review.comment|escape:'quotes'}')));
                 $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'quotes'}')));
             {/if}
         {/foreach}

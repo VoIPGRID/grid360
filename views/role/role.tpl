@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <form action="{$smarty.const.MANAGER_URI}role/{$role.id}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
@@ -15,7 +17,7 @@
 
             <div class="controls">
                 <input id="role-name" name="name" type="text" placeholder="Role name" class="input-large" required value="{$form_values.name.value}" />
-                {check_if_error var_name="name"}
+                {call check_if_error var_name="name"}
             </div>
         </div>
 
@@ -38,7 +40,7 @@
                     {else}
                         {t}No departments found{/t}
                     {/if}
-                    {check_if_error var_name="department"}
+                    {call check_if_error var_name="department"}
                 </div>
             </div>
         </div>
@@ -55,7 +57,7 @@
                         {t}No competency groups found{/t}
                     {/if}
                     {*<button id="create-group" class="btn btn-link"><strong>+</strong> Create new competency group</button>*}
-                    {check_if_error var_name="competencygroup"}
+                    {call check_if_error var_name="competencygroup"}
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 <html>
 <head>
 {include file="layout/head.tpl"}
+{include file="lib/functions.tpl"}
 </head>
 <body>
 {include file="common/menu.tpl"}
@@ -18,9 +19,9 @@
 {/if}
 
 {if isset($smarty.get.success)}
-    {call show_alert type="success" text="{$smarty.get.success}"}
+    {call print_alert type="success" text="{$smarty.get.success}"}
 {elseif isset($smarty.get.error)}
-    {call show_alert type="error" text="{$smarty.get.error}"}
+    {call print_alert type="error" text="{$smarty.get.error}"}
 {/if}
 
 {$content}

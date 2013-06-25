@@ -7,6 +7,7 @@
         class="{$extra_css_classes|replace:' ':''}"
     {/if}
 {/function}
+
 <div class="container">
     <div class="navbar">
         <div class="navbar-inner">
@@ -47,7 +48,7 @@
                             </ul>
                         </li>
                     {/if}
-                    <li><a href="{$smarty.const.BASE_URI}logout">Logout</a></li>
+                    <li><a href="{$smarty.const.BASE_URI}logout">{t}Logout{/t}</a></li>
                 </ul>
             </div>
         </div>

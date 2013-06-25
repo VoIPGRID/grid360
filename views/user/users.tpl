@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <script type="text/javascript">
     var base_uri = {$smarty.const.BASE_URI};
 </script>

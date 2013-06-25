@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 {function print_roles}
     <tr>
         <td>{$role.name|capitalize:true}</td>

@@ -1,9 +1,11 @@
+{include file="lib/functions.tpl"}
+
 {function create_checkboxes}
     {foreach $competencies as $competency}
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
-                    <input type="checkbox" id="competency-{$competency.id}" name="competencies[]" value="{$competency.id}" /> {$competency.name}
+                    <input type="checkbox" id="competency-{$competency.id}" name="competencies[]" value="{$competency.id}" {if $competency.in_session}checked="checked"{/if}/> {$competency.name}
                 </label>
             </div>
         </div>
@@ -64,20 +66,12 @@
     {
         if(step == 1)
         {
-            {foreach $smarty.session.positive_competencies as $competency}
-                $('#competency-' + '{$competency}').attr('checked', true);
-            {/foreach}
-
             {if count($smarty.session.positive_competencies) == 3}
                 $('input:not(:checked)').attr('disabled', true);
             {/if}
         }
         else if(step == 2)
         {
-            {foreach $smarty.session.negative_competencies as $competency}
-                $('#competency-' + '{$competency}').attr('checked', true);
-            {/foreach}
-
             {if count($smarty.session.negative_competencies) == 2}
                 $('input:not(:checked)').attr('disabled', true);
             {/if}

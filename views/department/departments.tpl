@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 {function print_departments}
     <tr>
         <td>{$department.name|capitalize:true}</td>

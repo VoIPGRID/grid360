@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <script type="text/javascript">
     type = 'competency';
 </script>
@@ -30,7 +32,7 @@
 
             <div class="controls">
                 <input id="group-name" name="name" type="text" placeholder="{t}Group name{/t}" class="input-large" required value="{$form_values.name.value}" />
-                {check_if_error var_name="name"}
+                {call check_if_error var_name="name"}
             </div>
         </div>
 
@@ -46,9 +48,9 @@
             <label class="control-label">{t}Competencies{/t}</label>
 
             <div id="competency-list">
-                {if isset($form_values.ownCompetency.value) && count($form_values.ownCompetency.value) > 0}{* Using count > 0 here because !empty doesn't work for some reason *}
+                {if isset($form_values.competencies.value) && count($form_values.competencies.value) > 0}{* Using count > 0 here because !empty doesn't work for some reason *}
                     {assign "index" 0}
-                    {foreach $form_values.ownCompetency.value as $competency}
+                    {foreach $form_values.competencies.value as $competency}
                         <div class="controls">
                             <input type="hidden" name="ownCompetency[{$index}][type]" value="competency" />
                             <input type="hidden" name="ownCompetency[{$index}][id]" value="{$competency.id}" />

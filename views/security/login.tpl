@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 {if isset($smarty.get.error) && !empty($smarty.get.error)}
     {call print_alert type="error" text="{$smarty.get.error}"}
 {/if}

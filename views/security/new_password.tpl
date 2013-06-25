@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 <div class="row">
     {if isset($form_values.error)}
         {print_alert type="error" text=$form_values.error}
@@ -14,7 +16,7 @@
                     <span class="add-on"><i class="icon-lock"></i></span>
                     <input type="password" name="password" id="password" class="input-large" required>
                 </div>
-                {check_if_error var_name="password"}
+                {call check_if_error var_name="password"}
             </div>
         </div>
 
@@ -26,7 +28,7 @@
                     <span class="add-on"><i class="icon-lock"></i></span>
                     <input type="password" name="password_confirm" id="password-confirm" class="input-large" required>
                 </div>
-                {check_if_error var_name="password_confirm"}
+                {call check_if_error var_name="password_confirm"}
             </div>
         </div>
 

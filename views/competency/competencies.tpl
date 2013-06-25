@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 {function print_competencygroup}
     <tr>
         <td>{$competencygroup.name}</td>
