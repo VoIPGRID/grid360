@@ -2,13 +2,15 @@
 
 <script type="text/javascript">
     type = 'competency';
+    name_placeholder = '{t}Competency name{/t}';
+    description_placeholder = '{t}Competency description{/t}';
 </script>
 <script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 
 <form action="{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
-            <legend>{t name=$competency_name}Updating competency group %1{/t}</legend>
+            <legend>{t name=$competencygroup_name}Updating competency group %1{/t}</legend>
         {else}
             <legend>{t}Creating new competency group{/t}</legend>
         {/if}

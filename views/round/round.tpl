@@ -1,3 +1,5 @@
+{include file="lib/functions.tpl"}
+
 {function create_control_group}
     <div id="{$group_name}-group" class="control-group">
         <label class="control-label" for="{$group_name}">{$label_text}</label>
@@ -37,16 +39,16 @@
 
 <form action="{$smarty.const.ADMIN_URI}round/confirm" method="post" class="form-horizontal">
     <fieldset>
-        <legend>Create round</legend>
+        <legend>{t}Create round{/t}</legend>
 
         <div id="description-group" class="control-group">
             {if isset($round)}
                 <input type="hidden" name="id" value={$round.id} />
             {/if}
-            <label class="control-label" for="round-description">Round description</label>
+            <label class="control-label" for="round-description">{t}Round description{/t}</label>
 
             <div class="controls">
-                <textarea id="round-description" name="description" type="text" placeholder="Round description">{$values.description}</textarea>
+                <textarea id="round-description" name="description" type="text" placeholder="{t}Round description{/t}">{$values.description}</textarea>
                 <span class="help-inline"></span>
             </div>
         </div>
@@ -76,12 +78,12 @@
         {create_control_group group_name="max-other" input_name="max_other" label_text="Max. other department"}
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
             <button type="submit" class="btn btn-primary">
                 {if $update}
-                    Update round
+                    {t}Update round{/t}
                 {else}
-                    Create round
+                    {t}Create round{/t}
                 {/if}
             </button>
         </div>

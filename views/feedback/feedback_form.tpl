@@ -9,21 +9,21 @@
 {/function}
 
 {if $reviewee.id != $smarty.session.current_user.id}
-    <h3>{$smarty.const.FEEDBACK_FORM_HEADER_STEP_3|sprintf:$reviewee.firstname:$reviewee.lastname}</h3>
+    <h3>{t firstname=$reviewee.firstname lastname=$reviewee.lastname}Rate the chosen competencies for %1 %2{/t}</h3>
 {else}
-    <h3>{$smarty.const.FEEDBACK_FORM_HEADER_STEP_3|sprintf:{$smarty.const.FEEDBACK_HEADER_TEXT_SELF}:''}</h3>
+    <h3>{t firstname="yourself" lastname=""}Rate the chosen competencies for %1 %2{/t}</h3>
 {/if}
 
-<h4>{$smarty.const.FEEDBACK_STEP_TEXT|sprintf:$step}</h4>
+<h4>{t step=$step}Step %1 of 3{/t}</h4>
 
 <div class="alert alert-warning">
     {* Make sure you edit MINUTES to match the text you need (either HOURS or HOUR) *}
-    <span>{$smarty.const.FEEDBACK_FORM_LOGOUT_WARNING|sprintf:$session_lifetime:$smarty.const.FEEDBACK_FORM_LOGOUT_WARNING_MINUTES}</span>
+    <span>{t time=$session_lifetime time_text=$time_text}Make sure you submit this form within %1 %2. Otherwise you will be automatically logged out.{/t}</span>
 </div>
 
 {if $reviewee.id != $smarty.session.current_user.id}
     <div class="alert alert-error">
-        <span>{$smarty.const.FEEDBACK_FORM_INFO}</span>
+        <span><strong>{t}Notice:{/t}</strong>{t}Feedback, positive as well as constructive is directly viewable for your colleagues. Keep this in mind when writing comments{/t}</span>
     </div>
 {/if}
 
@@ -46,7 +46,7 @@
                 <th><i class="icon-minus"></i> / <i class="icon-plus"></i></th>
                 <th><i class="icon-plus"></i></th>
                 <th><i class="icon-plus"></i> <i class="icon-plus"></i></th>
-                <th>{$smarty.const.TEXT_COMMENTS}</th>
+                <th>{t}Comments{/t}</th>
             </tr>
             </thead>
             <tbody>
@@ -59,7 +59,7 @@
                     </td>
                     {create_radiobuttons competency=$competency type=$type disabled_from=$disabled_from disabled_to=$disabled_to}
                     <td>
-                        <textarea class="input-xlarge" name="{$type}[{$competency.id}][comment]" placeholder="{$smarty.const.FEEDBACK_FORM_COMMENT_PLACEHOLDER|sprintf:{$competency.name}}"></textarea>
+                        <textarea class="input-xlarge" name="{$type}[{$competency.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}"></textarea>
                     </td>
                 </tr>
             {/foreach}
@@ -75,20 +75,21 @@
         {create_form competencies=$negative_competencies type="negative_competencies" disabled_from=4 disabled_to=5 legend=$smarty.const.FEEDBACK_FORM_NEGATIVE_COMPETENCIES is_positive=0}
 
         <fieldset>
-            <legend>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION_HEADER}</legend>
+            <legend>{t}Extra question{/t}</legend>
             <div class="control-group">
                 {if $reviewee.id == $current_user.id}
-                    <label>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION_SELF}</label>
+                    <label>{t}In what way have you contributed to the success of the organisation?{/t}</label>
                 {else}
-                    <label>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION|sprintf:{$reviewee.firstname}:{$reviewee.lastname}}</label>
+                    <label>{t firstname=$reviewee.firstname lastname=$reviewee.lastname}In what way has %1 %2 contributed to the success of the organisation?{/t}</label>
                 {/if}
                 <textarea name="extra_question" class="input-xxlarge"></textarea>
             </div>
         </fieldset>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{$smarty.const.BUTTON_PREVIOUS}</button>
-            <button type="submit" class="btn btn-primary" id="submit" >{$smarty.const.BUTTON_SUBMIT}</button><span id="help-text" style="display:none;" class="help-inline error">Not all fields are filled in</span>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Previous{/t}</button>
+            <button type="submit" class="btn btn-primary" id="submit" >{t}Submit{/t}</button>
+            <span id="help-text" style="display:none;" class="help-inline error">Not all fields are filled in</span>
         </div>
     </form>
 </div>

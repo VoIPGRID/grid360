@@ -1,4 +1,4 @@
-<h4>Are you sure you want to start a round with the following info?</h4>
+<h4>{t}Are you sure you want to start a round with the following info?{/t}</h4>
 <br />
 <form class="form form-horizontal" action="{$smarty.const.ADMIN_URI}round/start" method="post">
     <div class="row-fluid">
@@ -6,7 +6,7 @@
             <table class="table">
                 <tr>
                     <input type="hidden" name="description" value="{$values.description}"/>
-                    <td>Description</td>
+                    <td>{t}Description{/t}</td>
                     <td>{$values.description}</td>
                 </tr>
                 <tr>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="form-actions">
-        <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
-        <button type="submit" class="btn btn-primary">Start round</button>
+        <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+        <button type="submit" class="btn btn-primary">{t}Start round{/t}</button>
     </div>
 </form>

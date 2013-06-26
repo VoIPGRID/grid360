@@ -17,7 +17,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>{t}Personal credentials{/t}</legend>
+            <legend>{t}Personal information{/t}</legend>
 
             <div class="control-group {if isset($form_values.firstname.error)}error{/if}">
                 <input type="hidden" name="type" value="user" />

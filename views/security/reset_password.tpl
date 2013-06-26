@@ -3,7 +3,7 @@
 <div class="row">
     <form class="form-vertical" action="{$smarty.const.BASE_URI}reset" method="post">
         <div class="control-group {if isset($form_values.email.error)}error{/if}">
-            <label class="control-label" for="email">Email</label>
+            <label class="control-label" for="email">{t}Email{/t}</label>
             <div class="controls">
                 <div class="input-prepend">
                     <span class="add-on"><i class="icon-envelope"></i></span>
@@ -14,8 +14,8 @@
         </div>
 
         <div class="actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">Cancel</button>
-            <button type="submit" class="btn btn-primary">Reset password</button>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+            <button type="submit" class="btn btn-primary">{t}Reset password{/t}</button>
         </div>
     </form>
 </div>

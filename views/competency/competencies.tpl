@@ -23,10 +23,10 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Group name</th>
-        <th>Description</th>
-        <th>Is general</th>
-        <th>Actions</th>
+        <th>{t}Group name{/t}</th>
+        <th>{t}Description{/t}</th>
+        <th>{t}Is general{/t}</th>
+        <th>{t}Actions{/t}</th>
     </tr>
     </thead>
     <tbody>
@@ -41,7 +41,7 @@
 
 {call print_add_link level="manager" type_var="competencygroup" type="{t}competency group{/t}"}
 
-<h3>Competencies</h3>
+<h3>{t}Competencies{/t}</h3>
 {if isset($competencygroups) && !empty($competencygroups)}
 <div class="controls">
     <select id="group-filter">
@@ -54,10 +54,10 @@
 <table id="competencies" class="table table-striped">
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Competency group</th>
-        <th>Actions</th>
+        <th>{t}Name{/t}</th>
+        <th>{t}Description{/t}</th>
+        <th>{t}Competency group{/t}</th>
+        <th>{t}Actions{/t}</th>
     </tr>
     </thead>
     <tbody>
@@ -69,7 +69,7 @@
     </tbody>
 </table>
 {else}
-    </table>No competencies found!
+    </table>{t}No competencies found{/t}!
 {/if}
 
 {call print_add_link level="manager" type_var="competency" type="{t}competency{/t}"}

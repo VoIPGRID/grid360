@@ -12,7 +12,7 @@
         <td>{$user.department.name|capitalize:true}</td>
         <td>{$user.role.name|capitalize:true}</td>
         <td>{$user.userlevel.name|capitalize}</td>
-        <td><a href="{$smarty.const.BASE_URI}report/overview/{$user.id}">View</a></td>
+        <td><a href="{$smarty.const.BASE_URI}report/overview/{$user.id}">{t}View{/t}</a></td>
         {call print_actions type="user" level="admin"}
     </tr>
 {/function}

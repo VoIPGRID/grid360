@@ -1,19 +1,21 @@
-<div class="page-header"><h1>{$smarty.const.FEEDBACK_OVERVIEW_HEADER}</h1></div>
+<div class="page-header">
+    <h1>{t}Round overview{/t}</h1>
+</div>
 <div class="row-fluid">
 <span class="span7">
     {foreach $roundinfo as $info}
         {if $info.reviewee.id == $current_user.id && $info.status == 0}
             <div class="alert alert-info">
-                {$smarty.const.FEEDBACK_INFO_SELF} <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{$smarty.const.FEEDBACK_INFO_SELF_BUTTON}</a>
+                {t}You haven't reviewed yourself yet!{/t} <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{t}Click here to review yourself.{/t}</a>
             </div>
-            {break}
+        {break}
         {/if}
     {/foreach}
 
     {foreach $roundinfo as $info}
         {if $info.reviewee.id != $current_user.id && $info.status == 0}
             <div class="alert alert-info">
-                {$smarty.const.FEEDBACK_INFO_PENDING}
+                {t}You have pending reviews! Click the review button next to an open review to review that person.{/t}
             </div>
             {break}
         {/if}
@@ -23,10 +25,10 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{$smarty.const.FEEDBACK_REVIEWEE_NAME}</th>
-                <th>{$smarty.const.TH_DEPARTMENT}</th>
-                <th>{$smarty.const.TH_ROLE}</th>
-                <th>Status</th>
+                <th>{t}Name reviewee{/t}</th>
+                <th>{t}Department{/t}</th>
+                <th>{t}Role{/t}</th>
+                <th>{t}Status{/t}</th>
                 <th></th>
             </tr>
             </thead>
@@ -39,16 +41,16 @@
                         <td>{$info.reviewee.role.name}</td>
                         <td>
                             {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
-                                {$smarty.const.TEXT_PENDING}
+                                {t}Pending{/t}
                             {else}
-                                {$smarty.const.TEXT_COMPLETED}
+                                {t}Completed{/t}
                             {/if}
                         </td>
                         <td>
                             {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
-                                <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{$smarty.const.FEEDBACK_REVIEW_BUTTON}</a>
+                                <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{t}Review{/t}</a>
                             {elseif $info.status == $smarty.const.REVIEW_COMPLETED}
-                                <a href="{$smarty.const.BASE_URI}feedback/edit/{$info.reviewee.id}">{$smarty.const.FEEDBACK_OVERVIEW_EDIT}</a>
+                                <a href="{$smarty.const.BASE_URI}feedback/edit/{$info.reviewee.id}">{t}Edit comments{/t}</a>
                             {/if}
                         </td>
                     </tr>
@@ -57,7 +59,7 @@
             </tbody>
         </table>
     {else}
-        {$smarty.const.FEEDBACK_OVERVIEW_NO_ROUND}
+        {t}No round in progress{/t}
     {/if}
     </span>
 </div>

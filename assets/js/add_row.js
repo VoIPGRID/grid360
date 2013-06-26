@@ -22,9 +22,9 @@ $(document).ready(function()
 function add_row()
 {
     var input_type = $('<input type="hidden" name="own' + capitalize(type) + '[' + option_index + '][type]" />').val(type);
-    var name_input = $('<input type="text" name="own' + capitalize(type) + '[' + option_index + '][name]" placeholder="' + capitalize(type) + ' name" class="input-xlarge" />');
+    var name_input = $('<input type="text" name="own' + capitalize(type) + '[' + option_index + '][name]" placeholder="' + name_placeholder + '" class="input-xlarge" />');
 
-    var row_description = $('<textarea name="own' + capitalize(type) + '[' + option_index + '][description]" placeholder="' + capitalize(type) + ' description" class="input-xxlarge"></textarea>');
+    var row_description = $('<textarea name="own' + capitalize(type) + '[' + option_index + '][description]" placeholder="' + description_placeholder + '" class="input-xxlarge"></textarea>');
 
     var controls = $('<div class="controls"></div>');
 

@@ -2,6 +2,8 @@
 
 <script type="text/javascript">
     type = 'role';
+    name_placeholder = '{t}Role name{/t}';
+    description_placeholder = '{t}Role description{/t}';
 </script>
 <script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 

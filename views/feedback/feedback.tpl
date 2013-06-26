@@ -14,30 +14,29 @@
 
 {$url_text = ""}
 
-{if isset($step) && $step == 2}
-    {$text = $smarty.const.FEEDBACK_HEADER_STEP_2}
-    {$url_text = "/{$reviewee.id}/2"}
-    {$button_text = $smarty.const.BUTTON_PREVIOUS}
-{else}
-    {$text =  $smarty.const.FEEDBACK_HEADER_STEP_1}
-    {$url_text = "/{$reviewee.id}"}
-    {$button_text = {$smarty.const.BUTTON_CANCEL}}
-{/if}
-<h3>{$text}
+<h3>
+    {if isset($step) && $step == 2}
+        {t}Select 3 positive competencies for {/t}
+        {$url_text = "/{$reviewee.id}/2"}
+    {else}
+        {t}Select 2 points of improvement for {/t}
+        {$url_text = "/{$reviewee.id}"}
+    {/if}
+
     {if $reviewee.id == $current_user.id}
-        {$smarty.const.FEEDBACK_HEADER_TEXT_SELF}
+        {t}yourself{/t}
     {else}
         {$reviewee.firstname} {$reviewee.lastname}
     {/if}
 </h3>
 
-<h4>{$smarty.const.FEEDBACK_STEP_TEXT|sprintf:{$step}}</h4>
+<h4>{t step=$step}Step %1 of 3{/t}</h4>
 
-{call print_alert type="info" text="{$smarty.const.FEEDBACK_INFO_COMPETENCY_DESCRIPTION}"}
+{call print_alert type="info" text="{t}You can read the description of a competency by hovering your mouse over it{/t}"}
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
     <form action="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}">
-        <div class="skip-button"><button class="btn-large btn-inverse">{$smarty.const.FEEDBACK_SKIP_BUTTON}</button></div>
+        <div class="skip-button"><button class="btn-large btn-inverse">{t}Skip person{/t}</button></div>
     </form>
 {/if}
 
@@ -53,8 +52,14 @@
         {/foreach}
     </div>
     <div class="form-actions">
-        <button type="button" class="btn" onclick="history.go(-1);return true;">{$button_text}</button>
-        <button type="submit" class="btn btn-primary" id="submit">{$smarty.const.BUTTON_NEXT}</button>
+        <button type="button" class="btn" onclick="history.go(-1);return true;">
+            {if $step == 1}
+                {t}Cancel{/t}
+            {else}
+                {t}Previous{/t}
+            {/if}
+        </button>
+        <button type="submit" class="btn btn-primary" id="submit">{t}Next{/t}</button>
     </div>
 </form>
 

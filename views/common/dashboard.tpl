@@ -1,12 +1,12 @@
 <div class="row-fluid">
     <div class="span5">
-        <h4>{$smarty.const.DASHBOARD_REVIEW_STATUS}</h4>
+        <h4>{t}Review status{/t}</h4>
         {if isset($roundinfo) && !empty($roundinfo)}
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>{$smarty.const.TH_NAME}</th>
-                    <th>Status</th>
+                    <th>{t}Name{/t}</th>
+                    <th>{t}Status{/t}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -16,9 +16,9 @@
                             <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
                             <td>
                                 {if $info.status == 0}
-                                    <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{$smarty.const.TEXT_PENDING}</a>
+                                    <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{t}Pending{/t}</a>
                                 {else}
-                                    {$smarty.const.TEXT_COMPLETED}
+                                    {t}Completed{/t}
                                 {/if}
                             </td>
                         </tr>
@@ -27,17 +27,17 @@
                 </tbody>
             </table>
         {else}
-            {$smarty.const.DASHBOARD_NO_ROUND}
+            {t}No round info found{/t}
         {/if}
     </div>
 
     <div class="span4 offset3">
-        <h4>{$smarty.const.DASHBOARD_REPORTS}</h4>
+        <h4>{t}Reports{/t}</h4>
         {if isset($rounds) && !empty($rounds)}
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>{$smarty.const.TH_DESCRIPTION}</th>
+                    <th>{t}Description{/t}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -47,9 +47,9 @@
                         <td>{$round.description}</td>
                         <td>
                             {if $round.status == 0}
-                                <a href="{$smarty.const.BASE_URI}report/{$round.id}">{$smarty.const.DASHBOARD_VIEW_REPORT}</a>
+                                <a href="{$smarty.const.BASE_URI}report/{$round.id}">{t}View report{/t}</a>
                             {else}
-                                {$smarty.const.TEXT_ROUND_IN_PROGRESS}
+                                {t}Round in progress{/t}
                             {/if}
                         </td>
                     </tr>
@@ -57,7 +57,7 @@
                 </tbody>
             </table>
         {else}
-            {$smarty.const.DASHBOARD_NO_REPORTS}
+            {t}No reports found{/t}
         {/if}
     </div>
 </div>

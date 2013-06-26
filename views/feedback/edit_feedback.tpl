@@ -2,14 +2,14 @@
     <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback/edit/{$reviewee.id}" method="post">
 
         <fieldset>
-            <legend>{$smarty.const.TEXT_COMPETENCIES}</legend>
+            <legend>{t}Competencies{/t}</legend>
 
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>{$smarty.const.TEXT_COMPETENCIES}</th>
+                    <th>{t}Competencies{/t}</th>
                     <th>{t}Rating{/t}</th>
-                    <th>{$smarty.const.TEXT_COMMENTS}</th>
+                    <th>{t}Comments{/t}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -20,7 +20,7 @@
                         <td>
                             <input type="hidden" name="reviews[{$review.id}][type]" value="review" />
                             <input type="hidden" name="reviews[{$review.id}][id]" value="{$review.id}" />
-                            <textarea class="input-xlarge" name="reviews[{$review.id}][comment]" placeholder="{$smarty.const.FEEDBACK_FORM_COMMENT_PLACEHOLDER|sprintf:{$competency.name}}">{$review.comment}</textarea>
+                            <textarea class="input-xlarge" name="reviews[{$review.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$review.comment}</textarea>
                         </td>
                     </tr>
                 {/foreach}
@@ -29,12 +29,12 @@
         </fieldset>
 
         <fieldset>
-            <legend>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION_HEADER}</legend>
+            <legend>{t}Extra question{/t}</legend>
             <div class="control-group">
                 {if $reviewee.id == $current_user.id}
-                    <label>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION_SELF}</label>
+                    <label>{t}In what way have you contributed to the success of the organisation?{/t}</label>
                 {else}
-                    <label>{$smarty.const.FEEDBACK_FORM_EXTRA_QUESTION|sprintf:{$reviewee.firstname}:{$reviewee.lastname}}</label>
+                    <label>{t firstname=$reviewee.firstname lastname=$reviewee.lastname}In what way has %1 %2 contributed to the success of the organisation?{/t}</label>
                 {/if}
                 <input type="hidden" name="roundinfo[type]" value="roundinfo">
                 <input type="hidden" name="roundinfo[id]" value="{$roundinfo.id}">
@@ -43,8 +43,8 @@
         </fieldset>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{$smarty.const.BUTTON_PREVIOUS}</button>
-            <button type="submit" class="btn btn-primary" id="submit" >{$smarty.const.BUTTON_SUBMIT}</button><span id="help-text" style="display:none;" class="help-inline">Not all fields are filled in</span>
+            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Previous{/t}</button>
+            <button type="submit" class="btn btn-primary" id="submit" >{t}Submit{/t}</button><span id="help-text" style="display:none;" class="help-inline">Not all fields are filled in</span>
         </div>
     </form>
 </div>
