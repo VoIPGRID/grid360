@@ -92,6 +92,7 @@ function create_department_post()
     R::store($department);
 
     header('Location: ' . ADMIN_URI . 'departments?success=' . $message);
+    exit;
 }
 
 function view_departments()
@@ -115,7 +116,8 @@ function edit_department()
 
     if($department->id == 0)
     {
-        header('Location: ' . ADMIN_URI . 'departments?error=' . sprintf(BEAN_NOT_FOUND, _('department')));
+        $message = sprintf(BEAN_NOT_FOUND, _('department'));
+        header('Location: ' . ADMIN_URI . 'departments?error=' . $message);
         exit;
     }
 
@@ -126,7 +128,7 @@ function edit_department()
         $form_values = array();
         $form_values['id']['value'] = $department->id;
         $form_values['name']['value'] = $department->name;
-        $form_values['user']['value'] = $department->user->id;
+        $form_values['user']['value'] = $department->user_id;
         $form_values['roles']['value'] = $department->ownRole;
 
         $smarty->assign('form_values', $form_values);
@@ -147,13 +149,16 @@ function delete_department_confirmation()
 
     if($department->id == 0)
     {
-        header('Location: ' . ADMIN_URI . 'departments?error=' . sprintf(BEAN_NOT_FOUND, _('department')));
+        $message = sprintf(BEAN_NOT_FOUND, _('department'));
+        header('Location: ' . ADMIN_URI . 'departments?error=' . $message);
+        exit;
     }
 
     global $smarty;
     $smarty->assign('type', _('department'));
     $smarty->assign('type_var', 'department');
     $smarty->assign('department', $department);
+    $smarty->assign('name', $department->name);
     $smarty->assign('level_uri', ADMIN_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));
@@ -167,24 +172,26 @@ function delete_department()
 
     if($department->id == 0)
     {
-        header('Location: ' . ADMIN_URI . 'departments?error=' . sprintf(BEAN_NOT_FOUND, _('department')));
+        $message = sprintf(BEAN_NOT_FOUND, _('department'));
+        header('Location: ' . ADMIN_URI . 'departments?error=' . $message);
         exit;
     }
 
     R::trash($department);
-
-    header('Location: ' . ADMIN_URI . 'departments?success=' . sprintf(DELETE_SUCCESS, _('department'), $department->name));
+    $message = sprintf(DELETE_SUCCESS, _('department'), $department->name);
+    header('Location: ' . ADMIN_URI . 'departments?success=' . $message);
+    exit;
 }
 
 function get_managers()
 {
     $levels = array(ADMIN, MANAGER);
 
-    $managers = R::$adapter->getAssoc('select user.id, CONCAT(firstname, " ", lastname) as name
-                                       from user
-                                       left join userlevel
-                                       on userlevel.id = user.userlevel_id
-                                       where userlevel.level IN (' . R::genSlots($levels) . ')
+    $managers = R::$adapter->getAssoc('SELECT user.id, CONCAT(firstname, " ", lastname) as name
+                                       FROM user
+                                       LEFT JOIN userlevel
+                                       ON userlevel.id = user.userlevel_id
+                                       WHERE userlevel.level IN (' . R::genSlots($levels) . ')
                                        AND user.tenant_id = ' . $_SESSION['current_user']->tenant_id, $levels);
 
     return $managers;

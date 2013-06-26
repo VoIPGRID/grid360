@@ -128,13 +128,15 @@ function delete_competency_confirmation()
 
     if($competency->id == 0)
     {
-        $message = sprintf(BEAN_NOT_FOUND, 'competency');
+        $message = sprintf(BEAN_NOT_FOUND, _('competency'));
         header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
     }
 
     global $smarty;
-    $smarty->assign('type', 'competency');
+    $smarty->assign('type', _('competency'));
+    $smarty->assign('type_var', 'competency');
     $smarty->assign('competency', $competency);
+    $smarty->assign('name', $competency->name);
     $smarty->assign('level_uri', MANAGER_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));
@@ -148,7 +150,7 @@ function delete_competency()
 
     if($competency->id == 0)
     {
-        $message = sprintf(BEAN_NOT_FOUND, 'competency');
+        $message = sprintf(BEAN_NOT_FOUND, _('competency'));
         header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
         exit;
     }

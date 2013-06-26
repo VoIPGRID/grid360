@@ -1,6 +1,5 @@
 {include file="lib/functions.tpl"}
-
-<h4>{t}Are you sure you want to delete the{/t} {if $type == "user"}{$type} {$user.firstname} {$user.lastname}{else}{$type} {${$type_var}.name}{/if}</h4>
+<h4>{t type=$type name=$name}Are you sure you want to delete the %1 %2{/t}</h4>
 <br />
 
 {call print_alert type="warning" text="{t}You won't be able to undo this action.{/t}" show_close_button=false show_bolded_type=true}

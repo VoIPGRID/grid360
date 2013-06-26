@@ -89,7 +89,8 @@ function edit_competencygroup()
 
     if($competencygroup->id == 0)
     {
-        header('Location: ' . MANAGER_URI . 'competencies?error=' . sprintf(BEAN_NOT_FOUND, _('competency')));
+        $message = sprintf(BEAN_NOT_FOUND, _('competency group'));
+        header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
         exit;
     }
 
@@ -104,7 +105,7 @@ function edit_competencygroup()
         $form_values['is_general']['value'] = $competencygroup->general;
         $form_values['name']['value'] = $competencygroup->name;
         $form_values['description']['value'] = $competencygroup->description;
-        $form_values['ownCompetency']['value'] = $competencygroup->ownCompetency;
+        $form_values['competencies']['value'] = $competencygroup->ownCompetency;
 
         $smarty->assign('form_values', $form_values);
     }
@@ -124,7 +125,7 @@ function delete_competencygroup_confirmation()
 
     if($competencygroup->id == 0)
     {
-        $message = sprintf(BEAN_NOT_FOUND, 'competency group');
+        $message = sprintf(BEAN_NOT_FOUND, _('competency group'));
         header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
     }
 
@@ -132,6 +133,7 @@ function delete_competencygroup_confirmation()
     $smarty->assign('type', _('competency group'));
     $smarty->assign('type_var', 'competencygroup');
     $smarty->assign('competencygroup', $competencygroup);
+    $smarty->assign('name', $competencygroup->name);
     $smarty->assign('level_uri', MANAGER_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));
@@ -145,7 +147,7 @@ function delete_competencygroup()
 
     if($competencygroup->id == 0)
     {
-        $message = sprintf(BEAN_NOT_FOUND, 'competency group');
+        $message = sprintf(BEAN_NOT_FOUND, _('competency group'));
         header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
     }
 
@@ -153,6 +155,7 @@ function delete_competencygroup()
 
     $message = sprintf(DELETE_SUCCESS, 'competency group', $competencygroup->name);
     header('Location: ' . MANAGER_URI . 'competencies?success=' . $message);
+    exit;
 }
 
 function get_roles_assoc()

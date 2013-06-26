@@ -92,6 +92,7 @@ function create_role_post()
     R::store($role);
 
     header('Location: ' . MANAGER_URI . 'roles?success=' . $message);
+    exit;
 }
 
 function view_roles()
@@ -106,8 +107,9 @@ function view_roles()
     }
     else
     {
-        $roles = R::find('role', 'department_id = ?', array($_SESSION['current_user']->department->id));
+        $roles = R::find('role', 'department_id = ?', array($_SESSION['current_user']->department_id));
     }
+
     $smarty->assign('roles', $roles);
     $smarty->assign('page_header', _('Roles'));
 
@@ -124,12 +126,13 @@ function edit_role()
     }
     else
     {
-        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department->id, params('id')));
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department_id, params('id')));
     }
 
     if($role->id == 0)
     {
-        header('Location: ' . ADMIN_URI . 'roles?error=' . sprintf(BEAN_NOT_FOUND, _('role')));
+        $message = sprintf(BEAN_NOT_FOUND, _('role'));
+        header('Location: ' . ADMIN_URI . 'roles?error=' . $message);
         exit;
     }
 
@@ -144,8 +147,8 @@ function edit_role()
         $form_values['id']['value'] = $role->id;
         $form_values['name']['value'] = $role->name;
         $form_values['description']['value'] = $role->description;
-        $form_values['department']['value'] = $role->department->id;
-        $form_values['competencygroup']['value'] = $role->competencygroup->id;
+        $form_values['department']['value'] = $role->department_id;
+        $form_values['competencygroup']['value'] = $role->competencygroup_id;
 
         $smarty->assign('form_values', $form_values);
     }
@@ -168,18 +171,21 @@ function delete_role_confirmation()
     }
     else
     {
-        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department->id, params('id')));
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department_id, params('id')));
     }
 
     if($role->id == 0)
     {
-        return html('Role not found!');
+        $message = sprintf(BEAN_NOT_FOUND, _('role'));
+        header('Location: ' . MANAGER_URI . 'roles?error=' . $message);
+        exit;
     }
 
     global $smarty;
     $smarty->assign('type', _('role'));
     $smarty->assign('type_var', 'role');
     $smarty->assign('role', $role);
+    $smarty->assign('name', $role->name);
     $smarty->assign('level_uri', MANAGER_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));
@@ -195,18 +201,19 @@ function delete_role()
     }
     else
     {
-        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department->id, params('id')));
+        $role = R::findOne('role', 'department_id = ? AND id = ?', array($_SESSION['current_user']->department_id, params('id')));
     }
 
     if($role->id == 0)
     {
-        return html('Role not found!');
+        $message = sprintf(BEAN_NOT_FOUND, _('role'));
+        header('Location: ' . MANAGER_URI . 'roles?error=' . $message);
+        exit;
     }
 
     R::trash($role);
 
     $message = sprintf(DELETE_SUCCESS, _('role'), $role->name);
-
     header('Location: ' . MANAGER_URI . 'roles?success=' . $message);
     exit;
 }
@@ -242,14 +249,14 @@ function validate_role_form()
 
 function get_departments_assoc()
 {
-    $departments = R::$adapter->getAssoc('SELECT id, name FROM department WHERE tenant_id = ' . $_SESSION['current_user']->tenant_id);
+    $departments = R::$adapter->getAssoc('SELECT id, name FROM department WHERE tenant_id = ?', array($_SESSION['current_user']->tenant_id));
 
     return $departments;
 }
 
 function get_competencygroups_assoc()
 {
-    $competencygroups = R::$adapter->getAssoc('SELECT id, name FROM competencygroup WHERE general != 1 AND tenant_id = ' . $_SESSION['current_user']->tenant_id);
+    $competencygroups = R::$adapter->getAssoc('SELECT id, name FROM competencygroup WHERE general != 1 AND tenant_id = ?', array($_SESSION['current_user']->tenant_id));
 
     return $competencygroups;
 }
