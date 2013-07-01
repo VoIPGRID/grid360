@@ -19,7 +19,7 @@
 {/function}
 
 <h2>Competency groups</h2>
-{if isset($competencygroups) && !empty($competencygroups)}
+{if !empty($competencygroups)}
 <table class="table table-striped">
     <thead>
     <tr>
@@ -42,7 +42,7 @@
 {call print_add_link level="manager" type_var="competencygroup" type="{t}competency group{/t}"}
 
 <h3>{t}Competencies{/t}</h3>
-{if isset($competencygroups) && !empty($competencygroups)}
+{if !empty($competencygroups)}
 <div class="controls">
     <select id="group-filter">
         <option value="0">Select all</option>

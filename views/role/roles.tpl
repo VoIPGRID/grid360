@@ -10,7 +10,7 @@
     </tr>
 {/function}
 
-{if isset($roles) && !empty($roles)}
+{if !empty($roles)}
 <table class="table table-striped">
     <thead>
     <tr>

@@ -16,10 +16,10 @@
 
 <h3>
     {if isset($step) && $step == 2}
-        {t}Select 3 positive competencies for {/t}
+        {t}Select 2 points of improvement for {/t}
         {$url_text = "/{$reviewee.id}/2"}
     {else}
-        {t}Select 2 points of improvement for {/t}
+        {t}Select 3 positive competencies for {/t}
         {$url_text = "/{$reviewee.id}"}
     {/if}
 

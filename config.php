@@ -1,5 +1,7 @@
 <?php
 
+ini_set('session.gc_maxlifetime', 60 * 60);
+
 include_once('./lib/functions.php');
 include_once('./lib/security.php');
 include_once('./lib/Swift-5.0.0/lib/swift_required.php');
@@ -26,8 +28,8 @@ try
 
     define('BASE_URI', SUB_DIR);
     define('ASSETS_URI', BASE_URI . 'assets/');
-    define('ADMIN_URI', BASE_URI . 'admin/');
-    define('MANAGER_URI', BASE_URI . 'manager/');
+    define('ADMIN_URI', 'admin/');
+    define('MANAGER_URI', 'manager/');
 
 } catch(Exception $e)
 {

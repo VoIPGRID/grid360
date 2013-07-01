@@ -1,5 +1,5 @@
 {if isset($round)}
-    <form action="{$smarty.const.ADMIN_URI}round/end">
+    <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/end">
         <div class="skip-button">
             <button class="btn-large btn-inverse">{t}End round{/t}</button>
         </div>
@@ -35,7 +35,7 @@
     <div class="alert alert-info">
         {t}No feedback round currently in progress. You can start a feedback round by clicking the 'Start round' button.{/t}
     </div>
-    <form action="{$smarty.const.ADMIN_URI}round/create">
+    <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/create">
         <button class="btn-large btn-inverse pull-right">{t}Start round{/t}</button>
     </form>
 {/if}

@@ -4,7 +4,7 @@ global $smarty;
 
 $smarty->assign('content', $content);
 
-if(isset($title) && !empty($title))
+if(!empty($title))
 {
     $smarty->assign('title', $title);
 }

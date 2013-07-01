@@ -4,13 +4,18 @@
     {else}
         <td class="actions">
     {/if}
-    <form action="{${$level|upper}_URI}{$type}/{${$type}.id}">
+    {if $level == "admin"}
+        {assign level_uri $smarty.const.ADMIN_URI}
+    {elseif $level == "manager"}
+        {assign level_uri $smarty.const.MANAGER_URI}
+    {/if}
+    <form action="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}">
         <button data-toggle="tooltip" title="{t}Edit{/t}" data-placement="bottom" type="submit" class="btn btn-link">
             <i class="icon-pencil"></i>
         </button>
     </form>
     {if {$type} == "user"}
-        <form action="{${$level|upper}_URI}{$type}/{${$type}.id}">
+        <form action="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}">
             <input type="hidden" name="user_id" value="{${$type}.id}" />
             {if $user.status == 1}
                 <button data-toggle="tooltip" title="{t}Pause feedback{/t}" data-placement="bottom" type="submit" class="btn btn-link status">
@@ -23,7 +28,7 @@
             {/if}
         </form>
     {/if}
-    <form action="{${$level|upper}_URI}{$type}/delete/{${$type}.id}">
+    <form action="{$smarty.const.BASE_URI}{$level_uri}{$type}/delete/{${$type}.id}">
         <button data-toggle="tooltip" title="{t}Delete{/t}" data-placement="bottom" type="submit" class="btn btn-link">
             <i class="icon-trash"></i>
         </button>
@@ -32,8 +37,13 @@
 {/function}
 
 {function print_add_link}
+    {if $level == "admin"}
+        {assign level_uri $smarty.const.ADMIN_URI}
+    {elseif $level == "manager"}
+        {assign level_uri $smarty.const.MANAGER_URI}
+    {/if}
     <div class="pull-right">
-        <a href="{${$level|upper}_URI}{$type_var}/create"><strong>+</strong> {t type=$type|ucfirst}Add %1{/t}</a>
+        <a href="{$smarty.const.BASE_URI}{$level_uri}{$type_var}/create"><strong>+</strong> {t type=$type|ucfirst}Add %1{/t}</a>
     </div>
 {/function}
 

@@ -7,7 +7,7 @@
 </script>
 <script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 
-<form action="{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$competencygroup_name}Updating competency group %1{/t}</legend>

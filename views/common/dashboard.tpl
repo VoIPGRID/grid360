@@ -1,7 +1,7 @@
 <div class="row-fluid">
     <div class="span5">
         <h4>{t}Review status{/t}</h4>
-        {if isset($roundinfo) && !empty($roundinfo)}
+        {if !empty($roundinfo)}
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -33,7 +33,7 @@
 
     <div class="span4 offset3">
         <h4>{t}Reports{/t}</h4>
-        {if isset($rounds) && !empty($rounds)}
+        {if !empty($rounds)}
             <table class="table table-striped">
                 <thead>
                 <tr>

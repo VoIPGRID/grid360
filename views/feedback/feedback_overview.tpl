@@ -2,7 +2,7 @@
     <h1>{t}Round overview{/t}</h1>
 </div>
 <div class="row-fluid">
-<span class="span7">
+<span class="span8">
     {foreach $roundinfo as $info}
         {if $info.reviewee.id == $current_user.id && $info.status == 0}
             <div class="alert alert-info">
@@ -21,7 +21,7 @@
         {/if}
     {/foreach}
 
-    {if isset($roundinfo) && !empty($roundinfo)}
+    {if !empty($roundinfo)}
         <table class="table table-striped">
             <thead>
             <tr>

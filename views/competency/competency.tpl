@@ -4,7 +4,7 @@
     {call print_alert type="error" text=$form_values.error}
 {/if}
 
-<form action="{$smarty.const.MANAGER_URI}competency/{$competency.id}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competency/{$competency.id}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$competency_name}Updating competency %1{/t}</legend>
@@ -39,7 +39,7 @@
             <input type="hidden" name="competencygroup[type]" value="competencygroup" />
 
             <div class="controls">
-                {if isset($group_options) && !empty($group_options)}
+                {if !empty($group_options)}
                     {html_options name="competencygroup[id]" options=$group_options selected=$competency.competencygroup.id}
                 {else}
                     {t}No competency groups found{/t}

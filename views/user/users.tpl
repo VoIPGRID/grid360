@@ -17,7 +17,7 @@
     </tr>
 {/function}
 
-{if isset($users) && !empty($users)}
+{if !empty($users)}
 <table class="table table-striped">
     <thead>
         <tr>

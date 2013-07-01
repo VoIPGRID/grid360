@@ -1,6 +1,6 @@
 {include file="lib/functions.tpl"}
 
-<form action="{$smarty.const.MANAGER_URI}role/{$role.id}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}role/{$role.id}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$competency_name}Updating role %1{/t}</legend>
@@ -35,7 +35,7 @@
 
             <div id="competency-list">
                 <div class="controls">
-                    {if isset($department_options) && !empty($department_options)}
+                    {if !empty($department_options)}
                         {html_options name="department[id]" options=$department_options}
                     {else}
                         {t}No departments found{/t}
@@ -51,7 +51,7 @@
 
             <div id="competency-list">
                 <div class="controls">
-                    {if isset($competencygroup_options) && !empty($competencygroup_options)}
+                    {if !empty($competencygroup_options)}
                         {html_options name="competencygroup[id]" options=$competencygroup_options}
                     {else}
                         {t}No competency groups found{/t}

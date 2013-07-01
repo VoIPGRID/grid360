@@ -20,9 +20,9 @@
 
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li {check_active request_uri={$smarty.const.BASE_URI}}><a href="{$smarty.const.BASE_URI}"><i class="icon-home"></i> Dashboard</a></li>
+                    <li {check_active request_uri={$smarty.const.BASE_URI}}><a href="{$smarty.const.BASE_URI}"><i class="icon-home"></i> {t}Dashboard{/t}</a></li>
                     <li {check_active request_uri="report"}><a href="{$smarty.const.BASE_URI}report"><i class="icon-file-alt"></i> {t}Report{/t}</a></li>
-                    <li {check_active request_uri="feedback"}><a href="{$smarty.const.BASE_URI}feedback"><i class="icon-bullhorn"></i> Feedback</a></li>
+                    <li {check_active request_uri="feedback"}><a href="{$smarty.const.BASE_URI}feedback"><i class="icon-bullhorn"></i> {t}Feedback{/t}</a></li>
                 </ul>
                 <ul class="nav pull-right">
                     {if $current_user.userlevel.level == $smarty.const.ADMIN || $current_user.userlevel.level == $smarty.const.MANAGER}
@@ -36,14 +36,14 @@
 
                             <ul class="dropdown-menu">
                                 {if $current_user.userlevel.id == $smarty.const.ADMIN}
-                                    <li><a href="{$smarty.const.ADMIN_URI}departments">{t}Departments{/t}</a></li>
-                                    <li><a href="{$smarty.const.ADMIN_URI}users">{t}Users{/t}</a></li>
+                                    <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}departments">{t}Departments{/t}</a></li>
+                                    <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}users">{t}Users{/t}</a></li>
                                 {/if}
-                                <li><a href="{$smarty.const.MANAGER_URI}roles">{t}Roles{/t}</a></li>
-                                <li><a href="{$smarty.const.MANAGER_URI}competencies">{t}Competencies{/t}</a></li>
+                                <li><a href="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}roles">{t}Roles{/t}</a></li>
+                                <li><a href="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competencies">{t}Competencies{/t}</a></li>
                                 {if $current_user.userlevel.id == $smarty.const.ADMIN}
                                     <li class="divider"></li>
-                                    <li><a href="{$smarty.const.ADMIN_URI}round">{t}Round overview{/t}</a></li>
+                                    <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round">{t}Round overview{/t}</a></li>
                                 {/if}
                             </ul>
                         </li>

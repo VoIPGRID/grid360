@@ -1,13 +1,5 @@
 {include file="lib/functions.tpl"}
 
-{if isset($smarty.get.error) && !empty($smarty.get.error)}
-    {call print_alert type="error" text="{$smarty.get.error}"}
-{/if}
-
-{if isset($smarty.get.success)}
-    {call print_alert type="success" text="{$smarty.get.success}"}
-{/if}
-
 <div class="row">
     <form class="form-vertical" action="{$smarty.const.BASE_URI}login" method="post">
         <div class="control-group">

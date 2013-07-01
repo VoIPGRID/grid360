@@ -11,7 +11,7 @@
     {call print_alert type="error" text="{$form_values.error}"}
 {/if}
 
-<form action="{$smarty.const.ADMIN_URI}department/{$form_values.id.value}" method="post" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}department/{$form_values.id.value}" method="post" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$competency_name}Updating department %1{/t}</legend>
@@ -36,7 +36,7 @@
             <input type="hidden" name="user[type]" value="user" />
 
             <div class="controls">
-                {if isset($manager_options) && !empty($manager_options)}
+                {if !empty($manager_options)}
                     {html_options name="user[id]" options=$manager_options selected=$form_values.user.value}
                 {else}
                     {t}No managers/admins found{/t}

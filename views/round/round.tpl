@@ -15,7 +15,7 @@
 
 {function check_errors}
     {$error_type = $values.error}
-    {if isset($error_type) && !empty($error_type)}
+    {if !empty($error_type)}
         {if $error_type == 1}
             {$error_message = "Round description can't be empty!"}
         {elseif $error_type == 2}
@@ -29,7 +29,7 @@
         {elseif $error_type == 6}
             {$error_message = "<strong>Error!</strong> Values can't be greater than 100!"}
         {/if}
-        {if isset($error_message) && !empty($error_message)}
+        {if !empty($error_message)}
             <div class="alert alert-error">
                 {$error_message}
             </div>
@@ -37,7 +37,7 @@
     {/if}
 {/function}
 
-<form action="{$smarty.const.ADMIN_URI}round/confirm" method="post" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/confirm" method="post" class="form-horizontal">
     <fieldset>
         <legend>{t}Create round{/t}</legend>
 

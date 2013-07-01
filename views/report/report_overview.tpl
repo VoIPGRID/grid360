@@ -5,7 +5,7 @@
         <th></th>
     </tr>
     </thead>
-{if isset($rounds) && !empty($rounds)}
+{if !empty($rounds)}
     <tbody>
     {foreach $rounds as $round}
         <tr>

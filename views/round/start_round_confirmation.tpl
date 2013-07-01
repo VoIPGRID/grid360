@@ -1,6 +1,6 @@
 <h4>{t}Are you sure you want to start a round with the following info?{/t}</h4>
 <br />
-<form class="form form-horizontal" action="{$smarty.const.ADMIN_URI}round/start" method="post">
+<form class="form form-horizontal" action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/start" method="post">
     <div class="row-fluid">
         <div class="span4">
             <table class="table">

@@ -9,7 +9,7 @@
     </tr>
 {/function}
 
-{if isset($departments) && !empty($departments)}
+{if !empty($departments)}
 <table class="table table-striped">
     <thead>
     <tr>
@@ -28,4 +28,5 @@
 {else}
     {t}No departments found{/t}!
 {/if}
+
 {call print_add_link level="admin" type_var="department" type="{t}department{/t}"}
