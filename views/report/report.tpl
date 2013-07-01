@@ -1,3 +1,5 @@
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/bootstrap-tabdrop.js"></script>
+
 <ul class="pager">
     <li class="previous {if $previous_round.id == 0 || $round.id - 1 < 1}disabled{/if}">
         <a href="{if $previous_round.id == 0 || $round.id - 1 < 1}#{else}{$smarty.const.BASE_URI}report/{$round.id - 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">&larr; {t}Previous report{/t}</a>
