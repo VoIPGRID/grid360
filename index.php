@@ -6,7 +6,6 @@ require_once(LIB_DIR . 'redbeanphp/rb.php');
 require_once(LIB_DIR . 'smarty/libs/Smarty.class.php');
 require_once(LIB_DIR . 'multitenancy_writer.php');
 require_once(LIB_DIR . 'phpass-0.3/PasswordHash.php');
-require_once(LIB_DIR . 'language/language_nl.php');
 require_once('constants.php');
 
 function configure()
@@ -23,7 +22,6 @@ function before()
 {
     global $smarty;
     $smarty->assign('current_user', $_SESSION['current_user']);
-    $smarty->display('lib/functions.tpl');
 
     layout('layout/layout.php');
 }
@@ -33,7 +31,7 @@ R::setup(CONNECTION, DB_USERNAME, DB_PASSWORD);
 $writer = new Multitenancy_QueryWriter_MySQL(R::$adapter);
 R::configureFacadeWithToolbox(new RedBean_ToolBox(new RedBean_OODB($writer), R::$adapter, $writer));
 
-R::freeze(true); // TODO: Enable this
+R::freeze(true);
 //R::debug(true);
 
 $smarty = new Smarty();
