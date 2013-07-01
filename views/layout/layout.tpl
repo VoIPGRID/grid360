@@ -18,10 +18,11 @@
     </div>
 {/if}
 
-{if isset($smarty.get.success)}
-    {call print_alert type="success" text="{$smarty.get.success}"}
-{elseif isset($smarty.get.error)}
-    {call print_alert type="error" text="{$smarty.get.error}"}
+{if !empty($success)}
+    {call print_alert type="success" text="{$success}"}
+{/if}
+{if !empty($error)}
+    {call print_alert type="error" text="{$error}"}
 {/if}
 
 {$content}

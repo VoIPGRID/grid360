@@ -36,7 +36,7 @@ function create_department_post()
 
     $id = params('id');
 
-    if(isset($id) && !empty($id))
+    if(!empty($id))
     {
         $_POST['id'] = $id;
         $keys_to_check['id'] = array
@@ -91,8 +91,8 @@ function create_department_post()
 
     R::store($department);
 
-    header('Location: ' . ADMIN_URI . 'departments?success=' . $message);
-    exit;
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'departments');
 }
 
 function view_departments()
@@ -117,8 +117,8 @@ function edit_department()
     if($department->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('department'));
-        header('Location: ' . ADMIN_URI . 'departments?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'departments');
     }
 
     global $smarty;
@@ -150,8 +150,8 @@ function delete_department_confirmation()
     if($department->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('department'));
-        header('Location: ' . ADMIN_URI . 'departments?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'departments');
     }
 
     global $smarty;
@@ -173,14 +173,15 @@ function delete_department()
     if($department->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('department'));
-        header('Location: ' . ADMIN_URI . 'departments?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'departments');
     }
 
     R::trash($department);
+
     $message = sprintf(DELETE_SUCCESS, _('department'), $department->name);
-    header('Location: ' . ADMIN_URI . 'departments?success=' . $message);
-    exit;
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'departments');
 }
 
 function get_managers()

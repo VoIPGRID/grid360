@@ -13,6 +13,14 @@
             <h1>{$page_header}</h1>
         {/if}
     {/if}
+
+{if !empty($success)}
+    {call print_alert type="success" text="{$success}"}
+{/if}
+{if !empty($error)}
+    {call print_alert type="error" text="{$error}"}
+{/if}
+
 {$content}
 </div>
 </body>

@@ -7,8 +7,7 @@ function security_authorize($required_level = EMPLOYEE)
         if(!isset($_SESSION['current_user']) || $_SESSION['current_user'] == null)
         {
             layout('security/login.tpl');
-            header('Location: ' . BASE_URI . 'login');
-            exit;
+            redirect_to('login');
         }
         else if(isset($_SESSION['current_user']) && $_SESSION['current_user']->userlevel->level > $required_level)
         {

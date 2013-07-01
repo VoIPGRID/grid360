@@ -32,6 +32,14 @@ function login_google()
             if(count($attributes) > 0)
             {
                 $user = R::findOne('user', 'email = ?', array($attributes['contact/email']));
+
+                if($user->id == 0)
+                {
+                    $message = _('No user with that email exists');
+                    flash('error', $message);
+                    redirect_to('login');
+                }
+
                 $user->identity = $identity_hash;
                 R::store($user);
             }
@@ -73,7 +81,9 @@ function register()
 {
     if(isset($_SESSION['current_user']))
     {
-        return html('Can\'t register new organisation when logged in, please log out first!', 'layout/basic.php');
+        $message =  _('Can\'t register new organisation when logged in, please log out first!');
+        flash('error', $message);
+        redirect_to('/');
     }
 
     global $smarty;
@@ -132,7 +142,9 @@ function register_post()
 
 //    send_mail('New tenant registration', 'admin@grid360.nl', $user->email, 'Tenant name: ' . $tenant->name);
 
-    header('Location: ' . BASE_URI . 'login?success=' . _('You have successfully registered a new organisation.'));
+    $message = _('You have successfully registered a new organisation.');
+    flash('success', $message);
+    redirect_to('login');
 }
 
 function login()
@@ -141,8 +153,7 @@ function login()
     {
         if(security_login($_COOKIE['email'], $_COOKIE['password'], false, true))
         {
-            header('Location: ' . BASE_URI);
-            exit;
+            redirect_to('/');
         }
     }
 
@@ -160,29 +171,36 @@ function login()
 
 function login_post()
 {
+    $message = '';
+
     if(!empty($_POST['email']) && !empty($_POST['password']))
     {
         if(security_login($_POST['email'], $_POST['password'], $_POST['remember_me'], false))
         {
-            header('Location: ' . BASE_URI);
-            exit;
+            redirect_to('/');
         }
         else
         {
-            header('Location: ' . BASE_URI . 'login?error=Wrong email/password combo!');
+            $message = _('Wrong email/password combo!');
         }
     }
     else if(empty($_POST['email']) && !empty($_POST['password']))
     {
-        header('Location: ' . BASE_URI . 'login?error=Email can\'t be empty!');
+        $message = _('Email can\'t be empty!');
     }
     else if(!empty($_POST['email']) && empty($_POST['password']))
     {
-        header('Location: ' . BASE_URI . 'login?error=Password can\'t be empty!');
+        $message = _('Password can\'t be empty!');
     }
     else
     {
-        header('Location: ' . BASE_URI . 'login?error=Email and password can\'t be empty!');
+        $message = _('Email and password can\'t be empty!');
+    }
+
+    if(!empty($message))
+    {
+        flash('error', $message);
+        redirect_to('login');
     }
 }
 
@@ -190,15 +208,15 @@ function logout()
 {
     security_logout();
 
-    header('Location: ' . BASE_URI . 'login');
+    redirect_to('login');
 }
 
 function reset_password()
 {
     global $smarty;
 
-    set('title', 'Reset password');
-    $smarty->assign('page_header', 'Reset password');
+    set('title', _('Reset password'));
+    $smarty->assign('page_header', _('Reset password'));
     $smarty->assign('page_header_size', 'h2');
 
     if(isset($_GET['uuid']))
@@ -207,7 +225,9 @@ function reset_password()
 
         if($user->id == 0)
         {
-            header('Location: ' . BASE_URI . 'login?error=' . _('The given ID doesn\'t seem to match the one in the database.'));
+            $message = _('The given ID doesn\'t seem to match the one in the database.');
+            flash('error', $message);
+            redirect_to('login');
         }
 
         if(is_valid($_GET['uuid']))
@@ -223,7 +243,9 @@ function reset_password()
             return html($smarty->fetch('security/new_password.tpl'), 'layout/basic.php');
         }
 
-        header('Location: ' . BASE_URI . 'login?error=' . _('The given ID seems to be invalid, please check the link you received in your email or contact the administrator.'));
+        $message = _('The given ID seems to be invalid. Please check the link you received in your email or contact the administrator.');
+        flash('error', $message);
+        redirect_to('login');
     }
     else
     {
@@ -235,7 +257,9 @@ function reset_password_post()
 {
     if(isset($_SESSION['current_user']))
     {
-        return html(_('Can\'t reset your password logged in, please log out first!'), 'layout/basic.php');
+        $message = _('Can\'t reset your password when logged in, please log out first!');
+        flash('error', $message);
+        redirect_to('/');
     }
 
     if(isset($_POST['uuid']))
@@ -244,7 +268,9 @@ function reset_password_post()
 
         if($user->id == 0)
         {
-            return html('User not found', 'layout/basic.php');
+            $message = sprintf(BEAN_NOT_FOUND, _('user'));
+            flash('error', $message);
+            redirect_to('reset');
         }
 
         $form_values = validate_reset_password_form();
@@ -252,8 +278,7 @@ function reset_password_post()
         if(isset($form_values['error']))
         {
             flash('form_values', $form_values);
-            header('Location: ' . BASE_URI . 'reset?uuid=' . $_POST['uuid'] . '&email=' . $_POST['email']);
-            exit;
+            redirect_to('reset', array('uuid' => $_POST['uuid'], 'email' => $_POST['email']));
         }
 
         foreach($form_values as $form_value)
@@ -261,8 +286,7 @@ function reset_password_post()
             if(isset($form_value['error']))
             {
                 flash('form_values', $form_values);
-                header('Location: ' . BASE_URI . 'reset?uuid=' . $_POST['uuid'] . '&email=' . $_POST['email']);
-                exit;
+                redirect_to('reset', array('uuid' => $_POST['uuid'], 'email' => $_POST['email']));
             }
         }
 
@@ -273,7 +297,9 @@ function reset_password_post()
 
         R::store($user);
 
-        header('Location: ' . BASE_URI . 'login?success=' . _('Your password has been reset!'));
+        $message = _('Your password has been reset!');
+        flash('success', $message);
+        redirect_to('login');
     }
     else
     {
@@ -311,7 +337,10 @@ function reset_password_post()
         $user->reset_password_id = $reset_password_id;
 
         R::store($user);
-        header('Location: ' . BASE_URI . 'login?success=' . _('A confirmation link has been sent to your email'));
+
+        $message = _('A confirmation link has been sent to your email');
+        flash('success', $message);
+        redirect_to('login');
     }
 }
 
@@ -362,7 +391,7 @@ function validate_register_form()
     }
     if(!isset($form_values['email']['value']) || strlen($form_values['email']['value']) == 0)
     {
-        $form_values['email']['error'] = sprintf(FIELD_REQUIRED, 'Email');
+        $form_values['email']['error'] = sprintf(FIELD_REQUIRED, _('Email'));
     }
     else if(!filter_var($form_values['email']['value'], FILTER_VALIDATE_EMAIL))
     {

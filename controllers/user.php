@@ -47,7 +47,7 @@ function create_user_post()
 
     $id = params('id');
 
-    if(isset($id) && !empty($id))
+    if(!empty($id))
     {
         $_POST['id'] = $id;
         $keys_to_check['id'] = array
@@ -110,7 +110,8 @@ function create_user_post()
 
     R::store($user);
 
-    header('Location:' . ADMIN_URI . 'users?success=' . $message);
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'users');
 }
 
 function view_users()
@@ -135,8 +136,8 @@ function edit_user()
     if($user->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('user'));
-        header('Location: ' . ADMIN_URI . 'users?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'users');
     }
 
     global $smarty;
@@ -174,8 +175,8 @@ function edit_status()
     if($user->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('user'));
-        header('Location: ' . ADMIN_URI . 'users?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'users');
     }
 
     $user->status = $_POST['status'];
@@ -192,8 +193,8 @@ function delete_user_confirmation()
     if($user->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('user'));
-        header('Location: ' . ADMIN_URI . 'users?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'users');
     }
 
     global $smarty;
@@ -215,13 +216,13 @@ function delete_user()
     if($user->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('user'));
-        header('Location: ' . ADMIN_URI . 'users?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'users');
     }
 
     R::trash($user);
 
     $message = sprintf(DELETE_SUCCESS, 'user', $user->firstname . ' ' . $user->lastname);
-    header('Location:' . ADMIN_URI . 'users?success=' . $message);
-    exit;
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'users');
 }

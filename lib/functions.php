@@ -80,9 +80,21 @@ function validate_form($keys_to_check)
             $field = $labels[$key];
             $form_values[$key]['error'] = sprintf(FIELD_REQUIRED, $field);
         }
-        else if($key == 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL))
+        else if($key == 'email')
         {
-            $form_values[$key]['error'] = INVALID_EMAIL_FORMAT;
+            if(!filter_var($value, FILTER_VALIDATE_EMAIL))
+            {
+                $form_values[$key]['error'] = INVALID_EMAIL_FORMAT;
+            }
+            else
+            {
+                $user = R::find('user', 'email = ?', array($value));
+
+                if($user->id != 0)
+                {
+                    $form_values[$key]['error'] = EMAIL_EXISTS;
+                }
+            }
         }
     }
 
@@ -102,6 +114,22 @@ function get_current_round()
 function get_general_competencies()
 {
     return R::findOne('competencygroup', 'general = ?', array(1)); // TODO: Multiple general competencies allowed?
+}
+
+function get_current_locale()
+{
+    global $supported_locales, $default_locale;
+
+    /* Check if browser accepts en_US or nl_NL or ? */
+    $browser_locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    if(in_array($browser_locale . '.UTF-8', $supported_locales))
+    {
+        /* disable this line to force $default_locale */
+        return $browser_locale . '.UTF-8';
+    }
+
+    /* if browser locale is not supported, set default */
+    return $supported_locales[$default_locale];
 }
 
 // Credits to http://www.php.net/manual/en/function.uniqid.php#94959 for the following two functions

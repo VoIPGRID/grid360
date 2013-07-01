@@ -29,7 +29,18 @@ function create_round()
 
     if(get_current_round()->id != 0)
     {
-        return html('Round already in progress');
+        $message =  _('Round already in progress');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
+    }
+
+    $users = R::findAll('user');
+
+    if(count($users) < 4)
+    {
+        $message = _('Not enough people in your organisation to start a round. You need at least 4 people.');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
     }
 
     global $smarty;
@@ -43,7 +54,9 @@ function start_round_confirmation()
 
     if(get_current_round()->id != 0)
     {
-        return html('A round is already in progress!');
+        $message =  _('A round is already in progress!');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round/create');
     }
 
     $values = validate_round_form();
@@ -74,7 +87,9 @@ function start_round()
 
     if(get_current_round()->id != 0)
     {
-        return html('A round is already in progress!');
+        $message =  _('A round is already in progress!');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
     }
 
     $round = R::dispense('round');
@@ -83,7 +98,9 @@ function start_round()
 
     if(count($users) < 4)
     {
-        return html('Not enough people in your organisation to start a round. You need atleast 4 people.');
+        $message =  _('Not enough people in your organisation to start a round. You need at least 4 people.');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
     }
 
     $min_own = $_POST['min_own'];
@@ -97,10 +114,10 @@ function start_round()
         $reviewees = null;
 
         // Get everyone from $reviewer's department and count them
-        $own_department_users = R::find('user', 'department_id = ? AND id != ? AND status != ?', array($reviewer->department->id, $reviewer->id, PAUSE_USER_REVIEWS));
+        $own_department_users = R::find('user', 'department_id = ? AND id != ? AND status != ?', array($reviewer->department_id, $reviewer->id, PAUSE_USER_REVIEWS));
         $count_own_department = count($own_department_users);
 
-        // Only continue if you have atleast 2 people (including yourself) in your own department, since you always have to review people of your own department
+        // Only continue if you have at least 2 people (including yourself) in your own department, since you always have to review people of your own department
         if($count_own_department > 0)
         {
             // Calculate a random number between $min_own and $max_own
@@ -135,7 +152,7 @@ function start_round()
             }
 
             // Get users from other departments and count them
-            $other_department_users = R::find('user', 'department_id != ? AND id != ? AND status != ?', array($reviewer->department->id, $reviewer->id, PAUSE_USER_REVIEWS));
+            $other_department_users = R::find('user', 'department_id != ? AND id != ? AND status != ?', array($reviewer->department_id, $reviewer->id, PAUSE_USER_REVIEWS));
             $count_other_department = count($other_department_users);
 
             $other_random_users = array();
@@ -203,7 +220,9 @@ function start_round()
 
     R::store($round);
 
-    return html('Round created!');
+    $message =  _('Round created');
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'round');
 }
 
 function end_round_confirmation()
@@ -214,7 +233,9 @@ function end_round_confirmation()
 
     if($round->id == 0)
     {
-        return html('Round not found');
+        $message =  _('Round not found');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
     }
 
     global $smarty;
@@ -230,7 +251,9 @@ function end_round()
 
     if($round->id == 0)
     {
-        return html('Round not found');
+        $message =  _('Round not found');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
     }
 
     $round->status = ROUND_COMPLETED;
@@ -244,7 +267,9 @@ function end_round()
        // send_mail('Feedback round ended', 'admin@grid360.nl', $user->email, 'Round ended, you can now log in and view your report.'); // TODO: Move this one line up and enable it
     }
 
-    return html('Round ended!');
+    $message =  _('Round ended');
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'round');
 }
 
 function validate_round_form()
@@ -278,7 +303,7 @@ function validate_round_form()
     $values['min_other'] = $min_other;
     $values['max_other'] = $max_other;
 
-    if(!isset($_POST['description']) || empty($_POST['description']))
+    if(empty($_POST['description']))
     {
         $values['error'] = 1;
     }

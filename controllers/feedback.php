@@ -11,7 +11,9 @@ function edit_feedback()
 
     if($roundinfo->id == 0)
     {
-        return html('Can\'t view this person!');
+        $message = _('Can\'t view this person');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $reviews = R::find('review', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, params('id'), get_current_round()->id));
@@ -35,10 +37,13 @@ function edit_feedback_post()
 
     if($roundinfo->id == 0)
     {
-        return html('Can\'t edit this feedback! Error with round info!');
+        $message = _('Can\'t edit this feedback! Error with round info!');
+        flash('error', $message);
+        redirect_to('feedback/edit/' . params('id'));
     }
 
-    $roundinfo->answer = nl2br2($_POST['roundinfo']['answer']);
+    // The standard nl2br function of PHP isn't working like it should (it's still leaving in the newlines), so that's why I'm using a custom function.
+    $roundinfo->answer = nl2br_fixed($_POST['roundinfo']['answer']);
 
     $reviews = array();
 
@@ -48,18 +53,21 @@ function edit_feedback_post()
 
         if($review->id == 0)
         {
-            return html('Can\'t edit this feedback! Error with reviews!');
+            $message = _('Can\'t edit this feedback! Error with reviews!');
+            flash('error', $message);
+            redirect_to('feedback/edit/' . params('id'));
         }
 
-        $review->comment = nl2br2($review_row['comment']);
-
+        $review->comment = nl2br_fixed($review_row['comment']);
         $reviews[] = $review;
     }
 
     R::storeAll($reviews);
     R::store($roundinfo);
 
-    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_EDIT_SUCCESS, $reviewee->firstname, $reviewee->lastname));
+    $message = sprintf(_('Your review for %s %s has been edited'), $reviewee->firstname, $reviewee->lastname);
+    flash('success', $message);
+    redirect_to('feedback');
 }
 
 function view_feedback_overview()
@@ -90,17 +98,21 @@ function feedback_step_1()
 
     if(get_current_round()->id == 0)
     {
-        return html('No round in progress!');
+        $message = _('No round in progress!');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $reviewee = R::load('user', params('id'));
 
     if($reviewee->id == 0)
     {
-        return html('User not found!');
+        $message = sprintf(BEAN_NOT_FOUND, ('user'));
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
-    // We don't want the competencies we selected for the previous person to be set for the next one, so clear them
+    // We don't want the competencies we selected for the last person to be set for the next one, so clear them
     if($_SESSION['current_reviewee_id'] != $reviewee->id)
     {
         unset($_SESSION['positive_competencies']);
@@ -112,23 +124,38 @@ function feedback_step_1()
 
     if($roundinfo->id == 0)
     {
-        return html('You can\'t review this person!');
+        $message = _('You can\'t review this person!');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     if($roundinfo->status == 1)
     {
-        return html('Already reviewed this person!');
+        $message = _('Already reviewed this person!');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $competencygroups = array();
     $competencygroups[] = get_general_competencies();
     $competencygroups[] = $reviewee->role->competencygroup;
 
+    foreach($competencygroups as $competencygroup)
+    {
+        foreach($competencygroup->ownCompetency as $competency)
+        {
+            if(in_array($competency->id, $_SESSION['positive_competencies']))
+            {
+                $competency->in_session = true;
+            }
+        }
+    }
+
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
     $smarty->assign('competencygroups', $competencygroups);
     $smarty->assign('step', 1);
-    set('title', 'Feedback step 1');
+    set('title', _('Feedback step 1'));
 
     return html($smarty->fetch('feedback/feedback.tpl'));
 }
@@ -140,11 +167,13 @@ function feedback_step_1_post()
     if(isset($_POST['competencies']) && count($_POST['competencies']) == 3)
     {
         $_SESSION['positive_competencies'] = $_POST['competencies'];
-        header('Location: ' . BASE_URI . 'feedback/' . params('id') . '/2');
+        redirect_to('feedback/' . params('id') . '/2');
     }
     else
     {
-        return html('Error! Must select 3 competencies.');
+        $message = _('Error! Must select 3 competencies.');
+        flash('error', $message);
+        redirect_to('feedback/' . params('id'));
     }
 }
 
@@ -154,21 +183,27 @@ function feedback_step_2()
 
     if(!isset($_SESSION['positive_competencies']))
     {
-        return html('Step 1 has to be completed first!');
+        $message = _('Step 1 has to be completed first!');
+        flash('error', $message);
+        redirect_to('feedback/' . params('id'));
     }
 
     $reviewee = R::load('user', params('id'));
 
     if($reviewee->id == 0)
     {
-        return html('User not found!');
+        $message = sprintf(BEAN_NOT_FOUND, _('user'));
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
 
     if($roundinfo->id == 0)
     {
-        return html('You can\'t review this person!');
+        $message = _('You can\'t review this person!');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $competencygroups = array();
@@ -179,11 +214,15 @@ function feedback_step_2()
 
     foreach($competencygroups as $competencygroup)
     {
-        foreach($competencygroup->ownCompetency as $id => $competency)
+        foreach($competencygroup->ownCompetency as $competency)
         {
-            if(in_array($id, $positive_competencies))
+            if(in_array($competency->id, $positive_competencies))
             {
-                unset($competencygroup->ownCompetency[$id]);
+                unset($competencygroup->ownCompetency[$competency->id]);
+            }
+            else if(in_array($competency->id, $_SESSION['negative_competencies']))
+            {
+                $competency->in_session = true;
             }
         }
     }
@@ -192,7 +231,7 @@ function feedback_step_2()
     $smarty->assign('reviewee', $reviewee);
     $smarty->assign('competencygroups',  $competencygroups);
     $smarty->assign('step', 2);
-    set('title', 'Feedback step 2');
+    set('title', _('Feedback step 2'));
 
     return html($smarty->fetch('feedback/feedback.tpl'));
 }
@@ -204,11 +243,13 @@ function feedback_step_2_post()
     if(isset($_POST['competencies']) && count($_POST['competencies']) == 2)
     {
         $_SESSION['negative_competencies'] = $_POST['competencies'];
-        header('Location:  ' . BASE_URI . 'feedback/' . params('id') . '/3');
+        redirect_to('feedback/' . params('id') . '/3');
     }
     else
     {
-        return html('Error! Must select 2 competencies.');
+        $message = _('Error! Must select 2 competencies.');
+        flash('error', $message);
+        redirect_to('feedback/' . params('id') . '/2');
     }
 }
 
@@ -218,21 +259,27 @@ function feedback_step_3()
 
     if(!isset($_SESSION['positive_competencies']) || !isset($_SESSION['negative_competencies']))
     {
-        return html('Step 1 and 2 have to be completed first!');
+        $message = _('Step 1 and 2 have to be completed first!');
+        flash('error', $message);
+        redirect_to('feedback' . params('id') . '/2');
     }
 
     $reviewee = R::load('user', params('id'));
 
     if($reviewee->id == 0)
     {
-        return html('User not found!');
+        $message = sprintf(BEAN_NOT_FOUND, ('user'));
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
 
     if($roundinfo->id == 0)
     {
-        return html('You can\'t review this person!');
+        $message = _('You can\'t review this person!');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $positive_competencies = R::batch('competency', $_SESSION['positive_competencies']);
@@ -246,6 +293,10 @@ function feedback_step_3()
 
     // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
     $smarty->assign('session_lifetime', ini_get('session.gc_maxlifetime') / MINUTES);
+
+    // Make sure you edit this text to match the session_lifetime Smarty variable
+    $smarty->assign('time_text', _('minutes'));
+
     set('title', 'Feedback step 3');
 
     return html($smarty->fetch('feedback/feedback_form.tpl'));
@@ -268,7 +319,7 @@ function feedback_step_3_post()
 
     foreach($_POST['positive_competencies'] as $form_competency)
     {
-        if(isset($form_competency['rating']) && !empty($form_competency['rating']))
+        if(!empty($form_competency['rating']))
         {
             if($form_competency['rating'] >= 3 && $form_competency['rating'] <= 5 && $form_competency['is_positive'] == 1)
             {
@@ -283,7 +334,7 @@ function feedback_step_3_post()
     // If there aren't 3 positive competencies, return an error
     if($count != 3)
     {
-        $smarty->assign('error_positive_competencies', 'Positive competencies error!');
+        $smarty->assign('error_positive_competencies', _('Positive competencies error!'));
 
         $has_errors = true;
     }
@@ -292,7 +343,7 @@ function feedback_step_3_post()
 
     foreach($_POST['negative_competencies'] as $form_competency)
     {
-        if(isset($form_competency['rating']) && !empty($form_competency['rating']))
+        if(!empty($form_competency['rating']))
         {
             if($form_competency['rating'] >= 1 && $form_competency['rating'] <= 3 && $form_competency['is_positive'] == 0)
             {
@@ -304,7 +355,7 @@ function feedback_step_3_post()
     // If there aren't 2 points of improvement, return an error
     if($count != 2)
     {
-        $smarty->assign('error_negative_competencies', 'Points of improvement error!');
+        $smarty->assign('error_negative_competencies', _('Points of improvement error!'));
 
         $has_errors = true;
     }
@@ -324,40 +375,48 @@ function feedback_step_3_post()
     {
         if($form_competency['rating'] < 1 or $form_competency['rating'] > 5)
         {
-            return html('Ratings must be higher than 1 and lower than 5! <a href="javascript:history.go(-1);">Click here to go back</a>');
+            $message = _('Ratings must be higher than 1 and lower than 5!');
+            flash('error', $message);
+            redirect_to('feedback/' . params('id') . '/3');
         }
 
-        $competency = R::findOne('competency', 'id = ? AND (competencygroup_id = ? OR competencygroup_id = ?)', array($form_competency['id'], $reviewee->role->competencygroup->id, get_general_competencies()->id));
+        $competency = R::findOne('competency', 'id = ? AND (competencygroup_id = ? OR competencygroup_id = ?)', array($form_competency['id'], $reviewee->role->competencygroup_id, get_general_competencies()->id));
 
         if($competency->id == 0)
         {
-            return html('An error has occurred regarding competencies! <a href="javascript:history.go(-1);">Click here to go back</a>');
+            $message = _('An error has occurred regarding competencies!');
+            flash('error', $message);
+            redirect_to('feedback/' . params('id') . '/3');
         }
 
         $rating = R::load('rating', $form_competency['rating']);
 
         if($rating->id == 0)
         {
-            return html('An error has occurred regarding ratings! <a href="javascript:history.go(-1);">Click here to go back</a>');
+            $message = _('An error has occurred regarding ratings!');
+            flash('error', $message);
+            redirect_to('feedback/' . params('id') . '/3');
         }
 
         $reviews[$index]->reviewer = $current_user;
         $reviews[$index]->reviewee = $reviewee;
         $reviews[$index]->competency = $competency;
         $reviews[$index]->rating = $rating;
-        $reviews[$index]->comment = nl2br2($form_competency['comment']);
+        $reviews[$index]->comment = nl2br_fixed($form_competency['comment']);
         $reviews[$index]->round = $round;
         $reviews[$index]->is_positive = $form_competency['is_positive'];
         $index++;
     }
 
     $roundinfo->status = 1;
-    $roundinfo->answer = nl2br2($_POST['extra_question']);
+    $roundinfo->answer = nl2br_fixed($_POST['extra_question']);
 
     R::store($roundinfo);
     R::storeAll($reviews);
 
-    header('Location: ' . BASE_URI . 'feedback?success=' . sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname, $reviewee->lastname));
+    $message = sprintf(MESSAGE_REVIEW_SUCCESS, $reviewee->firstname, $reviewee->lastname);
+    flash('success', $message);
+    redirect_to('feedback');
 }
 
 function skip_confirmation()
@@ -368,19 +427,25 @@ function skip_confirmation()
 
     if($reviewee->id == 0)
     {
-        return html('User not found');
+        $message = sprintf(BEAN_NOT_FOUND, _('user'));
+        flash('error', $message);
+        redirect_to('feedback');
     }
     else if($reviewee->id == $_SESSION['current_user']->id)
     {
-        return html('Can\'t skip yourself!');
+        $message = _('Can\'t skip yourself!');
+        flash('error', $message);
+        redirect_to('feedback/' . params('id'));
     }
-    else if($reviewee->department->id == $_SESSION['current_user']->department->id)
+    else if($reviewee->department_id == $_SESSION['current_user']->id)
     {
-        return html('Can\'t skip someone of your own department');
+        $message = _('Can\'t skip someone of your own department');
+        flash('error', $message);
+        redirect_to('feedback/' . params('id'));
     }
 
     global $smarty;
-    $smarty->assign('page_header', FEEDBACK_SKIP_HEADER);
+    $smarty->assign('page_header', _('Skip person'));
     $smarty->assign('reviewee', $reviewee);
 
     return html($smarty->fetch('feedback/skip_confirmation.tpl'));
@@ -390,26 +455,34 @@ function skip_person()
 {
     if(!isset($_POST['reviewee_id']))
     {
-        return html('No user was given');
+        $message = _('No user was given');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     $reviewee = R::load('user', $_POST['reviewee_id']);
 
     if($reviewee->id == 0)
     {
-        return html('User not found');
+        $message = sprintf(BEAN_NOT_FOUND, _('user'));
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     if($reviewee->department->id == $_SESSION['current_user']->department->id)
     {
-        return html('This user can\'t be skipped');
+        $message = _('This user can\'t be skipped');
+        flash('error', $message);
+        redirect_to('feedback/' . params('id'));
     }
 
     $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $reviewee->id, get_current_round()->id));
 
     if($roundinfo->id == 0)
     {
-        return html('Invalid input');
+        $message = _('Invalid input');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     // Set status to skipped, but keep in database
@@ -417,7 +490,7 @@ function skip_person()
 
     R::store($roundinfo);
 
-    $reviewees = R::find('user', 'department_id != ? AND status != ?', array($_SESSION['current_user']->department->id, PAUSE_USER_REVIEWS));
+    $reviewees = R::find('user', 'department_id != ? AND status != ?', array($_SESSION['current_user']->department_id, PAUSE_USER_REVIEWS));
 
     foreach($reviewees as $id => $reviewee)
     {
@@ -439,10 +512,10 @@ function skip_person()
 
     R::store($roundinfo);
 
-    header('Location:  ' . BASE_URI . 'feedback');
+    redirect_to('feedback');
 }
 
-function nl2br2($string)
+function nl2br_fixed($string)
 {
     $string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
     return $string;

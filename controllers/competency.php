@@ -29,7 +29,7 @@ function create_competency_post()
 
     $id = params('id');
 
-    if(isset($id) && !empty($id))
+    if(!empty($id))
     {
         $_POST['id'] = $id;
         $keys_to_check['id'] = array
@@ -81,7 +81,8 @@ function create_competency_post()
 
     R::store($competency);
 
-    header('Location: ' . MANAGER_URI . 'competencies?success=' . $message);
+    flash('success', $message);
+    redirect_to(MANAGER_URI . 'competencies');
 }
 
 function view_competencies()
@@ -106,8 +107,9 @@ function edit_competency()
 
     if($competency->id == 0)
     {
-        header('Location: ' . ADMIN_URI . 'competencies?error=' . sprintf(BEAN_NOT_FOUND, _('competency')));
-        exit;
+        $message = sprintf(BEAN_NOT_FOUND, _('competency'));
+        flash('error', $message);
+        redirect_to(MANAGER_URI . 'competencies');
     }
 
     $competencygroups = get_competencygroups_assoc();
@@ -129,7 +131,8 @@ function delete_competency_confirmation()
     if($competency->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('competency'));
-        header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
+        flash('error', $message);
+        redirect_to(MANAGER_URI . 'competencies');
     }
 
     global $smarty;
@@ -151,12 +154,13 @@ function delete_competency()
     if($competency->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('competency'));
-        header('Location: ' . MANAGER_URI . 'competencies?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(MANAGER_URI . 'competencies');
     }
 
     R::trash($competency);
 
-    $message = sprintf(DELETE_SUCCESS, 'competency', $competency->name);
-    header('Location: ' . MANAGER_URI . 'competencies?success=' . $message);
+    $message = sprintf(DELETE_SUCCESS, _('competency'), $competency->name);
+    flash('success', $message);
+    redirect_to(MANAGER_URI . 'competencies');
 }

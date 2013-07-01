@@ -37,7 +37,7 @@ function create_role_post()
 
     $id = params('id');
 
-    if(isset($id) && !empty($id))
+    if(!empty($id))
     {
         $_POST['id'] = $id;
         $keys_to_check['id'] = array
@@ -91,8 +91,8 @@ function create_role_post()
 
     R::store($role);
 
-    header('Location: ' . MANAGER_URI . 'roles?success=' . $message);
-    exit;
+    flash('success', $message);
+    redirect_to(MANAGER_URI . 'roles');
 }
 
 function view_roles()
@@ -132,8 +132,8 @@ function edit_role()
     if($role->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('role'));
-        header('Location: ' . ADMIN_URI . 'roles?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(MANAGER_URI . 'roles');
     }
 
     $departments = get_departments_assoc();
@@ -177,8 +177,8 @@ function delete_role_confirmation()
     if($role->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('role'));
-        header('Location: ' . MANAGER_URI . 'roles?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(MANAGER_URI . 'roles');
     }
 
     global $smarty;
@@ -207,15 +207,15 @@ function delete_role()
     if($role->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('role'));
-        header('Location: ' . MANAGER_URI . 'roles?error=' . $message);
-        exit;
+        flash('error', $message);
+        redirect_to(MANAGER_URI . 'roles');
     }
 
     R::trash($role);
 
     $message = sprintf(DELETE_SUCCESS, _('role'), $role->name);
-    header('Location: ' . MANAGER_URI . 'roles?success=' . $message);
-    exit;
+    flash('success', $message);
+    redirect_to(MANAGER_URI . 'roles');
 }
 
 function validate_role_form()
