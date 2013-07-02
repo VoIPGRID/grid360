@@ -14,7 +14,7 @@
 <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}department/{$form_values.id.value}" method="post" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
-            <legend>{t name=$competency_name}Updating department %1{/t}</legend>
+            <legend>{t name=$department_name}Updating department %1{/t}</legend>
         {else}
             <legend>{t}Creating new department{/t}</legend>
         {/if}

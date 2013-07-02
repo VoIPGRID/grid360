@@ -88,9 +88,10 @@ function validate_form($keys_to_check)
             }
             else
             {
-                $user = R::find('user', 'email = ?', array($value));
+                // Using getRow here because I want to ignore the multitenancy query for this
+                $user_id = R::getRow('SELECT id FROM user WHERE email = ?', array($value));
 
-                if($user->id != 0)
+                if($user_id != 0 && $user_id != $_POST['id'])
                 {
                     $form_values[$key]['error'] = EMAIL_EXISTS;
                 }

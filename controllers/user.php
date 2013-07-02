@@ -79,12 +79,12 @@ function create_user_post()
 
     $user = R::graph($_POST);
 
-    if($user->department_id == 0)
+    if($user->department->id == 0)
     {
         unset($user->department);
     }
 
-    if($user->role_id == 0)
+    if($user->role->id == 0)
     {
         unset($user->role);
     }
@@ -121,8 +121,8 @@ function view_users()
     global $smarty;
     $users = R::findAll('user', 'ORDER BY department_id');
     $smarty->assign('users', $users);
-    $smarty->assign('page_header', 'Users');
-    set('title', 'Users');
+    $smarty->assign('page_header', _('Users'));
+    set('title', _('Users'));
 
     return html($smarty->fetch('user/users.tpl'));
 }
@@ -156,7 +156,7 @@ function edit_user()
         $smarty->assign('form_values', $form_values);
     }
 
-    $smarty->assign('user_name', $user->name);
+    $smarty->assign('user_name', $user->firstname . ' ' . $user->lastname);
     $smarty->assign('departments', R::findAll('department'));
     $smarty->assign('roles', R::findAll('role'));
     $smarty->assign('userlevel_options', get_userlevels());

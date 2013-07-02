@@ -115,6 +115,18 @@ function edit_competency()
     $competencygroups = get_competencygroups_assoc();
 
     global $smarty;
+
+    if(!$smarty->getTemplateVars('form_values'))
+    {
+        $form_values = array();
+        $form_values['id']['value'] = $competency->id;
+        $form_values['name']['value'] = $competency->name;
+        $form_values['description']['value'] = $competency->description;
+        $form_values['competencygroup']['value'] = $competency->competencygroup_id;
+
+        $smarty->assign('form_values', $form_values);
+    }
+
     $smarty->assign('group_options', $competencygroups);
     $smarty->assign('competency_name', $competency->name);
     $smarty->assign('update', true);

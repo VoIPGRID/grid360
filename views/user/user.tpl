@@ -3,7 +3,7 @@
 <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}user/{$form_values.id.value}" method="POST" class="form-horizontal">
     <fieldset>
         {if $update && isset($form_values.id.value)}
-            <legend>{t name=$competency_name}Updating user %1{/t}</legend>
+            <legend>{t name=$user_name}Updating user %1{/t}</legend>
         {else}
             <legend>{t}Creating new user{/t}</legend>
         {/if}
