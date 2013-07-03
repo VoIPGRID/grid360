@@ -18,7 +18,7 @@ function round_overview()
         $smarty->assign('total_reviews', $total_reviews);
     }
 
-    $smarty->assign('page_header', 'Round overview');
+    $smarty->assign('page_header', _('Round overview'));
 
     return html($smarty->fetch('round/round_overview.tpl'));
 }

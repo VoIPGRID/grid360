@@ -81,13 +81,13 @@ function register()
 {
     if(isset($_SESSION['current_user']))
     {
-        $message =  _('Can\'t register new organisation when logged in, please log out first!');
+        $message =  _('Can\'t register a new organisation when logged in. Please log out first!');
         flash('error', $message);
         redirect_to('/');
     }
 
     global $smarty;
-    $smarty->assign('page_header', 'Register');
+    $smarty->assign('page_header', _('Register'));
     $smarty->assign('page_header_size', 'h2');
 
     return html($smarty->fetch('security/register.tpl'), 'layout/basic.php');
@@ -257,7 +257,7 @@ function reset_password_post()
 {
     if(isset($_SESSION['current_user']))
     {
-        $message = _('Can\'t reset your password when logged in, please log out first!');
+        $message = _('Can\'t reset your password when logged in. Please log out first!');
         flash('error', $message);
         redirect_to('/');
     }

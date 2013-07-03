@@ -21,7 +21,7 @@ function dashboard()
     global $smarty;
     $smarty->assign('rounds', $rounds);
     $smarty->assign('roundinfo', $roundinfo);
-    $smarty->assign('page_header', 'Dashboard');
+    $smarty->assign('page_header', _('Dashboard'));
 
     return html($smarty->fetch('common/dashboard.tpl'));
 }
