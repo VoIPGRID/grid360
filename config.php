@@ -31,7 +31,19 @@ try
     define('ADMIN_URI', 'admin/');
     define('MANAGER_URI', 'manager/');
 
-} catch(Exception $e)
+    /* Setup i18n */
+    $supported_locales = array('en_US.UTF-8', 'nl_NL.UTF-8');
+    $default_locale = 1;
+    $locale = get_current_locale();
+    setlocale(LC_MESSAGES, $locale);
+    putenv('LANG=' . $locale);
+
+    $domain = 'messages';
+    bindtextdomain($domain, BASE_DIR . '/locale');
+    bind_textdomain_codeset($domain, 'UTF-8');
+    textdomain($domain);
+}
+catch(Exception $e)
 {
     show_error($e->getMessage(), 1);
 }
