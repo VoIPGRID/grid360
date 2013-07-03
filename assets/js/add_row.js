@@ -21,28 +21,19 @@ $(document).ready(function()
 
 function add_row()
 {
-    var input_type = $('<input type="hidden" name="own' + capitalize(type) + '[' + option_index + '][type]" />').val(type);
-    var name_input = $('<input type="text" name="own' + capitalize(type) + '[' + option_index + '][name]" placeholder="' + name_placeholder + '" class="input-xlarge" />');
+    // Create a new row in which a new competency or role can be entered
+    var row = $('<div class="controls">' +
+                        '<input type="hidden" name="own' + capitalize(type) + '[' + option_index + '][type]" value="' + type + '"/>' +
+                        '<input type="text" name="own' + capitalize(type) + '[' + option_index + '][name]" placeholder="' + name_placeholder + '" class="input-xlarge" />' +
+                        '&nbsp;' +
+                        '<textarea name="own' + capitalize(type) + '[' + option_index + '][description]" placeholder="' + description_placeholder + '" class="input-xxlarge"></textarea>' +
+                        '<button class="btn btn-link"><i class="icon-remove-sign"></i></button>' +
+                   '</div>');
 
-    var row_description = $('<textarea name="own' + capitalize(type) + '[' + option_index + '][description]" placeholder="' + description_placeholder + '" class="input-xxlarge"></textarea>');
+    $('#' + type + '-list').append(row);
 
-    var controls = $('<div class="controls"></div>');
-
-    controls.append(input_type);
-    controls.append(name_input);
-    controls.append('&nbsp;');
-    controls.append(row_description);
-
-    var remove_button = $('<button class="btn btn-link"></button>');
-    var image = $('<i class="icon-remove-sign"></i>');
-
-    remove_button.append(image);
-    controls.append(remove_button);
-    controls.hide();
-
-    $('#' + type + '-list').append(controls);
-
-    controls.slideDown();
+    row.hide();
+    row.slideDown();
 
     option_index++;
 }
