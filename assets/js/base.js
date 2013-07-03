@@ -10,7 +10,8 @@ function create_datatable(table, ignored_columns)
         "bStateSave": true, // Save the state of the table to localStorage
         "aoColumnDefs": [
             {"bSortable": false, bSearchable: false, "aTargets": ignored_columns}
-        ]
+        ],
+        oLanguage: get_language_object()
     });
 
     $.extend($.fn.dataTableExt.oStdClasses, {
@@ -94,3 +95,60 @@ $(document).ready(function()
         }
     }
 });
+
+function get_language_object()
+{
+    var locale = $('html').attr('lang');
+    var oLanguage;
+
+    if(locale == 'nl')
+    {
+        oLanguage =
+        {
+            "sProcessing": "Bezig...",
+            "sLengthMenu": "_MENU_ resultaten weergeven",
+            "sZeroRecords": "Geen resultaten gevonden",
+            "sInfo": "_START_ tot _END_ van _TOTAL_ resultaten",
+            "sInfoEmpty": "Geen resultaten om weer te geven",
+            "sInfoFiltered": " (gefilterd uit _MAX_ resultaten)",
+            "sInfoPostFix": "",
+            "sSearch": "Zoeken:",
+            "sEmptyTable": "Geen resultaten aanwezig in de tabel",
+            "sInfoThousands": ".",
+            "sLoadingRecords": "Een moment geduld aub - bezig met laden...",
+            "oPaginate":
+            {
+                "sFirst": "Eerste",
+                "sLast": "Laatste",
+                "sNext": "Volgende",
+                "sPrevious": "Vorige"
+            }
+        }
+    }
+    else
+    {
+        oLanguage =
+        {
+            "sEmptyTable":     "No data available in table",
+            "sInfo":           "Showing _START_ to _END_ of _TOTAL_ entries",
+            "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
+            "sInfoFiltered":   "(filtered from _MAX_ total entries)",
+            "sInfoPostFix":    "",
+            "sInfoThousands":  ",",
+            "sLengthMenu":     "Show _MENU_ entries",
+            "sLoadingRecords": "Loading...",
+            "sProcessing":     "Processing...",
+            "sSearch":         "Search:",
+            "sZeroRecords":    "No matching records found",
+            "oPaginate":
+            {
+                "sFirst":    "First",
+                "sLast":     "Last",
+                "sNext":     "Next",
+                "sPrevious": "Previous"
+            }
+        }
+    }
+
+    return oLanguage;
+}

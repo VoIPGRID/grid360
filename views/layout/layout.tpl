@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="{$locale}">
 <head>
 {include file="layout/head.tpl"}
 {include file="lib/functions.tpl"}
 </head>
 <body>
+
 {include file="common/menu.tpl"}
+
 <div class="container">
 {if isset($page_header)}
     <div class="page-header">

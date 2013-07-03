@@ -22,6 +22,7 @@ function before()
 {
     global $smarty;
     $smarty->assign('current_user', $_SESSION['current_user']);
+    $smarty->assign('locale', strtolower(substr(getenv('LANG'), 0, 2)));
 
     layout('layout/layout.php');
 }
