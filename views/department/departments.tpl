@@ -30,3 +30,10 @@
 {/if}
 
 {call print_add_link level="admin" type_var="department" type="{t}department{/t}"}
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        create_datatable($('.table.table-striped'));
+    });
+</script>

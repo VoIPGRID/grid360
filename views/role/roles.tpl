@@ -32,3 +32,10 @@
 {/if}
 
 {call print_add_link level="manager" type_var="role" type="{t}role{/t}"}
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        create_datatable($('.table.table-striped'));
+    });
+</script>

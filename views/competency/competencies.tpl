@@ -4,7 +4,7 @@
     <tr>
         <td>{$competencygroup.name}</td>
         <td>{$competencygroup.description}</td>
-        <td>{if $competencygroup.general}Yes{else}No{/if}</td>
+        <td>{if $competencygroup.general}{t}Yes{/t}{else}{t}No{/t}{/if}</td>
         {call print_actions type="competencygroup" level="manager"}
     </tr>
 {/function}
@@ -20,7 +20,7 @@
 
 <h2>Competency groups</h2>
 {if !empty($competencygroups)}
-<table class="table table-striped">
+<table id="competencygroups" class="table table-striped">
     <thead>
     <tr>
         <th>{t}Group name{/t}</th>
@@ -90,5 +90,9 @@
                 $('#competencies tbody tr[data-group="' + $(this).val() + '"]').show();
             }
         });
+
+        var ignored_columns = [-1, -2]; // Stop the reports and actions columns from being sortable
+        create_datatable($('#competencygroups'), ignored_columns);
+        create_datatable($('#competencies'));
     });
 </script>

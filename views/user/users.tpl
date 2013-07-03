@@ -42,3 +42,11 @@
 {/if}
 
 {call print_add_link level="admin" type_var="user" type="{t}user{/t}"}
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        var ignored_columns = [-1, -2]; // Stop the reports and actions columns from being sortable
+        create_datatable($('.table.table-striped'), ignored_columns);
+    });
+</script>

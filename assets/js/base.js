@@ -1,3 +1,23 @@
+function create_datatable(table, ignored_columns)
+{
+    if(ignored_columns == undefined || ignored_columns.length == 0)
+    {
+        ignored_columns = [-1]; // Stop the last column from being sortable by default (usually the column action)
+    }
+
+    table.dataTable({
+        "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+        "bStateSave": true, // Save the state of the table to localStorage
+        "aoColumnDefs": [
+            {"bSortable": false, bSearchable: false, "aTargets": ignored_columns}
+        ]
+    });
+
+    $.extend($.fn.dataTableExt.oStdClasses, {
+        "sWrapper": "dataTables_wrapper form-inline"
+    });
+}
+
 $(document).ready(function()
 {
     $('[data-toggle="tooltip"]').tooltip();
