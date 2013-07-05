@@ -24,4 +24,20 @@ class Multitenancy_QueryWriter_MySQL extends RedBean_QueryWriter_MySQL
 
         return parent::insertRecord($table, $insertcolumns, $insertvalues);
     }
+
+    public function count($beanType, $addSQL = '', $params = array())
+    {
+        if($addSQL == '')
+        {
+            $addSQL = 'tenant_id = ?';
+        }
+        else
+        {
+            $addSQL .= ' AND tenant_id = ?';
+        }
+
+        $params[] = $_SESSION['current_user']->tenant_id;
+
+        return parent::count($beanType, $addSQL, $params);
+    }
 }
