@@ -185,7 +185,6 @@ function delete_role_confirmation()
     $smarty->assign('type', _('role'));
     $smarty->assign('type_var', 'role');
     $smarty->assign('role', $role);
-    $smarty->assign('name', $role->name);
     $smarty->assign('level_uri', MANAGER_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));

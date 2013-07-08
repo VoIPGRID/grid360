@@ -135,7 +135,6 @@ function delete_competencygroup_confirmation()
     $smarty->assign('type', _('competency group'));
     $smarty->assign('type_var', 'competencygroup');
     $smarty->assign('competencygroup', $competencygroup);
-    $smarty->assign('name', $competencygroup->name);
     $smarty->assign('level_uri', MANAGER_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));

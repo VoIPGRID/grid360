@@ -201,7 +201,6 @@ function delete_user_confirmation()
     $smarty->assign('type', _('user'));
     $smarty->assign('type_var', 'user');
     $smarty->assign('user', $user);
-    $smarty->assign('name', $user->firstname . ' ' . $user->lastname);
     $smarty->assign('level_uri', ADMIN_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));

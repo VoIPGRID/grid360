@@ -158,7 +158,6 @@ function delete_department_confirmation()
     $smarty->assign('type', _('department'));
     $smarty->assign('type_var', 'department');
     $smarty->assign('department', $department);
-    $smarty->assign('name', $department->name);
     $smarty->assign('level_uri', ADMIN_URI);
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));

@@ -1,4 +1,9 @@
 {include file="lib/functions.tpl"}
+{if $type_var == "user"}
+    {assign "name" "{$user.firstname} {$user.lastname}"}
+{else}
+    {assign "name" "{${$type_var}.name}"}
+{/if}
 <h4>{t type=$type name=$name}Are you sure you want to delete the %1 %2{/t}</h4>
 <br />
 
