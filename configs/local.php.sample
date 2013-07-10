@@ -11,3 +11,8 @@ define('DB_PASSWORD', 'yourpass');
 define('CONNECTION', 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME);
 
 define('APP_NAME', 'yourappname');
+
+define('ADMIN_EMAIL', 'admin@yourhost.com');
+
+$transport = Swift_MailTransport::newInstance();
+$mailer = Swift_Mailer::newInstance($transport);
