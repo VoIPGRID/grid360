@@ -13,8 +13,8 @@
     <div class="page-header">
         <{$page_header_size|default:'h1'}>
             {$page_header|ucfirst}
-            {if isset($page_header_subtext)}
-                <br /><small>{$page_header_subtext}</small>
+            {if isset($page_subheader)}
+                <br /><small>{$page_subheader}</small>
             {/if}
         </{$page_header_size|default:'h1'}>
     </div>
@@ -25,6 +25,12 @@
 {/if}
 {if !empty($error)}
     {call print_alert type="error" text="{$error}"}
+{/if}
+{if !empty($warning)}
+    {call print_alert type="warning" text="{$warning}"}
+{/if}
+{if !empty($info)}
+    {call print_alert type="info" text="{$info}"}
 {/if}
 
 {$content}

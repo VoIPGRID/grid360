@@ -9,5 +9,6 @@
 <script type="text/javascript" src="{$smarty.const.ASSETS_URI}bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript" src="{$smarty.const.ASSETS_URI}datatables/media/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="{$smarty.const.ASSETS_URI}datatables/media/js/datatables_bootstrap.js"></script>
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/jquery-mousewheel/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/base.js"></script>
 <link rel="icon" type="image/png" href="{$smarty.const.ASSETS_URI}images/favicon.gif" />

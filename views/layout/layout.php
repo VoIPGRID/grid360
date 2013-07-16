@@ -16,6 +16,8 @@ else
 
 $success = flash_now('success');
 $error = flash_now('error');
+$warning = flash_now('warning');
+$info = flash_now('info');
 
 if(!empty($success))
 {
@@ -24,6 +26,14 @@ if(!empty($success))
 if(!empty($error))
 {
     $smarty->assign('error', flash_now('error'));
+}
+if(!empty($warning))
+{
+    $smarty->assign('warning', flash_now('warning'));
+}
+if(!empty($info))
+{
+    $smarty->assign('info', flash_now('info'));
 }
 
 $smarty->display('layout/layout.tpl');
