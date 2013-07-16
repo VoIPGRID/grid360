@@ -196,7 +196,6 @@ button i
 .container.login
 {
     margin-top: 35px;
-    max-width: 500px;
 }
 
 .container.login .row
@@ -223,6 +222,11 @@ button i
     border-radius: 6px;
     width: 250px;
     margin: 0 auto;
+}
+
+.container.login .form-vertical.reset
+{
+    width:265px;
 }
 
 .container.login .checkbox

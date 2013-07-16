@@ -1,7 +1,7 @@
 {include file="lib/functions.tpl"}
 
 <div class="row">
-    <form class="form-vertical" action="{$smarty.const.BASE_URI}reset" method="post">
+    <form class="form-vertical reset" action="{$smarty.const.BASE_URI}reset" method="post">
         <div class="control-group {if isset($form_values.email.error)}error{/if}">
             <label class="control-label" for="email">{t}Email{/t}</label>
             <div class="controls">
@@ -13,9 +13,7 @@
             </div>
         </div>
 
-        <div class="actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
-            <button type="submit" class="btn btn-primary">{t}Reset password{/t}</button>
-        </div>
+        <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+        <button type="submit" class="btn btn-primary">{t}Reset password{/t}</button>
     </form>
 </div>

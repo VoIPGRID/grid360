@@ -2,9 +2,9 @@
 
 <div class="row">
     {if isset($form_values.error)}
-        {print_alert type="error" text=$form_values.error}
+        {call print_alert type="error" text=$form_values.error}
     {/if}
-    <form class="form-vertical" action="{$smarty.const.BASE_URI}reset" method="post">
+    <form class="form-vertical reset" action="{$smarty.const.BASE_URI}reset" method="post">
         <div class="control-group {if isset($form_values.password.error)}error{/if}">
             <input type="hidden" name="uuid" value="{$smarty.get.uuid}"/>
             <input type="hidden" name="email" value="{$smarty.get.email}"/>
@@ -32,11 +32,7 @@
             </div>
         </div>
 
-        <div class="control-group">
-            <div class="controls">
                 <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
                 <button type="submit" class="btn btn-primary" id="login-button">{t}Change password{/t}</button>
-            </div>
-        </div>
     </form>
 </div>
