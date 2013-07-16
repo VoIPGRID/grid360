@@ -15,13 +15,18 @@ function show_error($error_message, $type = 0)
     }
 }
 
-function send_mail($subject, $from, $to, $body)
+function send_mail($subject, $from, $to, $body, $is_html = false)
 {
     $message = Swift_Message::newInstance()
         ->setSubject($subject)
         ->setFrom($from)
         ->setTo($to)
         ->setBody($body);
+
+    if($is_html)
+    {
+        $message->setContentType('text/html');
+    }
 
     global $mailer;
 
@@ -55,9 +60,9 @@ function validate_form($keys_to_check)
             {
                 $bean = R::load($value['type'], $value['id']);
 
-                // Check if the bean could be loaded and also check if the type is correct, if not, set the form error for this key
                 if($bean->id == 0 || ($key == 'id' && $value['type'] != $_POST['type']) || ($key != 'id' && $value['type'] != $_POST[$key]['type']))
                 {
+                    // Check if the bean could be loaded and also check if the type is correct, if not, set the form error for this key
                     $form_values[$key]['error'] = sprintf(BEAN_NOT_FOUND, $labels[$value['type']]);
                 }
                 else if($key == 'user' && $bean->userlevel->level != ADMIN && $bean->userlevel->level != MANAGER)
@@ -88,8 +93,8 @@ function validate_form($keys_to_check)
             }
             else
             {
-                // Using getRow here because I want to ignore the multitenancy query for this
-                $user_id = R::getRow('SELECT id FROM user WHERE email = ?', array($value));
+                // Using getCell here because I want to ignore the multitenancy query for this
+                $user_id = R::getCell('SELECT id FROM user WHERE email = ?', array($value));
 
                 if($user_id != 0 && $user_id != $_POST['id'])
                 {
@@ -123,6 +128,7 @@ function get_current_locale()
 
     /* Check if browser accepts en_US or nl_NL or ? */
     $browser_locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+
     if(in_array($browser_locale . '.UTF-8', $supported_locales))
     {
         /* disable this line to force $default_locale */

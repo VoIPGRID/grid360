@@ -43,7 +43,8 @@
         {assign level_uri $smarty.const.MANAGER_URI}
     {/if}
     <div class="pull-right">
-        <a href="{$smarty.const.BASE_URI}{$level_uri}{$type_var}/create"><strong>+</strong> {t type=$type|ucfirst}Add %1{/t}</a>
+        {assign "button_text" "{t type=$type}Add %1{/t}"}
+        <a href="{$smarty.const.BASE_URI}{$level_uri}{$type_var}/create"><strong>+</strong> {$button_text|ucfirst}</a>
     </div>
 {/function}
 
