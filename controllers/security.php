@@ -6,7 +6,7 @@ const GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id?id=';
 
 function login_google()
 {
-    $openid = new LightOpenID('localhost');
+    $openid = new LightOpenID($_SERVER['HTTP_HOST']);
 
     if(!$openid->mode)
     {
@@ -42,6 +42,10 @@ function login_google()
 
                 $user->identity = $identity_hash;
                 R::store($user);
+
+                $_SESSION['current_user'] = $user;
+
+                redirect_to('/');
             }
         }
         else
@@ -62,7 +66,7 @@ function login_google()
         // Redirect for OpenID incase info is missing
         if(!isset($user->email))
         {
-            $openid = new LightOpenID('localhost');
+            $openid = new LightOpenID($_SERVER['HTTP_HOST']);
             $openid->identity = GOOGLE_OPENID_URL . $identity_hash;
             $openid->required = array(
                 'namePerson',
@@ -95,14 +99,13 @@ function register()
 
 function register_post()
 {
+    global $smarty;
     $form_values = validate_register_form();
 
     foreach($form_values as $form_value)
     {
         if(isset($form_value['error']) || strlen($form_value['error']) > 0)
         {
-            global $smarty;
-
             $smarty->assign('form_values', $form_values);
 
             return register();
@@ -113,8 +116,6 @@ function register_post()
 
     if($user->id != 0)
     {
-        global $smarty;
-
         $form_values['email']['error'] = EMAIL_EXISTS;
         $smarty->assign('form_values', $form_values);
 
@@ -140,7 +141,13 @@ function register_post()
 
     R::store($user);
 
-//    send_mail('New tenant registration', 'admin@grid360.nl', $user->email, 'Tenant name: ' . $tenant->name);
+    // Setup the email
+    $smarty->assign('user', $user);
+    $smarty->assign('tenant', $tenant);
+
+    $body = $smarty->fetch('email/new_tenant.tpl');
+
+    send_mail(_('New tenant registration'), ADMIN_EMAIL, $user->email, $body);
 
     $message = _('You have successfully registered a new organisation.');
     flash('success', $message);
@@ -186,15 +193,15 @@ function login_post()
     }
     else if(empty($_POST['email']) && !empty($_POST['password']))
     {
-        $message = _('Email can\'t be empty!');
+        $message = _('Wrong email/password combo!');
     }
     else if(!empty($_POST['email']) && empty($_POST['password']))
     {
-        $message = _('Password can\'t be empty!');
+        $message = _('Wrong email/password combo!');
     }
     else
     {
-        $message = _('Email and password can\'t be empty!');
+        $message = _('Wrong email/password combo!');
     }
 
     if(!empty($message))
@@ -215,6 +222,13 @@ function reset_password()
 {
     global $smarty;
 
+    if(isset($_SESSION['current_user']))
+    {
+        $message = _('Can\'t reset your password when logged in. Please log out first!');
+        flash('warning', $message);
+        redirect_to('/');
+    }
+
     set('title', _('Reset password'));
     $smarty->assign('page_header', _('Reset password'));
     $smarty->assign('page_header_size', 'h2');
@@ -225,9 +239,7 @@ function reset_password()
 
         if($user->id == 0)
         {
-            $message = _('The given ID doesn\'t seem to match the one in the database.');
-            flash('error', $message);
-            redirect_to('login');
+            halt(NOT_FOUND);
         }
 
         if(is_valid($_GET['uuid']))
@@ -258,7 +270,7 @@ function reset_password_post()
     if(isset($_SESSION['current_user']))
     {
         $message = _('Can\'t reset your password when logged in. Please log out first!');
-        flash('error', $message);
+        flash('warning', $message);
         redirect_to('/');
     }
 
@@ -303,6 +315,7 @@ function reset_password_post()
     }
     else
     {
+        global $smarty;
         $user = R::findOne('user', 'email = ?', array($_POST['email']));
 
         if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
@@ -310,7 +323,6 @@ function reset_password_post()
             $form_values['email']['value'] = $_POST['email'];
             $form_values['email']['error'] = INVALID_EMAIL_FORMAT;
 
-            global $smarty;
             $smarty->assign('form_values', $form_values);
 
             return reset_password();
@@ -321,7 +333,6 @@ function reset_password_post()
             $form_values['email']['value'] = $_POST['email'];
             $form_values['email']['error'] = _('Email not found!');
 
-            global $smarty;
             $smarty->assign('form_values', $form_values);
 
             return reset_password();
@@ -329,10 +340,13 @@ function reset_password_post()
 
         $reset_password_id = random_uuid();
 
-        // TODO: Enable this
-//        send_mail('Password reset request', 'admin@grid360.nl',
-//            $user->email,
-//            'Dear ' . $user->firstname . ' ' . $user->lastname . ",\n\n" . "<a href=http://localhost" . BASE_URI . "reset?uuid=" . $reset_password_id . "&email=" . $user->email . ">Click here to reset password</a>");
+        // Setup the email
+        $smarty->assign('user', $user);
+        $smarty->assign('reset_password_id', $reset_password_id);
+
+        $body = $smarty->fetch('email/reset_password.tpl');
+
+        send_mail(_('Password reset request'), ADMIN_EMAIL, $user->email, $body, true);
 
         $user->reset_password_id = $reset_password_id;
 
