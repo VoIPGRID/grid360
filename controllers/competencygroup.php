@@ -36,6 +36,7 @@ function create_competencygroup_post()
 
     $form_values = validate_form($keys_to_check);
 
+    $form_values['general']['value'] = $_POST['general'];
     $form_values['description']['value'] = $_POST['description'];
     $form_values['competencies']['value'] = $_POST['ownCompetency'];
 
@@ -66,6 +67,27 @@ function create_competencygroup_post()
 
     $competencygroup = R::graph($_POST);
 
+    if($_POST['general'])
+    {
+        $competencygroup->general = true;
+
+        $general_competencies = get_general_competencies();
+
+        if(!empty($general_competencies))
+        {
+            foreach($general_competencies as $general_competency)
+            {
+                $general_competency->general = false;
+            }
+
+            R::store($general_competencies);
+        }
+    }
+    else
+    {
+        $competencygroup->general = false;
+    }
+
     // Check if the department is a new department
     if($competencygroup->id != 0)
     {
@@ -91,7 +113,7 @@ function edit_competencygroup()
     if($competencygroup->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('competency group'));
-        flash('success', $message);
+        flash('error', $message);
         redirect_to(MANAGER_URI . 'competencies');
     }
 
@@ -103,7 +125,7 @@ function edit_competencygroup()
     {
         $form_values = array();
         $form_values['id']['value'] = $competencygroup->id;
-        $form_values['is_general']['value'] = $competencygroup->general;
+        $form_values['general']['value'] = $competencygroup->general;
         $form_values['name']['value'] = $competencygroup->name;
         $form_values['description']['value'] = $competencygroup->description;
         $form_values['competencies']['value'] = $competencygroup->ownCompetency;

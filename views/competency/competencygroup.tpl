@@ -19,7 +19,7 @@
             <label class="control-label" for="general">{t}Is general{/t}?</label>
 
             <div class="controls">
-                <input type="checkbox" id="general" name="general" {if isset($form_values.is_general.value) && $form_values.is_general.value == 1 || $form_values.is_general.value == 'on'}checked{/if} />
+                <input type="checkbox" id="general" name="general" {if isset($form_values.general.value) && $form_values.general.value == 1 || $form_values.general.value == 'on'}checked{/if} />
                 <span><i class="icon-question-sign" data-toggle="tooltip" title="{t}Checking this will display the current competency group for everybody{/t}" data-placement="right"></i></span>
             </div>
         </div>
