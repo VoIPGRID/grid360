@@ -1,7 +1,7 @@
 {include file="lib/functions.tpl"}
 
 <script type="text/javascript">
-    var base_uri = {$smarty.const.BASE_URI};
+    var base_uri = '{$smarty.const.BASE_URI}';
 </script>
 
 {function print_user_info}
@@ -12,6 +12,13 @@
         <td>{$user.department.name|capitalize:true}</td>
         <td>{$user.role.name|capitalize:true}</td>
         <td>{$user.userlevel.name|capitalize}</td>
+        <td>
+        {if $user.status == 0}
+            {t}No{/t}
+        {elseif $user.status == 1}
+            {t}Yes{/t}
+        {/if}
+        </td>
         <td><a href="{$smarty.const.BASE_URI}report/overview/{$user.id}">{t}View{/t}</a></td>
         {call print_actions type="user" level="admin"}
     </tr>
@@ -27,6 +34,12 @@
             <th>{t}Department{/t}</th>
             <th>{t}Role{/t}</th>
             <th>{t}User level{/t}</th>
+            <th>
+                {t}Included? {/t}
+                <span>
+                    <i class="icon-question-sign" data-toggle="tooltip" title="{t}This column shows if a person is included in the feedback round.{/t}" data-placement="right"></i>
+                </span>
+            </th>
             <th>{t}Reports{/t}</th>
             <th>{t}Actions{/t}</th>
         </tr>
