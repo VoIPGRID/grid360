@@ -57,6 +57,9 @@
                             <input type="hidden" name="ownRole[{$index}][id]" value="{$role.id}" />
                             <input name="ownRole[{$index}][name]" type="text" placeholder="{t}Role name{/t}" class="input-xlarge" value="{$role.name}" />
                             <textarea name="ownRole[{$index}][description]" placeholder="{t}Role description{/t}" class="input-xxlarge">{$role.description}</textarea>
+                            {if $index > 0}
+                                <button class="btn btn-link"><i class="icon-remove-sign"></i></button>
+                            {/if}
                         </div>
                         {assign "index" {counter}}
                     {/foreach}
