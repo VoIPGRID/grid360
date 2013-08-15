@@ -12,7 +12,7 @@
 .actions
 {
     vertical-align: middle !important;
-    width: 6%;
+    width: 7%;
 }
 
 .actions form .btn
@@ -119,7 +119,7 @@ ul.nav.nav-tabs li.active a
 
 button i
 {
-    color:black;
+    color: black;
 }
 
 #options-label .lead i
@@ -152,7 +152,7 @@ button i
 
 #feedback-form table tr th
 {
-    font-size:14px;
+    font-size: 14px;
 }
 
 #feedback-form table tr td:last-child
@@ -226,7 +226,7 @@ button i
 
 .container.login .form-vertical.reset
 {
-    width:265px;
+    width: 265px;
 }
 
 .container.login .checkbox
@@ -236,7 +236,7 @@ button i
 
 .skip-button
 {
-    width:195px;
+    width: 195px;
     margin-left: auto;
 }
 
@@ -250,7 +250,82 @@ button i
     width: 58%;
 }
 
+#competencies .actions .btn
+{
+    padding: 0 4px;
+}
+
 .graph-tooltip
 {
     padding: 5px;
+}
+
+.round-creation-field .control-label
+{
+    width: 300px;
+    margin-right: 15px;
+}
+
+#field-info,
+#report-field-info
+{
+    display: none;
+}
+
+.review-info
+{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 12px;
+}
+
+.review-comments
+{
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.review-div
+{
+    margin-bottom: 35px;
+}
+
+.review-div .smile-active, .meh-active
+{
+    vertical-align: top;
+}
+
+.smile-default,
+.smile-active,
+.meh-default,
+.meh-active
+{
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+.smile-default
+{
+    background: url('../images/smile_default.png') no-repeat top left;
+}
+
+.smile-active
+{
+    background: url('../images/smile_active.png') no-repeat top left;
+}
+
+.meh-default
+{
+    background: url('../images/meh_default.png') no-repeat top left;
+}
+
+.meh-active
+{
+    background: url('../images/meh_active.png') no-repeat top left;
+}
+
+.no-competencies-box
+{
+    display: none;
 }
