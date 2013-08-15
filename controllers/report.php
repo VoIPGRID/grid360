@@ -34,7 +34,6 @@ function view_report()
     security_authorize();
 
     $round = R::load('round', params('round_id'));
-    $current_round = get_current_round();
     $user_id = params('user_id');
 
     if(isset($user_id) && $_SESSION['current_user']->userlevel->level != ADMIN)
@@ -50,14 +49,14 @@ function view_report()
         $user = $_SESSION['current_user'];
     }
 
-    // If there's no round in progress, get the latest round
-    if($round->id == 0 || $current_round->id == 0)
+    // If there's no round given, get the latest round
+    if($round->id == 0)
     {
         $round = R::findOne('round', '1 ORDER BY id desc'); // The '1' is needed because RedBean starts with WHERE, so the '1' makes sure the query is valid
 
         if($round->id == 0)
         {
-            return html(NO_REPORTS_FOUND);
+            return html(_('No reports found'));
         }
     }
 
@@ -71,13 +70,13 @@ function view_report()
     $count_reviewed_by = count($roundinfo);
 
     // Count the total amount of people that have to review the user
-    $total_review_count = R::count('roundinfo', 'reviewer_id != ? AND reviewee_id = ? AND status != ? AND round_id = ?', array($user->id, $user->id, REVIEW_SKIPPED,$round->id));
+    $total_review_count = R::count('roundinfo', 'reviewer_id != ? AND reviewee_id = ? AND status != ? AND round_id = ?', array($user->id, $user->id, REVIEW_SKIPPED, $round->id));
 
     // Count the amount of people the user has reviewed
     $own_review_completed_count = R::count('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status = ? AND round_id = ?', array($user->id, $user->id, REVIEW_COMPLETED, $round->id));
 
     // Count the total amount of people the user has to review
-    $total_own_review_count = R::count('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status != ? AND round_id = ?', array($user->id, $user->id, REVIEW_SKIPPED,$round->id));
+    $total_own_review_count = R::count('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status != ? AND round_id = ?', array($user->id, $user->id, REVIEW_SKIPPED, $round->id));
 
     // Check if roundinfo contains own review, if so, deduct 1 from the amount reviewed by
     foreach($roundinfo as $info)
@@ -89,129 +88,90 @@ function view_report()
         }
     }
 
+    global $smarty;
+    $generate_report = true;
+
     if($round->status == 1)
     {
-        if($count_reviewed_by < 5)
+        // If someone hasn't been reviewed enough times, show error and don't show report
+        if($count_reviewed_by < $round->min_reviewed_by)
         {
-            $message = _('Insufficient data available to generate a report.') . '<br />' . _('%d of %d people have reviewed you.') . '<br />' . _('A minimum of 5 people is needed to generate a report.'); // TODO: Make this prettier
-            return html(sprintf($message, $count_reviewed_by, $total_review_count));
+            $message = _('Insufficient data available to generate a report.') . '<br />' . _('%d of %d people have reviewed you.') . '<br />' . _('A minimum of %d people is needed to generate a report.'); // TODO: Make this prettier
+            $smarty->assign('insufficient_data', true);
+            $smarty->assign('insufficient_reviewed_by', sprintf($message, $count_reviewed_by, $total_review_count, $round->min_reviewed_by));
+            $generate_report = false;
         }
 
-        if($own_review_completed_count < 5)
+        // If someone hasn't reviewed enough people, show error and don't show report
+        if($own_review_completed_count < $round->min_to_review)
         {
-            $message = _('You haven\'t reviewed enough people.') . '<br />' . _('You need to review at least 5 people.') . '<br />' . _('You have reviewed %d of %d people.'); // TODO: Make this prettier
-            return html(sprintf($message, $own_review_completed_count, $total_own_review_count));
+            $message = _('You haven\'t reviewed enough people.') . '<br />' . _('You need to review at least %d people.') . '<br />' . _('You have reviewed %d of %d people.'); // TODO: Make this prettier
+            $smarty->assign('insufficient_data', true);
+            $smarty->assign('insufficient_reviewed', sprintf($message, $round->min_to_review, $own_review_completed_count, $total_own_review_count));
+            $generate_report = false;
         }
     }
 
-    $ratings = array();
-    $own_ratings = array();
-    $positive_ratings = array();
-    $negative_ratings = array();
-    $comment_counts = array();
-
-    foreach($reviews as $review)
+    // No need to calculate everything if we're not displaying the report
+    if($generate_report)
     {
-        if($review->reviewer_id != $user->id)
-        {
-            if($review->is_positive == 1)
-            {
-                $positive_ratings[$review->competency_id][] = $review->rating_id;
-            }
-            elseif($review->is_positive == 0)
-            {
-                $negative_ratings[$review->competency_id][] = $review->rating_id;
-            }
+        $own_general_reviews = array();
+        $own_role_reviews = array();
+        $other_general_reviews = array();
+        $other_role_reviews = array();
 
-            $ratings[$review->competency_id][] = $review->rating_id;
-        }
-        else
-        {
-            $own_ratings[$review->competency_id] = $review->rating_id;
-        }
+        $general_competency_keys = array_keys(get_general_competencies()->ownCompetency);
 
-        if($review->comment != '')
+        foreach($reviews as $review)
         {
-            if(array_key_exists($review->competency_id, $comment_counts))
+            if($review->reviewer_id == $_SESSION['current_user']->id)
             {
-                $comment_counts[$review->competency_id] += 1;
+                $reviewer_type = 'own';
             }
             else
             {
-                $comment_counts[$review->competency_id] = 1;
+                $reviewer_type = 'other';
             }
+
+            if(in_array($review->competency->id, $general_competency_keys))
+            {
+                $type = 'general';
+            }
+            else
+            {
+                $type = 'role';
+            }
+
+            // Dynamically create the variable name and then store $review into that review array. Also seperate into arrays based on the selection so it's easier to read the array in the template
+            ${$reviewer_type . '_' . $type . '_reviews'}[$review->selection][$review->competency->name][] = $review;
         }
+
+        $smarty->assign('review_count', count($reviews));
+        $smarty->assign('own_general_reviews', $own_general_reviews);
+        $smarty->assign('own_role_reviews', $own_role_reviews);
+        $smarty->assign('other_general_reviews', $other_general_reviews);
+        $smarty->assign('other_role_reviews', $other_role_reviews);
     }
 
-    $average_positive_ratings = array();
-
-    foreach($positive_ratings as $competency_id => $rating)
-    {
-        $average_positive_ratings[$competency_id]['average'] = round(array_sum($rating) / count($rating), 2);
-        $average_positive_ratings[$competency_id]['count_reviews'] = count($rating);
-        $average_positive_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
-        $average_positive_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
-    }
-
-    $average_negative_ratings = array();
-
-    foreach($negative_ratings as $competency_id => $rating)
-    {
-        $average_negative_ratings[$competency_id]['average'] = round(array_sum($rating) / count($rating), 2);
-        $average_negative_ratings[$competency_id]['count_reviews'] = count($rating);
-        $average_negative_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
-        $average_negative_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
-    }
-
-    $average_ratings = array();
-
-    // Calculate the averages
-    foreach($ratings as $competency_id => $rating)
-    {
-        $average_ratings[$competency_id]['average'] = round((array_sum($rating) / count($rating)), 2);
-        $average_ratings[$competency_id]['count_reviews'] = count($rating);
-        $average_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
-        $average_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
-    }
-
-    foreach($own_ratings as $competency_id => $own_rating)
-    {
-        if(!array_key_exists($competency_id, $ratings))
-        {
-            $average_ratings[$competency_id]['average'] = null;
-            $average_ratings[$competency_id]['own_rating'] = $own_ratings[$competency_id];
-            $average_ratings[$competency_id]['name'] = R::load('competency', $competency_id)->name;
-        }
-    }
-
-    ksort($average_ratings);
-
-    global $smarty;
-    $smarty->assign('reviews', $reviews);
-    $smarty->assign('averages', $average_ratings);
-    $smarty->assign('positive_averages', $average_positive_ratings);
-    $smarty->assign('negative_averages', $average_negative_ratings);
+    $smarty->assign('competencies', array_keys($_SESSION['current_user']->role->competencygroup->ownCompetency));
+    $smarty->assign('general_competencies', array_keys(get_general_competencies()->ownCompetency));
     $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('round', $round);
+    $smarty->assign('user', $user);
 
     // Set the page headers
     $header = sprintf(_('Report for %s %s of %s'), $user->firstname, $user->lastname, $round->description);
-    $header_subtext =  sprintf(_('You have been reviewed by %d of %d people'), $count_reviewed_by, $total_review_count);
+    $subheader =  sprintf(_('You have been reviewed by %d of %d people'), $count_reviewed_by, $total_review_count);
     $smarty->assign('page_header', $header);
-    $smarty->assign('page_header_subtext', $header_subtext);
+    $smarty->assign('page_subheader', $subheader);
     $smarty->assign('page_header_size', 'h2');
 
-    $smarty->assign('has_own_ratings', !empty($own_ratings));
-    $smarty->assign('user', $user);
-    $smarty->assign('comment_counts', $comment_counts);
+    // Set the round IDs which are used for the previous and next buttons
+    $previous_round = R::findOne('round', 'id < ? ORDER BY id DESC', array($round->id));
+    $smarty->assign('previous_round_id', $previous_round->id);
 
-    if($current_round->id == 0)
-    {
-        $current_round = R::findOne('round', '1 ORDER BY id desc'); // The '1' is needed because RedBean starts with WHERE, so the '1' makes sure the query is valid
-    }
-
-    $smarty->assign('current_round_id', $current_round->id);
-    $smarty->assign('previous_round', R::load('round', $current_round->id - 1));
+    $next_round = R::findOne('round', 'id > ? ORDER BY id ASC', array($round->id));
+    $smarty->assign('next_round_id', $next_round->id);
 
     set('title', $header);
 

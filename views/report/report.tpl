@@ -1,14 +1,39 @@
-<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/bootstrap-tabdrop.js"></script>
+{function print_review}
+    {foreach $review_array[$selection] as $competency_name => $reviews}
+        <div class="review-div">
+            {if $selection == 1}
+                <span class="smile-active"></span>
+            {elseif $selection == 2}
+                <span class="meh-active"></span>
+            {/if}
+            <div class="review-comments">
+                <strong>{$competency_name}</strong><br />
+                {foreach $reviews as $review}
+                    <span class="review-info">
+                        <strong>{if $review.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment}
+                    </span>
+                    <br />
+                {/foreach}
+            </div>
+        </div>
+    {/foreach}
+{/function}
 
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/bootstrap-tabdrop.js"></script>
 <ul class="pager">
-    <li class="previous {if $previous_round.id == 0 || $round.id - 1 < 1}disabled{/if}">
-        <a href="{if $previous_round.id == 0 || $round.id - 1 < 1}#{else}{$smarty.const.BASE_URI}report/{$round.id - 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">&larr; {t}Previous report{/t}</a>
+    <li class="previous {if $previous_round_id == 0 || $round.id - 1 < 1}disabled{/if}">
+        <a href="{if $previous_round_id != 0 && $previous_round_id < $round.id}
+                 {$smarty.const.BASE_URI}report/{$previous_round_id}{if $user.id != $current_user.id}/{$user.id}{/if}
+                 {/if}">&larr; {t}Previous report{/t}
+        </a>
     </li>
-    <li class="next {if $round.id + 1 > $current_round_id}disabled{/if}">
-        <a href="{if $round.id + 1 > $current_round_id}#{else}{$smarty.const.BASE_URI}report/{$round.id + 1}{if $user.id != $current_user.id}/{$user.id}{/if}{/if}">{t}Next report{/t} &rarr;</a>
+    <li class="next {if $next_round_id == 0 || $next_round_id < $round.id}disabled{/if}">
+        <a href="{if $next_round_id != 0 && $next_round_id > $round_id}
+                 {$smarty.const.BASE_URI}report/{$next_round_id}{if $user.id != $current_user.id}/{$user.id}{/if}
+                 {/if}">{t}Next report{/t} &rarr;</a>
     </li>
 </ul>
-{if !empty($averages)}
+{if !$insufficient_data}
     <fieldset>
         <div class="row-fluid">
         <span class="span12">
@@ -35,7 +60,7 @@
                     </div>
                 </div>
 
-                <strong>{t}Ratings{/t}</strong>
+                <strong>{t}Graph options{/t}</strong>
 
                 <div class="well">
                     <div class="controls">
@@ -58,138 +83,132 @@
         </span>
         </div>
     </fieldset>
-    <div class="row-fluid">
-        <span class="span12">
-             <div id="chart-div" class="report-chart"></div>
-        </span>
-    </div>
-    <div class="row-fluid">
-        <span class="span6">
-             <div id="positive-chart-div" class="report-chart"></div>
-        </span>
-        <span class="span6">
-             <div id="negative-chart-div" class="report-chart"></div>
-        </span>
-    </div>
-    <fieldset>
-        <legend>{t}Comments{/t}</legend>
+
+    {if $review_count > 0}
+        <h3>{t}Me about me{/t}</h3>
         <div class="row-fluid">
-        <span class="span12">
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab-all" data-toggle="tab">{t}All comments{/t}</a></li>
-                    {foreach $averages as $competency_id => $average}
-                        {if array_key_exists($competency_id, $comment_counts)}
-                            <li><a href="#tab-{$competency_id}" data-toggle="tab">{$average.name}</a></li>
-                        {/if}
-                    {/foreach}
-                    <li><a href="#tab-answers" data-toggle="tab">{t}Extra question{/t}</a></li>
-                </ul>
-                <div class="comment-box">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab-all">
-                            <table class="table table-striped">
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                        <div class="tab-pane" id="tab-answers">
-                            <table class="table table-striped">
-                                <tbody></tbody>
-                            </table>
-                        </div>
-                        {foreach $averages as $competency_id => $average}
-                            {if array_key_exists($competency_id, $comment_counts)}
-                                <div class="tab-pane fade" id="tab-{$competency_id}">
-                                    <table class="table table-striped">
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            {/if}
-                        {/foreach}
-                    </div>
-                </div>
-            </div>
-        </span>
-        </div>
-    </fieldset>
-    <script type="text/javascript">
-        averages = new Array();
-
-        {foreach $averages as $competency_id => $average}
-            var average = new Array();
-            average['id'] = '{$competency_id}';
-            average['name'] = '{$average.name|escape:'quotes'}';
-            // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for the chart
-            average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2));
-            average['count_reviews'] = parseInt('{$average.count_reviews}');
-            average['own_rating'] = parseFloat('{$average.own_rating}');
-            average['enabled'] = true;
-            averages[{$competency_id}] = average;
-        {/foreach}
-
-        positive_averages = new Array();
-
-        {foreach $positive_averages as $competency_id => $average}
-            var average = new Array();
-            average['id'] = '{$competency_id}';
-            average['name'] = '{$average.name|escape:'quotes'}';
-            // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for the chart
-            average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2));
-            average['count_reviews'] = parseInt('{$average.count_reviews}');
-            average['own_rating'] = parseFloat('{$average.own_rating}');
-            average['enabled'] = true;
-            positive_averages[{$competency_id}] = average;
-        {/foreach}
-
-        negative_averages = new Array();
-
-        {foreach $negative_averages as $competency_id => $average}
-            var average = new Array();
-            average['id'] = '{$competency_id}';
-            average['name'] = '{$average.name|escape:'quotes'}';
-            // parseFloat() twice because toFixed only works on numbers and returns a string, but a float is needed for the chart
-            average['average'] = parseFloat(parseFloat('{$average.average}').toFixed(2));
-            average['count_reviews'] = parseInt('{$average.count_reviews}');
-            average['own_rating'] = parseFloat('{$average.own_rating}');
-            average['enabled'] = true;
-            negative_averages[{$competency_id}] = average;
-        {/foreach}
-
-        {foreach $reviews as $review}
-            {if !empty($review.comment)}
-                var own_text = '';
-                {if $review.reviewer.id == $smarty.session.current_user.id}
-                    own_text = '<strong>[{t}Own{/t}]</strong>';
+            <span class="span6" id="own-general-competencies">
+                <legend>{t}General competencies{/t}</legend>
+                {if count($own_general_reviews) > 0}
+                    {print_review review_array=$own_general_reviews selection=1}
+                    {print_review review_array=$own_general_reviews selection=2}
+                {else}
+                    {t}No reviews found{/t}
                 {/if}
+            </span>
 
-                $('#tab-all').find('tbody').append($('<tr>').append($('<td>').append(own_text + '[{$review.competency.name}]' + ' {$review.comment|escape:'quotes'}')));
-                $('#tab-{$review.competency.id}').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$review.comment|escape:'quotes'}')));
-            {/if}
-        {/foreach}
+            <span class="span6" id="own-role-competencies">
+                <legend>{t}Role competencies{/t}</legend>
+                {if count($own_role_reviews) > 0}
+                    {print_review review_array=$own_role_reviews selection=1}
+                    {print_review review_array=$own_role_reviews selection=2}
+                {else}
+                    {t}No reviews found{/t}
+                {/if}
+            </span>
+        </div>
 
-        {foreach $roundinfo as $info}
-            {if !empty($info.answer)}
-            var own_text = '';
-            {if $info.reviewer.id == $smarty.session.current_user.id}
-                own_text = '<strong>[{t}Own{/t}]</strong>';
-            {/if}
-                $('#tab-answers table').find('tbody').append($('<tr>').append($('<td>').append(own_text + ' {$info.answer|escape:'quotes'}')));
-            {/if}
-        {/foreach}
+        <h3>{t}Others about me{/t}</h3>
+        <div class="row-fluid">
+            <span class="span6" id="other-general-competencies">
+                <legend>{t}General competencies{/t}</legend>
+                {if count($other_general_reviews) > 0}
+                    {print_review review_array=$other_general_reviews selection=1}
+                    {print_review review_array=$other_general_reviews selection=2}
+                {else}
+                    {t}No reviews found{/t}
+                {/if}
+            </span>
 
-        text_show = '{t}show{/t}';
-        text_hide = '{t}hide{/t}';
-        graph_header = '{t}Ratings{/t}';
-        graph_text_average = '{t}Average{/t}';
-        graph_text_own = '{t}Own{/t}';
-        graph_text_competencies = '{t}Competencies{/t}';
-        graph_text_points = '{t}Points{/t}';
-        graph_text_tooltip_single = '{t}review{/t}';
-        graph_text_tooltip = '{t}reviews{/t}';
-        $('.nav-pills, .nav-tabs').tabdrop();
-    </script>
-    <script type="text/javascript" src="//www.google.com/jsapi"></script>
-    <script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>
+            <span class="span6" id="other-role-competencies">
+                <legend>{t}Role competencies{/t}</legend>
+                {if count($other_role_reviews) > 0}
+                    {print_review review_array=$other_role_reviews selection=1}
+                    {print_review review_array=$other_role_reviews selection=2}
+                {else}
+                    {t}No reviews found{/t}
+                {/if}
+            </span>
+        </div>
+
+        <h3>{t}Other comments{/t}</h3>
+        <div class="row-fluid">
+            <span class="span6" id="other-general-competencies">
+                <legend>{t}Role competencies{/t}</legend>
+                {if count($other_role_reviews[3]) > 0}
+                    {print_review review_array=$other_role_reviews selection=3}
+                {else}
+                    {t}No reviews found{/t}
+                {/if}
+            </span>
+            </span>
+        </div>
+    {else}
+        {t}No reviews found for the current round{/t}
+    {/if}
 {else}
-    {t}No reviews found for this round{/t}
+    {$insufficient_reviewed_by}
+    <br />
+    <br />
+    {$insufficient_reviewed}
 {/if}
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        $('.pager li').click(function()
+        {
+            if($(this).hasClass('disabled'))
+            {
+                return false;
+            }
+        });
+
+        $('#select-all').click(function()
+        {
+            $('#competency-boxes input:checkbox:not(:checked)').click();
+            $('#competency-boxes input:checkbox:not(:checked)').attr('checked', true);
+        });
+
+        $('#deselect-all').click(function()
+        {
+            $('#competency-boxes input:checked').attr('checked', false);
+        });
+
+        $('input[name="check_own"]').click(function()
+        {
+            $('input[name="check_comparison"]').attr('checked', false);
+        });
+
+        $('input[name="check_average"]').click(function()
+        {
+            $('input[name="check_comparison"]').attr('checked', false);
+        });
+
+        $('input[name="check_comparison"]').click(function()
+        {
+            if($('input[name="check_comparison"]').is(':not(:checked)'))
+            {
+                $('input[name="check_average"]').click();
+                $('input[name="check_own"]').attr('checked', 'checked');
+            }
+        });
+
+        $('#options-label').click(function()
+        {
+            $('#options').slideToggle();
+            if($('#options-label i').attr('class') == 'icon-minus-sign')
+            {
+                $('#options-label i').attr('class', 'icon-plus-sign');
+                $('#options-label small').text('({t}show{/t})');
+            }
+            else
+            {
+                $('#options-label i').attr('class', 'icon-minus-sign');
+                $('#options-label small').text('({t}hide{/t})');
+            }
+        });
+
+        $('input[type=checkbox]').not('input[name="check_comparison"]').attr('checked', true);
+    });
+</script>
