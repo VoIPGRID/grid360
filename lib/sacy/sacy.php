@@ -10,6 +10,12 @@ if (!class_exists('JSMin') && !ExternalProcessorRegistry::typeIsSupported('text/
 if (!class_exists('Minify_CSS'))
     include_once(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), 'cssmin.php')));
 
+if(!class_exists('PhpSassSacy'))
+    include_once(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), 'phpsass.php')));
+
+if(!class_exists('FileCache'))
+    include_once(implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), 'fragment-cache.php')));
+
 if (!class_exists('lessc') && !ExternalProcessorRegistry::typeIsSupported('text/x-less')){
     $less = implode(DIRECTORY_SEPARATOR, array(dirname(__FILE__), 'lessc.inc.php'));
     if (file_exists($less)){
@@ -313,7 +319,7 @@ class CacheRenderer {
 
     private function generate_content_cache($work_units, CacheRenderHandler $rh){
         $content = implode("\n", array_map(function($u){ return $u['content']; }, $work_units));
-        $key = md5($content.$this->_cfg->getDebugMode());
+        $key = substr(sha1($content . $this->_cfg->getDebugMode()), 0, 7);
         if ($d = $this->fragment_cache->get($key)){
             return $d;
         }
@@ -336,9 +342,9 @@ class CacheRenderer {
         if (!$ck){
             $ck = "";
             foreach($work_units as $f){
-                $ck = md5($ck.md5_file($f['file']));
+                $ck = substr(sha1($ck . sha1_file($f['file'])), 0, 7);
                 foreach($f['additional_files'] as $af){
-                    $ck = md5($ck.md5_file($af));
+                    $ck = substr(sha1($ck . sha1_file($af)), 0, 7);
                 }
             }
             $ck = "$ck-content";
@@ -376,11 +382,11 @@ class CacheRenderer {
         }
 
         // not using the actual content for quicker access
-        $key = md5($max . serialize($idents) . $rh->getConfig()->getDebugMode());
+        $key = substr(sha1(serialize($max) . serialize($idents) . $rh->getConfig()->getDebugMode()), 0, 7);
         $key = $this->content_key_for_mtime_key($key, $work_units);
 
-        $cfile = ASSET_COMPILE_OUTPUT_DIR . DIRECTORY_SEPARATOR ."$ident-$key".$rh->getFileExtension();
-        $pub = ASSET_COMPILE_URL_ROOT . "/$ident-$key".$rh->getFileExtension();
+        $cfile = ASSET_COMPILE_OUTPUT_DIR . DIRECTORY_SEPARATOR ."$key".$rh->getFileExtension();
+        $pub = ASSET_COMPILE_URL_ROOT . "/$key".$rh->getFileExtension();
 
         if (file_exists($cfile) && ($rh->getConfig()->getDebugMode() != 2)){
             return $pub;
