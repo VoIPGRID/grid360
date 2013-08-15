@@ -15,6 +15,10 @@ function login_google()
         // Redirect to $openid->identity to get permission to use user's info
         redirect_to($openid->authUrl());
     }
+    else if($openid->mode == 'cancel')
+    {
+        redirect_to('login');
+    }
 
     // Save new $openid->identity
     $user = null;
@@ -99,8 +103,18 @@ function register()
 
 function register_post()
 {
+    $keys_to_check = array
+    (
+        'organisation_name' => $_POST['organisation_name'],
+        'firstname' => $_POST['firstname'],
+        'lastname' => $_POST['lastname'],
+        'email' => $_POST['email'],
+        'password' => $_POST['password']
+    );
+
     global $smarty;
-    $form_values = validate_register_form();
+
+    $form_values = validate_form($keys_to_check);
 
     foreach($form_values as $form_value)
     {
@@ -188,20 +202,20 @@ function login_post()
         }
         else
         {
-            $message = _('Wrong email/password combo!');
+            $message = _('Wrong email/password combination!');
         }
     }
     else if(empty($_POST['email']) && !empty($_POST['password']))
     {
-        $message = _('Wrong email/password combo!');
+        $message = _('Wrong email/password combination!');
     }
     else if(!empty($_POST['email']) && empty($_POST['password']))
     {
-        $message = _('Wrong email/password combo!');
+        $message = _('Wrong email/password combination!');
     }
     else
     {
-        $message = _('Wrong email/password combo!');
+        $message = _('Wrong email/password combination!');
     }
 
     if(!empty($message))

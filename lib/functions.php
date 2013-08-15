@@ -49,7 +49,9 @@ function validate_form($keys_to_check)
         'competency' => _('competency'),
         'role' => _('role'),
         'userlevel' => _('user level'),
-        'user' => _('user')
+        'user' => _('user'),
+        'organisation_name' => _('organisation name'),
+        'password' => _('password')
     );
 
     foreach($keys_to_check as $key => $value)
