@@ -6,6 +6,7 @@ require_once(LIB_DIR . 'redbeanphp/rb.php');
 require_once(LIB_DIR . 'smarty/libs/Smarty.class.php');
 require_once(LIB_DIR . 'multitenancy_writer.php');
 require_once(LIB_DIR . 'phpass-0.3/PasswordHash.php');
+include_once(LIB_DIR . 'sacy/sacy.php');
 require_once('constants.php');
 
 function configure()

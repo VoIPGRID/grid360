@@ -25,11 +25,15 @@ try
     define('BASE_DIR', $_SERVER['DOCUMENT_ROOT'] . SUB_DIR);
     define('LIB_DIR', BASE_DIR . 'lib/');
     define('VIEWS_DIR', BASE_DIR . 'views/');
+    define('ASSETS_DIR', BASE_DIR . 'assets/');
 
     define('BASE_URI', SUB_DIR);
     define('ASSETS_URI', BASE_URI . 'assets/');
     define('ADMIN_URI', 'admin/');
     define('MANAGER_URI', 'manager/');
+
+    define('ASSET_COMPILE_OUTPUT_DIR', 'public');
+    define('ASSET_COMPILE_URL_ROOT', BASE_URI . 'public');
 
     /* Setup i18n */
     $supported_locales = array('en_US.UTF-8', 'nl_NL.UTF-8');
