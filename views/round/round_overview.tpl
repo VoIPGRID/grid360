@@ -1,9 +1,56 @@
+{include file="lib/functions.tpl"}
+
+{function print_user_info}
+    <tr>
+        <td>{$user.firstname|capitalize:true}</td>
+        <td>{$user.lastname}</td>
+        <td>{$user.email}</td>
+        <td>{$user.department.name|capitalize:true}</td>
+        <td>{$user.role.name|capitalize:true}</td>
+        <td><ul><li>{$user.role.competencygroup.name|capitalize:true}</li><li>{$general_competencies}</li></ul></td>
+        <td>
+            {if $user.status == 0}
+                {t}No{/t}
+            {elseif $user.status == 1}
+                {t}Yes{/t}
+            {/if}
+        </td>
+        {call print_actions type="user" level="admin"}
+    </tr>
+{/function}
+
+{if !empty($users)}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{t}First name{/t}</th>
+            <th>{t}Last name{/t}</th>
+            <th>{t}Email{/t}</th>
+            <th>{t}Department{/t}</th>
+            <th>{t}Role{/t}</th>
+            <th>{t}Competency groups{/t}</th>
+            <th>
+                {t}Included? {/t}
+                <span>
+                    <i class="icon-question-sign" data-toggle="tooltip" title="{t}This column shows if a person is included in the feedback round.{/t}" data-placement="right"></i>
+                </span>
+            </th>
+            <th>{t}Actions{/t}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $users as $user}
+            {print_user_info}
+        {/foreach}
+        </tbody>
+    </table>
+{else}
+    {t}No users found!{/t}
+{/if}
+
+<br />
+
 {if isset($round)}
-    <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/end">
-        <div class="skip-button">
-            <button class="btn-large btn-inverse">{t}End round{/t}</button>
-        </div>
-    </form>
     <div class="row">
         <span class="span4">
             <table class="table">
@@ -28,7 +75,20 @@
                     <td>{t}Review count{/t}</td>
                     <td>{$completed_reviews} / {$total_reviews}</td>
                 </tr>
+                <tr>
+                    <td>{t}Minimum to be reviewed by{/t}</td>
+                    <td>{$round.min_reviewed_by}</td>
+                </tr>
+                <tr>
+                    <td>{t}Minimum to review{/t}</td>
+                    <td>{$round.min_to_review}</td>
+                </tr>
             </table>
+        </span>
+        <span class="span6">
+            <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/end">
+                <button class="btn-large btn-inverse">{t}End round{/t}</button>
+            </form>
         </span>
     </div>
 {else}
@@ -39,5 +99,13 @@
         <button class="btn-large btn-inverse pull-right">{t}Start round{/t}</button>
     </form>
 {/if}
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        var ignored_columns = [-1, -2]; // Stop the reports and actions columns from being sortable
+        create_datatable($('.table.table-striped'), ignored_columns);
+    });
+</script>
 
 

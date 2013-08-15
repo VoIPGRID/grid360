@@ -5,29 +5,29 @@
         <div class="span4">
             <table class="table">
                 <tr>
-                    <input type="hidden" name="description" value="{$values.description}"/>
+                    <input type="hidden" name="description" value="{$form_values.description.value}"/>
                     <td>{t}Description{/t}</td>
-                    <td>{$values.description}</td>
+                    <td>{$form_values.description.value}</td>
                 </tr>
                 <tr>
-                    <input type="hidden" name="min_own" value="{$values.min_own}"/>
-                    <td>Min. own department</td>
-                    <td>{$values.min_own|default:50}%</td>
+                    <input type="hidden" name="total_amount_to_review" value="{$form_values.total_amount_to_review.value}"/>
+                    <td>{t}Total amount to review{/t}</td>
+                    <td>{$form_values.total_amount_to_review.value|default:{$count_users}}</td>
                 </tr>
                 <tr>
-                    <input type="hidden" name="max_own" value="{$values.max_own}"/>
-                    <td>Max. own department</td>
-                    <td>{$values.max_own|default:100}%</td>
+                    <input type="hidden" name="own_amount_to_review" value="{$form_values.own_amount_to_review.value}"/>
+                    <td>{t}Amount to review from own department{/t}</td>
+                    <td>{$form_values.own_amount_to_review.value|default:{{$count_users * 0.66}|ceil}}</td>
                 </tr>
                 <tr>
-                    <input type="hidden" name="min_other" value="{$values.min_other}"/>
-                    <td>Min. other department</td>
-                    <td>{$values.min_other|default:25}%</td>
+                    <input type="hidden" name="min_reviewed_by" value="{$form_values.min_reviewed_by.value}"/>
+                    <td>{t}Minimum to be reviewed by{/t}</td>
+                    <td>{$form_values.min_reviewed_by.value|default:{{$count_users * 0.50}|ceil}}</td>
                 </tr>
                 <tr>
-                    <input type="hidden" name="max_other" value="{$values.max_other}"/>
-                    <td>Max. other department</td>
-                    <td>{$values.max_other|default:50}%</td>
+                    <input type="hidden" name="min_to_review" value="{$form_values.min_to_review.value}"/>
+                    <td>{t}Minimum to review{/t}</td>
+                    <td>{$form_values.min_to_review.value|default:{{$count_users * 0.50}|ceil}}</td>
                 </tr>
             </table>
         </div>
