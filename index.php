@@ -96,6 +96,7 @@ dispatch_delete('/manager/competency/:id', 'delete_competency');
 dispatch('/manager/competency/:id', 'edit_competency');
 
 dispatch('/feedback', 'view_feedback_overview');
+dispatch_post('/feedback/skip/add', 'add_to_reviewees');
 dispatch('/feedback/skip/:id', 'skip_confirmation');
 dispatch_post('/feedback/skip', 'skip_person');
 dispatch('/feedback/edit/:id', 'edit_feedback');

@@ -1,36 +1,28 @@
 {include file="lib/functions.tpl"}
 
-{function create_checkboxes}
+{function create_choice_row}
     {foreach $competencies as $competency}
-        <div class="control-group">
-            <div class="controls">
-                <label class="checkbox" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
-                    <input type="checkbox" id="competency-{$competency.id}" name="competencies[]" value="{$competency.id}" {if $competency.in_session}checked="checked"{/if}/> {$competency.name}
-                </label>
+        <span class="span6">
+            <input type="hidden" value="0" id="{$competency.id}" name="competencies[{$competency.id}][value]" />
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-link"><span class="smile-default"></span></button>
+                    <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
+                    <label class="checkbox" data-toggle="tooltip" title="{$competency.description}" data-placement="right">{$competency.name}</label>
+                </div>
             </div>
-        </div>
+        </span>
+        <span class="span5 hide">
+            <textarea class="input-xlarge" name="competencies[{$competency.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$smarty.session.competencies[$competency.id].comment}</textarea>
+        </span>
     {/foreach}
 {/function}
 
-{$url_text = ""}
-
 <h3>
-    {if isset($step) && $step == 2}
-        {t}Select 2 points of improvement for {/t}
-        {$url_text = "/{$reviewee.id}/2"}
-    {else}
-        {t}Select 3 positive competencies for {/t}
-        {$url_text = "/{$reviewee.id}"}
-    {/if}
-
-    {if $reviewee.id == $current_user.id}
-        {t}yourself{/t}
-    {else}
-        {$reviewee.firstname} {$reviewee.lastname}
-    {/if}
+    {$feedback_header}
 </h3>
 
-<h4>{t step=$step}Step %1 of 3{/t}</h4>
+<h4>{$step_text}</h4>
 
 {call print_alert type="info" text="{t}You can read the description of a competency by hovering your mouse over it{/t}"}
 
@@ -40,16 +32,24 @@
     </form>
 {/if}
 
-<form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$url_text}" method="post">
+<form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic">
     <div class="row-fluid">
-        {foreach $competencygroups as $competencygroup}
-            <span class="span6">
+        {if count($competencygroup.ownCompetency) > 0}
+            <span class="span12">
                 <fieldset>
                     <legend>{$competencygroup.name}</legend>
-                    {create_checkboxes competencies=$competencygroup.ownCompetency}
+                    {create_choice_row competencies=$competencygroup.ownCompetency}
                 </fieldset>
             </span>
-        {/foreach}
+        {/if}
+
+        {if $step == 2}
+            <button class="btn btn-primary" id="no-competencies-button">{t}I can't review role specific competencies{/t}</button>
+            <div {if !isset($smarty.session.no_competencies_comment)}class="no-competencies-box"{/if}>
+                <hr />
+                <textarea class="input-xxlarge" rows="3" name="no_competencies_comment">{$smarty.session.no_competencies_comment}</textarea>
+            </div>
+        {/if}
     </div>
     <div class="form-actions">
         <button type="button" class="btn" onclick="history.go(-1);return true;">
@@ -63,23 +63,73 @@
     </div>
 </form>
 
-<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/feedback.js"></script>
+{*<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/feedback.js"></script>*}
 <script type="text/javascript">
     var step = '{$step}';
 
     $(document).ready(function()
     {
-        if(step == 1)
+        $('#no-competencies-button').click(function(event)
         {
-            {if count($smarty.session.positive_competencies) == 3}
-                $('input:not(:checked)').attr('disabled', true);
-            {/if}
-        }
-        else if(step == 2)
+            $('.no-competencies-box').slideDown();
+            event.preventDefault();
+        });
+
+        $('.span12 button').click(function(event)
         {
-            {if count($smarty.session.negative_competencies) == 2}
-                $('input:not(:checked)').attr('disabled', true);
-            {/if}
-        }
+            var icon = $(this).children('span');
+            var other_icon = $(this).siblings('button').children('span');
+            var button = $(this);
+
+            var count_smile_active = $('.smile-active').length;
+            var count_meh_active = $('.meh-active').length;
+
+            if(icon.attr('class') == 'smile-active')
+            {
+                icon.attr('class', 'smile-default');
+                icon.parents('.span6').children('input').val(0);
+            }
+            else if(count_smile_active < 2 && icon.attr('class') == 'smile-default')
+            {
+                icon.attr('class', 'smile-active');
+                other_icon.attr('class', 'meh-default');
+                icon.parents('.span6').children('input').val(1);
+            }
+            else if(icon.attr('class') == 'meh-active')
+            {
+                icon.attr('class', 'meh-default');
+                icon.parents('.span6').children('input').val(0);
+            }
+            else if(count_meh_active < 1 && icon.attr('class') == 'meh-default')
+            {
+                icon.attr('class', 'meh-active');
+                other_icon.attr('class', 'smile-default');
+                icon.parents('.span6').children('input').val(2);
+            }
+
+            if(icon.attr('class') == 'smile-active' || icon.attr('class') == 'meh-active')
+            {
+                button.parents('.span6').next().fadeIn(300);
+            }
+            else
+            {
+                button.parents('.span6').next().fadeOut(300);
+            }
+
+            event.preventDefault();
+        });
+
+        {foreach $smarty.session.competencies as $key => $competency}
+            var e = $('#' + '{$key}');
+
+            if('{$competency.value}' == 1)
+            {
+                e.parent().find('.smile-default').parent().click();
+            }
+            else if('{$competency.value}' == 2)
+            {
+                e.parent().find('.meh-default').parent().click();
+            }
+        {/foreach}
     });
 </script>
