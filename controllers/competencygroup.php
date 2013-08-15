@@ -36,13 +36,43 @@ function create_competencygroup_post()
 
     $form_values = validate_form($keys_to_check);
 
+    $has_errors = false;
+
+    foreach($_POST['ownCompetency'] as $id => $competency_row)
+    {
+        // If the role name is empty, remove role from the list so you don't get an empty role in the database
+        if(strlen(trim($competency_row['name'])) == 0)
+        {
+            unset($_POST['ownCompetency'][$id]);
+        }
+        else
+        {
+            if(isset($competency_row['id']))
+            {
+                $competency = R::load('competency', $competency_row['id']);
+
+                if($competency->id == 0)
+                {
+                    $form_values['competencies']['error'] = sprintf(BEAN_NOT_FOUND, _('competency'));
+                    $has_errors = true;
+                }
+            }
+        }
+    }
+
+    if(count($_POST['ownCompetency']) < 3)
+    {
+        $form_values['competencies']['error'] = _('At least 3 competencies must be created');
+        $has_errors = true;
+    }
+
+    // Make sure the non-required fields get stored in the form_values
     $form_values['general']['value'] = $_POST['general'];
     $form_values['description']['value'] = $_POST['description'];
     $form_values['competencies']['value'] = $_POST['ownCompetency'];
 
     global $smarty;
 
-    $has_errors = false;
     foreach($form_values as $form_value)
     {
         if(isset($form_value['error']))
@@ -75,10 +105,7 @@ function create_competencygroup_post()
 
         if(!empty($general_competencies))
         {
-            foreach($general_competencies as $general_competency)
-            {
-                $general_competency->general = false;
-            }
+            $general_competencies->general = false;
 
             R::store($general_competencies);
         }

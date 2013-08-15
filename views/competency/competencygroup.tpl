@@ -1,11 +1,33 @@
 {include file="lib/functions.tpl"}
 
+{function print_competency}
+    <tr>
+        <input type="hidden" name="ownCompetency[{$index}][type]" value="competency" />
+        <input type="hidden" name="ownCompetency[{$index}][id]" value="{$competency.id}" />
+        <td>
+            <span class="table-text">{$competency.name}</span>
+            <input name="ownCompetency[{$index}][name]" type="text" placeholder="{t}Competency name{/t}" class="input-xlarge hide" value="{$competency.name}" />
+        </td>
+        <td>
+            <span class="table-text">{$competency.description}</span>
+            <textarea name="ownCompetency[{$index}][description]" placeholder="{t}Competency description{/t}" class="input-xxlarge hide">{$competency.description}</textarea>
+        </td>
+        <td class="actions">
+            <button data-toggle="tooltip" title="{t}Edit{/t}" data-placement="bottom" type="submit" class="btn btn-link">
+                <i class="icon-pencil"></i>
+            </button>
+            <button data-toggle="tooltip" title="{t}Delete{/t}" data-placement="bottom" type="submit" class="btn btn-link" data-competency-id={$competency.id}>
+                <i class="icon-trash"></i>
+            </button>
+        </td>
+    </tr>
+{/function}
+
 <script type="text/javascript">
     type = 'competency';
     name_placeholder = '{t}Competency name{/t}';
     description_placeholder = '{t}Competency description{/t}';
 </script>
-<script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
 
 <form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal">
     <fieldset>
@@ -46,28 +68,35 @@
             </div>
         </div>
 
+        {if !empty({$form_values.competencies.error})}
+            <div class="alert alert-error">{$form_values.competencies.error}</div>
+        {/if}
+
         <div class="control-group">
             <label class="control-label">{t}Competencies{/t}</label>
 
-            <div id="competency-list">
-                {if isset($form_values.competencies.value) && count($form_values.competencies.value) > 0}{* Using count > 0 here because !empty doesn't work for some reason *}
-                    {assign "index" 0}
-                    {foreach $form_values.competencies.value as $competency}
-                        <div class="controls">
-                            <input type="hidden" name="ownCompetency[{$index}][type]" value="competency" />
-                            <input type="hidden" name="ownCompetency[{$index}][id]" value="{$competency.id}" />
-                            <input name="ownCompetency[{$index}][name]" type="text" placeholder="{t}Competency name{/t}" class="input-xlarge" value="{$competency.name}" />
-                            <textarea name="ownCompetency[{$index}][description]" type="text" placeholder="{t}Competency description{/t}" class="input-xxlarge">{$competency.description}</textarea>
-                        </div>
-                        {assign "index" {counter}}
-                    {/foreach}
-                {else}
-                    <div class="controls">
-                        <input type="hidden" name="ownCompetency[0][type]" value="competency" />
-                        <input type="text" name="ownCompetency[0][name]" placeholder="{t}Competency name{/t}" class="input-xlarge" />
-                        <textarea class="input-xxlarge" name="ownCompetency[0][description]" placeholder="{t}Competency description{/t}"></textarea>
-                    </div>
-                {/if}
+            <div class="controls">
+                <div id="competency-list">
+                    {if empty($form_values.competencies.value)}
+                        <span id="info-text">{t}No competencies found{/t}</span>
+                    {/if}
+                    <table id="competencies" class="table table-striped {if empty($form_values.competencies.value)}hide{/if}">
+                        <thead>
+                        <tr>
+                            <th>{t}Name{/t}</th>
+                            <th>{t}Description{/t}</th>
+                            <th>{t}Actions{/t}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {assign "index" 0}
+                        {foreach $form_values.competencies.value as $competency}
+                            {print_competency}
+                            {assign "index" {counter}}
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -89,3 +118,67 @@
         </div>
     </fieldset>
 </form>
+
+<script type="text/javascript">
+    $(document).ready(function()
+    {
+        option_index = $('#competencies tr').length;
+
+        $('#add-button').click(function(event)
+        {
+            if(typeof $('#info-text') != 'undefined')
+            {
+                $('#info-text').remove();
+                $('#competencies').removeClass('hide');
+            }
+
+            add_row();
+
+            event.preventDefault();
+        });
+
+        $('#competencies').on('click', 'button', function(event)
+        {
+            if($(this).children('i').attr('class') == 'icon-pencil')
+            {
+                // Find all the spans with the matching class, hide them and then show the matching input fields.
+                $(this).parents('tr').find('.table-text').each(function()
+                {
+                    $(this).hide();
+                    $(this).next().show();
+                });
+            }
+            else if($(this).children('i').attr('class') == 'icon-trash')
+            {
+                // Check if it's an existing competency or a new one
+                if($(this).data('competency-id') != 0 && typeof $(this).data('competency-id') != 'undefined')
+                {
+                    // Redirect to the delete confirmation page
+                    window.location.href = '{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}' + 'competency/delete/' + $(this).data('competency-id');
+                }
+                else
+                {
+                    // Remove this row
+                    $(this).parents('tr').remove();
+                }
+            }
+
+            event.preventDefault();
+        });
+
+        function add_row()
+        {
+            // Create a new row in which a new competency can be entered
+            var table_row = $('<tr>' +
+                                '<input type="hidden" name="ownCompetency[' + option_index + '][type]" value="competency" />' +
+                                '<td><input name="ownCompetency[' + option_index + '][name]" type="text" placeholder="{t}Competency name{/t}" class="input-xlarge" autofocus="autofocus" /></td>' +
+                                '<td><textarea name="ownCompetency[' + option_index + '][description]" type="text" placeholder="{t}Competency description{/t}" class="input-xxlarge"></textarea></td>' +
+                                '<td class="actions"><button data-toggle="tooltip" title="{t}Delete{/t}" data-placement="bottom" type="submit" class="btn btn-link"><i class="icon-trash"></i></button></td>' +
+                              '</tr>');
+
+            $('#competencies tbody').append(table_row);
+
+            option_index++;
+        }
+    });
+</script>

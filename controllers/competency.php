@@ -173,5 +173,5 @@ function delete_competency()
 
     $message = sprintf(DELETE_SUCCESS, _('competency'), $competency->name);
     flash('success', $message);
-    redirect_to(MANAGER_URI . 'competencies');
+    redirect_to(MANAGER_URI . 'competencygroup/' . $competency->competencygroup_id);
 }

@@ -18,7 +18,7 @@
     </tr>
 {/function}
 
-<h2>Competency groups</h2>
+<h2>{t}Competency groups{/t}</h2>
 {if !empty($competencygroups)}
 <table id="competencygroups" class="table table-striped">
     <thead>
@@ -41,39 +41,6 @@
 
 {call print_add_link level="manager" type_var="competencygroup" type="{t}competency group{/t}"}
 
-<h3>{t}Competencies{/t}</h3>
-{if !empty($competencygroups)}
-<div class="controls">
-    <select id="group-filter">
-        <option value="0">Select all</option>
-        {foreach $competencygroups as $id => $competencygroup}
-                <option value="{$competencygroup.id}">{$competencygroup.name}</option>
-        {/foreach}
-    </select>
-</div>
-<table id="competencies" class="table table-striped">
-    <thead>
-    <tr>
-        <th>{t}Name{/t}</th>
-        <th>{t}Description{/t}</th>
-        <th>{t}Competency group{/t}</th>
-        <th>{t}Actions{/t}</th>
-    </tr>
-    </thead>
-    <tbody>
-    {foreach $competencygroups as $competencygroup}
-        {foreach $competencygroup.ownCompetency as $competency}
-            {print_competency}
-        {/foreach}
-    {/foreach}
-    </tbody>
-</table>
-{else}
-    </table>{t}No competencies found{/t}!
-{/if}
-
-{call print_add_link level="manager" type_var="competency" type="{t}competency{/t}"}
-
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -91,7 +58,7 @@
             }
         });
 
-        var ignored_columns = [-1, -2]; // Stop the reports and actions columns from being sortable
+        var ignored_columns = [-1, -2]; // Stop the 'Is general?' and actions columns from being sortable
         create_datatable($('#competencygroups'), ignored_columns);
         create_datatable($('#competencies'));
     });
