@@ -118,5 +118,19 @@ try
 catch(Exception $e)
 {
     R::close();
-    halt('Something went wrong');
+    halt(SERVER_ERROR);
+}
+
+function not_found()
+{
+    global $smarty;
+
+    return html($smarty->fetch('error/404.tpl'), 'layout/basic.php');
+}
+
+function server_error()
+{
+    global $smarty;
+
+    return html($smarty->fetch('error/500.tpl'), 'layout/basic.php');
 }
