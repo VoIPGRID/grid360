@@ -1,7 +1,5 @@
 <?php
 
-ini_set('session.gc_maxlifetime', 60 * 60);
-
 include_once('./lib/functions.php');
 include_once('./lib/security.php');
 include_once('./lib/Swift-5.0.0/lib/swift_required.php');
@@ -34,6 +32,7 @@ try
 
     define('ASSET_COMPILE_OUTPUT_DIR', 'public');
     define('ASSET_COMPILE_URL_ROOT', BASE_URI . 'public');
+    define('SACY_WRITE_HEADERS', false);
 
     /* Setup i18n */
     $supported_locales = array('en_US.UTF-8', 'nl_NL.UTF-8');
