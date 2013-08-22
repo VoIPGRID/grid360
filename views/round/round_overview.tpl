@@ -86,18 +86,14 @@
             </table>
         </span>
         <span class="span6">
-            <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/end">
-                <button class="btn-large btn-inverse">{t}End round{/t}</button>
-            </form>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/end" class="btn btn-large btn-inverse">{t}End round{/t}</a>
         </span>
     </div>
 {else}
     <div class="alert alert-info">
         {t}No feedback round currently in progress. You can start a feedback round by clicking the 'Start round' button.{/t}
     </div>
-    <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/create">
-        <button class="btn-large btn-inverse pull-right">{t}Start round{/t}</button>
-    </form>
+    <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/create" class="btn btn-large btn-inverse pull-right">{t}Start round{/t}</a>
 {/if}
 
 <script type="text/javascript">

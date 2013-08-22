@@ -1,6 +1,6 @@
 {include file="lib/functions.tpl"}
 
-<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}role/{$role.id}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}role/{$role.id}" method="POST" class="form-horizontal" data-persist="garlic">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$role_name}Updating role %1{/t}</legend>
@@ -36,7 +36,7 @@
             <div id="competency-list">
                 <div class="controls">
                     {if !empty($department_options)}
-                        {html_options name="department[id]" options=$department_options}
+                        {html_options name="department[id]" options=$department_options selected=$form_values.department.value}
                     {else}
                         {t}No departments found{/t}
                     {/if}
@@ -63,7 +63,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}roles" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     {t}Update role{/t}

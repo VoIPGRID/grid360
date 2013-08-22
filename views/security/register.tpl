@@ -1,7 +1,7 @@
 {include file="lib/functions.tpl"}
 
 <div class="row">
-    <form class="form-vertical" action="{$smarty.const.BASE_URI}register" method="post">
+    <form class="form-vertical" action="{$smarty.const.BASE_URI}register" method="post" data-persist="garlic">
         <fieldset>
             <div class="control-group {if isset($form_values.organisation_name.error)}error{/if}">
                 <label class="control-label" for="organisation-name">Organisation name</label>
@@ -64,7 +64,7 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+                    <a href="{$smarty.const.BASE_URI}login" class="btn">{t}Cancel{/t}</a>
                     <button type="submit" class="btn btn-primary" id="login-button">{t}Register{/t}</button>
                 </div>
             </div>

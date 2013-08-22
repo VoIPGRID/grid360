@@ -1,6 +1,6 @@
 {include file="lib/functions.tpl"}
 
-<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}user/{$form_values.id.value}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}user/{$form_values.id.value}" method="POST" class="form-horizontal" data-persist="garlic">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$user_name}Updating user %1{/t}</legend>
@@ -91,7 +91,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}users" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     {t}Update user{/t}

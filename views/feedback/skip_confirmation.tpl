@@ -8,7 +8,7 @@
 <form action="{$smarty.const.BASE_URI}feedback/skip" method="post">
     <div class="form-actions">
         <input type="hidden" name="reviewee_id" value="{$reviewee.id}" />
-        <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+        <a href="{$smarty.const.BASE_URI}feedback/{$reviewee.id}" class="btn">{t}Cancel{/t}</a>
         <button type="submit" class="btn btn-primary">{t}Skip person{/t}</button>
     </div>
 </form>

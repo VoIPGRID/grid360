@@ -11,7 +11,7 @@
     {call print_alert type="error" text="{$form_values.error}"}
 {/if}
 
-<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}department/{$form_values.id.value}" method="post" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}department/{$form_values.id.value}" method="post" class="form-horizontal" data-persist="garlic">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$department_name}Updating department %1{/t}</legend>
@@ -21,7 +21,6 @@
 
         <div class="control-group {if isset($form_values.name.error)}error{/if}">
             <input type="hidden" name="type" value="department" />
-            {*<input type="hidden" name="id" value="{$form_values.id.value}" />*}
 
             <label class="control-label" for="department_name">{t}Department name{/t}</label>
 
@@ -80,7 +79,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}departments" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     {t}Update department{/t}

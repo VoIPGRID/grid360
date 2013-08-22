@@ -48,7 +48,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}competencies" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     {t}Update competency{/t}

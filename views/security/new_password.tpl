@@ -32,7 +32,7 @@
             </div>
         </div>
 
-                <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
-                <button type="submit" class="btn btn-primary" id="login-button">{t}Change password{/t}</button>
+        <a href="{$smarty.const.BASE_URI}login" class="btn">{t}Cancel{/t}</a>
+        <button type="submit" class="btn btn-primary" id="login-button">{t}Change password{/t}</button>
     </form>
 </div>
