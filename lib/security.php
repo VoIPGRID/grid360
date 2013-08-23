@@ -7,11 +7,21 @@ function security_authorize($required_level = EMPLOYEE)
         if(!isset($_SESSION['current_user']) || $_SESSION['current_user'] == null)
         {
             layout('security/login.tpl');
-            redirect_to('login');
+
+            $next = str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']);
+
+            if(strlen($next) > 0)
+            {
+                redirect_to('login', array('next' =>  $next));
+            }
+            else
+            {
+                redirect_to('login');
+            }
         }
         else if(isset($_SESSION['current_user']) && $_SESSION['current_user']->userlevel->level > $required_level)
         {
-            halt(NOT_FOUND, 'The requested page could not be found, please try again.');
+            halt(NOT_FOUND);
             exit;
         }
     }

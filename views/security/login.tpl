@@ -1,7 +1,7 @@
 {include file="lib/functions.tpl"}
 
 <div class="row">
-    <form class="form-vertical" action="{$smarty.const.BASE_URI}login" method="post">
+    <form class="form-vertical" action="{$smarty.const.BASE_URI}login?next={$smarty.get.next}" method="post">
         <div class="control-group">
             <label class="control-label" for="email">Email</label>
             <div class="controls">
@@ -35,10 +35,9 @@
         <br />
         <br />
         <a href="{$smarty.const.BASE_URI}reset">{t}Forgot password?{/t}</a>
-    </form>
-
-    <form class="form-vertical" action="{$smarty.const.BASE_URI}login_google" method="get">
-        <button class="btn">{t}Login with Google{/t}</button>
+        <br />
+        <br />
+        <a href="{$smarty.const.BASE_URI}login_google" class="btn">{t}Login with Google{/t}</a>
     </form>
 </div>
 <br />

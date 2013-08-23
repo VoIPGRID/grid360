@@ -174,7 +174,15 @@ function login()
     {
         if(security_login($_COOKIE['email'], $_COOKIE['password'], false, true))
         {
-            redirect_to('/');
+            if(!empty($_GET['next']))
+            {
+                // redirect_to() encodes the url, which can give problems. So using header() here
+                header('Location: ' . BASE_URI . $_GET['next']);
+            }
+            else
+            {
+                redirect_to('/');
+            }
         }
     }
 
@@ -198,7 +206,15 @@ function login_post()
     {
         if(security_login($_POST['email'], $_POST['password'], $_POST['remember_me'], false))
         {
-            redirect_to('/');
+            if(!empty($_GET['next']))
+            {
+                // redirect_to() encodes the url, which can give problems. So using header() here
+                header('Location: ' . BASE_URI . $_GET['next']);
+            }
+            else
+            {
+                redirect_to('/');
+            }
         }
         else
         {
