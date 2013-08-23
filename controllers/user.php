@@ -1,8 +1,5 @@
 <?php
 
-const INVALID_DEPARTMENT = 'Invalid department given!';
-const ROLE_DEPARTMENT_MISMATCH = 'Chosen role does not belong to the chosen department!';
-
 function create_user()
 {
     security_authorize(ADMIN);
@@ -202,6 +199,7 @@ function delete_user_confirmation()
     $smarty->assign('type_var', 'user');
     $smarty->assign('user', $user);
     $smarty->assign('level_uri', ADMIN_URI);
+    $smarty->assign('delete_uri', BASE_URI . ADMIN_URI . 'users');
 
     return html($smarty->fetch('common/delete_confirmation.tpl'));
 }
@@ -221,7 +219,9 @@ function delete_user()
 
     R::trash($user);
 
-    $message = sprintf(DELETE_SUCCESS, 'user', $user->firstname . ' ' . $user->lastname);
+    $user->name = $user->firstname . ' ' . $user->lastname;
+
+    $message = sprintf(DELETE_SUCCESS, _('user'), $user->name);
     flash('success', $message);
     redirect_to(ADMIN_URI . 'users');
 }
