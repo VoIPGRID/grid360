@@ -27,9 +27,9 @@
 {call print_alert type="info" text="{t}You can read the description of a competency by hovering your mouse over it{/t}"}
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
-    <form action="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}">
-        <div class="skip-button"><button class="btn-large btn-inverse">{t}Skip person{/t}</button></div>
-    </form>
+    <div class="skip-button">
+        <a href="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}" class="skip-button"><button class="btn btn-large btn-inverse">{t}Skip person{/t}</a>
+    </div>
 {/if}
 
 <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic">
@@ -45,25 +45,22 @@
 
         {if $step == 2}
             <button class="btn btn-primary" id="no-competencies-button">{t}I can't review role specific competencies{/t}</button>
-            <div {if !isset($smarty.session.no_competencies_comment)}class="no-competencies-box"{/if}>
+            <div class="no-competencies-box">
                 <hr />
                 <textarea class="input-xxlarge" rows="3" name="no_competencies_comment">{$smarty.session.no_competencies_comment}</textarea>
             </div>
         {/if}
     </div>
     <div class="form-actions">
-        <button type="button" class="btn" onclick="history.go(-1);return true;">
-            {if $step == 1}
-                {t}Cancel{/t}
-            {else}
-                {t}Previous{/t}
-            {/if}
-        </button>
+        {if $step == 1}
+            <a href="{$smarty.const.BASE_URI}feedback" class="btn">{t}Cancel{/t}</a>
+        {else}
+            <a href="{$smarty.const.BASE_URI}feedback/{$reviewee.id}" class="btn">{t}Previous{/t}</a>
+        {/if}
         <button type="submit" class="btn btn-primary" id="submit">{t}Next{/t}</button>
     </div>
 </form>
 
-{*<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/feedback.js"></script>*}
 <script type="text/javascript">
     var step = '{$step}';
 
@@ -71,7 +68,7 @@
     {
         $('#no-competencies-button').click(function(event)
         {
-            $('.no-competencies-box').slideDown();
+            $('.no-competencies-box').slideToggle();
             event.preventDefault();
         });
 
@@ -84,30 +81,30 @@
             var count_smile_active = $('.smile-active').length;
             var count_meh_active = $('.meh-active').length;
 
-            if(icon.attr('class') == 'smile-active')
+            if(icon.hasClass('smile-active'))
             {
                 icon.attr('class', 'smile-default');
                 icon.parents('.span6').children('input').val(0);
             }
-            else if(count_smile_active < 2 && icon.attr('class') == 'smile-default')
+            else if(count_smile_active < 2 && icon.hasClass('smile-default'))
             {
                 icon.attr('class', 'smile-active');
                 other_icon.attr('class', 'meh-default');
                 icon.parents('.span6').children('input').val(1);
             }
-            else if(icon.attr('class') == 'meh-active')
+            else if(icon.hasClass('meh-active'))
             {
                 icon.attr('class', 'meh-default');
                 icon.parents('.span6').children('input').val(0);
             }
-            else if(count_meh_active < 1 && icon.attr('class') == 'meh-default')
+            else if(count_meh_active < 1 && icon.hasClass('meh-default'))
             {
                 icon.attr('class', 'meh-active');
                 other_icon.attr('class', 'smile-default');
                 icon.parents('.span6').children('input').val(2);
             }
 
-            if(icon.attr('class') == 'smile-active' || icon.attr('class') == 'meh-active')
+            if(icon.hasClass('smile-active') || icon.hasClass('meh-active'))
             {
                 button.parents('.span6').next().fadeIn(300);
             }
@@ -119,16 +116,16 @@
             event.preventDefault();
         });
 
-        {foreach $smarty.session.competencies as $key => $competency}
-            var e = $('#' + '{$key}');
+        {foreach $smarty.session.competencies[$step] as $key => $competency}
+            var competency_div = $('#' + '{$key}');
 
             if('{$competency.value}' == 1)
             {
-                e.parent().find('.smile-default').parent().click();
+                competency_div.parent().find('.smile-default').parent().click();
             }
             else if('{$competency.value}' == 2)
             {
-                e.parent().find('.meh-default').parent().click();
+                competency_div.parent().find('.meh-default').parent().click();
             }
         {/foreach}
     });

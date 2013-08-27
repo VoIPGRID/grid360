@@ -195,7 +195,7 @@ function feedback_step_1_post()
 
     if($count_positive == 2 && $count_negative == 1)
     {
-        $_SESSION['competencies'] = $competencies;
+        $_SESSION['competencies'][1] = $competencies;
         redirect_to('feedback/' . params('id') . '/2');
     }
     else
@@ -210,7 +210,7 @@ function feedback_step_2()
 {
     security_authorize();
 
-    if(!isset($_SESSION['competencies']))
+    if(empty($_SESSION['competencies'][1]))
     {
         $message = _('Step 1 has to be completed first!');
         flash('error', $message);
@@ -293,7 +293,7 @@ function feedback_step_2_post()
 
     if(($count_positive == 2 && $count_negative == 1))
     {
-        $_SESSION['competencies'] += $competencies;
+        $_SESSION['competencies'][2] = $competencies;
         redirect_to('feedback/' . params('id') . '/3');
     }
     else if(!empty($no_competencies_comment))
@@ -324,7 +324,7 @@ function feedback_step_3()
 
     if($reviewee->department_id == $_SESSION['current_user']->department_id)
     {
-        if(count($_SESSION['competencies']) != 6 && (count($_SESSION['competencies']) != 3 && empty($_SESSION['no_competencies_comment'])))
+        if((count($_SESSION['competencies'][1]) + count($_SESSION['competencies'][2]) != 6) && (count($_SESSION['competencies'][1]) != 3 && empty($_SESSION['no_competencies_comment'])))
         {
             $message = _('Step 1 and 2 have to be completed first!');
             flash('error', $message);
@@ -333,7 +333,7 @@ function feedback_step_3()
     }
     else
     {
-        if(empty($_SESSION['competencies']) || count($_SESSION['competencies']) != 3)
+        if(empty($_SESSION['competencies'][1]) || count($_SESSION['competencies'][1]) != 3)
         {
             $message = _('Step 1 has to be completed first!');
             flash('error', $message);
@@ -348,13 +348,8 @@ function feedback_step_3()
         halt(NOT_FOUND);
     }
 
-    $positive_competencies = R::batch('competency', $_SESSION['positive_competencies']);
-    $negative_competencies = R::batch('competency', $_SESSION['negative_competencies']);
-
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
-    $smarty->assign('positive_competencies', $positive_competencies);
-    $smarty->assign('negative_competencies', $negative_competencies);
     $smarty->assign('step', 3);
 
     if($reviewee->department_id == $_SESSION['current_user']->department_id)
@@ -394,7 +389,7 @@ function feedback_step_3_post()
 
     if($reviewee->department_id == $_SESSION['current_user']->department_id)
     {
-        if(!empty($_SESSION['no_competencies_comment']))
+        if(empty($_SESSION['competencies'][2]) && !empty($_SESSION['no_competencies_comment']))
         {
             $reviews = R::dispense('review', 3);
         }
@@ -411,7 +406,9 @@ function feedback_step_3_post()
     $index = 0;
     $round = get_current_round();
 
-    foreach($_SESSION['competencies'] as $key => $form_competency)
+    $competencies = $_SESSION['competencies'][1] + $_SESSION['competencies'][2];
+
+    foreach($competencies as $key => $form_competency)
     {
         $competency = R::findOne('competency', 'id = ? AND (competencygroup_id = ? OR competencygroup_id = ?)', array($key, $reviewee->role->competencygroup_id, get_general_competencies()->id));
 
@@ -430,7 +427,7 @@ function feedback_step_3_post()
         $index++;
     }
 
-    if(!empty($_SESSION['no_competencies_comment']))
+    if(empty($_SESSION['competencies'][2]) && !empty($_SESSION['no_competencies_comment']))
     {
         $review = R::dispense('review');
         $review->reviewer = $current_user;
