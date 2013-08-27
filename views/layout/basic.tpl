@@ -21,7 +21,7 @@
     {call print_alert type="error" text="{$error}"}
 {/if}
 
-{$content}
+{$content nofilter}
 </div>
 </body>
 <footer>

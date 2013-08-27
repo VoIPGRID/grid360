@@ -33,7 +33,7 @@
     {call print_alert type="info" text="{$info}"}
 {/if}
 
-{$content}
+{$content nofilter}
 </div>
 </body>
 <footer>

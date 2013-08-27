@@ -39,6 +39,7 @@ R::freeze(true);
 $smarty = new Smarty();
 $smarty->setTemplateDir('views/');
 $smarty->setCompileDir('views/templates_c');
+$smarty->escape_html = true;
 
 dispatch('/', 'dashboard');
 dispatch('/login', 'login');
