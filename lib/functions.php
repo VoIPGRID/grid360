@@ -15,7 +15,7 @@ function show_error($error_message, $type = 0)
     }
 }
 
-function send_mail($subject, $from, $to, $body, $is_html = false)
+function send_mail($subject, $from, $to, $body)
 {
     $message = Swift_Message::newInstance()
         ->setSubject($subject)
@@ -23,10 +23,7 @@ function send_mail($subject, $from, $to, $body, $is_html = false)
         ->setTo($to)
         ->setBody($body);
 
-    if($is_html)
-    {
-        $message->setContentType('text/html');
-    }
+    $message->setContentType('text/html');
 
     global $mailer;
 
