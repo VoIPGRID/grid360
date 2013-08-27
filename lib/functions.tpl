@@ -9,30 +9,24 @@
     {elseif $level == "manager"}
         {assign level_uri $smarty.const.MANAGER_URI}
     {/if}
-    <form action="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}">
-        <button data-toggle="tooltip" title="{t}Edit{/t}" data-placement="bottom" type="submit" class="btn btn-link">
-            <i class="icon-pencil"></i>
-        </button>
-    </form>
+    <a href="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}" data-toggle="tooltip" title="{t}Edit{/t}" data-placement="bottom" type="submit" class="btn btn-link">
+        <i class="icon-pencil"></i>
+    </a>
     {if {$type} == "user"}
-        <form action="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}">
-            <input type="hidden" name="user_id" value="{${$type}.id}" />
-            {if $user.status == 1}
-                <button data-toggle="tooltip" title="{t}Pause feedback{/t}" data-placement="bottom" type="submit" class="btn btn-link status">
-                    <i class="icon-pause"></i>
-                </button>
-            {else}
-                <button data-toggle="tooltip" title="{t}Resume feedback{/t}" data-placement="bottom" type="submit" class="btn btn-link status">
-                    <i class="icon-play"></i>
-                </button>
-            {/if}
-        </form>
+        <input type="hidden" name="user_id" value="{${$type}.id}" />
+        {if $user.status == 1}
+            <a href="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}" data-toggle="tooltip" title="{t}Pause feedback{/t}" data-placement="bottom" type="submit" class="btn btn-link status">
+                <i class="icon-pause"></i>
+            </a>
+        {else}
+            <a href="{$smarty.const.BASE_URI}{$level_uri}{$type}/{${$type}.id}" data-toggle="tooltip" title="{t}Resume feedback{/t}" data-placement="bottom" type="submit" class="btn btn-link status">
+                <i class="icon-play"></i>
+            </a>
+        {/if}
     {/if}
-    <form action="{$smarty.const.BASE_URI}{$level_uri}{$type}/delete/{${$type}.id}">
-        <button data-toggle="tooltip" title="{t}Delete{/t}" data-placement="bottom" type="submit" class="btn btn-link">
-            <i class="icon-trash"></i>
-        </button>
-    </form>
+    <a href="{$smarty.const.BASE_URI}{$level_uri}{$type}/delete/{${$type}.id}" data-toggle="tooltip" title="{t}Delete{/t}" data-placement="bottom" type="submit" class="btn btn-link">
+        <i class="icon-trash"></i>
+    </a>
     </td>
 {/function}
 

@@ -3,30 +3,24 @@
     padding: 15px 0 0 0;
 }
 
-.actions form
-{
-    float: left;
-    margin: 0;
-}
-
 .actions
 {
     vertical-align: middle !important;
     width: 7%;
 }
 
-.actions form .btn
+.actions .btn
 {
     padding: 0 5px;
 }
 
-.actions-user form
+.actions .btn,
+.actions-user .btn
 {
-    float: left;
-    margin: 0;
+    color: black;
 }
 
-.actions-user form .btn
+.actions-user .btn
 {
     padding: 0 1px;
 }
