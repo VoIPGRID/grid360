@@ -9,19 +9,25 @@ function create_datatable(table, ignored_columns)
         "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
         "bStateSave": true, // Save the state of the table to localStorage
         "aoColumnDefs": [
-            {"bSortable": false, bSearchable: false, "aTargets": ignored_columns}
+            { "bSortable": false, "bSearchable": false, "aTargets": ignored_columns}
         ],
         oLanguage: get_language_object()
-    });
-
-    $.extend($.fn.dataTableExt.oStdClasses, {
-        "sWrapper": "dataTables_wrapper form-inline"
     });
 }
 
 $(document).ready(function()
 {
     $('[data-toggle="tooltip"]').tooltip();
+
+    $('form').submit(function(event)
+    {
+        $(this).find('a.btn').attr('disabled', 'disabled');
+        $(this).find('[type="submit"]').attr('disabled', 'disabled');
+
+        $(this).submit();
+
+        event.preventDefault();
+    });
 
     $('.btn.btn-link.status').click(function(event)
     {
@@ -51,49 +57,6 @@ $(document).ready(function()
 
         return false;
     });
-
-    if (get_parameter_by_name('error') != '' ||
-        get_parameter_by_name('warning') != '' ||
-        get_parameter_by_name('success') != '' ||
-        get_parameter_by_name('info') != '')
-    {
-
-        history.replaceState(null, document.title, get_raw_url());
-    }
-
-    function get_raw_url()
-    {
-        var url_parts = window.location.href.split('?');
-        var url = url_parts[0];
-
-        var regex_string = '^(.*)&(?:.*)$';
-        var regex = new RegExp(regex_string);
-        var results = regex.exec(url);
-        if(results == null)
-        {
-            return url;
-        }
-        else
-        {
-            return results[1];
-        }
-    }
-
-    function get_parameter_by_name(name)
-    {
-        name = name.replace(/[\[]/, '\\\[').replace(/[\]]/, '\\\]');
-        var regex_string = '[\\?&]' + name + '=([^&#]*)';
-        var regex = new RegExp(regex_string);
-        var results = regex.exec(window.location.href);
-        if(results == null)
-        {
-            return '';
-        }
-        else
-        {
-            return decodeURIComponent(results[1].replace(/\+/g, ' '));
-        }
-    }
 });
 
 function get_language_object()
