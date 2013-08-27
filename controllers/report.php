@@ -96,7 +96,9 @@ function view_report()
         // If someone hasn't been reviewed enough times, show error and don't show report
         if($count_reviewed_by < $round->min_reviewed_by)
         {
-            $message = _('Insufficient data available to generate a report.') . '<br />' . _('%d of %d people have reviewed you.') . '<br />' . _('A minimum of %d people is needed to generate a report.'); // TODO: Make this prettier
+            $message = _('Insufficient data available to generate a report.') . '<br />';
+            $message .= _('%d of %d people have reviewed you.') . '<br />';
+            $message .= _('A minimum of %d people is needed to generate a report.');
             $smarty->assign('insufficient_data', true);
             $smarty->assign('insufficient_reviewed_by', sprintf($message, $count_reviewed_by, $total_review_count, $round->min_reviewed_by));
             $generate_report = false;
@@ -105,7 +107,9 @@ function view_report()
         // If someone hasn't reviewed enough people, show error and don't show report
         if($own_review_completed_count < $round->min_to_review)
         {
-            $message = _('You haven\'t reviewed enough people.') . '<br />' . _('You need to review at least %d people.') . '<br />' . _('You have reviewed %d of %d people.'); // TODO: Make this prettier
+            $message = _('You haven\'t reviewed enough people.') . '<br />';
+            $message .= _('You need to review at least %d people.') . '<br />';
+            $message .= _('You have reviewed %d of %d people.');
             $smarty->assign('insufficient_data', true);
             $smarty->assign('insufficient_reviewed', sprintf($message, $round->min_to_review, $own_review_completed_count, $total_own_review_count));
             $generate_report = false;
@@ -119,6 +123,8 @@ function view_report()
         $own_role_reviews = array();
         $other_general_reviews = array();
         $other_role_reviews = array();
+
+        $competencies = array();
 
         $general_competency_keys = array_keys(get_general_competencies()->ownCompetency);
 
@@ -143,7 +149,12 @@ function view_report()
             }
 
             // Dynamically create the variable name and then store $review into that review array. Also seperate into arrays based on the selection so it's easier to read the array in the template
-            ${$reviewer_type . '_' . $type . '_reviews'}[$review->selection][$review->competency->name][] = $review;
+            ${$reviewer_type . '_' . $type . '_reviews'}[$review->selection][$review->competency_id][] = $review;
+
+            if(!in_array($review->competency, $competencies) && $review->competency_id != 0)
+            {
+                $competencies[$review->competency_id] = $review->competency;
+            }
         }
 
         $smarty->assign('review_count', count($reviews));
@@ -151,9 +162,9 @@ function view_report()
         $smarty->assign('own_role_reviews', $own_role_reviews);
         $smarty->assign('other_general_reviews', $other_general_reviews);
         $smarty->assign('other_role_reviews', $other_role_reviews);
+        $smarty->assign('competencies', $competencies);
     }
 
-    $smarty->assign('competencies', array_keys($_SESSION['current_user']->role->competencygroup->ownCompetency));
     $smarty->assign('general_competencies', array_keys(get_general_competencies()->ownCompetency));
     $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('round', $round);

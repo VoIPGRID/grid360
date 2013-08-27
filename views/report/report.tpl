@@ -1,13 +1,13 @@
 {function print_review}
-    {foreach $review_array[$selection] as $competency_name => $reviews}
-        <div class="review-div">
+    {foreach $review_array[$selection] as $competency_id => $reviews}
+        <div class="review-div" data-competency-id="{$competency_id}">
             {if $selection == 1}
                 <span class="smile-active"></span>
             {elseif $selection == 2}
                 <span class="meh-active"></span>
             {/if}
             <div class="review-comments">
-                <strong>{$competency_name}</strong><br />
+                <strong>{$competencies[$competency_id].name}</strong><br />
                 {foreach $reviews as $review}
                     <span class="review-info">
                         <strong>{if $review.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment}
@@ -33,6 +33,7 @@
                  {/if}">{t}Next report{/t} &rarr;</a>
     </li>
 </ul>
+
 {if !$insufficient_data}
     <fieldset>
         <div class="row-fluid">
@@ -46,10 +47,10 @@
                 <strong>{t}Competencies{/t}</strong>
 
                 <div id="competency-boxes" class="well">
-                    {foreach $averages as $competency_id => $average}
+                    {foreach $competencies as $competency}
                         <div class="controls">
                             <label class="checkbox">
-                                <input type="checkbox" value="{$competency_id}"/>{$average.name}
+                                <input type="checkbox" value="{$competency.id}"/>{$competency.name}
                             </label>
                         </div>
                     {/foreach}
@@ -57,26 +58,6 @@
                         <button id="select-all" class="btn btn-link">{t}Select all{/t}</button>
                         /
                         <button id="deselect-all" class="btn btn-link">{t}Deselect all{/t}</button>
-                    </div>
-                </div>
-
-                <strong>{t}Graph options{/t}</strong>
-
-                <div class="well">
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="check_average" value="1"/>{t}Show average{/t}
-                        </label>
-                    </div>
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="check_own" value="2" {if !$has_own_ratings}disabled{/if}/>{t}Show own{/t}
-                        </label>
-                    </div>
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="check_comparison" value="4" {if !$has_own_ratings}disabled{/if}/>{t}Show comparisons{/t}
-                        </label>
                     </div>
                 </div>
             </div>
@@ -147,68 +128,10 @@
         {t}No reviews found for the current round{/t}
     {/if}
 {else}
-    {$insufficient_reviewed_by}
+    {$insufficient_reviewed_by nofilter}
     <br />
     <br />
-    {$insufficient_reviewed}
+    {$insufficient_reviewed nofilter}
 {/if}
 
-<script type="text/javascript">
-    $(document).ready(function()
-    {
-        $('.pager li').click(function()
-        {
-            if($(this).hasClass('disabled'))
-            {
-                return false;
-            }
-        });
-
-        $('#select-all').click(function()
-        {
-            $('#competency-boxes input:checkbox:not(:checked)').click();
-            $('#competency-boxes input:checkbox:not(:checked)').attr('checked', true);
-        });
-
-        $('#deselect-all').click(function()
-        {
-            $('#competency-boxes input:checked').attr('checked', false);
-        });
-
-        $('input[name="check_own"]').click(function()
-        {
-            $('input[name="check_comparison"]').attr('checked', false);
-        });
-
-        $('input[name="check_average"]').click(function()
-        {
-            $('input[name="check_comparison"]').attr('checked', false);
-        });
-
-        $('input[name="check_comparison"]').click(function()
-        {
-            if($('input[name="check_comparison"]').is(':not(:checked)'))
-            {
-                $('input[name="check_average"]').click();
-                $('input[name="check_own"]').attr('checked', 'checked');
-            }
-        });
-
-        $('#options-label').click(function()
-        {
-            $('#options').slideToggle();
-            if($('#options-label i').attr('class') == 'icon-minus-sign')
-            {
-                $('#options-label i').attr('class', 'icon-plus-sign');
-                $('#options-label small').text('({t}show{/t})');
-            }
-            else
-            {
-                $('#options-label i').attr('class', 'icon-minus-sign');
-                $('#options-label small').text('({t}hide{/t})');
-            }
-        });
-
-        $('input[type=checkbox]').not('input[name="check_comparison"]').attr('checked', true);
-    });
-</script>
+<script type="text/javascript" src="{$smarty.const.ASSETS_URI}js/report.js"></script>
