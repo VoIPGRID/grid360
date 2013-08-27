@@ -50,9 +50,6 @@ dispatch_post('/register', 'register_post');
 dispatch('/reset', 'reset_password');
 dispatch_post('/reset', 'reset_password_post');
 
-//dispatch('/admin/reset', 'confirmation');
-//dispatch_post('/admin/reset', 'fill_database');
-
 dispatch('/admin/round', 'round_overview');
 dispatch('/admin/round/create', 'create_round');
 dispatch_post('/admin/round/confirm', 'start_round_confirmation');
@@ -119,7 +116,9 @@ try
 catch(Exception $e)
 {
     R::close();
-    halt(SERVER_ERROR);
+
+    // Passing the exception object to halt() because it only accepts 1 other parameter (besides the error code), so that the correct error file and line is used
+    halt(SERVER_ERROR, $e);
 }
 
 function not_found()
@@ -129,8 +128,20 @@ function not_found()
     return html($smarty->fetch('error/404.tpl'), 'layout/basic.php');
 }
 
-function server_error()
+function server_error($errno, $exception, $errfile, $errline)
 {
+    global $smarty;
+
+    $smarty->assign('error_number', $errno);
+    $smarty->assign('error_string', $exception->getTraceAsString());
+    $smarty->assign('error_file', $exception->getFile());
+    $smarty->assign('error_line', $exception->getLine());
+
+    $subject = 'Server error in ' . $exception->getFile() . ' on line ' . $exception->getLine();
+    $body = $smarty->fetch('email/server_error.tpl');
+
+    send_mail($subject, ADMIN_EMAIL, ADMIN_EMAIL, $body);
+
     global $smarty;
 
     return html($smarty->fetch('error/500.tpl'), 'layout/basic.php');
