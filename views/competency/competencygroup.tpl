@@ -29,7 +29,7 @@
     description_placeholder = '{t}Competency description{/t}';
 </script>
 
-<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competencygroup/{$form_values.id.value}" method="POST" class="form-horizontal" data-persist="garlic">
     <fieldset>
         {if $update && isset($form_values.id.value)}
             <legend>{t name=$competencygroup_name}Updating competency group %1{/t}</legend>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Cancel{/t}</button>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}competencies" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
                 {if $update}
                     {t}Update competency group{/t}
@@ -126,9 +126,9 @@
 
         $('#add-button').click(function(event)
         {
-            if(typeof $('#info-text') != 'undefined')
+            if($('#info-text'))
             {
-                $('#info-text').remove();
+                $('#info-text').hide();
                 $('#competencies').removeClass('hide');
             }
 
@@ -139,7 +139,7 @@
 
         $('#competencies').on('click', 'button', function(event)
         {
-            if($(this).children('i').attr('class') == 'icon-pencil')
+            if($(this).children('i').hasClass('icon-pencil'))
             {
                 // Find all the spans with the matching class, hide them and then show the matching input fields.
                 $(this).parents('tr').find('.table-text').each(function()
@@ -148,7 +148,7 @@
                     $(this).next().show();
                 });
             }
-            else if($(this).children('i').attr('class') == 'icon-trash')
+            else if($(this).children('i').hasClass('icon-trash'))
             {
                 // Check if it's an existing competency or a new one
                 if($(this).data('competency-id') != 0 && typeof $(this).data('competency-id') != 'undefined')
@@ -160,6 +160,13 @@
                 {
                     // Remove this row
                     $(this).parents('tr').remove();
+
+                    // Check if it's 1 because the first row contains the table headers
+                    if($('#competencies tr').length == 1)
+                    {
+                        $('#info-text').show();
+                        $('#competencies').addClass('hide');
+                    }
                 }
             }
 
