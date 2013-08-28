@@ -2,12 +2,17 @@
 <br />
 <form class="form form-horizontal" action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/start" method="post">
     <div class="row-fluid">
-        <div class="span4">
+        <div class="span6">
             <table class="table">
                 <tr>
                     <input type="hidden" name="description" value="{$form_values.description.value}"/>
                     <td>{t}Description{/t}</td>
                     <td>{$form_values.description.value}</td>
+                </tr>
+                <tr>
+                    <input type="hidden" name="closing_date" value="{$form_values.closing_date.value}"/>
+                    <td>{t}Round closing date{/t}</td>
+                    <td>{$form_values.closing_date.value}</td>
                 </tr>
                 <tr>
                     <input type="hidden" name="total_amount_to_review" value="{$form_values.total_amount_to_review.value}"/>

@@ -94,7 +94,6 @@ function start_round_confirmation()
     return html($smarty->fetch('round/start_round_confirmation.tpl'));
 }
 
-
 function start_round()
 {
     security_authorize(ADMIN);
@@ -133,7 +132,6 @@ function start_round()
 
     // No errors, so create new round
     $round = R::dispense('round');
-    $round->description = $_POST['description'];
 
     // Get round parameters from $_POST
     // Number of reviewees per user (excluding self)
@@ -208,7 +206,7 @@ function start_round()
     // Find reviewees for departments other than the user's
     foreach($users as $reviewer)
     {
-        if(count($own_to_review[$reviewer->id]) != $total_amount_to_review)
+        if(count($own_to_review[$reviewer->id]) != $total_amount_to_review && count($own_to_review) > 0)
         {
             // Get number of possible reviewees for departments other than the user's
             $other_department_users = R::find('user', 'department_id != ? AND status != ?', array($reviewer->department_id, PAUSE_USER_REVIEWS));
@@ -413,6 +411,18 @@ function start_round()
     // Only create a round if there are reviewees
     if($reviewee_count > 0)
     {
+        $round->description = $_POST['description'];
+
+        if(!empty($_POST['closing_date']))
+        {
+            $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+            $round->closing_date = $closing_date->format('Y-m-d H:00:00');
+        }
+        else
+        {
+            $round->closing_date = null;
+        }
+
         $round->status = 1;
         $round->created = R::isoDateTime();
         $round->total_to_review = $total_amount_to_review;
@@ -425,6 +435,101 @@ function start_round()
         flash('success', $message);
         redirect_to(ADMIN_URI . 'round');
     }
+}
+
+function edit_round()
+{
+    security_authorize(ADMIN);
+
+    $round = get_current_round();
+
+    if($round->id == 0)
+    {
+        $message = _('No round in progress');
+        flash('error', $message);
+        redirect_to(ADMIN_URI . 'round');
+    }
+
+    global $smarty;
+
+    if(!$smarty->getTemplateVars('form_values'))
+    {
+        $form_values = array();
+        $form_values['id']['value'] = $round->id;
+        $form_values['description']['value'] = $round->description;
+        $form_values['closing_date']['value'] = $round->closing_date;
+        $form_values['min_reviewed_by']['value'] = $round->min_reviewed_by;
+        $form_values['min_to_review']['value'] = $round->min_to_review;
+
+        $smarty->assign('form_values', $form_values);
+    }
+
+    // Minus 1 because you need to exclude the reviewer
+    $count_users = R::count('user', 'status != ?', array(PAUSE_USER_REVIEWS)) - 1;
+
+    $smarty->assign('count_users', $count_users);
+
+    return html($smarty->fetch('round/edit_round.tpl'));
+}
+
+function edit_round_post()
+{
+    security_authorize(ADMIN);
+
+    // Minus 1 because you need to exclude the reviewer
+    $count_users = R::count('user', 'status != ?', array(PAUSE_USER_REVIEWS)) - 1;
+
+    $round = R::load('round', $_POST['id']);
+
+    $form_values = validate_edit_round_form($count_users, $round);
+
+    if($round->id == 0)
+    {
+        $form_values['error'] = _('Error loading round');
+    }
+
+    global $smarty;
+
+    $has_errors = false;
+    foreach($form_values as $form_value)
+    {
+        if(isset($form_value['error']))
+        {
+            $has_errors = true;
+            break;
+        }
+    }
+
+    // Check if there are errors
+    if($has_errors || isset($form_values['error']))
+    {
+        // Set the form values so they can be used again in the form
+        $smarty->assign('form_values', $form_values);
+
+        return edit_round();
+    }
+
+    $round->description = $_POST['description'];
+
+    if(!empty($_POST['closing_date']))
+    {
+        $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+        $round->closing_date = $closing_date->format('Y-m-d H:00:00');
+    }
+    else
+    {
+        $round->closing_date = null;
+    }
+
+    $round->min_reviewed_by = $_POST['min_reviewed_by'];
+    $round->min_to_review = $_POST['min_to_review'];
+
+    $message = sprintf(UPDATE_SUCCESS, _('round'), $round->description);
+
+    R::store($round);
+
+    flash('success', $message);
+    redirect_to(ADMIN_URI . 'round');
 }
 
 function end_round_confirmation()
@@ -518,17 +623,29 @@ function validate_round_form($count_users)
 
     $form_values = array();
     $form_values['description']['value'] = $_POST['description'];
+    $form_values['closing_date']['value'] = $_POST['closing_date'];
     $form_values['total_amount_to_review']['value'] = $total_amount_to_review;
     $form_values['own_amount_to_review']['value'] = $own_amount_to_review;
     $form_values['min_reviewed_by']['value'] = $min_reviewed_by;
     $form_values['min_to_review']['value'] = $min_to_review;
 
-    // Minus 1 because you need to exclude the reviewer
-    $count_users = R::count('user', 'status != ?', array(PAUSE_USER_REVIEWS)) - 1;
-
     if(empty($_POST['description']))
     {
         $form_values['description']['error'] = _('Round description can\'t be empty!');
+    }
+
+    if(!empty($_POST['closing_date']))
+    {
+        $current_datetime = new DateTime(null, new DateTimeZone(date_default_timezone_get()));
+        $current_datetime = $current_datetime->format('Y-m-d H:i:s');
+
+        $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+        $closing_date = $closing_date->format('Y-m-d H:i:s');
+
+        if($closing_date < $current_datetime)
+        {
+            $form_values['closing_date']['error'] = _('Closing date can\'t be in the past');
+        }
     }
 
     if($total_amount_to_review === 0)
@@ -568,3 +685,64 @@ function validate_round_form($count_users)
 
     return $form_values;
 }
+
+function validate_edit_round_form($count_users, $round)
+{
+    if($_POST['min_reviewed_by'] == '')
+    {
+        // If minimum to be reviewed by isn't set, take 50% of total amount amount to review
+        $min_reviewed_by = ceil($round->total_to_review * 0.50);
+    }
+    else
+    {
+        $min_reviewed_by = intval($_POST['min_reviewed_by']);
+    }
+
+    if($_POST['min_to_review'] == '')
+    {
+        // If minimum to review isn't set, take 50% of total amount to review
+        $min_to_review = ceil($round->total_to_review  * 0.50);
+    }
+    else
+    {
+        $min_to_review = intval($_POST['min_to_review']);
+    }
+
+    $form_values = array();
+    $form_values['description']['value'] = $_POST['description'];
+    $form_values['closing_date']['value'] = $_POST['closing_date'];
+    $form_values['min_reviewed_by']['value'] = $min_reviewed_by;
+    $form_values['min_to_review']['value'] = $min_to_review;
+
+    if(empty($_POST['description']))
+    {
+        $form_values['description']['error'] = _('Round description can\'t be empty!');
+    }
+
+    if(!empty($_POST['closing_date']))
+    {
+        $current_datetime = new DateTime(null, new DateTimeZone(date_default_timezone_get()));
+        $current_datetime = $current_datetime->format('Y-m-d H:00:00');
+
+        $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+        $closing_date = $closing_date->format('Y-m-d H:00:00');
+
+        if($closing_date < $current_datetime)
+        {
+            $form_values['closing_date']['error'] = _('Closing date can\'t be in the past');
+        }
+    }
+
+    if($min_reviewed_by > $count_users)
+    {
+        $form_values['min_reviewed_by']['error'] = _('Minimum to be reviewed by can\'t be higher than total users in organisation!');
+    }
+
+    if($min_to_review > $count_users)
+    {
+        $form_values['min_to_review']['error'] = _('Minimum to review by can\'t be higher than total users in organisation!');
+    }
+
+    return $form_values;
+}
+

@@ -22,11 +22,14 @@
     </div>
 {/function}
 
-<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/confirm" method="post" class="form-horizontal" data-persist="garlic">
+<form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/edit" method="post" class="form-horizontal" data-persist="garlic">
     <fieldset>
         <legend>{t}Create round{/t}</legend>
 
         <div id="description-group" class="control-group {if isset($form_values.description.error)}error{/if}">
+            {if isset($form_values.id.value)}
+                <input type="hidden" name="id" value={$form_values.id.value} />
+            {/if}
             <label class="control-label" for="round-description">{t}Round description{/t}</label>
 
             <div class="controls">
@@ -42,38 +45,14 @@
                 </span>
             </label>
             <div class="controls">
-                <input type="text" name="closing_date" id="closing-date" {$form_values.closing_date.value} />
+                <input type="text" name="closing_date" id="closing-date" value="{$form_values.closing_date.value|date_format:"%e-%b-%Y %R"}" />
                 {call check_if_error var_name="closing_date"}
             </div>
         </div>
 
-        <hr />
-
         {assign "default_own" "{{$count_users * 0.66}|ceil}"}
 
-        <button id="info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
-        <div id="field-info" class="alert alert-info"> {*TODO: Improve info text*}
-            {t}The following fields can be used to set the amount of people each person has to review.{/t}
-            <br />{t}If a field is blank the default values will be used.{/t}
-            <br />
-            <br /><strong>{t}Default values{/t}:</strong>
-            <br />{t}Total amount to review{/t}: {$count_users} ({t}All users in your organisation minus 1, because of the reviewer{/t})
-            <br />{t}Amount to review from own department{/t}: {$default_own} ({t}66% of the above number, rounded up{/t})
-            <br />
-            <br />{t}The amount of people that need to be reviewed from other departments will be calculated by the system.{/t}
-            {t default_total=$count_users default_own=$default_own}This number will be: Total amount to review (default: %1) - Amount to review from own department (default: %2).{/t}
-            {t default_own=$default_own}If there aren't enough people in the reviewer's own department (default: %1), all the available people from the department have to be reviewed.{/t}
-            <br /><strong>{t}Note:{/t}</strong> {t}If there are no people in the reviewer's department he or she won't get any reviewees, because everybody always has to review atleast 1 person from his/her own department.{/t}
-            <br />
-            <br /><strong>{t}For example:{/t}</strong>
-            <br />{t}Person A has 2 people in his own department. The total amount of people he has to review is 8.{/t}
-            {t}Since there are only 2 people in his department, the remaining reviewees will be: 8 - 2 = 6 people from other departments.{/t}
-        </div>
-
         <div class="round-creation-field">
-            {create_control_group input_name="total_amount_to_review" label_text="{t}Total amount to review{/t}"}
-            {create_control_group input_name="own_amount_to_review" label_text="{t}Amount to review from own department{/t}"}
-
             <fieldset>
                 <legend>{t}Report options{/t}</legend>
 
@@ -97,7 +76,7 @@
         <div class="form-actions">
             <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
-                {t}Create round{/t}
+                {t}Update round{/t}
             </button>
         </div>
     </fieldset>
@@ -106,21 +85,6 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-        $('#info-box-button').click(function(event)
-        {
-            if($('#field-info').is(':visible'))
-            {
-                $(this).text('+ {t}Show info{/t}');
-            }
-            else
-            {
-                $(this).text('- {t}Hide info{/t}');
-            }
-
-            $('#field-info').slideToggle();
-            event.preventDefault();
-        });
-
         $('#report-info-box-button').click(function(event)
         {
             if($('#report-field-info').is(':visible'))

@@ -60,7 +60,17 @@
                 </tr>
                 <tr>
                     <td>{t}Date started{/t}</td>
-                    <td>{$round.created|date_format:"%e-%m-%Y"}</td>
+                    <td>{$round.created|date_format:"%e-%b-%Y"}</td>
+                </tr>
+                <tr>
+                    <td>{t}Round ending{/t}</td>
+                    <td>
+                    {if !empty($round.closing_date)}
+                        {$round.closing_date|date_format:"%e-%b-%Y %R"}
+                    {else}
+                        {t}Manual closure{/t}
+                    {/if}
+                    </td>
                 </tr>
                 <tr>
                     <td>Status</td>
@@ -84,6 +94,7 @@
                     <td>{$round.min_to_review}</td>
                 </tr>
             </table>
+            <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/edit" class="pull-right">{t}Edit round{/t}</a>
         </span>
         <span class="span6">
             <a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/end" class="btn btn-large btn-inverse">{t}End round{/t}</a>
