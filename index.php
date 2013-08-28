@@ -55,6 +55,8 @@ dispatch('/admin/round', 'round_overview');
 dispatch('/admin/round/create', 'create_round');
 dispatch_post('/admin/round/confirm', 'start_round_confirmation');
 dispatch_post('/admin/round/start', 'start_round');
+dispatch('/admin/round/edit', 'edit_round');
+dispatch_post('/admin/round/edit', 'edit_round_post');
 dispatch('/admin/round/end', 'end_round_confirmation');
 dispatch_post('/admin/round/end', 'end_round');
 
