@@ -174,3 +174,17 @@ function rand_string($length)
     $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     return substr(str_shuffle($chars), 0, $length);
 }
+
+// Credits to http://www.php.net/manual/en/function.debug-print-backtrace.php#86932
+function debug_string_backtrace()
+{
+    ob_start();
+    debug_print_backtrace();
+    $trace = ob_get_contents();
+    ob_end_clean();
+
+    $trace = preg_replace ('/^#0\s+' . __FUNCTION__ . "[^\n]*\n/", '', $trace, 1);
+    $trace = preg_replace ('/^#(\d+)/me', '\'#\' . ($1 - 1)', $trace);
+
+    return $trace;
+}

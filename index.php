@@ -130,12 +130,12 @@ try
     run();
     R::close();
 }
-catch(Exception $e)
+catch(Exception $exception)
 {
     R::close();
 
     // Passing the exception object to halt() because it only accepts 1 other parameter (besides the error code), so that the correct error file and line is used
-    halt(SERVER_ERROR, $e);
+    halt(SERVER_ERROR, $exception);
 }
 
 function not_found()
@@ -150,9 +150,10 @@ function server_error($errno, $exception)
     global $smarty;
 
     $smarty->assign('error_number', $errno);
-    $smarty->assign('error_string', $exception->getTraceAsString());
+    $smarty->assign('error_string', debug_string_backtrace());
     $smarty->assign('error_file', $exception->getFile());
     $smarty->assign('error_line', $exception->getLine());
+    $smarty->assign('error_message', $exception->getMessage());
 
     $subject = 'Server error in ' . $exception->getFile() . ' on line ' . $exception->getLine();
     $body = $smarty->fetch('email/server_error.tpl');
