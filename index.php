@@ -24,19 +24,20 @@ function before()
     $smarty->assign('current_user', $_SESSION['current_user']);
     $smarty->assign('locale', strtolower(substr(getenv('LANG'), 0, 2)));
 
-    if($_SESSION['current_user']->info_message_read)
+    $info_message = R::findOne('infomessage');
+
+    if(!empty($_SESSION['current_user']) && ($info_message->id == 0 || $_SESSION['current_user']->info_message_read))
     {
         layout('layout/layout.php');
+    }
+    // Check if the current url isn't infomessage so we don't get a redirect loop
+    else if(!empty($_SESSION['current_user']) && $info_message->id != 0 && str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']) != 'infomessage')
+    {
+        redirect_to('infomessage');
     }
     else
     {
         layout('layout/basic.php');
-
-        // Check if the current url isn't infomessage so we don't get a redirect loop
-        if(str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']) != 'infomessage')
-        {
-            redirect_to('infomessage');
-        }
     }
 }
 
