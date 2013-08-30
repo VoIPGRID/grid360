@@ -48,11 +48,6 @@ R::configureFacadeWithToolbox(new RedBean_ToolBox(new RedBean_OODB($writer), R::
 R::freeze(true);
 //R::debug(true);
 
-$smarty = new Smarty();
-$smarty->setTemplateDir('views/');
-$smarty->setCompileDir('views/templates_c');
-$smarty->escape_html = true;
-
 dispatch('/', 'dashboard');
 dispatch('/infomessage', 'info_message');
 dispatch_post('/infomessage', 'info_message_read');

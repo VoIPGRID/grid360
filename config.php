@@ -1,8 +1,9 @@
 <?php
 
-include_once('./lib/functions.php');
-include_once('./lib/security.php');
-include_once('./lib/Swift-5.0.0/lib/swift_required.php');
+include_once(dirname(__FILE__) . '/lib/functions.php');
+include_once(dirname(__FILE__) . '/lib/security.php');
+include_once(dirname(__FILE__) . '/lib/Swift-5.0.0/lib/swift_required.php');
+require_once(dirname(__FILE__) . '/lib/smarty/libs/Smarty.class.php');
 
 try
 {
@@ -45,6 +46,11 @@ try
     bindtextdomain($domain, BASE_DIR . '/locale');
     bind_textdomain_codeset($domain, 'UTF-8');
     textdomain($domain);
+
+    $smarty = new Smarty();
+    $smarty->setTemplateDir('views/');
+    $smarty->setCompileDir('views/templates_c');
+    $smarty->escape_html = true;
 }
 catch(Exception $e)
 {
