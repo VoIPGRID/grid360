@@ -3,7 +3,6 @@
 require_once('config.php');
 require_once(LIB_DIR . 'limonade/lib/limonade.php');
 require_once(LIB_DIR . 'redbeanphp/rb.php');
-require_once(LIB_DIR . 'smarty/libs/Smarty.class.php');
 require_once(LIB_DIR . 'multitenancy_writer.php');
 require_once(LIB_DIR . 'phpass-0.3/PasswordHash.php');
 include_once(LIB_DIR . 'sacy/sacy.php');
@@ -25,7 +24,20 @@ function before()
     $smarty->assign('current_user', $_SESSION['current_user']);
     $smarty->assign('locale', strtolower(substr(getenv('LANG'), 0, 2)));
 
-    layout('layout/layout.php');
+    if($_SESSION['current_user']->info_message_read)
+    {
+        layout('layout/layout.php');
+    }
+    else
+    {
+        layout('layout/basic.php');
+
+        // Check if the current url isn't infomessage so we don't get a redirect loop
+        if(str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']) != 'infomessage')
+        {
+            redirect_to('infomessage');
+        }
+    }
 }
 
 R::setup(CONNECTION, DB_USERNAME, DB_PASSWORD);
@@ -42,6 +54,8 @@ $smarty->setCompileDir('views/templates_c');
 $smarty->escape_html = true;
 
 dispatch('/', 'dashboard');
+dispatch('/infomessage', 'info_message');
+dispatch_post('/infomessage', 'info_message_read');
 dispatch('/login', 'login');
 dispatch('/login_google', 'login_google');
 dispatch_post('/login', 'login_post');
@@ -50,6 +64,11 @@ dispatch('/register', 'register');
 dispatch_post('/register', 'register_post');
 dispatch('/reset', 'reset_password');
 dispatch_post('/reset', 'reset_password_post');
+
+dispatch('/admin/infomessage/overview', 'info_message_overview');
+dispatch('/admin/infomessage/create', 'create_info_message');
+dispatch('/admin/infomessage/edit', 'edit_info_message');
+dispatch_post('/admin/infomessage/create', 'info_message_post');
 
 dispatch('/admin/round', 'round_overview');
 dispatch('/admin/round/create', 'create_round');
@@ -131,7 +150,7 @@ function not_found()
     return html($smarty->fetch('error/404.tpl'), 'layout/basic.php');
 }
 
-function server_error($errno, $exception, $errfile, $errline)
+function server_error($errno, $exception)
 {
     global $smarty;
 

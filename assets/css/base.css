@@ -323,3 +323,22 @@ button i
 {
     display: none;
 }
+
+#info-message-modal .modal-body
+{
+    white-space: pre;
+}
+
+.info-message-pre
+{
+    white-space: pre;
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+.info-message-pre h2
+{
+    text-align: left !important;
+}
