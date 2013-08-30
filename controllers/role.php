@@ -79,7 +79,7 @@ function create_role_post()
 
     $role = R::graph($_POST);
 
-    // Check if the department is a new department
+    // Check if the role is a new role
     if($role->id != 0)
     {
         $message = sprintf(UPDATE_SUCCESS, _('role'), $role->name);
@@ -216,35 +216,6 @@ function delete_role()
     $message = sprintf(DELETE_SUCCESS, _('role'), $role->name);
     flash('success', $message);
     redirect_to(MANAGER_URI . 'roles');
-}
-
-function validate_role_form()
-{
-    $form_values = array();
-
-    $form_values['id']['value'] = $_POST['id'];
-    $form_values['name']['value'] = $_POST['name'];
-    $form_values['manager']['value'] = $_POST['user']['id'];
-    $form_values['roles']['value'] = $_POST['ownRole'];
-
-    if(!isset($_POST['type']) || $_POST['type'] != 'role')
-    {
-        $form_values['error'] = _('Error creating role');
-    }
-    if(!isset($_POST['name']) || strlen(trim($_POST['name'])) == 0)
-    {
-        $form_values['name']['error'] = sprintf(FIELD_REQUIRED, _('Role name'));
-    }
-    if(!isset($_POST['department']['id']))
-    {
-        $form_values['department']['error'] = _('Invalid department specified');
-    }
-    if(!isset($_POST['competencygroup']['id']))
-    {
-        $form_values['competencygroup']['error'] = _('Invalid competency group specified');
-    }
-
-    return $form_values;
 }
 
 function get_departments_assoc()
