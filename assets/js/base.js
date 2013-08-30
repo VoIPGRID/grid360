@@ -23,10 +23,6 @@ $(document).ready(function()
     {
         $(this).find('a.btn').attr('disabled', 'disabled');
         $(this).find('[type="submit"]').attr('disabled', 'disabled');
-
-        $(this).submit();
-
-        event.preventDefault();
     });
 
     $('.btn.btn-link.status').click(function(event)
