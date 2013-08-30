@@ -23,17 +23,21 @@ function add_row()
 {
     // Create a new row in which a new competency or role can be entered
     var row = $('<div class="controls">' +
-                        '<input type="hidden" name="own' + capitalize(type) + '[' + option_index + '][type]" value="' + type + '"/>' +
-                        '<input type="text" name="own' + capitalize(type) + '[' + option_index + '][name]" placeholder="' + name_placeholder + '" class="input-xlarge" />' +
-                        '&nbsp;' +
-                        '<textarea name="own' + capitalize(type) + '[' + option_index + '][description]" placeholder="' + description_placeholder + '" class="input-xxlarge"></textarea>' +
-                        '<button class="btn btn-link"><i class="icon-remove-sign"></i></button>' +
-                   '</div>');
+                    '<input type="hidden" name="own' + capitalize(type) + '[' + option_index + '][type]" value="' + type + '" />' +
+                    '<input type="text" name="own' + capitalize(type) + '[' + option_index + '][name]" placeholder="' + name_placeholder + '" class="input-xlarge" />' +
+                    '&nbsp;' +
+                    '<textarea name="own' + capitalize(type) + '[' + option_index + '][description]" placeholder="' + description_placeholder + '" class="input-xxlarge"></textarea>' +
+                    '<button class="btn btn-link"><i class="icon-remove-sign"></i></button>' +
+                '</div>');
 
     $('#' + type + '-list').append(row);
 
     row.hide();
     row.slideDown();
+    setTimeout(function()
+    {
+        row.find('[type="text"]').focus();
+    }, 300);
 
     option_index++;
 }

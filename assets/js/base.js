@@ -31,8 +31,6 @@ $(document).ready(function()
 
     $('.btn.btn-link.status').click(function(event)
     {
-        event.preventDefault();
-
         var id = $(this).siblings('input[type="hidden"]').val();
         var icon_class = $(this).find('i').attr('class');
         var status = 0;
@@ -55,7 +53,7 @@ $(document).ready(function()
                 window.location.href = $(location).attr('href');
             });
 
-        return false;
+        event.preventDefault();
     });
 });
 
