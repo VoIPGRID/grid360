@@ -569,7 +569,7 @@ class JavaScriptRenderHandler extends ConfiguredRenderHandler{
     }
 
     function getAdditionalFiles($work_unit) {
-        return [];
+        return array();
     }
 }
 
@@ -669,7 +669,7 @@ class CssRenderHandler extends ConfiguredRenderHandler{
             $f = $matches[2];
         }
         $path_info = pathinfo($parent_file);
-        if (in_array($parent_type, ['text/x-scss', 'text/x-sass'])){
+        if (in_array($parent_type, array('text/x-scss', 'text/x-sass'))){
             $ext = preg_quote($path_info['extension'], '#');
             if (!preg_match("#.$ext\$#", $f))
                 $f .= ".".$path_info['extension'];
@@ -689,12 +689,12 @@ class CssRenderHandler extends ConfiguredRenderHandler{
 
     private function find_imports($type, $file, $level){
         $level++;
-        if (!in_array($type, ['text/x-scss', 'text/x-sass', 'text/x-less']))
-            return [];
+        if (!in_array($type, array('text/x-scss', 'text/x-sass', 'text/x-less')))
+            return array();
 
         if ($level > 10) throw new Exception("CSS Include nesting level of $level too deep");
         $fh = fopen($file, 'r');
-        $res = [];
+        $res = array();
         while(false !== ($line = fgets($fh))){
             if (preg_match('#^\s*$#', $line)) continue;
             if (preg_match('#^\s*@import(.*)$#', $line, $matches)){
