@@ -127,11 +127,10 @@ function get_current_locale()
 
     /* Check if browser accepts en_US or nl_NL or ? */
     $browser_locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-
-    if(in_array($browser_locale . '.UTF-8', $supported_locales))
+    if(array_key_exists($browser_locale, $supported_locales))
     {
         /* disable this line to force $default_locale */
-        return $browser_locale . '.UTF-8';
+        return $supported_locales[$browser_locale];
     }
 
     /* if browser locale is not supported, set default */

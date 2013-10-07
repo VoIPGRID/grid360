@@ -36,9 +36,17 @@ try
     define('SACY_WRITE_HEADERS', false);
 
     /* Setup i18n */
-    $supported_locales = array('en_US.UTF-8', 'nl_NL.UTF-8');
-    $default_locale = 1;
+    $supported_locales = array(
+        'en' => 'en_US',
+        'en_US' => 'en_US',
+        'en_US.UTF-8' => 'en_US',
+        'nl' => 'nl_NL',
+        'nl_NL' => 'nl_NL',
+        'nl_NL.UTF-8' => 'nl_NL',
+    );
+    $default_locale = 'nl';
     $locale = get_current_locale();
+
     setlocale(LC_MESSAGES, $locale);
     putenv('LANG=' . $locale);
 
