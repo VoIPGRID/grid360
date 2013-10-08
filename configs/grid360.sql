@@ -106,6 +106,9 @@ CREATE TABLE IF NOT EXISTS `review` (
   KEY `index_foreignkey_review_tenant` (`tenant_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=52 ;
 
+-- ALTER TABLE  `review` ADD `selection` int(11) NOT NULL;
+
+
 -- --------------------------------------------------------
 
 --
@@ -144,6 +147,11 @@ CREATE TABLE IF NOT EXISTS `round` (
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_round_tenant` (`tenant_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=56 ;
+
+-- ALTER TABLE  `round` ADD  `closing_date` DATETIME NOT NULL ,
+-- ADD  `total_to_review` INT NOT NULL ,
+-- ADD  `min_reviewed_by` INT NOT NULL ,
+-- ADD  `min_to_review` INT NOT NULL;
 
 -- --------------------------------------------------------
 
