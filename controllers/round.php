@@ -31,7 +31,8 @@ function create_round()
 {
     security_authorize(ADMIN);
 
-    if(get_current_round()->id != 0)
+    $round = get_current_round();
+    if(isset($round) && $round->id > 0)
     {
         $message =  _('A round is already in progress!');
         flash('error', $message);
@@ -59,7 +60,8 @@ function start_round_confirmation()
 {
     security_authorize(ADMIN);
 
-    if(get_current_round()->id != 0)
+    $round = get_current_round();
+    if(isset($round) && $round->id > 0)
     {
         $message =  _('A round is already in progress!');
         flash('error', $message);
@@ -99,7 +101,8 @@ function start_round()
     security_authorize(ADMIN);
 
     // Check if a round is active
-    if(get_current_round()->id > 0)
+    $round = get_current_round();
+    if(isset($round) && $round->id > 0)
     {
         $message =  _('A round is already in progress!');
         flash('error', $message);
@@ -415,7 +418,7 @@ function start_round()
 
         if(!empty($_POST['closing_date']))
         {
-            $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+            $closing_date = new DateTime(englishify_date($_POST['closing_date']), new DateTimeZone(date_default_timezone_get()));
             $round->closing_date = $closing_date->format('Y-m-d H:00:00');
         }
         else
@@ -623,7 +626,7 @@ function validate_round_form($count_users)
 
     $form_values = array();
     $form_values['description']['value'] = $_POST['description'];
-    $form_values['closing_date']['value'] = $_POST['closing_date'];
+    $form_values['closing_date']['value'] = englishify_date($_POST['closing_date']);
     $form_values['total_amount_to_review']['value'] = $total_amount_to_review;
     $form_values['own_amount_to_review']['value'] = $own_amount_to_review;
     $form_values['min_reviewed_by']['value'] = $min_reviewed_by;
@@ -639,7 +642,7 @@ function validate_round_form($count_users)
         $current_datetime = new DateTime(null, new DateTimeZone(date_default_timezone_get()));
         $current_datetime = $current_datetime->format('Y-m-d H:i:s');
 
-        $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+        $closing_date = new DateTime($form_values['closing_date']['value'], new DateTimeZone(date_default_timezone_get()));
         $closing_date = $closing_date->format('Y-m-d H:i:s');
 
         if($closing_date < $current_datetime)

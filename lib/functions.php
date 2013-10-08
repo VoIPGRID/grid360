@@ -187,3 +187,11 @@ function debug_string_backtrace()
 
     return $trace;
 }
+
+
+function englishify_date($date_str)
+{
+    $dutch = array('Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec');
+    $english = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+    return str_ireplace($dutch, $english, $date_str);
+}
