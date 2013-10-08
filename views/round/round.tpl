@@ -4,9 +4,9 @@
     var locale = $('html').attr('lang');
 
     // By default Dutch and English language files are loaded. In case the browser has a different locale, load the appropriate language file for the datetime picker
-    if(locale != 'nl' && locale != 'en')
+    if(locale != 'en')
     {
-        eval($.getScript('{$smarty.const.ASSETS_URI}' + 'js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' + locale + '.js'));
+        $.getScript('{$smarty.const.ASSETS_URI}' + 'js/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' + locale + '.js');
     }
 </script>
 
