@@ -2,7 +2,7 @@
 
 class Multitenancy_QueryWriter_MySQL extends RedBean_QueryWriter_MySQL
 {
-    private $non_tenant_types = array('userlevel', 'rating');
+    private $non_tenant_types = array('userlevel');
 
     public function selectRecord($type, $conditions, $addSql = null, $delete = null, $inverse = false, $all = false)
     {
