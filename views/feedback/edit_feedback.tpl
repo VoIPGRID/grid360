@@ -15,6 +15,11 @@
                 <tbody>
                 {foreach $reviews as $review}
                     <tr>
+                        {if $review.selection == 3}
+                        <td colspan="2">
+                             {t}I can't review role specific competencies{/t}
+                        </td>
+                        {else}
                         <td>
                             {if $review.selection == 1}
                             <span class="smile-active"></span>
@@ -23,6 +28,7 @@
                             {/if}
                         </td>
                         <td>{$review.competency.name}</td>
+                        {/if}
                         <td>
                             <input type="hidden" name="reviews[{$review.id}][type]" value="review" />
                             <input type="hidden" name="reviews[{$review.id}][id]" value="{$review.id}" />
