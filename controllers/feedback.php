@@ -406,7 +406,12 @@ function feedback_step_3_post()
     $index = 0;
     $round = get_current_round();
 
-    $competencies = $_SESSION['competencies'][1] + $_SESSION['competencies'][2];
+    $competencies_step_1 = $_SESSION['competencies'][1];
+    $competencies_step_2 = $_SESSION['competencies'][2];
+    $competencies = $competencies_step_1;
+    if(is_array($competencies_step_2)) {
+        $competencies += $competencies_step_2;
+    }
 
     foreach($competencies as $key => $form_competency)
     {
