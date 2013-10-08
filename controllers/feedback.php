@@ -455,6 +455,10 @@ function feedback_step_3_post()
 
     $message = sprintf(_('Your review for %s %s has been saved'), $reviewee->firstname, $reviewee->lastname);
     flash('success', $message);
+
+    // Clear form session
+    unset($_SESSION['competencies']);
+    unset($_SESSION['no_competencies_comment']);
     redirect_to('feedback');
 }
 
