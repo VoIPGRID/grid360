@@ -47,7 +47,7 @@ try
     $default_locale = 'nl';
     $locale = get_current_locale();
 
-    setlocale(LC_MESSAGES, $locale);
+    setlocale(LC_ALL, $locale);
     putenv('LANG=' . $locale);
 
     $domain = 'messages';
