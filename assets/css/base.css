@@ -134,30 +134,14 @@ button i
     vertical-align: middle;
 }
 
-#feedback-form table td ~ td
-{
-    text-align: center;
-}
-
-#feedback-form table tr td:first-child
-{
-    width: 20%;
-}
-
 #feedback-form table tr th
 {
     font-size: 14px;
 }
 
-#feedback-form table tr td:last-child
-{
-    width: 27.5%;
-}
-
 #feedback-form table th
 {
     font-size: 20px;
-    text-align: center;
 }
 
 #feedback-form input[type="radio"]
@@ -228,12 +212,6 @@ button i
     display: block !important;
 }
 
-.skip-button
-{
-    width: 195px;
-    margin-left: auto;
-}
-
 #competencies tr td:first-child
 {
     width: 20%;
@@ -282,11 +260,6 @@ button i
 .review-div
 {
     margin-bottom: 35px;
-}
-
-.review-div .smile-active, .meh-active
-{
-    vertical-align: top;
 }
 
 .smile-default,

@@ -27,9 +27,7 @@
 {call print_alert type="info" text="{t}You can read the description of a competency by hovering your mouse over it{/t}"}
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
-    <div class="skip-button">
-        <a href="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}" class="skip-button"><button class="btn btn-large btn-inverse">{t}Skip person{/t}</a>
-    </div>
+    <a href="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}" class="btn btn-large btn-inverse pull-right">{t}Skip person{/t}</a>
 {/if}
 
 <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic">

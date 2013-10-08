@@ -7,20 +7,26 @@
             <table class="table table-striped table-hover">
                 <thead>
                 <tr>
-                    <th>{t}Competencies{/t}</th>
-                    <th>{t}Rating{/t}</th>
-                    <th>{t}Comments{/t}</th>
+                    <th class="span2">{t}Rating{/t}</th>
+                    <th class="span3">{t}Competencies{/t}</th>
+                    <th class="span7">{t}Comments{/t}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {foreach $reviews as $review}
                     <tr>
+                        <td>
+                            {if $review.selection == 1}
+                            <span class="smile-active"></span>
+                            {else if $review.selection == 2}
+                            <span class="meh-active"></span>
+                            {/if}
+                        </td>
                         <td>{$review.competency.name}</td>
-                        <td>{$review.rating.id}</td>
                         <td>
                             <input type="hidden" name="reviews[{$review.id}][type]" value="review" />
                             <input type="hidden" name="reviews[{$review.id}][id]" value="{$review.id}" />
-                            <textarea class="input-xlarge" name="reviews[{$review.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$review.comment}</textarea>
+                            <textarea class="input-block-level" name="reviews[{$review.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$review.comment}</textarea>
                         </td>
                     </tr>
                 {/foreach}
