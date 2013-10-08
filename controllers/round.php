@@ -516,7 +516,7 @@ function edit_round_post()
 
     if(!empty($_POST['closing_date']))
     {
-        $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+        $closing_date = new DateTime($form_values['closing_date']['value'], new DateTimeZone(date_default_timezone_get()));
         $round->closing_date = $closing_date->format('Y-m-d H:00:00');
     }
     else
@@ -713,7 +713,7 @@ function validate_edit_round_form($count_users, $round)
 
     $form_values = array();
     $form_values['description']['value'] = $_POST['description'];
-    $form_values['closing_date']['value'] = $_POST['closing_date'];
+    $form_values['closing_date']['value'] = englishify_date($_POST['closing_date']);
     $form_values['min_reviewed_by']['value'] = $min_reviewed_by;
     $form_values['min_to_review']['value'] = $min_to_review;
 
@@ -727,7 +727,7 @@ function validate_edit_round_form($count_users, $round)
         $current_datetime = new DateTime(null, new DateTimeZone(date_default_timezone_get()));
         $current_datetime = $current_datetime->format('Y-m-d H:00:00');
 
-        $closing_date = new DateTime($_POST['closing_date'], new DateTimeZone(date_default_timezone_get()));
+        $closing_date = new DateTime($form_values['closing_date']['value'], new DateTimeZone(date_default_timezone_get()));
         $closing_date = $closing_date->format('Y-m-d H:00:00');
 
         if($closing_date < $current_datetime)
