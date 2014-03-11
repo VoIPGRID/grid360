@@ -27,7 +27,7 @@
                 </tbody>
             </table>
         {else}
-            {t}No round info found{/t}
+            {t}No round in progress{/t}
         {/if}
     </div>
 

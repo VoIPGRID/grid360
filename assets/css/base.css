@@ -44,6 +44,11 @@ textarea
     font-family: Arial, sans-serif;
 }
 
+.btn:focus
+{
+    outline: none;
+}
+
 .btn:hover
 {
     text-decoration: none;
