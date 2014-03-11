@@ -126,11 +126,13 @@ function get_current_locale()
     global $supported_locales, $default_locale;
 
     /* Check if browser accepts en_US or nl_NL or ? */
-    $browser_locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    if($browser_locale && array_key_exists($browser_locale, $supported_locales))
-    {
-        /* disable this line to force $default_locale */
-        return $supported_locales[$browser_locale];
+    if(function_exists('locale_accept_from_http')) {
+        $browser_locale = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        if($browser_locale && array_key_exists($browser_locale, $supported_locales))
+        {
+            /* disable this line to force $default_locale */
+            return $supported_locales[$browser_locale];
+        }
     }
 
     /* if browser locale is not supported, set default */
