@@ -26,11 +26,20 @@
     <fieldset>
         <legend>{t}Create round{/t}</legend>
 
+        <div id="information-group" class="control-group {if isset($form_values.information.error)}error{/if}">
+            <label class="control-label" for="round-information">{t}Information{/t}</label>
+
+            <div class="controls">
+                <textarea id="round-information" name="information" type="text" class="input-xxlarge" placeholder="{t}Any information you wish to display on the feedback overview page{/t}" required>{$form_values.information.value}</textarea>
+                {call check_if_error var_name="information"}
+            </div>
+        </div>
+
         <div id="description-group" class="control-group {if isset($form_values.description.error)}error{/if}">
             <label class="control-label" for="round-description">{t}Round description{/t}</label>
 
             <div class="controls">
-                <textarea id="round-description" name="description" type="text" placeholder="{t}Round description{/t}" required>{$form_values.description.value}</textarea>
+                <textarea id="round-description" name="description" type="text" class="input-xxlarge" placeholder="{t}Round description{/t}" required>{$form_values.description.value}</textarea>
                 {call check_if_error var_name="description"}
             </div>
         </div>
@@ -42,7 +51,7 @@
                 </span>
             </label>
             <div class="controls">
-                <input type="text" name="closing_date" id="closing-date" {$form_values.closing_date.value} />
+                <input type="text" name="closing_date" id="closing-date" class="input-medium" value="{$form_values.closing_date.value}" />
                 {call check_if_error var_name="closing_date"}
             </div>
         </div>

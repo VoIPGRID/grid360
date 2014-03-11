@@ -53,6 +53,19 @@ function create_round()
 
     $smarty->assign('count_users', $count_users);
 
+    /* find information from previous round to re use */
+    $previous_rounds = R::findAll('round', 'ORDER BY id DESC LIMIT 0,1');
+    if(count($previous_rounds) > 0) {
+        $previous_round = array_pop($previous_rounds);
+
+        $form_values = $smarty->getTemplateVars('form_values');
+        if(!isset($form_values)) {
+            $form_values = array();
+            $form_values['information']['value'] = $previous_round->information;
+            $smarty->assign('form_values', $form_values);
+        }
+    }
+
     return html($smarty->fetch('round/round.tpl'));
 }
 
@@ -104,7 +117,7 @@ function start_round()
     $round = get_current_round();
     if(isset($round) && $round->id > 0)
     {
-        $message =  _('A round is already in progress!');
+        $message = _('A round is already in progress!');
         flash('error', $message);
         redirect_to(ADMIN_URI . 'round');
     }
@@ -392,28 +405,37 @@ function start_round()
             $to_review = array_merge($own_to_review[$reviewer->id], $other_to_review[$reviewer->id]);
         }
 
-        // You always have to review yourself, so add $reviewer to $reviewees
-        $roundinfo = R::dispense('roundinfo', count($to_review));
+        // You always have to review yourself, so add $reviewer to $to_review
+        $to_review = array_merge($to_review, array($reviewer->id => $reviewer));
 
-        // Create the roundinfo
-        foreach($to_review as $user_id => $reviewee)
-        {
-            $roundinfo[$user_id]->status = 0;
-            $roundinfo[$user_id]->answer = '';
-            $roundinfo[$user_id]->round = $round;
-            $roundinfo[$user_id]->reviewer = $reviewer;
-            $roundinfo[$user_id]->reviewee = $reviewee;
+        if(count($to_review) > 0) {
+            $roundinfo = R::dispense('roundinfo', count($to_review));
 
-            // Count the total amount of reviewees
-            $reviewee_count += 1;
+            // Create the roundinfo
+            foreach($to_review as $user_id => $reviewee)
+            {
+                $roundinfo[$user_id]->status = 0;
+                $roundinfo[$user_id]->answer = '';
+                $roundinfo[$user_id]->round = $round;
+                $roundinfo[$user_id]->reviewer = $reviewer;
+                $roundinfo[$user_id]->reviewee = $reviewee;
+
+                // Count the total amount of reviewees
+                $reviewee_count += 1;
+            }
+
+            if(count($to_review) > 1) {
+                R::storeAll($roundinfo);
+            } else {
+                R::store($roundinfo);
+            }
         }
-
-        R::storeAll($roundinfo);
     }
 
     // Only create a round if there are reviewees
     if($reviewee_count > 0)
     {
+        $round->information = $_POST['information'];
         $round->description = $_POST['description'];
 
         if(!empty($_POST['closing_date']))
@@ -433,6 +455,18 @@ function start_round()
         $round->min_to_review = $_POST['min_to_review'];
 
         R::store($round);
+
+        global $mailer;
+        // Use AntiFlood to re-connect after 100 emails
+        $mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(10));
+
+        // And specify a time in seconds to pause for (30 secs)
+        $mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(10, 5));
+
+        foreach($users as $user)
+        {
+           send_mail('Feedback round started', ADMIN_EMAIL, $user->email, 'Round started, you can now log in and start reviewing.');
+        }
 
         $message =  _('Round created');
         flash('success', $message);
@@ -572,9 +606,16 @@ function end_round()
 
     $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS));
 
+    global $mailer;
+    // Use AntiFlood to re-connect after 100 emails
+    $mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(10));
+
+    // And specify a time in seconds to pause for (30 secs)
+    $mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(10, 5));
+
     foreach($users as $user)
     {
-       // send_mail('Feedback round ended', ADMIN_EMAIL, $user->email, 'Round ended, you can now log in and view your report.'); // TODO: Enable this
+       send_mail('Feedback round ended', ADMIN_EMAIL, $user->email, 'Round ended, you can now log in and view your report.');
     }
 
     $message =  _('Round ended');
@@ -625,8 +666,9 @@ function validate_round_form($count_users)
     }
 
     $form_values = array();
+    $form_values['information']['value'] = $_POST['information'];
     $form_values['description']['value'] = $_POST['description'];
-    $form_values['closing_date']['value'] = englishify_date($_POST['closing_date']);
+    $form_values['closing_date']['value'] = $_POST['closing_date'];
     $form_values['total_amount_to_review']['value'] = $total_amount_to_review;
     $form_values['own_amount_to_review']['value'] = $own_amount_to_review;
     $form_values['min_reviewed_by']['value'] = $min_reviewed_by;
@@ -642,7 +684,7 @@ function validate_round_form($count_users)
         $current_datetime = new DateTime(null, new DateTimeZone(date_default_timezone_get()));
         $current_datetime = $current_datetime->format('Y-m-d H:i:s');
 
-        $closing_date = new DateTime($form_values['closing_date']['value'], new DateTimeZone(date_default_timezone_get()));
+        $closing_date = new DateTime(englishify_date($form_values['closing_date']['value']), new DateTimeZone(date_default_timezone_get()));
         $closing_date = $closing_date->format('Y-m-d H:i:s');
 
         if($closing_date < $current_datetime)

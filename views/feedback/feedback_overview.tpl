@@ -1,5 +1,18 @@
+{if isset($current_round)}
+    {if $current_round.information}
+    <div class="row">
+        <div class="span8">
+            <button id="info-box-button" class="btn btn-link"><h4>+ {t}Click here for more information about this feedback round{/t}</h4></button>
+            <div id="field-info" class="alert">
+                {$current_round.information nofilter}
+            </div>
+        </div>
+    </div>
+    {/if}
+{/if}
+
 <div class="page-header">
-    <h1>{t}Round overview{/t}</h1>
+    <h3>{t}Round overview{/t}</h3>
 </div>
 <div class="row-fluid">
     <span class="span8">
@@ -59,7 +72,7 @@
                 </tbody>
             </table>
         {else}
-            {t}No round info found{/t}
+            {t}No round in progress{/t}
         {/if}
     {if isset($skipped_roundinfo)}
         <fieldset>
@@ -97,6 +110,22 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
+        $('#info-box-button').click(function(event)
+        {
+            if($('#field-info').is(':visible'))
+            {
+                $(this).find('h4').text('+ {t}Click here for more information about this feedback round{/t}');
+            }
+            else
+            {
+                $(this).find('h4').text('- {t}Click to hide{/t}');
+            }
+
+            $('#field-info').slideToggle();
+            event.preventDefault();
+        });
+
+
         // Not using the create_datatable function I made because I want some extra options
 
         $('#feedback-overview').dataTable({
