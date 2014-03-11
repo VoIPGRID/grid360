@@ -48,6 +48,7 @@
                             </ul>
                         </li>
                     {/if}
+                    <li><a href="{$smarty.const.BASE_URI}profile">{t}Profile{/t}</a></li>
                     <li><a href="{$smarty.const.BASE_URI}logout">{t}Logout{/t}</a></li>
                 </ul>
             </div>

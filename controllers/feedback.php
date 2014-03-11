@@ -97,6 +97,7 @@ function view_feedback_overview()
         $smarty->assign('skipped_roundinfo', $skipped_roundinfo);
     }
 
+    $smarty->assign('current_round', $round);
     $smarty->assign('roundinfo', $roundinfo);
 
     return html($smarty->fetch('feedback/feedback_overview.tpl'));
@@ -106,7 +107,8 @@ function feedback_step_1()
 {
     security_authorize();
 
-    if(get_current_round()->id == 0)
+    $round = get_current_round();
+    if($round->id == 0)
     {
         $message = _('No round in progress!');
         flash('error', $message);
@@ -127,6 +129,7 @@ function feedback_step_1()
     {
         unset($_SESSION['competencies']);
         unset($_SESSION['no_competencies_comment']);
+        unset($_SESSION['agreements']);
         $_SESSION['current_reviewee_id'] = $reviewee->id;
     }
 
@@ -177,6 +180,7 @@ function feedback_step_1_post()
 
     $count_positive = 0;
     $count_negative = 0;
+    $count_comments = 0;
     $competencies = array();
 
     foreach($_POST['competencies'] as $competency_id => $competency)
@@ -191,16 +195,24 @@ function feedback_step_1_post()
             $count_negative += 1;
             $competencies[$competency_id] = $competency;
         }
+
+        $competency_comment = trim($competency['comment']);
+
+        if(!empty($competency_comment))
+        {
+            $count_comments += 1;
+        }
     }
 
-    if($count_positive == 2 && $count_negative == 1)
+    $_SESSION['competencies'][1] = $competencies;
+
+    if($count_positive == 2 && $count_negative == 1 && $count_comments == 3)
     {
-        $_SESSION['competencies'][1] = $competencies;
         redirect_to('feedback/' . params('id') . '/2');
     }
     else
     {
-        $message = _('Error! Must select 3 competencies.');
+        $message = _('Must select 3 competencies and provide a comment for each competency.');
         flash('error', $message);
         redirect_to('feedback/' . params('id'));
     }
@@ -241,10 +253,12 @@ function feedback_step_2()
     }
 
     $competencygroup = $reviewee->role->competencygroup;
+    $agreements = R::findOne('agreements', 'user_id = ?', array($reviewee->id));
 
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
     $smarty->assign('competencygroup',  $competencygroup);
+    $smarty->assign('agreements',  $agreements);
     $smarty->assign('step', 2);
     $smarty->assign('step_text', get_step_text($reviewee, 2));
 
@@ -273,6 +287,7 @@ function feedback_step_2_post()
 
     $count_positive = 0;
     $count_negative = 0;
+    $count_comments = 0;
     $competencies = array();
 
     foreach($_POST['competencies'] as $competency_id => $competency)
@@ -287,23 +302,32 @@ function feedback_step_2_post()
             $count_negative += 1;
             $competencies[$competency_id] = $competency;
         }
+
+        $competency_comment = trim($competency['comment']);
+
+        if(!empty($competency_comment))
+        {
+            $count_comments += 1;
+        }
     }
 
     $no_competencies_comment = trim($_POST['no_competencies_comment']);
 
-    if(($count_positive == 2 && $count_negative == 1))
+    $_SESSION['no_competencies_comment'] = $_POST['no_competencies_comment'];
+    $_SESSION['competencies'][2] = $competencies;
+    $_SESSION['agreements'] = $_POST['agreements'];
+
+    if(($count_positive == 2 && $count_negative == 1 && $count_comments == 3))
     {
-        $_SESSION['competencies'][2] = $competencies;
         redirect_to('feedback/' . params('id') . '/3');
     }
     else if(!empty($no_competencies_comment))
     {
-        $_SESSION['no_competencies_comment'] = $_POST['no_competencies_comment'];
         redirect_to('feedback/' . params('id') . '/3');
     }
     else
     {
-        $message = _('Error! Must select 3 competencies or fill in the comment field.');
+        $message = _('Must select 3 competencies and provide a comment or fill in the comment field.');
         flash('error', $message);
         redirect_to('feedback/' . params('id') . '/2');
     }
@@ -409,7 +433,9 @@ function feedback_step_3_post()
     $competencies_step_1 = $_SESSION['competencies'][1];
     $competencies_step_2 = $_SESSION['competencies'][2];
     $competencies = $competencies_step_1;
-    if(is_array($competencies_step_2)) {
+
+    if(is_array($competencies_step_2))
+    {
         $competencies += $competencies_step_2;
     }
 
@@ -450,8 +476,28 @@ function feedback_step_3_post()
     // The standard nl2br function of PHP isn't working like it should (it's still leaving in the newlines), so that's why I'm using a custom function.
     $roundinfo->answer = nl2br_fixed($_POST['extra_question']);
 
+    $agreements = $_SESSION['agreements'];
+    $agreement_reviews = array();
+
+    foreach($agreements as $agreement_type => $agreement)
+    {
+        if($agreement['value'] == 1 || $agreement['value'] == 2)
+        {
+            $agreement_review = R::dispense('agreementreview');
+
+            $agreement_review->type = $agreement_type;
+            $agreement_review->selection = $agreement['value'];
+            $agreement_review->comment = $agreement['comment'];
+            $agreement_review->reviewee = $reviewee;
+            $agreement_review->reviewer = $current_user;
+
+            $agreement_reviews[] = $agreement_review;
+        }
+    }
+
     R::store($roundinfo);
     R::storeAll($reviews);
+    R::storeAll($agreement_reviews);
 
     $message = sprintf(_('Your review for %s %s has been saved'), $reviewee->firstname, $reviewee->lastname);
     flash('success', $message);
@@ -459,6 +505,7 @@ function feedback_step_3_post()
     // Clear form session
     unset($_SESSION['competencies']);
     unset($_SESSION['no_competencies_comment']);
+    unset($_SESSION['agreements']);
     redirect_to('feedback');
 }
 
