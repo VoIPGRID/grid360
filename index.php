@@ -1,5 +1,6 @@
 <?php
 
+require_once('error.php');
 require_once('config.php');
 require_once(LIB_DIR . 'limonade/lib/limonade.php');
 require_once(LIB_DIR . 'redbeanphp/rb.php');
@@ -11,8 +12,8 @@ require_once('constants.php');
 function configure()
 {
     option('base_uri', BASE_URI);  # '/' or same as the RewriteBase or ENV:FRB in your .htaccess
-    option('views_dir', 'views/');
-    option('controllers_dir', 'controllers/');
+    option('views_dir', BASE_DIR . 'views/');
+    option('controllers_dir', BASE_DIR . 'controllers/');
     error_layout('layout/basic.php');
 
     RedBean_Plugin_Cooker::enableBeanLoading(true);
@@ -126,42 +127,26 @@ dispatch_post('/feedback/:id/3', 'feedback_step_3_post');
 dispatch('/report/overview/:user_id', 'report_overview');
 dispatch('/report/:round_id/:user_id', 'view_report');
 
-try
-{
-    run();
-    R::close();
-}
-catch(Exception $exception)
-{
-    R::close();
+dispatch('/profile', 'edit_profile');
+dispatch_post('/profile', 'edit_profile_post');
 
-    // Passing the exception object to halt() because it only accepts 1 other parameter (besides the error code), so that the correct error file and line is used
-    halt(SERVER_ERROR, $exception);
-}
+run();
+R::close();
 
-function not_found()
-{
+/* limonade error handling */
+function not_found($errno, $errstr, $errfile=null, $errline=null, $errcontext=null) {
     global $smarty;
 
-    return html($smarty->fetch('error/404.tpl'), 'layout/basic.php');
+    if(has_error()) {
+        return server_error($errno, $errstr, $errfile, $errline, $errcontext);
+    }
+
+    return html($smarty->fetch('error/404.tpl'), error_layout());
 }
-
-function server_error($errno, $exception)
-{
+function server_error($errno, $errstr, $errfile=null, $errline=null, $errcontext=null) {
     global $smarty;
 
-    $smarty->assign('error_number', $errno);
-    $smarty->assign('error_string', debug_string_backtrace());
-    $smarty->assign('error_file', $exception->getFile());
-    $smarty->assign('error_line', $exception->getLine());
-    $smarty->assign('error_message', $exception->getMessage());
+    mail_error();
 
-    $subject = 'Server error in ' . $exception->getFile() . ' on line ' . $exception->getLine();
-    $body = $smarty->fetch('email/server_error.tpl');
-
-    send_mail($subject, ADMIN_EMAIL, ADMIN_EMAIL, $body);
-
-    global $smarty;
-
-    return html($smarty->fetch('error/500.tpl'), 'layout/basic.php');
+    return html($smarty->fetch('error/500.tpl'), error_layout());
 }

@@ -2,7 +2,7 @@
 <html>
 <head>
     {include file="layout/head.tpl"}
-    {include file="lib/functions.tpl"}
+    {include file="{$smarty.const.BASE_DIR}/lib/functions.tpl"}
 </head>
 <body>
 <div class="container login">
