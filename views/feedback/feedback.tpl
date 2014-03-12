@@ -22,7 +22,7 @@
     <span class="span6">
         <div class="control-group">
             <div class="controls">
-                <label class="checkbox"><strong>{$type|ucfirst}</strong>: {$agreements[{$type}]|ucfirst}</label> <br />
+                <label class="checkbox"><strong>{$type_text|ucfirst}</strong>: {$agreements[{$type}]|ucfirst}</label> <br />
                 <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
                 <button class="btn btn-link"><span class="smile-default"></span></button>
                 <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
@@ -31,7 +31,7 @@
     </span>
     <span class="span5 hide">
         <br />
-        <textarea class="input-xlarge" name="agreements[{$type}][comment]" placeholder="{t competency=$type}Add a comment for %1 agreements here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
+        <textarea class="input-xlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 agreements here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
     </span>
 {/function}
 
@@ -64,9 +64,9 @@
                 <span class="span12" id="agreements">
                     <fieldset>
                         <legend>Agreements</legend>
-                        {create_agreements_row type='work'}
-                        {create_agreements_row type='training'}
-                        {create_agreements_row type='other'}
+                        {create_agreements_row type="work" type_text="{t}work{/t}"}
+                        {create_agreements_row type="training" type_text="{t}training{/t}"}
+                        {create_agreements_row type="other" type_text="{t}other{/t}"}
                     </fieldset>
                 </span>
             {/if}
