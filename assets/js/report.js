@@ -24,12 +24,12 @@ $(document).ready(function()
         if($('#options-label i').hasClass('icon-minus-sign'))
         {
             $('#options-label i').attr('class', 'icon-plus-sign');
-            $('#options-label small').text('({t}show{/t})');
+            $('#options-label small').text('(' + show_text + ')');
         }
         else
         {
             $('#options-label i').attr('class', 'icon-minus-sign');
-            $('#options-label small').text('({t}hide{/t})');
+            $('#options-label small').text('(' + hide_text + ')');
         }
     });
 

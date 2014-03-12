@@ -60,6 +60,39 @@ function view_report()
         }
     }
 
+    global $smarty;
+
+    // Set the round IDs which are used for the previous and next buttons
+    $previous_round = R::findOne('round', 'id < ? ORDER BY id DESC', array($round->id));
+    $smarty->assign('previous_round_id', $previous_round->id);
+
+    $next_round = R::findOne('round', 'id > ? ORDER BY id ASC', array($round->id));
+    $smarty->assign('next_round_id', $next_round->id);
+
+    $smarty->assign('round', $round);
+
+    // Generate the previous and next buttons
+    $pager = $smarty->fetch('report/report_pager.tpl');
+
+    if($round->status == 0)
+    {
+        $file_name = 'report_' . $round->id . '_' . $user->id . '_' . strtolower($user->firstname) . '_' . strtolower($user->lastname);
+        $file = BASE_DIR . 'reports/' . $file_name;
+
+        $report = file_get_contents($file);
+    }
+    else
+    {
+        $report = generate_report($user, $round);
+    }
+
+    $report = preg_replace('/##pager##/', $pager, $report, 1);
+
+    return html($report);
+}
+
+function generate_report($user, $round)
+{
     $reviews = R::find('review', 'reviewee_id = ? AND round_id = ?', array($user->id, $round->id));
     R::preload($reviews, array('reviewer' => 'user'));
 
@@ -91,6 +124,7 @@ function view_report()
     global $smarty;
     $generate_report = true;
 
+    // Execute necessary check when a round is in progress
     if($round->status == 1)
     {
         // If someone hasn't been reviewed enough times, show error and don't show report
@@ -177,14 +211,21 @@ function view_report()
     $smarty->assign('page_subheader', $subheader);
     $smarty->assign('page_header_size', 'h2');
 
-    // Set the round IDs which are used for the previous and next buttons
-    $previous_round = R::findOne('round', 'id < ? ORDER BY id DESC', array($round->id));
-    $smarty->assign('previous_round_id', $previous_round->id);
-
-    $next_round = R::findOne('round', 'id > ? ORDER BY id ASC', array($round->id));
-    $smarty->assign('next_round_id', $next_round->id);
-
     set('title', $header);
 
-    return html($smarty->fetch('report/report.tpl'));
+    // Generate the HTML
+    $report = $smarty->fetch('report/report.tpl');
+
+    $firstname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->firstname));
+    $lastname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->lastname));
+
+    // Store the report
+    $file_name = 'report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname;
+    $file = BASE_DIR . 'reports/' . $file_name;
+    $fh = fopen($file, 'w') or die("can't open file");
+    fwrite($fh, $report);
+
+    fclose($fh);
+
+    return $report;
 }
