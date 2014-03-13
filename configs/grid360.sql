@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.11.1deb1
+-- version 4.0.6deb1
 -- http://www.phpmyadmin.net
 --
--- Machine: localhost
--- Genereertijd: 30 aug 2013 om 15:44
--- Serverversie: 5.5.29
--- PHP-Versie: 5.4.6-1ubuntu1.3
+-- Host: localhost
+-- Generation Time: Mar 13, 2014 at 09:08 AM
+-- Server version: 5.5.35-0ubuntu0.13.10.2
+-- PHP Version: 5.5.3-1ubuntu2.2
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,13 +17,47 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Databank: `grid360_empty`
+-- Database: `grid360`
 --
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `competency`
+-- Table structure for table `agreementreview`
+--
+
+CREATE TABLE IF NOT EXISTS `agreementreview` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type` varchar(255) NOT NULL,
+  `selection` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `reviewee_id` int(11) NOT NULL,
+  `reviewer_id` int(11) NOT NULL,
+  `tenant_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `agreements`
+--
+
+CREATE TABLE IF NOT EXISTS `agreements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `work` text NOT NULL,
+  `training` text NOT NULL,
+  `other` text NOT NULL,
+  `tenant_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `competency`
 --
 
 CREATE TABLE IF NOT EXISTS `competency` (
@@ -35,12 +69,12 @@ CREATE TABLE IF NOT EXISTS `competency` (
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_competency_tenant` (`tenant_id`),
   KEY `index_foreignkey_competency_competencygroup` (`competencygroup_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=67 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=95 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `competencygroup`
+-- Table structure for table `competencygroup`
 --
 
 CREATE TABLE IF NOT EXISTS `competencygroup` (
@@ -51,12 +85,12 @@ CREATE TABLE IF NOT EXISTS `competencygroup` (
   `tenant_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_competencygroup_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `department`
+-- Table structure for table `department`
 --
 
 CREATE TABLE IF NOT EXISTS `department` (
@@ -68,12 +102,12 @@ CREATE TABLE IF NOT EXISTS `department` (
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_department_tenant` (`tenant_id`),
   KEY `index_foreignkey_department_user` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `infomessage`
+-- Table structure for table `infomessage`
 --
 
 CREATE TABLE IF NOT EXISTS `infomessage` (
@@ -81,12 +115,24 @@ CREATE TABLE IF NOT EXISTS `infomessage` (
   `message` mediumtext COLLATE utf8_unicode_ci,
   `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `review`
+-- Table structure for table `rating`
+--
+
+CREATE TABLE IF NOT EXISTS `rating` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `review`
 --
 
 CREATE TABLE IF NOT EXISTS `review` (
@@ -95,24 +141,24 @@ CREATE TABLE IF NOT EXISTS `review` (
   `reviewer_id` int(11) unsigned DEFAULT NULL,
   `reviewee_id` int(11) unsigned DEFAULT NULL,
   `competency_id` int(11) unsigned DEFAULT NULL,
+  `rating_id` int(11) unsigned DEFAULT NULL,
   `round_id` int(11) unsigned DEFAULT NULL,
   `tenant_id` int(11) unsigned DEFAULT NULL,
+  `is_positive` tinyint(1) DEFAULT NULL,
   `selection` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_review_user` (`reviewer_id`),
   KEY `cons_fk_review_reviewee_id_id` (`reviewee_id`),
   KEY `index_foreignkey_review_competency` (`competency_id`),
+  KEY `index_foreignkey_review_rating` (`rating_id`),
   KEY `index_foreignkey_review_round` (`round_id`),
   KEY `index_foreignkey_review_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=52 ;
-
--- ALTER TABLE  `review` ADD `selection` int(11) NOT NULL;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2390 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `role`
+-- Table structure for table `role`
 --
 
 CREATE TABLE IF NOT EXISTS `role` (
@@ -126,37 +172,33 @@ CREATE TABLE IF NOT EXISTS `role` (
   KEY `index_foreignkey_role_competencygroup` (`competencygroup_id`),
   KEY `index_foreignkey_role_tenant` (`tenant_id`),
   KEY `index_foreignkey_role_department` (`department_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=38 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `round`
+-- Table structure for table `round`
 --
 
 CREATE TABLE IF NOT EXISTS `round` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `closing_date` datetime DEFAULT NULL,
+  `information` text COLLATE utf8_unicode_ci,
+  `description` text COLLATE utf8_unicode_ci,
   `status` tinyint(3) unsigned DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `tenant_id` int(11) unsigned DEFAULT NULL,
+  `closing_date` datetime DEFAULT NULL,
   `total_to_review` int(11) NOT NULL,
   `min_reviewed_by` int(11) NOT NULL,
   `min_to_review` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_round_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=56 ;
-
--- ALTER TABLE  `round` ADD  `closing_date` DATETIME NOT NULL ,
--- ADD  `total_to_review` INT NOT NULL ,
--- ADD  `min_reviewed_by` INT NOT NULL ,
--- ADD  `min_to_review` INT NOT NULL;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `roundinfo`
+-- Table structure for table `roundinfo`
 --
 
 CREATE TABLE IF NOT EXISTS `roundinfo` (
@@ -172,24 +214,24 @@ CREATE TABLE IF NOT EXISTS `roundinfo` (
   KEY `cons_fk_roundinfo_reviewee_id_id` (`reviewee_id`),
   KEY `index_foreignkey_roundinfo_round` (`round_id`),
   KEY `index_foreignkey_roundinfo_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2039 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1362 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `tenant`
+-- Table structure for table `tenant`
 --
 
 CREATE TABLE IF NOT EXISTS `tenant` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `user`
+-- Table structure for table `user`
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -204,20 +246,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `role_id` int(11) unsigned DEFAULT NULL,
   `userlevel_id` int(11) unsigned DEFAULT NULL,
   `tenant_id` int(11) unsigned DEFAULT NULL,
-  `identity` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `reset_password_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `info_message_read` tinyint(1) NOT NULL,
+  `identity` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_user_department` (`department_id`),
   KEY `index_foreignkey_user_role` (`role_id`),
   KEY `index_foreignkey_user_userlevel` (`userlevel_id`),
   KEY `index_foreignkey_user_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=64 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `userlevel`
+-- Table structure for table `userlevel`
 --
 
 CREATE TABLE IF NOT EXISTS `userlevel` (
@@ -228,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `userlevel` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
--- Gegevens worden uitgevoerd voor tabel `userlevel`
+-- Dumping data for table `userlevel`
 --
 
 INSERT INTO `userlevel` (`id`, `name`, `level`) VALUES
@@ -237,31 +277,31 @@ INSERT INTO `userlevel` (`id`, `name`, `level`) VALUES
 (3, 'employee', 3);
 
 --
--- Beperkingen voor gedumpte tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Beperkingen voor tabel `competency`
+-- Constraints for table `competency`
 --
 ALTER TABLE `competency`
   ADD CONSTRAINT `cons_fk_competency_competencygroup_id_id` FOREIGN KEY (`competencygroup_id`) REFERENCES `competencygroup` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `cons_fk_competency_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `competencygroup`
+-- Constraints for table `competencygroup`
 --
 ALTER TABLE `competencygroup`
   ADD CONSTRAINT `cons_fk_competencygroup_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `department`
+-- Constraints for table `department`
 --
 ALTER TABLE `department`
   ADD CONSTRAINT `cons_fk_department_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `cons_fk_department_user_id_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `review`
+-- Constraints for table `review`
 --
 ALTER TABLE `review`
   ADD CONSTRAINT `cons_fk_review_competency_id_id` FOREIGN KEY (`competency_id`) REFERENCES `competency` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
@@ -271,7 +311,7 @@ ALTER TABLE `review`
   ADD CONSTRAINT `cons_fk_review_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `role`
+-- Constraints for table `role`
 --
 ALTER TABLE `role`
   ADD CONSTRAINT `cons_fk_role_competencygroup_id_id` FOREIGN KEY (`competencygroup_id`) REFERENCES `competencygroup` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
@@ -279,13 +319,13 @@ ALTER TABLE `role`
   ADD CONSTRAINT `cons_fk_role_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `round`
+-- Constraints for table `round`
 --
 ALTER TABLE `round`
   ADD CONSTRAINT `cons_fk_round_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `roundinfo`
+-- Constraints for table `roundinfo`
 --
 ALTER TABLE `roundinfo`
   ADD CONSTRAINT `cons_fk_roundinfo_reviewee_id_id` FOREIGN KEY (`reviewee_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
@@ -294,7 +334,7 @@ ALTER TABLE `roundinfo`
   ADD CONSTRAINT `cons_fk_roundinfo_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
--- Beperkingen voor tabel `user`
+-- Constraints for table `user`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `cons_fk_user_department_id_id` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
