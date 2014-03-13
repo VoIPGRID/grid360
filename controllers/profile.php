@@ -15,6 +15,8 @@ function edit_profile()
 
     global $smarty;
 
+    $agreements = R::findOne('agreements', 'user_id = ?', array($user->id));
+
     if(!$smarty->getTemplateVars('form_values'))
     {
         $form_values = array();
@@ -24,6 +26,9 @@ function edit_profile()
         $form_values['email']['value'] = $user->email;
         $form_values['department']['value'] = $user->department->name;
         $form_values['role']['value'] = $user->role->name;
+        $form_values['work']['value'] = $agreements->work;
+        $form_values['training']['value'] = $agreements->training;
+        $form_values['other']['value'] = $agreements->other;
 
         $smarty->assign('form_values', $form_values);
     }
