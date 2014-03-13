@@ -20,10 +20,10 @@
 
 {function create_agreements_row}
     <span class="span6">
+        <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox"><strong>{$type_text|ucfirst}</strong>: {$agreements[{$type}]|ucfirst}</label> <br />
-                <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
                 <button class="btn btn-link"><span class="smile-default"></span></button>
                 <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
             </div>
@@ -67,6 +67,7 @@
                         {create_agreements_row type="work" type_text="{t}work{/t}"}
                         {create_agreements_row type="training" type_text="{t}training{/t}"}
                         {create_agreements_row type="other" type_text="{t}other{/t}"}
+                        {create_agreements_row type="goals" type_text="{t}goals{/t}"}
                     </fieldset>
                 </span>
             {/if}

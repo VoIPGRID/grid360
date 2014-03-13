@@ -4,7 +4,7 @@ function edit_profile()
 {
     security_authorize();
 
-    $user = $_SESSION['current_user'];
+    $user = R::load('user', $_SESSION['current_user']->id);
 
     if($user->id == 0)
     {
@@ -29,6 +29,7 @@ function edit_profile()
         $form_values['work']['value'] = $agreements->work;
         $form_values['training']['value'] = $agreements->training;
         $form_values['other']['value'] = $agreements->other;
+        $form_values['goals']['value'] = $agreements->goals;
 
         $smarty->assign('form_values', $form_values);
     }
@@ -62,6 +63,7 @@ function edit_profile_post()
     $agreements->work = trim($_POST['work']);
     $agreements->training = trim($_POST['training']);
     $agreements->other = trim($_POST['other']);
+    $agreements->goals = trim($_POST['goals']);
     $agreements->user = R::load('user', $user->id);
 
     R::store($agreements);

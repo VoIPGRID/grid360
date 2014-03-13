@@ -3,10 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 13, 2014 at 09:08 AM
+-- Generation Time: Mar 13, 2014 at 01:59 PM
 -- Server version: 5.5.35-0ubuntu0.13.10.2
 -- PHP Version: 5.5.3-1ubuntu2.2
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -35,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `agreementreview` (
   `reviewer_id` int(11) NOT NULL,
   `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -49,10 +50,11 @@ CREATE TABLE IF NOT EXISTS `agreements` (
   `work` text NOT NULL,
   `training` text NOT NULL,
   `other` text NOT NULL,
+  `goals` text NOT NULL,
   `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -69,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `competency` (
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_competency_tenant` (`tenant_id`),
   KEY `index_foreignkey_competency_competencygroup` (`competencygroup_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=95 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=109 ;
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `competencygroup` (
   `tenant_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_competencygroup_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -102,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `department` (
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_department_tenant` (`tenant_id`),
   KEY `index_foreignkey_department_user` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -153,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `review` (
   KEY `index_foreignkey_review_rating` (`rating_id`),
   KEY `index_foreignkey_review_round` (`round_id`),
   KEY `index_foreignkey_review_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2390 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2402 ;
 
 -- --------------------------------------------------------
 
@@ -172,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `role` (
   KEY `index_foreignkey_role_competencygroup` (`competencygroup_id`),
   KEY `index_foreignkey_role_tenant` (`tenant_id`),
   KEY `index_foreignkey_role_department` (`department_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=22 ;
 
 -- --------------------------------------------------------
 
@@ -193,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `round` (
   `min_to_review` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_foreignkey_round_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 
 -- --------------------------------------------------------
 
@@ -214,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `roundinfo` (
   KEY `cons_fk_roundinfo_reviewee_id_id` (`reviewee_id`),
   KEY `index_foreignkey_roundinfo_round` (`round_id`),
   KEY `index_foreignkey_roundinfo_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1362 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1382 ;
 
 -- --------------------------------------------------------
 
@@ -226,7 +228,7 @@ CREATE TABLE IF NOT EXISTS `tenant` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -252,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   KEY `index_foreignkey_user_role` (`role_id`),
   KEY `index_foreignkey_user_userlevel` (`userlevel_id`),
   KEY `index_foreignkey_user_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=54 ;
 
 -- --------------------------------------------------------
 
@@ -341,6 +343,7 @@ ALTER TABLE `user`
   ADD CONSTRAINT `cons_fk_user_role_id_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `cons_fk_user_tenant_id_id` FOREIGN KEY (`tenant_id`) REFERENCES `tenant` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
   ADD CONSTRAINT `cons_fk_user_userlevel_id_id` FOREIGN KEY (`userlevel_id`) REFERENCES `userlevel` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

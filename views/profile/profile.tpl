@@ -82,6 +82,14 @@
             </div>
         </div>
 
+        <div class="control-group">
+            <label class="control-label" for="personal_goals">{t}Personal goals{/t}</label>
+
+            <div class="controls">
+                <textarea id="personal_goals" name="goals" placeholder="{t}Personal goals{/t}" class="input-xxlarge">{$form_values.goals.value}</textarea>
+            </div>
+        </div>
+
         <div class="form-actions">
             <a href="{$smarty.const.BASE_URI}" class="btn">{t}Cancel{/t}</a>
             <button type="submit" class="btn btn-primary">
