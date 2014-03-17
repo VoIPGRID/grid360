@@ -19,7 +19,9 @@
     {/foreach}
 {/function}
 
-{include file="layout/page_header.tpl"}
+{if $round.status == 0}
+    {include file="layout/page_header.tpl"}
+{/if}
 
 ##pager##
 

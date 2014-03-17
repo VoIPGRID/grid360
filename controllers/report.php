@@ -76,6 +76,7 @@ function view_report()
 
     if($round->status == 0)
     {
+        // If the round is over there should be a report ready, so get that file
         $file_name = 'report_' . $round->id . '_' . $user->id . '_' . strtolower($user->firstname) . '_' . strtolower($user->lastname);
         $file = BASE_DIR . 'reports/' . $file_name;
 
@@ -83,6 +84,7 @@ function view_report()
     }
     else
     {
+        // If the round is still in progress, generate the report and show it
         $report = generate_report($user, $round);
     }
 
