@@ -39,8 +39,28 @@ function create_round()
         redirect_to(ADMIN_URI . 'round');
     }
 
+    $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS));
+    $count_rounds = R::count('round');
+
+    // Users most likely won't have any agreements if there hasn't been a feedback round
+    if($count_rounds > 0)
+    {
+        // Check if everyone has filled in their agreements
+        foreach($users as $user)
+        {
+            $agreements = R::findOne('agreements', 'user_id = ?', array($user->id));
+
+            if($agreements->id == 0)
+            {
+                $message = _('A new round cannot be started because some people in your organisation have not filled in their agreements.');
+                flash('error', $message);
+                redirect_to(ADMIN_URI . 'round');
+            }
+        }
+    }
+
     // Minus 1 because you need to exclude the reviewer
-    $count_users = R::count('user', 'status != ?', array(PAUSE_USER_REVIEWS)) - 1;
+    $count_users = count($users) - 1;
 
     if($count_users < 2)
     {
