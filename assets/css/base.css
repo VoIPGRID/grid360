@@ -243,7 +243,6 @@ button i
     margin-right: 15px;
 }
 
-#field-info,
 #report-field-info
 {
     display: none;
@@ -319,4 +318,9 @@ button i
 .info-message-pre h2
 {
     text-align: left !important;
+}
+
+.meeting-inputs
+{
+    display: none;
 }

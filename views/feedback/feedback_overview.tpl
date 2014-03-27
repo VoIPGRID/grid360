@@ -2,7 +2,7 @@
     {if $current_round.information}
     <div class="row">
         <div class="span8">
-            <button id="info-box-button" class="btn btn-link"><h4>+ {t}Click here for more information about this feedback round{/t}</h4></button>
+            <button id="info-box-button" class="btn btn-link"><h4>- {t}Click to hide{/t}</h4></button>
             <div id="field-info" class="alert">
                 {$current_round.information nofilter}
             </div>
@@ -22,6 +22,10 @@
                     {t}You haven't reviewed yourself yet!{/t} <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{t}Click here to review yourself.{/t}</a>
                 </div>
                 {break}
+            {elseif $info.reviewee.id == $current_user.id && $info.status == 1}
+                <div class="alert alert-info">
+                    <a href="{$smarty.const.BASE_URI}feedback/meeting">{t}Click here{/t}</a> {t}to change your choice regarding a meeting.{/t}
+                </div>
             {/if}
         {/foreach}
 
@@ -124,7 +128,6 @@
             $('#field-info').slideToggle();
             event.preventDefault();
         });
-
 
         // Not using the create_datatable function I made because I want some extra options
 

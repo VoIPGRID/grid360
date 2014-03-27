@@ -499,13 +499,84 @@ function feedback_step_3_post()
     R::storeAll($reviews);
     R::storeAll($agreement_reviews);
 
-    $message = sprintf(_('Your review for %s %s has been saved'), $reviewee->firstname, $reviewee->lastname);
-    flash('success', $message);
-
     // Clear form session
     unset($_SESSION['competencies']);
     unset($_SESSION['no_competencies_comment']);
     unset($_SESSION['agreements']);
+
+    if($reviewee->id == $current_user->id)
+    {
+        redirect_to('feedback/meeting');
+    }
+    else
+    {
+        $message = sprintf(_('Your review for %s %s has been saved'), $reviewee->firstname, $reviewee->lastname);
+        flash('success', $message);
+
+        redirect_to('feedback');
+    }
+}
+
+function feedback_meeting()
+{
+    security_authorize();
+
+    $current_user = $_SESSION['current_user'];
+
+    if($current_user->id == 0)
+    {
+        redirect_to('feedback');
+    }
+
+    $meeting = R::findOne('meeting', 'user_id = ?', array($current_user->id));
+
+    global $smarty;
+
+    $smarty->assign('meeting', $meeting);
+
+    return html($smarty->fetch('feedback/feedback_meeting.tpl'));
+}
+
+function feedback_meeting_post()
+{
+    security_authorize();
+
+    $current_user = $_SESSION['current_user'];
+
+    if($current_user->id == 0)
+    {
+        redirect_to('feedback');
+    }
+
+    $choice = $_POST['meeting_choice'];
+
+    if($choice == 1)
+    {
+        $meeting = R::findOne('meeting', 'user_id = ?', array($current_user->id));
+
+        if($meeting->id == 0)
+        {
+            $meeting = R::dispense('meeting');
+        }
+
+        $meeting->name = $_POST['name'];
+        $meeting->subject = $_POST['subject'];
+        $meeting->user = $current_user;
+
+        R::store($meeting);
+    }
+    elseif($choice == 0)
+    {
+        $meeting = R::findOne('meeting', 'user_id = ?', array($current_user->id));
+
+        if($meeting->id != 0)
+        {
+            R::trash($meeting);
+        }
+    }
+
+    $message = _('Your choice has been saved.');
+    flash('success', $message);
     redirect_to('feedback');
 }
 
@@ -611,8 +682,6 @@ function skip_person()
 function add_to_reviewees()
 {
     security_authorize();
-
-    print_r($_POST);
 
     if(!empty($_POST['skipped']))
     {
