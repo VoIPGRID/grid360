@@ -42,9 +42,8 @@
         </fieldset>
 
         <div class="form-actions">
-            <button type="button" class="btn" onclick="history.go(-1);return true;">{t}Previous{/t}</button>
+            <a href="{$smarty.const.BASE_URI}feedback/{$reviewee.id}/2" class="btn">{t}Previous{/t}</a>
             <button type="submit" class="btn btn-primary" id="submit" >{t}Submit{/t}</button>
-            <span id="help-text" style="display:none;" class="help-inline error">Not all fields are filled in</span>
         </div>
     </form>
 </div>
