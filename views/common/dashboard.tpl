@@ -31,7 +31,7 @@
         {/if}
     </div>
 
-    <div class="span4 offset3">
+    <div class="span5 offset2">
         <h4>{t}Reports{/t}</h4>
         {if !empty($rounds)}
             <table class="table table-striped">
@@ -49,7 +49,7 @@
                             {if $round.status == 0}
                                 <a href="{$smarty.const.BASE_URI}report/{$round.id}">{t}View report{/t}</a>
                             {else}
-                                {t}Round in progress{/t}
+                                <a href="{$smarty.const.BASE_URI}feedback">{t}Round in progress{/t}</a>
                             {/if}
                         </td>
                     </tr>
