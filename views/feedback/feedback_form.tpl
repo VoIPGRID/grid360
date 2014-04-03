@@ -16,16 +16,6 @@
 
 <h4>{$step_text}</h4>
 
-<div class="alert alert-warning">
-    <span>{t time=$session_lifetime time_text=$time_text}Make sure you submit this form within %1 %2. Otherwise you will be automatically logged out.{/t}</span>
-</div>
-
-{if $reviewee.id != $smarty.session.current_user.id}
-    <div class="alert alert-error">
-        <span><strong>{t}Notice:{/t}</strong>{t}Feedback, positive as well as constructive is directly viewable for your colleagues. Keep this in mind when writing comments{/t}</span>
-    </div>
-{/if}
-
 <div id="feedback-form">
     <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback/{$reviewee.id}/3" method="post" data-persist="garlic">
 

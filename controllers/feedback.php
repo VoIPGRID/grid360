@@ -155,7 +155,7 @@ function feedback_step_1()
     $smarty->assign('reviewee', $reviewee);
     $smarty->assign('competencygroup', $competencygroup);
     $smarty->assign('step', 1);
-    $smarty->assign('step_text', get_step_text($reviewee, 1));
+    $smarty->assign('step_text', sprintf(_('Step %d of 3'), 1));
 
     $feedback_header = _('Select 2 positive competencies and 1 points of improvement for ');
 
@@ -167,6 +167,12 @@ function feedback_step_1()
     {
         $feedback_header .=  $reviewee->firstname . ' ' . $reviewee->lastname;
     }
+
+    // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
+    $smarty->assign('session_lifetime', ini_get('session.gc_maxlifetime') / MINUTES);
+
+    // Make sure you edit this text to match the session_lifetime Smarty variable
+    $smarty->assign('time_text', _('minutes'));
 
     $smarty->assign('feedback_header', $feedback_header);
     $smarty->assign('form_action_url', '/' . $reviewee->id);
@@ -238,11 +244,6 @@ function feedback_step_2()
         redirect_to('feedback');
     }
 
-    if($reviewee->department_id != $_SESSION['current_user']->department_id)
-    {
-        redirect_to('feedback/' . params('id') . '/3');
-    }
-
     $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
 
     if($roundinfo->id == 0)
@@ -257,10 +258,15 @@ function feedback_step_2()
 
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
-    $smarty->assign('competencygroup',  $competencygroup);
+
+    if($reviewee->department_id == $_SESSION['current_user']->department_id)
+    {
+        $smarty->assign('competencygroup',  $competencygroup);
+    }
+
     $smarty->assign('agreements',  $agreements);
     $smarty->assign('step', 2);
-    $smarty->assign('step_text', get_step_text($reviewee, 2));
+    $smarty->assign('step_text', sprintf(_('Step %d of 3'), 2));
 
     $feedback_header = _('Select 2 positive competencies and 1 points of improvement for ');
 
@@ -285,52 +291,66 @@ function feedback_step_2_post()
 {
     security_authorize();
 
+    $reviewee = R::load('user', params('id'));
+
     $count_positive = 0;
     $count_negative = 0;
     $count_comments = 0;
     $competencies = array();
+    $agreement_error = false;
 
-    foreach($_POST['competencies'] as $competency_id => $competency)
+    if($reviewee->department_id == $_SESSION['current_user']->department_id)
     {
-        if($competency['value'] == 1)
+        foreach($_POST['competencies'] as $competency_id => $competency)
         {
-            $count_positive += 1;
-            $competencies[$competency_id] = $competency;
-        }
-        else if($competency['value'] == 2)
-        {
-            $count_negative += 1;
-            $competencies[$competency_id] = $competency;
+            if($competency['value'] == 1)
+            {
+                $count_positive += 1;
+                $competencies[$competency_id] = $competency;
+            }
+            else if($competency['value'] == 2)
+            {
+                $count_negative += 1;
+                $competencies[$competency_id] = $competency;
+            }
+
+            $competency_comment = trim($competency['comment']);
+
+            if(!empty($competency_comment))
+            {
+                $count_comments += 1;
+            }
         }
 
-        $competency_comment = trim($competency['comment']);
+        $_SESSION['competencies'][2] = $competencies;
 
-        if(!empty($competency_comment))
+        if($count_positive != 2 || $count_negative != 1 || $count_comments != 3)
         {
-            $count_comments += 1;
+            $message = _('Must select 3 competencies and provide a comment');
+            flash('error', $message);
+            redirect_to('feedback/' . params('id') . '/2');
         }
     }
 
-    $no_competencies_comment = trim($_POST['no_competencies_comment']);
+    $agreements = $_POST['agreements'];
+    $_SESSION['agreements'] = $agreements;
 
-    $_SESSION['no_competencies_comment'] = $_POST['no_competencies_comment'];
-    $_SESSION['competencies'][2] = $competencies;
-    $_SESSION['agreements'] = $_POST['agreements'];
+    foreach($agreements as $agreement)
+    {
+        if($agreement['value'] != 0 && empty($agreement['comment']))
+        {
+            $agreement_error = true;
+        }
+    }
 
-    if(($count_positive == 2 && $count_negative == 1 && $count_comments == 3))
+    if($agreement_error)
     {
-        redirect_to('feedback/' . params('id') . '/3');
-    }
-    else if(!empty($no_competencies_comment))
-    {
-        redirect_to('feedback/' . params('id') . '/3');
-    }
-    else
-    {
-        $message = _('Must select 3 competencies and provide a comment or fill in the comment field.');
+        $message = _('Must provide a comment when reviewing agreements');
         flash('error', $message);
         redirect_to('feedback/' . params('id') . '/2');
     }
+
+    redirect_to('feedback/' . $reviewee->id . '/3');
 }
 
 function feedback_step_3()
@@ -348,7 +368,7 @@ function feedback_step_3()
 
     if($reviewee->department_id == $_SESSION['current_user']->department_id)
     {
-        if((count($_SESSION['competencies'][1]) + count($_SESSION['competencies'][2]) != 6) && (count($_SESSION['competencies'][1]) != 3 && empty($_SESSION['no_competencies_comment'])))
+        if(count($_SESSION['competencies'][1]) + count($_SESSION['competencies'][2]) != 6)
         {
             $message = _('Step 1 and 2 have to be completed first!');
             flash('error', $message);
@@ -375,23 +395,7 @@ function feedback_step_3()
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
     $smarty->assign('step', 3);
-
-    if($reviewee->department_id == $_SESSION['current_user']->department_id)
-    {
-        $step = 3;
-    }
-    else
-    {
-        $step = 2;
-    }
-
-    $smarty->assign('step_text', get_step_text($reviewee, $step));
-
-    // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
-    $smarty->assign('session_lifetime', ini_get('session.gc_maxlifetime') / MINUTES);
-
-    // Make sure you edit this text to match the session_lifetime Smarty variable
-    $smarty->assign('time_text', _('minutes'));
+    $smarty->assign('step_text', sprintf(_('Step %d of 3'), 3));
 
     set('title', 'Feedback step 3');
 
@@ -456,20 +460,6 @@ function feedback_step_3_post()
         $reviews[$index]->comment = nl2br_fixed($form_competency['comment']);
         $reviews[$index]->round = $round;
         $index++;
-    }
-
-    if(empty($_SESSION['competencies'][2]) && !empty($_SESSION['no_competencies_comment']))
-    {
-        $review = R::dispense('review');
-        $review->reviewer = $current_user;
-        $review->reviewee = $reviewee;
-        $review->competency_id = null;
-        $review->selection = 3;
-        // The standard nl2br function of PHP isn't working like it should (it's still leaving in the newlines), so that's why I'm using a custom function.
-        $review->comment = nl2br_fixed($_SESSION['no_competencies_comment']);
-        $review->round = $round;
-
-        $reviews[] = $review;
     }
 
     $roundinfo->status = 1;
@@ -699,20 +689,6 @@ function add_to_reviewees()
     }
 
     redirect_to('feedback');
-}
-
-function get_step_text($reviewee, $step)
-{
-    if($reviewee->department_id == $_SESSION['current_user']->department_id)
-    {
-        $step_text = sprintf(_('Step %d of 3'), $step);
-    }
-    else
-    {
-        $step_text = sprintf(_('Step %d of 2'), $step);
-    }
-
-    return $step_text;
 }
 
 function nl2br_fixed($string)

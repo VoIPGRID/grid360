@@ -41,6 +41,10 @@
 
 <h4>{$step_text}</h4>
 
+<div class="alert alert-warning">
+    <span>{t time=$session_lifetime time_text=$time_text}Make sure you submit this form within %1 %2. Otherwise you will be automatically logged out.{/t}</span>
+</div>
+
 {call print_alert type="info" text="{t}You can read the description of a competency by hovering your mouse over it{/t}"}
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
@@ -59,9 +63,8 @@
         {/if}
 
         {if $step == 2}
-
             {if !empty({$agreements})}
-                <span class="span12" id="agreements">
+                <span class="span12 no-left-margin" id="agreements">
                     <fieldset>
                         <legend>Agreements</legend>
                         {create_agreements_row type="work" type_text="{t}work{/t}"}
@@ -71,12 +74,6 @@
                     </fieldset>
                 </span>
             {/if}
-
-            <button class="btn btn-primary" id="no-competencies-button">{t}I can't review role specific competencies{/t}</button>
-            <div class="no-competencies-box">
-                <hr />
-                <textarea class="input-xxlarge" rows="3" name="no_competencies_comment">{$smarty.session.no_competencies_comment}</textarea>
-            </div>
         {/if}
     </div>
     <div class="form-actions">
@@ -94,12 +91,6 @@
 
     $(document).ready(function()
     {
-        $('#no-competencies-button').click(function(event)
-        {
-            $('.no-competencies-box').slideToggle();
-            event.preventDefault();
-        });
-
         $('#competencies button').click(function(event)
         {
             var icon = $(this).children('span');

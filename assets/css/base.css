@@ -324,3 +324,8 @@ button i
 {
     display: none;
 }
+
+.no-left-margin
+{
+    margin-left: 0 !important;
+}
