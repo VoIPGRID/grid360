@@ -117,6 +117,8 @@ dispatch('/feedback/skip/:id', 'skip_confirmation');
 dispatch_post('/feedback/skip', 'skip_person');
 dispatch('/feedback/edit/:id', 'edit_feedback');
 dispatch_post('/feedback/edit/:id', 'edit_feedback_post');
+dispatch('/feedback/meeting', 'feedback_meeting');
+dispatch_post('/feedback/meeting', 'feedback_meeting_post');
 dispatch('/feedback/:id', 'feedback_step_1');
 dispatch_post('/feedback/:id', 'feedback_step_1_post');
 dispatch('/feedback/:id/2', 'feedback_step_2');
