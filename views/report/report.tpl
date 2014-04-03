@@ -113,6 +113,16 @@
                     {t}No reviews found{/t}
                 {/if}
             </span>
+            <span class="span6">
+                <legend>{t}Comments{/t}</legend>
+                {foreach $roundinfo as $info}
+                    {if !empty($info.answer)}
+                        <span class="review-info">
+                            <strong>{if $info.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$info.reviewer.firstname} {$info.reviewer.lastname}]{/if}</strong> {$info.answer}
+                        </span>
+                        <br />
+                    {/if}
+                {/foreach}
             </span>
         </div>
     {else}
