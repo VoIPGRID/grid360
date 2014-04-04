@@ -101,6 +101,9 @@ function generate_report($user, $round)
     $roundinfo = R::find('roundinfo', 'reviewee_id = ? AND status = ? AND round_id = ?', array($user->id, REVIEW_COMPLETED, $round->id));
     R::preload($roundinfo, array('reviewer' => 'user'));
 
+    $agreement_reviews = R::find('agreementreview', 'reviewee_id = ? AND round_id = ?', array($user->id, $round->id));
+    R::preload($agreement_reviews, array('reviewer' => 'user'));
+
     // Count the amount of people that have reviewed the user
     $count_reviewed_by = count($roundinfo);
 
@@ -159,6 +162,8 @@ function generate_report($user, $round)
         $own_role_reviews = array();
         $other_general_reviews = array();
         $other_role_reviews = array();
+        $own_agreement_reviews = array();
+        $other_agreement_reviews = array();
 
         $competencies = array();
 
@@ -166,7 +171,7 @@ function generate_report($user, $round)
 
         foreach($reviews as $review)
         {
-            if($review->reviewer_id == $_SESSION['current_user']->id)
+            if($review->reviewer_id == $user->id)
             {
                 $reviewer_type = 'own';
             }
@@ -193,12 +198,41 @@ function generate_report($user, $round)
             }
         }
 
+        foreach($agreement_reviews as $agreement_review)
+        {
+            if($agreement_review->reviewer_id == $user->id)
+            {
+                $own_agreement_reviews[$agreement_review->selection][$agreement_review->type][] = $agreement_review;
+            }
+            else
+            {
+                $other_agreement_reviews[$agreement_review->selection][$agreement_review->type][] = $agreement_review;
+            }
+        }
+
         $smarty->assign('review_count', count($reviews));
         $smarty->assign('own_general_reviews', $own_general_reviews);
         $smarty->assign('own_role_reviews', $own_role_reviews);
         $smarty->assign('other_general_reviews', $other_general_reviews);
         $smarty->assign('other_role_reviews', $other_role_reviews);
+        $smarty->assign('own_agreement_reviews', $own_agreement_reviews);
+        $smarty->assign('other_agreement_reviews', $other_agreement_reviews);
         $smarty->assign('competencies', $competencies);
+        $smarty->assign('agreement_reviews', $agreement_reviews);
+
+        $agreements_row = R::findOne('agreements', 'user_id = ?', array($user->id));
+
+        $agreements = array();
+        $agreements['work']['value'] = $agreements_row->work;
+        $agreements['work']['label'] = _('Work agreement(s)');
+        $agreements['training']['value'] = $agreements_row->training;
+        $agreements['training']['label'] = _('Training agreement(s)');
+        $agreements['other']['value'] = $agreements_row->other;
+        $agreements['other']['label'] = _('Other agreement(s)');
+        $agreements['goals']['value'] = $agreements_row->goals;
+        $agreements['goals']['label'] = _('Personal goals');
+
+        $smarty->assign('agreements', $agreements);
     }
 
     $smarty->assign('general_competencies', array_keys(get_general_competencies()->ownCompetency));
@@ -208,7 +242,7 @@ function generate_report($user, $round)
 
     // Set the page headers
     $header = sprintf(_('Report for %s %s of %s'), $user->firstname, $user->lastname, $round->description);
-    $subheader =  sprintf(_('You have been reviewed by %d of %d people'), $count_reviewed_by, $total_review_count);
+    $subheader = sprintf(_('You have been reviewed by %d of %d people'), $count_reviewed_by, $total_review_count);
     $smarty->assign('page_header', $header);
     $smarty->assign('page_subheader', $subheader);
     $smarty->assign('page_header_size', 'h2');

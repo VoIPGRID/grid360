@@ -19,6 +19,27 @@
     {/foreach}
 {/function}
 
+{function print_agreement_review}
+    {foreach $review_array[$selection] as $type => $reviews}
+        <div class="review-div" data-agreement-type="{$type}">
+            {if $selection == 1}
+                <span class="smile-active"></span>
+            {elseif $selection == 2}
+                <span class="meh-active"></span>
+            {/if}
+            <div class="review-comments">
+                <strong>{$agreements.{$type}.label}</strong> <small class="muted">({$agreements.{$type}.value})</small><br />
+                {foreach $reviews as $review}
+                    <span class="review-info">
+                        <strong>{if $review.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment}
+                    </span>
+                    <br />
+                {/foreach}
+            </div>
+        </div>
+    {/foreach}
+{/function}
+
 {if $round.status == 0}
     {include file="layout/page_header.tpl"}
 {/if}
@@ -80,6 +101,18 @@
             </span>
         </div>
 
+        <div class="row-fluid">
+            <span class="span6" id="own-agreement-reviews">
+                    <legend>{t}Agreements{/t}</legend>
+                {if count($own_agreement_reviews) > 0}
+                    {print_agreement_review review_array=$own_agreement_reviews selection=1}
+                    {print_agreement_review review_array=$own_agreement_reviews selection=2}
+                {else}
+                    {t}No reviews found{/t}
+                {/if}
+            </span>
+        </div>
+
         <h3>{t}Others about me{/t}</h3>
         <div class="row-fluid">
             <span class="span6" id="other-general-competencies">
@@ -103,18 +136,21 @@
             </span>
         </div>
 
-        <h3>{t}Other comments{/t}</h3>
         <div class="row-fluid">
-            <span class="span6" id="other-general-competencies">
-                <legend>{t}Role competencies{/t}</legend>
-                {if count($other_role_reviews[3]) > 0}
-                    {print_review review_array=$other_role_reviews selection=3}
+            <span class="span6" id="other-agreement-reviews">
+                <legend>{t}Agreements{/t}</legend>
+                {if count($own_agreement_reviews) > 0}
+                    {print_agreement_review review_array=$other_agreement_reviews selection=1}
+                    {print_agreement_review review_array=$other_agreement_reviews selection=2}
                 {else}
                     {t}No reviews found{/t}
                 {/if}
             </span>
-            <span class="span6">
-                <legend>{t}Comments{/t}</legend>
+        </div>
+
+        <div class="row-fluid">
+            <span class="span12">
+                <legend>{t firstname=$smarty.session.current_user.firstname lastname=$smarty.session.current_user.lastname}In what way has %1 %2 contributed to the success of the organisation?{/t}</legend>
                 {foreach $roundinfo as $info}
                     {if !empty($info.answer)}
                         <span class="review-info">
