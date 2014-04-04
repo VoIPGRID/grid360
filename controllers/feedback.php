@@ -74,8 +74,16 @@ function view_feedback_overview()
     security_authorize();
 
     $round = get_current_round();
+    $user = $_SESSION['current_user'];
 
-    $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($_SESSION['current_user']->id, $round->id, REVIEW_SKIPPED));
+    $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, $round->id));
+
+    if($own_review->status == REVIEW_IN_PROGRESS)
+    {
+        redirect_to('feedback/' . $user->id);
+    }
+
+    $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($user->id, $round->id, REVIEW_SKIPPED));
     R::preload($roundinfo, array('reviewee' => 'user'));
 
     foreach($roundinfo as $id => $info)
@@ -91,7 +99,7 @@ function view_feedback_overview()
 
     if(count($roundinfo) < $round->total_to_review)
     {
-        $skipped_roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status = ?', array($_SESSION['current_user']->id, $round->id, REVIEW_SKIPPED));
+        $skipped_roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status = ?', array($user->id, $round->id, REVIEW_SKIPPED));
         R::preload($skipped_roundinfo, array('reviewee' => 'user'));
 
         $smarty->assign('skipped_roundinfo', $skipped_roundinfo);
