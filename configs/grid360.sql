@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 03, 2014 at 01:11 PM
+-- Generation Time: Apr 04, 2014 at 08:49 AM
 -- Server version: 5.5.35-0ubuntu0.13.10.2
 -- PHP Version: 5.5.3-1ubuntu2.2
 
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `agreementreview` (
   `comment` text NOT NULL,
   `reviewee_id` int(11) NOT NULL,
   `reviewer_id` int(11) NOT NULL,
+  `round_id` int(11) NOT NULL,
   `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
@@ -50,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `agreements` (
   `work` text NOT NULL,
   `training` text NOT NULL,
   `other` text NOT NULL,
-  `goals` text NOT NULL,
   `tenant_id` int(11) NOT NULL,
+  `goals` text NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
@@ -129,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `meeting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `subject` text NOT NULL,
+  `round_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)

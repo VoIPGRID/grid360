@@ -488,6 +488,7 @@ function feedback_step_3_post()
             $agreement_review->comment = $agreement['comment'];
             $agreement_review->reviewee = $reviewee;
             $agreement_review->reviewer = $current_user;
+            $agreement_review->round = $round;
 
             $agreement_reviews[] = $agreement_review;
         }
@@ -520,13 +521,14 @@ function feedback_meeting()
     security_authorize();
 
     $current_user = $_SESSION['current_user'];
+    $round = get_current_round();
 
     if($current_user->id == 0)
     {
         redirect_to('feedback');
     }
 
-    $meeting = R::findOne('meeting', 'user_id = ?', array($current_user->id));
+    $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
 
     global $smarty;
 
@@ -540,6 +542,7 @@ function feedback_meeting_post()
     security_authorize();
 
     $current_user = $_SESSION['current_user'];
+    $round = get_current_round();
 
     if($current_user->id == 0)
     {
@@ -550,7 +553,7 @@ function feedback_meeting_post()
 
     if($choice == 1)
     {
-        $meeting = R::findOne('meeting', 'user_id = ?', array($current_user->id));
+        $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
 
         if($meeting->id == 0)
         {
@@ -560,12 +563,13 @@ function feedback_meeting_post()
         $meeting->name = $_POST['name'];
         $meeting->subject = $_POST['subject'];
         $meeting->user = $current_user;
+        $meeting->round = $round;
 
         R::store($meeting);
     }
     elseif($choice == 0)
     {
-        $meeting = R::findOne('meeting', 'user_id = ?', array($current_user->id));
+        $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
 
         if($meeting->id != 0)
         {
