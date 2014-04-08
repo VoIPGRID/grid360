@@ -219,20 +219,7 @@ function generate_report($user, $round)
         $smarty->assign('other_agreement_reviews', $other_agreement_reviews);
         $smarty->assign('competencies', $competencies);
         $smarty->assign('agreement_reviews', $agreement_reviews);
-
-        $agreements_row = R::findOne('agreements', 'user_id = ?', array($user->id));
-
-        $agreements = array();
-        $agreements['work']['value'] = $agreements_row->work;
-        $agreements['work']['label'] = _('Work agreement(s)');
-        $agreements['training']['value'] = $agreements_row->training;
-        $agreements['training']['label'] = _('Training agreement(s)');
-        $agreements['other']['value'] = $agreements_row->other;
-        $agreements['other']['label'] = _('Other agreement(s)');
-        $agreements['goals']['value'] = $agreements_row->goals;
-        $agreements['goals']['label'] = _('Personal goals');
-
-        $smarty->assign('agreements', $agreements);
+        $smarty->assign('agreements', get_agreements($user->id));
     }
 
     $smarty->assign('general_competencies', array_keys(get_general_competencies()->ownCompetency));
