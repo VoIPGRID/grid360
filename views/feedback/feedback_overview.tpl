@@ -1,7 +1,7 @@
 {if isset($current_round)}
     {if $current_round.information}
     <div class="row">
-        <div class="span8">
+        <div class="span12">
             <button id="info-box-button" class="btn btn-link"><h4>- {t}Click to hide{/t}</h4></button>
             <div id="field-info" class="alert">
                 {$current_round.information nofilter}
@@ -15,7 +15,7 @@
     <h3>{t}Round overview{/t}</h3>
 </div>
 <div class="row-fluid">
-    <span class="span8">
+    <span class="span12">
         {foreach $roundinfo as $info}
             {if $info.reviewee.id == $current_user.id && $info.status == 0}
                 <div class="alert alert-info">

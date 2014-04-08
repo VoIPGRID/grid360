@@ -59,26 +59,26 @@
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="work_agreements">{t}Work agreement(s){/t}</label>
+            <label class="control-label" for="work_agreements">{t}Work agreements{/t}</label>
 
             <div class="controls">
-                <textarea id="work_agreements" name="work" placeholder="{t}Work agreement(s){/t}" class="input-xxlarge">{$form_values.work.value}</textarea>
+                <textarea id="work_agreements" name="work" placeholder="{t}Work agreements{/t}" class="input-xxlarge">{$form_values.work.value}</textarea>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="training_agreements">{t}Training agreement(s){/t}</label>
+            <label class="control-label" for="training_agreements">{t}Training agreements{/t}</label>
 
             <div class="controls">
-                <textarea id="training_agreements" name="training" placeholder="{t}Training agreement(s){/t}" class="input-xxlarge">{$form_values.training.value}</textarea>
+                <textarea id="training_agreements" name="training" placeholder="{t}Training agreements{/t}" class="input-xxlarge">{$form_values.training.value}</textarea>
             </div>
         </div>
 
         <div class="control-group">
-            <label class="control-label" for="other_agreements">{t}Other agreement(s){/t}</label>
+            <label class="control-label" for="other_agreements">{t}Other agreements{/t}</label>
 
             <div class="controls">
-                <textarea id="other_agreements" name="other" placeholder="{t}Other agreement(s){/t}" class="input-xxlarge">{$form_values.other.value}</textarea>
+                <textarea id="other_agreements" name="other" placeholder="{t}Other agreements{/t}" class="input-xxlarge">{$form_values.other.value}</textarea>
             </div>
         </div>
 

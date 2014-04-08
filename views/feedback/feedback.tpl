@@ -13,7 +13,7 @@
             </div>
         </span>
         <span class="span5 hide">
-            <textarea class="input-xlarge" name="competencies[{$competency.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$smarty.session.competencies[{$step}][{$competency.id}].comment}</textarea>
+            <textarea class="input-xxlarge" name="competencies[{$competency.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$smarty.session.competencies[{$step}][{$competency.id}].comment}</textarea>
         </span>
     {/foreach}
 {/function}
@@ -23,7 +23,11 @@
         <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
         <div class="control-group">
             <div class="controls">
-                <label class="checkbox"><strong>{$type_text|ucfirst}</strong>: {$agreements[{$type}]|ucfirst}</label> <br />
+                <label class="checkbox"><strong>{$type_text}</strong>
+                    <br />
+                    <small class="muted">{$agreements[{$type}]|ucfirst}</small>
+                </label>
+                <br />
                 <button class="btn btn-link"><span class="smile-default"></span></button>
                 <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
             </div>
@@ -31,7 +35,7 @@
     </span>
     <span class="span5 hide">
         <br />
-        <textarea class="input-xlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 agreements here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
+        <textarea class="input-xxlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 agreements here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
     </span>
 {/function}
 
@@ -66,11 +70,11 @@
             {if !empty({$agreements})}
                 <span class="span12 no-left-margin" id="agreements">
                     <fieldset>
-                        <legend>Agreements</legend>
-                        {create_agreements_row type="work" type_text="{t}work{/t}"}
-                        {create_agreements_row type="training" type_text="{t}training{/t}"}
-                        {create_agreements_row type="other" type_text="{t}other{/t}"}
-                        {create_agreements_row type="goals" type_text="{t}goals{/t}"}
+                        <legend>{t}Agreements{/t}</legend>
+                        {create_agreements_row type="work" type_text="{t}Work agreements{/t}"}
+                        {create_agreements_row type="training" type_text="{t}Training agreements{/t}"}
+                        {create_agreements_row type="other" type_text="{t}Other agreements{/t}"}
+                        {create_agreements_row type="goals" type_text="{t}Personal goals{/t}"}
                     </fieldset>
                 </span>
             {/if}
