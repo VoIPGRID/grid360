@@ -7,19 +7,24 @@ function edit_feedback()
 {
     security_authorize();
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ? AND status = ?', array($_SESSION['current_user']->id, params('id'), get_current_round()->id, REVIEW_COMPLETED));
+    $user = $_SESSION['current_user'];
+
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ? AND status = ?', array($user->id, params('id'), get_current_round()->id, REVIEW_COMPLETED));
 
     if($roundinfo->id == 0)
     {
         halt(NOT_FOUND);
     }
 
-    $reviews = R::find('review', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, params('id'), get_current_round()->id));
+    $reviews = R::find('review', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, params('id'), get_current_round()->id));
+    $agreement_reviews = R::find('agreementreview', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, params('id'), get_current_round()->id));
 
     global $smarty;
     $smarty->assign('roundinfo', $roundinfo);
     $smarty->assign('reviews', $reviews);
     $smarty->assign('reviewee', R::load('user', params('id')));
+    $smarty->assign('agreement_reviews', $agreement_reviews);
+    $smarty->assign('agreements', get_agreements(params('id')));
 
     return html($smarty->fetch('feedback/edit_feedback.tpl'));
 }
@@ -30,8 +35,9 @@ function edit_feedback_post()
 
     $reviewee = R::load('user', params('id'));
     $current_round = get_current_round();
+    $user = $_SESSION['current_user'];
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ? AND status = ?', array($_SESSION['current_user']->id, $reviewee->id, $current_round->id, REVIEW_COMPLETED));
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ? AND status = ?', array($user->id, $reviewee->id, $current_round->id, REVIEW_COMPLETED));
 
     if($roundinfo->id == 0)
     {
@@ -47,7 +53,7 @@ function edit_feedback_post()
 
     foreach($_POST['reviews'] as $review_row)
     {
-        $review = R::findOne('review', 'id = ? AND reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($review_row['id'], $_SESSION['current_user']->id, $reviewee->id, $current_round->id));
+        $review = R::findOne('review', 'id = ? AND reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($review_row['id'], $user->id, $reviewee->id, $current_round->id));
 
         if($review->id == 0)
         {
@@ -61,7 +67,24 @@ function edit_feedback_post()
         $reviews[] = $review;
     }
 
+    foreach($_POST['agreement_reviews'] as $review_row)
+    {
+        $agreement_review = R::findOne('agreementreview', 'id = ? AND reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($review_row['id'], $user->id, $reviewee->id, $current_round->id));
+
+        if($agreement_review->id == 0)
+        {
+            $message = _('Can\'t edit this feedback! Error loading the reviews!');
+            flash('error', $message);
+            redirect_to('feedback/edit/' . params('id'));
+        }
+
+        // The standard nl2br function of PHP isn't working like it should (it's still leaving in the newlines), so that's why I'm using a custom function.
+        $agreement_review->comment = nl2br_fixed($review_row['comment']);
+        $agreement_reviews[] = $agreement_review;
+    }
+
     R::storeAll($reviews);
+    R::storeAll($agreement_reviews);
     R::store($roundinfo);
 
     $message = sprintf(_('Your review for %s %s has been edited'), $reviewee->firstname, $reviewee->lastname);

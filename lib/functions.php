@@ -121,6 +121,23 @@ function get_general_competencies()
     return R::findOne('competencygroup', 'general = ?', array(1)); // TODO: Multiple general competencies allowed?
 }
 
+function get_agreements($user_id)
+{
+    $agreements_row = R::findOne('agreements', 'user_id = ?', array($user_id));
+
+    $agreements = array();
+    $agreements['work']['value'] = $agreements_row->work;
+    $agreements['work']['label'] = _('Work agreements');
+    $agreements['training']['value'] = $agreements_row->training;
+    $agreements['training']['label'] = _('Training agreements');
+    $agreements['other']['value'] = $agreements_row->other;
+    $agreements['other']['label'] = _('Other agreements');
+    $agreements['goals']['value'] = $agreements_row->goals;
+    $agreements['goals']['label'] = _('Personal goals');
+
+    return $agreements;
+}
+
 function get_current_locale()
 {
     global $supported_locales, $default_locale;
