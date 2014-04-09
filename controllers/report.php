@@ -80,7 +80,15 @@ function view_report()
         $file_name = 'report_' . $round->id . '_' . $user->id . '_' . strtolower($user->firstname) . '_' . strtolower($user->lastname);
         $file = BASE_DIR . 'reports/' . $file_name;
 
-        $report = file_get_contents($file);
+        if(file_exists($file))
+        {
+            $report = file_get_contents($file);
+        }
+        else
+        {
+            // No generated report found, so just display the pager and a message
+            return html($pager . _('No reviews found for the current round'));
+        }
     }
     else
     {
@@ -244,6 +252,7 @@ function generate_report($user, $round)
 
     // Store the report
     $file_name = 'report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname;
+
     $file = BASE_DIR . 'reports/' . $file_name;
     $fh = fopen($file, 'w') or die("can't open file");
     fwrite($fh, $report);

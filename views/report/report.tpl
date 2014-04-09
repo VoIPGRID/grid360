@@ -47,8 +47,9 @@
 ##pager##
 
 {if !$insufficient_data}
-    <fieldset>
-        <div class="row-fluid">
+    {if $review_count > 0}
+        <fieldset>
+            <div class="row-fluid">
         <span class="span12">
             <label id="options-label">
                 <p class="lead">{t}Options{/t}<i class="icon-plus-sign"></i>
@@ -91,10 +92,9 @@
                 </div>
             </div>
         </span>
-        </div>
-    </fieldset>
+            </div>
+        </fieldset>
 
-    {if $review_count > 0}
         <h3>{t}Me about me{/t}</h3>
         <div class="row-fluid">
             <span class="span6" id="own-general-competencies">
