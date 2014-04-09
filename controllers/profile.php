@@ -20,12 +20,6 @@ function edit_profile()
     if(!$smarty->getTemplateVars('form_values'))
     {
         $form_values = array();
-        $form_values['id']['value'] = $user->id;
-        $form_values['firstname']['value'] = $user->firstname;
-        $form_values['lastname']['value'] = $user->lastname;
-        $form_values['email']['value'] = $user->email;
-        $form_values['department']['value'] = $user->department->name;
-        $form_values['role']['value'] = $user->role->name;
         $form_values['work']['value'] = $agreements->work;
         $form_values['training']['value'] = $agreements->training;
         $form_values['other']['value'] = $agreements->other;
@@ -34,7 +28,6 @@ function edit_profile()
         $smarty->assign('form_values', $form_values);
     }
 
-    $smarty->assign('user_name', $user->firstname . ' ' . $user->lastname);
     set('title', _('Edit profile'));
 
     return html($smarty->fetch('profile/profile.tpl'));
@@ -53,6 +46,21 @@ function edit_profile_post()
         redirect_to('/');
     }
 
+    $error = false;
+    $form_values = array();
+
+    $new_password = $_POST['new_password'];
+    $new_password_confirm = $_POST['new_password_confirm'];
+
+    if(strlen($new_password) > 0)
+    {
+        if(strlen($new_password_confirm) == 0 || $new_password != $new_password_confirm)
+        {
+            $form_values['new_password']['error'] = _('Passwords do not match!');
+            $error = true;
+        }
+    }
+
     $agreements = R::findOne('agreements', 'user_id = ?', array($user->id));
 
     if($agreements->id == 0)
@@ -64,6 +72,26 @@ function edit_profile_post()
     $agreements->training = trim($_POST['training']);
     $agreements->other = trim($_POST['other']);
     $agreements->goals = trim($_POST['goals']);
+
+    if(empty($agreements->work) || empty($agreements->training) || empty($agreements->other) || empty($agreements->goals))
+    {
+        $form_values['agreements']['error'] = _('One or more fields was not filled in');
+        $error = true;
+    }
+
+    if($error)
+    {
+        $form_values['work']['value'] = $agreements->work;
+        $form_values['training']['value'] = $agreements->training;
+        $form_values['other']['value'] = $agreements->other;
+        $form_values['goals']['value'] = $agreements->goals;
+
+        global $smarty;
+        $smarty->assign('form_values', $form_values);
+
+        return edit_profile();
+    }
+
     $agreements->user = R::load('user', $user->id);
 
     R::store($agreements);

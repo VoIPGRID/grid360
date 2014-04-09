@@ -9,54 +9,33 @@
 
 <form action="{$smarty.const.BASE_URI}profile" method="POST" class="form-horizontal" data-persist="garlic">
     <fieldset>
-        <legend>{t}Updating profile{/t}</legend>
+        <legend>{t}New password{/t}</legend>
 
-        <div class="control-group {if isset($form_values.firstname.error)}error{/if}">
-            <input type="hidden" name="type" value="user" />
-            {if isset($form_values.id.value)}
-                <input type="hidden" name="id" value="{$form_values.id.value}" />
-            {/if}
-
-            <label class="control-label" for="firstname">{t}First name{/t}</label>
+        <div class="control-group {if isset($form_values.new_password.error)}error{/if}">
+            <label class="control-label" for="new-password">{t}New password{/t}</label>
 
             <div class="controls">
-                <input id="firstname" name="firstname" type="text" placeholder="{t}First name{/t}" class="input-large" required value="{$form_values.firstname.value}" />
-                {call check_if_error var_name="firstname"}
+                <input type="text" id="new-password" name="new_password" placeholder="{t}New password{/t}" class="input-xlarge">
+                {call check_if_error var_name="new_password"}
             </div>
         </div>
 
-        <div class="control-group {if isset($form_values.lastname.error)}error{/if}">
-            <label class="control-label" for="lastname">{t}Last name{/t}</label>
+        <div class="control-group {if isset($form_values.new_password.error)}error{/if}">
+            <label class="control-label" for="new-password-confirm">{t}Confirm new password{/t}</label>
 
             <div class="controls">
-                <input id="lastname" name="lastname" type="text" placeholder="{t}Last name{/t}" class="input-large" required value="{$form_values.lastname.value}" />
-                {call check_if_error var_name="lastname"}
+                <input type="text" id="new-password-confirm" name="new_password_confirm" placeholder="{t}Confirm new password{/t}" class="input-xlarge">
+                {call check_if_error var_name="new_password"}
             </div>
         </div>
+    </fieldset>
 
-        <div class="control-group">
-            <label class="control-label" for="email">{t}Email{/t}</label>
+    <fieldset>
+        <legend>{t}Agreements{/t}</legend>
 
-            <div class="controls">
-                <input type="text" class="input-large" value="{$form_values.email.value}" disabled />
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label">{t}Department{/t}</label>
-
-            <div class="controls">
-                <input type="text" class="input-large" value="{$form_values.department.value}" disabled />
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label">{t}Role{/t}</label>
-
-            <div class="controls">
-                <input type="text" class="input-large" value="{$form_values.role.value}" disabled />
-            </div>
-        </div>
+        {if !empty($form_values.agreements.error)}
+            {call print_alert type="error" text="{$form_values.agreements.error}"}
+        {/if}
 
         <div class="control-group">
             <label class="control-label" for="work_agreements">{t}Work agreements{/t}</label>
