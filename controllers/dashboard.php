@@ -34,6 +34,11 @@ function info_message()
 
     $info_message = R::findOne('infomessage');
 
+    if($info_message->id == 0)
+    {
+        redirect_to('/');
+    }
+
     $smarty->assign('info_message', $info_message);
 
     return html($smarty->fetch('common/info_message.tpl'));
@@ -50,5 +55,5 @@ function info_message_read()
 
     $_SESSION['current_user'] = $user;
 
-    redirect_to('/');
+    redirect_to('profile');
 }

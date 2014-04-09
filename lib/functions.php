@@ -121,6 +121,22 @@ function get_general_competencies()
     return R::findOne('competencygroup', 'general = ?', array(1)); // TODO: Multiple general competencies allowed?
 }
 
+function has_agreements($user_id)
+{
+    $agreements = R::findOne('agreements', 'user_id = ?', array($user_id));
+
+    if($agreements->id == 0)
+    {
+        return false;
+    }
+    else if(empty($agreements->work) || empty($agreements->training) || empty($agreements->other) || empty($agreements->goals))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 function get_agreements($user_id)
 {
     $agreements_row = R::findOne('agreements', 'user_id = ?', array($user_id));

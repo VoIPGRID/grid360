@@ -25,14 +25,26 @@ function before()
     $smarty->assign('current_user', $_SESSION['current_user']);
     $smarty->assign('locale', strtolower(substr(getenv('LANG'), 0, 2)));
 
+    $uri = str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']);
+
+    $user = $_SESSION['current_user'];
     $info_message = R::findOne('infomessage');
 
-    if(!empty($_SESSION['current_user']) && ($info_message->id == 0 || $_SESSION['current_user']->info_message_read))
+    if(!empty($user) && ($info_message->id == 0 || $user->info_message_read))
     {
-        layout('layout/layout.php');
+        if(!empty($user) && $uri != 'profile' && !has_agreements($user->id))
+        {
+            $message = _('Agreements must be filled in before continuing');
+            flash('error', $message);
+            redirect_to('profile');
+        }
+        else
+        {
+            layout('layout/layout.php');
+        }
     }
     // Check if the current url isn't infomessage so we don't get a redirect loop
-    else if(!empty($_SESSION['current_user']) && $info_message->id != 0 && str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']) != 'infomessage')
+    else if(!empty($user) && $info_message->id != 0 && $uri != 'infomessage')
     {
         redirect_to('infomessage');
     }
