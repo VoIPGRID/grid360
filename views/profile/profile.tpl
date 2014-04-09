@@ -1,12 +1,5 @@
 {include file="lib/functions.tpl"}
 
-<script type="text/javascript">
-    type = 'agreement';
-    name_placeholder = '{t}Agreement name{/t}';
-    description_placeholder = '{t}Agreement description{/t}';
-</script>
-<script type="text/javascript" src="{$smarty.const.BASE_URI}assets/js/add_row.js"></script>
-
 <form action="{$smarty.const.BASE_URI}profile" method="POST" class="form-horizontal" data-persist="garlic">
     <fieldset>
         <legend>{t}New password{/t}</legend>
