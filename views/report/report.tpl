@@ -57,7 +57,7 @@
             </label>
             <div id="options">
                 <strong>{t}Competencies{/t}</strong>
-
+                <br />
                 <div id="competency-boxes" class="well">
                     {foreach $competencies as $competency}
                         <div class="controls">
@@ -70,6 +70,23 @@
                         <button id="select-all" class="btn btn-link">{t}Select all{/t}</button>
                         /
                         <button id="deselect-all" class="btn btn-link">{t}Deselect all{/t}</button>
+                    </div>
+                </div>
+
+                <strong>{t}Agreements{/t}</strong>
+                <br />
+                <div id="agreement-boxes" class="well">
+                    {foreach $agreements as $type => $agreement}
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" value="{$type}"/>{$agreement.label}
+                            </label>
+                        </div>
+                    {/foreach}
+                    <div>
+                        <button id="select-all-agreements" class="btn btn-link">{t}Select all{/t}</button>
+                        /
+                        <button id="deselect-all-agreements" class="btn btn-link">{t}Deselect all{/t}</button>
                     </div>
                 </div>
             </div>

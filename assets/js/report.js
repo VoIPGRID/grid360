@@ -18,6 +18,16 @@ $(document).ready(function()
         $('#competency-boxes input:checkbox:checked').click();
     });
 
+    $('#select-all-agreements').click(function()
+    {
+        $('#agreement-boxes input:checkbox:not(:checked)').click();
+    });
+
+    $('#deselect-all-agreements').click(function()
+    {
+        $('#agreement-boxes input:checkbox:checked').click();
+    });
+
     $('#options-label').click(function()
     {
         $('#options').slideToggle();
@@ -35,7 +45,7 @@ $(document).ready(function()
 
     function check_checked()
     {
-        $('input[type="checkbox"]').each(function()
+        $('#competency-boxes input[type="checkbox"]').each(function()
         {
             if($(this).is(':not(:checked)'))
             {
@@ -46,9 +56,20 @@ $(document).ready(function()
                 $('[data-competency-id="' + $(this).val() + '"]').slideDown();
             }
         });
+
+        $('#agreement-boxes input[type="checkbox"]').each(function()
+        {
+            if($(this).is(':not(:checked)'))
+            {
+                $('[data-agreement-type="' + $(this).val() + '"]').slideUp();
+            }
+            else if($(this).is(':checked') && $('[data-agreement-type="' + $(this).val() + '"]').is(':not(:visible)'))
+            {
+                $('[data-agreement-type="' + $(this).val() + '"]').slideDown();
+            }
+        });
     }
 
     $('input[type=checkbox]').on('click', check_checked);
-
-    $('input[type=checkbox]').not('input[name="check_comparison"]').attr('checked', 'checked');
+    $('input[type=checkbox]').attr('checked', 'checked');
 });
