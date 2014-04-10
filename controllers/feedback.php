@@ -101,7 +101,7 @@ function view_feedback_overview()
 
     $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, $round->id));
 
-    if($own_review->status == REVIEW_IN_PROGRESS)
+    if($round->id != 0 && $round->status == ROUND_IN_PROGRESS && $own_review->status == REVIEW_IN_PROGRESS)
     {
         redirect_to('feedback/' . $user->id);
     }
