@@ -8,7 +8,7 @@
             <label class="control-label" for="new-password">{t}New password{/t}</label>
 
             <div class="controls">
-                <input type="text" id="new-password" name="new_password" placeholder="{t}New password{/t}" class="input-xlarge">
+                <input type="password" id="new-password" name="new_password" placeholder="{t}New password{/t}" class="input-xlarge">
                 {call check_if_error var_name="new_password"}
             </div>
         </div>
@@ -17,7 +17,7 @@
             <label class="control-label" for="new-password-confirm">{t}Confirm new password{/t}</label>
 
             <div class="controls">
-                <input type="text" id="new-password-confirm" name="new_password_confirm" placeholder="{t}Confirm new password{/t}" class="input-xlarge">
+                <input type="password" id="new-password-confirm" name="new_password_confirm" placeholder="{t}Confirm new password{/t}" class="input-xlarge">
                 {call check_if_error var_name="new_password"}
             </div>
         </div>

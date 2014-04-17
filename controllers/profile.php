@@ -92,8 +92,11 @@ function edit_profile_post()
         return edit_profile();
     }
 
-    $agreements->user = R::load('user', $user->id);
+    $hasher = new PasswordHash(8, false);
+    $user->password = $hasher->HashPassword($new_password);
+    $agreements->user = $user;
 
+    R::store($user);
     R::store($agreements);
 
     $message = _('Profile updated');
