@@ -24,7 +24,7 @@
     {call print_alert type="info" text="{$info}"}
 {/if}
 
-    {if !empty($info_message)}
+    {if $display_info_message}
         <div id="info-message-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

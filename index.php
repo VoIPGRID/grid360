@@ -40,13 +40,21 @@ function before()
         }
         else
         {
-            $info_message = R::findOne('infomessage');
+            $display_info_message = false;
 
-            if($info_message->id != 0 && !$_SESSION['info_message_shown'])
+            if(strpos($uri, 'admin/infomessage') === false)
             {
-                $smarty->assign('info_message', $info_message);
-                $_SESSION['info_message_shown'] = true;
+                $info_message = R::findOne('infomessage');
+
+                if($info_message->id != 0 && !$_SESSION['info_message_shown'])
+                {
+                    $smarty->assign('info_message', $info_message);
+                    $_SESSION['info_message_shown'] = true;
+                    $display_info_message = true;
+                }
             }
+
+            $smarty->assign('display_info_message', $display_info_message);
 
             layout('layout/layout.php');
         }
