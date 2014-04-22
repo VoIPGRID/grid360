@@ -134,6 +134,11 @@ button i
     vertical-align: middle;
 }
 
+.feedback-header-subtext
+{
+    margin-left: 5%;
+}
+
 #feedback-form table td
 {
     vertical-align: middle;
@@ -152,6 +157,11 @@ button i
 #feedback-form input[type="radio"]
 {
     margin: 0;
+}
+
+#agreements .span12 .control-group
+{
+    margin-bottom: 0;
 }
 
 #options
@@ -304,6 +314,7 @@ button i
 #info-message-modal .modal-body
 {
     white-space: pre;
+    word-wrap: break-word;
 }
 
 .info-message-pre
@@ -328,4 +339,14 @@ button i
 .no-left-margin
 {
     margin-left: 0 !important;
+}
+
+.required
+{
+    color: red;
+}
+
+.own-review-row
+{
+    margin-bottom: 25px;
 }

@@ -2,13 +2,13 @@
 
 {function create_choice_row}
     {foreach $competencies as $competency}
-        <span class="span6">
+        <span class="span6" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
             <input type="hidden" value="0" id="{$competency.id}" name="competencies[{$competency.id}][value]" />
             <div class="control-group">
                 <div class="controls">
                     <button class="btn btn-link"><span class="smile-default"></span></button>
                     <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
-                    <label class="checkbox" data-toggle="tooltip" title="{$competency.description}" data-placement="right">{$competency.name}</label>
+                    <label class="checkbox">{$competency.name}</label>
                 </div>
             </div>
         </span>
@@ -19,37 +19,35 @@
 {/function}
 
 {function create_agreements_row}
-    <span class="span6">
-        <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
+    <span class="span12">
         <div class="control-group">
             <div class="controls">
                 <label class="checkbox"><strong>{$type_text}</strong>
                     <br />
                     <small class="muted">{$agreements[{$type}]|ucfirst}</small>
                 </label>
-                <br />
+            </div>
+        </div>
+    </span>
+    <span class="span5">
+        <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
+        <div class="control-group">
+            <div class="controls">
                 <button class="btn btn-link"><span class="smile-default"></span></button>
                 <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
             </div>
         </div>
     </span>
     <span class="span5 hide">
-        <br />
-        <textarea class="input-xxlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 agreements here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
+        <textarea class="input-xxlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
     </span>
 {/function}
-
-<h3>
-    {$feedback_header}
-</h3>
 
 <h4>{$step_text}</h4>
 
 <div class="alert alert-warning">
     <span>{t time=$session_lifetime time_text=$time_text}Make sure you submit this form within %1 %2. Otherwise you will be automatically logged out.{/t}</span>
 </div>
-
-{call print_alert type="info" text="{t}You can read the description of a competency by hovering your mouse over it{/t}"}
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
     <a href="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}" class="btn btn-large btn-inverse pull-right">{t}Skip person{/t}</a>
@@ -61,6 +59,8 @@
             <span class="span12" id="competencies">
                 <fieldset>
                     <legend>{$competencygroup.name}</legend>
+                    <div class="feedback-header-subtext">{$feedback_header_subtext}</div>
+                    <br />
                     {create_choice_row competencies=$competencygroup.ownCompetency step=$step}
                 </fieldset>
             </span>
@@ -71,6 +71,8 @@
                 <span class="span12 no-left-margin" id="agreements">
                     <fieldset>
                         <legend>{t}Agreements{/t}</legend>
+                        <div class="feedback-header-subtext">{$agreement_header_subtext}</div>
+                        <br />
                         {create_agreements_row type="work" type_text="{t}Work agreements{/t}"}
                         {create_agreements_row type="training" type_text="{t}Training agreements{/t}"}
                         {create_agreements_row type="other" type_text="{t}Other agreements{/t}"}
@@ -129,11 +131,11 @@
 
             if(icon.hasClass('smile-active') || icon.hasClass('meh-active'))
             {
-                button.parents('.span6').next().fadeIn(300);
+                button.parents('.span6').nextAll('.span5:first').fadeIn(300);
             }
             else
             {
-                button.parents('.span6').next().fadeOut(300);
+                button.parents('.span6').nextAll('.span5:first').fadeOut(300);
             }
 
             event.preventDefault();
@@ -170,11 +172,11 @@
 
             if(icon.hasClass('smile-active') || icon.hasClass('meh-active'))
             {
-                button.parents('.span6').next().fadeIn(300);
+                button.parents('.span5').next('.span5').fadeIn(300);
             }
             else
             {
-                button.parents('.span6').next().fadeOut(300);
+                button.parents('.span5').next('.span5').fadeOut(300);
             }
 
             event.preventDefault();

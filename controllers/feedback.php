@@ -130,6 +130,10 @@ function view_feedback_overview()
 
     $smarty->assign('current_round', $round);
     $smarty->assign('roundinfo', $roundinfo);
+    $smarty->assign('own_review', $own_review);
+
+    $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($user->id, $round->id));
+    $smarty->assign('meeting', $meeting);
 
     return html($smarty->fetch('feedback/feedback_overview.tpl'));
 }
@@ -139,11 +143,21 @@ function feedback_step_1()
     security_authorize();
 
     $round = get_current_round();
+
     if($round->id == 0)
     {
         $message = _('No round in progress!');
         flash('error', $message);
         redirect_to('feedback');
+    }
+
+    $user = $_SESSION['current_user'];
+
+    $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, $round->id));
+
+    if($round->id != 0 && $user->id != params('id') && $round->status == ROUND_IN_PROGRESS && $own_review->status == REVIEW_IN_PROGRESS)
+    {
+        redirect_to('feedback/' . $user->id);
     }
 
     $reviewee = R::load('user', params('id'));
@@ -164,7 +178,7 @@ function feedback_step_1()
         $_SESSION['current_reviewee_id'] = $reviewee->id;
     }
 
-    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $_SESSION['current_user']->id, get_current_round()->id, REVIEW_IN_PROGRESS));
+    $roundinfo = R::findOne('roundinfo', 'reviewee_id = ? AND reviewer_id = ? AND round_id = ? AND status = ?', array($reviewee->id, $user->id, get_current_round()->id, REVIEW_IN_PROGRESS));
 
     if($roundinfo->id == 0)
     {
@@ -188,15 +202,15 @@ function feedback_step_1()
     $smarty->assign('step', 1);
     $smarty->assign('step_text', sprintf(_('Step %d of 3'), 1));
 
-    $feedback_header = _('Select 2 positive competencies and 1 points of improvement for ');
+    $feedback_header_subtext = _('Select 2 positive competencies and 1 points of improvement for ');
 
     if($reviewee->id == $_SESSION['current_user']->id)
     {
-        $feedback_header .= _('yourself');
+        $feedback_header_subtext .= _('yourself');
     }
     else
     {
-        $feedback_header .=  $reviewee->firstname . ' ' . $reviewee->lastname;
+        $feedback_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname;
     }
 
     // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
@@ -205,7 +219,7 @@ function feedback_step_1()
     // Make sure you edit this text to match the session_lifetime Smarty variable
     $smarty->assign('time_text', _('minutes'));
 
-    $smarty->assign('feedback_header', $feedback_header);
+    $smarty->assign('feedback_header_subtext', $feedback_header_subtext);
     $smarty->assign('form_action_url', '/' . $reviewee->id);
 
     return html($smarty->fetch('feedback/feedback.tpl'));
@@ -299,18 +313,24 @@ function feedback_step_2()
     $smarty->assign('step', 2);
     $smarty->assign('step_text', sprintf(_('Step %d of 3'), 2));
 
-    $feedback_header = _('Select 2 positive competencies and 1 points of improvement for ');
+    $feedback_header_subtext = _('Select 2 positive competencies and 1 points of improvement for ');
+    $agreement_header_subtext = _('Review the agreements that ');
 
     if($reviewee->id == $_SESSION['current_user']->id)
     {
-        $feedback_header .= _('yourself');
+        $feedback_header_subtext .= _('yourself');
+        $agreement_header_subtext .= _('you have');
     }
     else
     {
-        $feedback_header .=  $reviewee->firstname . ' ' . $reviewee->lastname;
+        $feedback_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname;
+        $agreement_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname . ' ' . _('has') . ' ';
     }
 
-    $smarty->assign('feedback_header', $feedback_header);
+    $agreement_header_subtext .= _('filled in.');
+
+    $smarty->assign('feedback_header_subtext', $feedback_header_subtext);
+    $smarty->assign('agreement_header_subtext', $agreement_header_subtext);
     $smarty->assign('form_action_url', '/' . $reviewee->id . '/2');
 
     set('title', _('Feedback step 2'));
@@ -528,6 +548,7 @@ function feedback_step_3_post()
 
     if($reviewee->id == $current_user->id)
     {
+        $_SESSION['redirect_from_feedback'] = true;
         redirect_to('feedback/meeting');
     }
     else
@@ -555,7 +576,15 @@ function feedback_meeting()
 
     global $smarty;
 
-    $smarty->assign('meeting', $meeting);
+    if(!$smarty->getTemplateVars('form_values'))
+    {
+        $form_values = array();
+        $form_values['name']['value'] = $meeting->name;
+        $form_values['subject']['value'] = $meeting->subject;
+        $form_values['choice']['value'] = 1;
+
+        $smarty->assign('form_values', $form_values);
+    }
 
     return html($smarty->fetch('feedback/feedback_meeting.tpl'));
 }
@@ -573,9 +602,51 @@ function feedback_meeting_post()
     }
 
     $choice = $_POST['meeting_choice'];
+    $name = trim($_POST['name']);
+    $subject = trim($_POST['subject']);
+
+    if(!isset($choice))
+    {
+        $form_values = array();
+        $form_values['name'] = $name;
+        $form_values['subject'] = $subject;
+
+        global $smarty;
+        $smarty->assign('form_values', $form_values);
+
+        $message = _('You must select a choice');
+        flash('error', $message);
+        redirect_to('feedback/meeting');
+    }
 
     if($choice == 1)
     {
+        $form_values = array();
+
+        if(empty($name))
+        {
+            $form_values['name']['error'] = sprintf(FIELD_REQUIRED, _('Name'));
+        }
+
+        if(empty($subject))
+        {
+            $form_values['subject']['error'] = sprintf(FIELD_REQUIRED, _('Subject'));
+        }
+
+        foreach($form_values as $form_value)
+        {
+            if(!empty($form_value['error']))
+            {
+                global $smarty;
+                $form_values['name']['value'] = $name;
+                $form_values['subject']['value'] = $subject;
+                $form_values['choice']['value'] = 1;
+                $smarty->assign('form_values', $form_values);
+
+                return feedback_meeting();
+            }
+        }
+
         $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
 
         if($meeting->id == 0)
@@ -583,8 +654,8 @@ function feedback_meeting_post()
             $meeting = R::dispense('meeting');
         }
 
-        $meeting->name = $_POST['name'];
-        $meeting->subject = $_POST['subject'];
+        $meeting->name = $name;
+        $meeting->subject = $subject;
         $meeting->user = $current_user;
         $meeting->round = $round;
 
@@ -600,7 +671,16 @@ function feedback_meeting_post()
         }
     }
 
-    $message = _('Your choice has been saved.');
+    if($_SESSION['redirect_from_feedback'])
+    {
+        $message = _('Your review for yourself has been saved');
+        unset($_SESSION['redirect_from_feedback']);
+    }
+    else
+    {
+        $message = _('Your choice has been saved.');
+    }
+
     flash('success', $message);
     redirect_to('feedback');
 }

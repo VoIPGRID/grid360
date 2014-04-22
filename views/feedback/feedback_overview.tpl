@@ -1,34 +1,8 @@
-{if isset($current_round)}
-    {if $current_round.information}
-    <div class="row">
-        <div class="span12">
-            <button id="info-box-button" class="btn btn-link"><h4>- {t}Click to hide{/t}</h4></button>
-            <div id="field-info" class="alert">
-                {$current_round.information nofilter}
-            </div>
-        </div>
-    </div>
-    {/if}
-{/if}
-
 <div class="page-header">
     <h3>{t}Round overview{/t}</h3>
 </div>
 <div class="row-fluid">
     <span class="span12">
-        {foreach $roundinfo as $info}
-            {if $info.reviewee.id == $current_user.id && $info.status == 0}
-                <div class="alert alert-info">
-                    {t}You haven't reviewed yourself yet!{/t} <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{t}Click here to review yourself.{/t}</a>
-                </div>
-                {break}
-            {elseif $info.reviewee.id == $current_user.id && $info.status == 1}
-                <div class="alert alert-info">
-                    <a href="{$smarty.const.BASE_URI}feedback/meeting">{t}Click here{/t}</a> {t}to change your choice regarding a meeting.{/t}
-                </div>
-            {/if}
-        {/foreach}
-
         {foreach $roundinfo as $info}
             {if $info.reviewee.id != $current_user.id && $info.status == 0}
                 <div class="alert alert-info">
@@ -75,6 +49,16 @@
                 {/foreach}
                 </tbody>
             </table>
+            {if $own_review.status == $smarty.const.REVIEW_COMPLETED}
+                <div>
+                    {if $meeting.id == 0}
+                        {t}You have not stated that you do not want to have a meeting with someone.{/t}
+                    {else}
+                        {t}You stated that you want to have a meeting with{/t} <strong>{$meeting.name}</strong> {t}about{/t} <strong>{$meeting.subject}</strong>.
+                    {/if}
+                    <a href="{$smarty.const.BASE_URI}feedback/meeting">{t}Edit meeting{/t}</a>
+                </div>
+            {/if}
         {else}
             {t}No round in progress{/t}
         {/if}
