@@ -6,6 +6,7 @@ function dashboard()
 
     $rounds = R::findAll('round');
     $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($_SESSION['current_user']->id, get_current_round()->id, REVIEW_SKIPPED));
+    $own_review = null;
 
     R::preload($roundinfo, array('reviewee' => 'user'));
 
@@ -16,11 +17,17 @@ function dashboard()
             // Remove a user from the list if they should be reviewed (status = paused)
             unset($roundinfo[$roundinfo_id]);
         }
+
+        if($info->reviewee_id == $_SESSION['current_user']->id)
+        {
+            $own_review = $info;
+        }
     }
 
     global $smarty;
     $smarty->assign('rounds', $rounds);
     $smarty->assign('roundinfo', $roundinfo);
+    $smarty->assign('own_review', $own_review);
     $smarty->assign('page_header', _('Dashboard'));
 
     return html($smarty->fetch('common/dashboard.tpl'));

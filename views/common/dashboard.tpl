@@ -1,3 +1,20 @@
+{if !empty($own_review) && $own_review.status != $smarty.const.REVIEW_COMPLETED}
+    <div class="row-fluid own-review-row">
+        <div class="span5">
+            <h4>{t}Review yourself{/t}</h4>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>{$own_review.reviewee.firstname} {$own_review.reviewee.lastname}</td>
+                    <td>
+                        <a href="{$smarty.const.BASE_URI}feedback/{$own_review.reviewee.id}">{t}Pending{/t}</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{/if}
 <div class="row-fluid">
     <div class="span5">
         <h4>{t}Review status{/t}</h4>
