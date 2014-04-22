@@ -24,8 +24,7 @@ function info_message_post()
 
     $config = HTMLPurifier_Config::createDefault();
 
-    // Makes sure external stuff (links, resources) gets removed from the HTML
-    $config->set('URI.DisableExternal', true);
+    // Makes sure external resources gets removed from the HTML
     $config->set('URI.DisableExternalResources', true);
 
     $purifier = new HTMLPurifier($config);
