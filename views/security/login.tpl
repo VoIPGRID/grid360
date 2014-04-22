@@ -28,16 +28,13 @@
                     <input type="checkbox" name="remember_me"> {t}Remember me{/t}
                 </label>
                 <br />
-                <button type="submit" class="btn btn-primary" id="login-button">Login</button>
+                <button type="submit" class="btn btn-primary" id="login-button">Login</button> {t}or{/t} <a href="{$smarty.const.BASE_URI}login_google" class="btn">{t}Login with Google{/t}</a>
             </div>
         </div>
         <a href="{$smarty.const.BASE_URI}register">{t}Register new organisation{/t}</a>
         <br />
         <br />
         <a href="{$smarty.const.BASE_URI}reset">{t}Forgot password?{/t}</a>
-        <br />
-        <br />
-        <a href="{$smarty.const.BASE_URI}login_google" class="btn">{t}Login with Google{/t}</a>
     </form>
 </div>
 <br />
