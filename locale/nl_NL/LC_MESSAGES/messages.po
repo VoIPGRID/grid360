@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-09 10:54+0200\n"
+"POT-Creation-Date: 2014-04-22 14:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,8 +26,8 @@ msgstr "Nieuwe rol aanmaken"
 #. ./views/role/role.tpl
 #. ./views/department/department.tpl
 #: locale/.ignore/messages_tpl.c:8 locale/.ignore/messages_tpl.c:11
-#: locale/.ignore/messages_tpl.c:377 locale/.ignore/messages_tpl.c:401
-#: locale/.ignore/messages_tpl.c:407
+#: locale/.ignore/messages_tpl.c:380 locale/.ignore/messages_tpl.c:404
+#: locale/.ignore/messages_tpl.c:410
 msgid "Role description"
 msgstr "Omschrijving rol"
 
@@ -38,15 +38,15 @@ msgstr "Omschrijving rol"
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
 #: locale/.ignore/messages_tpl.c:14 locale/.ignore/messages_tpl.c:41
-#: locale/.ignore/messages_tpl.c:158 locale/.ignore/messages_tpl.c:188
-#: locale/.ignore/messages_tpl.c:686 locale/.ignore/messages_tpl.c:1181
-#: locale/.ignore/messages_tpl.c:1232
+#: locale/.ignore/messages_tpl.c:152 locale/.ignore/messages_tpl.c:194
+#: locale/.ignore/messages_tpl.c:689 locale/.ignore/messages_tpl.c:1190
+#: locale/.ignore/messages_tpl.c:1241
 msgid "Department"
 msgstr "Afdeling"
 
 #. ./views/role/role.tpl
 #. ./views/department/departments.tpl
-#: locale/.ignore/messages_tpl.c:17 locale/.ignore/messages_tpl.c:368
+#: locale/.ignore/messages_tpl.c:17 locale/.ignore/messages_tpl.c:371
 msgid "No departments found"
 msgstr "Geen afdelingen gevonden"
 
@@ -54,15 +54,15 @@ msgstr "Geen afdelingen gevonden"
 #. ./views/role/roles.tpl
 #. ./views/competency/competency.tpl
 #: locale/.ignore/messages_tpl.c:20 locale/.ignore/messages_tpl.c:44
-#: locale/.ignore/messages_tpl.c:962
+#: locale/.ignore/messages_tpl.c:959
 msgid "Competency group"
 msgstr "Competentiegroep"
 
 #. ./views/role/role.tpl
 #. ./views/competency/competency.tpl
 #. ./views/competency/competencies.tpl
-#: locale/.ignore/messages_tpl.c:23 locale/.ignore/messages_tpl.c:965
-#: locale/.ignore/messages_tpl.c:998
+#: locale/.ignore/messages_tpl.c:23 locale/.ignore/messages_tpl.c:962
+#: locale/.ignore/messages_tpl.c:995
 msgid "No competency groups found"
 msgstr "Geen competentiegroepen gevonden"
 
@@ -84,15 +84,15 @@ msgstr "Geen competentiegroepen gevonden"
 #. ./views/security/register.tpl
 #. ./views/security/reset_password.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:26 locale/.ignore/messages_tpl.c:95
-#: locale/.ignore/messages_tpl.c:215 locale/.ignore/messages_tpl.c:290
-#: locale/.ignore/messages_tpl.c:347 locale/.ignore/messages_tpl.c:413
-#: locale/.ignore/messages_tpl.c:470 locale/.ignore/messages_tpl.c:512
-#: locale/.ignore/messages_tpl.c:650 locale/.ignore/messages_tpl.c:665
-#: locale/.ignore/messages_tpl.c:860 locale/.ignore/messages_tpl.c:932
-#: locale/.ignore/messages_tpl.c:968 locale/.ignore/messages_tpl.c:1064
-#: locale/.ignore/messages_tpl.c:1088 locale/.ignore/messages_tpl.c:1133
-#: locale/.ignore/messages_tpl.c:1142 locale/.ignore/messages_tpl.c:1244
+#: locale/.ignore/messages_tpl.c:26 locale/.ignore/messages_tpl.c:101
+#: locale/.ignore/messages_tpl.c:221 locale/.ignore/messages_tpl.c:296
+#: locale/.ignore/messages_tpl.c:350 locale/.ignore/messages_tpl.c:416
+#: locale/.ignore/messages_tpl.c:467 locale/.ignore/messages_tpl.c:509
+#: locale/.ignore/messages_tpl.c:653 locale/.ignore/messages_tpl.c:668
+#: locale/.ignore/messages_tpl.c:857 locale/.ignore/messages_tpl.c:929
+#: locale/.ignore/messages_tpl.c:965 locale/.ignore/messages_tpl.c:1061
+#: locale/.ignore/messages_tpl.c:1091 locale/.ignore/messages_tpl.c:1142
+#: locale/.ignore/messages_tpl.c:1151 locale/.ignore/messages_tpl.c:1253
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -110,8 +110,9 @@ msgstr "Nieuwe rol aanmaken"
 #. ./views/common/dashboard.tpl
 #. ./views/feedback/feedback_meeting.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:35 locale/.ignore/messages_tpl.c:59
-#: locale/.ignore/messages_tpl.c:284 locale/.ignore/messages_tpl.c:1052
+#: locale/.ignore/messages_tpl.c:35 locale/.ignore/messages_tpl.c:65
+#: locale/.ignore/messages_tpl.c:290 locale/.ignore/messages_tpl.c:1049
+#: controllers/feedback.php:628
 msgid "Name"
 msgstr "Naam"
 
@@ -121,9 +122,9 @@ msgstr "Naam"
 #. ./views/round/start_round_confirmation.tpl
 #. ./views/competency/competencies.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:38 locale/.ignore/messages_tpl.c:77
-#: locale/.ignore/messages_tpl.c:527 locale/.ignore/messages_tpl.c:629
-#: locale/.ignore/messages_tpl.c:989 locale/.ignore/messages_tpl.c:1055
+#: locale/.ignore/messages_tpl.c:38 locale/.ignore/messages_tpl.c:83
+#: locale/.ignore/messages_tpl.c:524 locale/.ignore/messages_tpl.c:632
+#: locale/.ignore/messages_tpl.c:986 locale/.ignore/messages_tpl.c:1052
 msgid "Description"
 msgstr "Omschrijving"
 
@@ -133,9 +134,9 @@ msgstr "Omschrijving"
 #. ./views/competency/competencies.tpl
 #. ./views/competency/competencygroup.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:47 locale/.ignore/messages_tpl.c:365
-#: locale/.ignore/messages_tpl.c:701 locale/.ignore/messages_tpl.c:995
-#: locale/.ignore/messages_tpl.c:1058 locale/.ignore/messages_tpl.c:1199
+#: locale/.ignore/messages_tpl.c:47 locale/.ignore/messages_tpl.c:368
+#: locale/.ignore/messages_tpl.c:704 locale/.ignore/messages_tpl.c:992
+#: locale/.ignore/messages_tpl.c:1055 locale/.ignore/messages_tpl.c:1208
 msgid "Actions"
 msgstr "Acties"
 
@@ -154,92 +155,98 @@ msgstr "rol"
 
 #. ./views/common/dashboard.tpl
 #: locale/.ignore/messages_tpl.c:56
-msgid "Review status"
-msgstr "Status beoordeling"
+msgid "Review yourself"
+msgstr "Beoordeel jezelf"
 
 #. ./views/common/dashboard.tpl
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:62 locale/.ignore/messages_tpl.c:164
+#: locale/.ignore/messages_tpl.c:59 locale/.ignore/messages_tpl.c:71
+#: locale/.ignore/messages_tpl.c:161
+msgid "Pending"
+msgstr "Niet beoordeeld"
+
+#. ./views/common/dashboard.tpl
+#: locale/.ignore/messages_tpl.c:62
+msgid "Review status"
+msgstr "Status beoordelingen"
+
+#. ./views/common/dashboard.tpl
+#. ./views/feedback/feedback_overview.tpl
+#: locale/.ignore/messages_tpl.c:68 locale/.ignore/messages_tpl.c:158
 msgid "Status"
 msgstr "Status"
 
 #. ./views/common/dashboard.tpl
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:65 locale/.ignore/messages_tpl.c:167
-msgid "Pending"
-msgstr "Niet beoordeeld"
-
-#. ./views/common/dashboard.tpl
-#. ./views/feedback/feedback_overview.tpl
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:68 locale/.ignore/messages_tpl.c:170
-#: locale/.ignore/messages_tpl.c:719
+#: locale/.ignore/messages_tpl.c:74 locale/.ignore/messages_tpl.c:164
+#: locale/.ignore/messages_tpl.c:722
 msgid "Completed"
 msgstr "Voltooid"
 
 #. ./views/common/dashboard.tpl
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:71 locale/.ignore/messages_tpl.c:179
-#: controllers/round.php:505
+#: locale/.ignore/messages_tpl.c:77 locale/.ignore/messages_tpl.c:185
+#: controllers/round.php:504
 msgid "No round in progress"
 msgstr "Geen ronde bezig op dit moment"
 
 #. ./views/common/dashboard.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:74 locale/.ignore/messages_tpl.c:1196
+#: locale/.ignore/messages_tpl.c:80 locale/.ignore/messages_tpl.c:1205
 msgid "Reports"
 msgstr "Rapporten"
 
 #. ./views/common/dashboard.tpl
-#: locale/.ignore/messages_tpl.c:80
+#: locale/.ignore/messages_tpl.c:86
 msgid "View report"
 msgstr "Rapport bekijken"
 
 #. ./views/common/dashboard.tpl
-#: locale/.ignore/messages_tpl.c:83
+#: locale/.ignore/messages_tpl.c:89
 msgid "Round in progress"
 msgstr "Ronde in uitvoering"
 
 #. ./views/common/dashboard.tpl
-#: locale/.ignore/messages_tpl.c:86 controllers/report.php:59
+#: locale/.ignore/messages_tpl.c:92 controllers/report.php:59
 msgid "No reports found"
 msgstr "Geen rapporten gevonden"
 
 #. ./views/common/delete_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:89
+#: locale/.ignore/messages_tpl.c:95
 msgid "Are you sure you want to delete the %1 %2"
-msgstr "Weet u zeker dat u de %1 %2 wilt verwijderen"
+msgstr "Weet je zeker dat je de %1 %2 wilt verwijderen"
 
 #. ./views/common/delete_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:92
+#: locale/.ignore/messages_tpl.c:98
 msgid "You won't be able to undo this action."
-msgstr "U kunt deze actie niet ongedaan maken."
+msgstr "Je kunt deze actie niet ongedaan maken."
 
 #. ./views/common/delete_confirmation.tpl
 #. ./views/competency/competencygroup.tpl
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:98 locale/.ignore/messages_tpl.c:1013
-#: locale/.ignore/messages_tpl.c:1079 locale/.ignore/messages_tpl.c:1262
+#: locale/.ignore/messages_tpl.c:104 locale/.ignore/messages_tpl.c:1010
+#: locale/.ignore/messages_tpl.c:1076 locale/.ignore/messages_tpl.c:1271
 msgid "Delete"
 msgstr "Verwijder"
 
 #. ./views/common/info_message.tpl
-#: locale/.ignore/messages_tpl.c:101
+#: locale/.ignore/messages_tpl.c:107
 msgid "Go to Dashboard"
 msgstr "Ga naar dashboard"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:104 controllers/dashboard.php:24
+#: locale/.ignore/messages_tpl.c:110 controllers/dashboard.php:31
 msgid "Dashboard"
 msgstr "Dashboard"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:107
+#: locale/.ignore/messages_tpl.c:113
 msgid "Report"
 msgstr "Rapport"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:110
+#: locale/.ignore/messages_tpl.c:116
 msgid "Feedback"
 msgstr "Feedback"
 
@@ -247,85 +254,68 @@ msgstr "Feedback"
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/report/report.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:113 locale/.ignore/messages_tpl.c:221
-#: locale/.ignore/messages_tpl.c:227 locale/.ignore/messages_tpl.c:551
-#: locale/.ignore/messages_tpl.c:1046
+#: locale/.ignore/messages_tpl.c:119 locale/.ignore/messages_tpl.c:227
+#: locale/.ignore/messages_tpl.c:233 locale/.ignore/messages_tpl.c:548
+#: locale/.ignore/messages_tpl.c:1043
 msgid "Competencies"
 msgstr "Competenties"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:116 controllers/department.php:105
+#: locale/.ignore/messages_tpl.c:122 controllers/department.php:105
 #: controllers/department.php:106
 msgid "Departments"
 msgstr "Afdelingen"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:119 controllers/role.php:114
+#: locale/.ignore/messages_tpl.c:125 controllers/role.php:114
 msgid "Roles"
 msgstr "Rollen"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:122 controllers/user.php:121
+#: locale/.ignore/messages_tpl.c:128 controllers/user.php:121
 #: controllers/user.php:122
 msgid "Users"
 msgstr "Gebruikers"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:125
+#. ./views/admin/info_message_overview.tpl
+#. ./views/layout/layout.tpl
+#: locale/.ignore/messages_tpl.c:131 locale/.ignore/messages_tpl.c:476
+#: locale/.ignore/messages_tpl.c:1079
+msgid "Info message"
+msgstr "Infobericht"
+
+#. ./views/common/menu.tpl
+#: locale/.ignore/messages_tpl.c:134
 msgid "Overview"
 msgstr "Overzicht"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:128
+#: locale/.ignore/messages_tpl.c:137
 msgid "Profile"
 msgstr "Profiel"
 
 #. ./views/common/menu.tpl
-#: locale/.ignore/messages_tpl.c:131
+#: locale/.ignore/messages_tpl.c:140
 msgid "Logout"
 msgstr "Uitloggen"
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:134 locale/.ignore/messages_tpl.c:203
-msgid "Click to hide"
-msgstr "Klik om te verbergen"
-
-#. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:137 controllers/round.php:24
+#: locale/.ignore/messages_tpl.c:143 controllers/round.php:24
 msgid "Round overview"
 msgstr "Overzicht ronde"
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:140
-msgid "You haven't reviewed yourself yet!"
-msgstr "U heeft uzelf nog niet beoordeeld!"
-
-#. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:143
-msgid "Click here to review yourself."
-msgstr "Klik hier om uzelf te beoordelen."
-
-#. ./views/feedback/feedback_overview.tpl
 #: locale/.ignore/messages_tpl.c:146
-msgid "Click here"
-msgstr "Klik hier"
-
-#. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:149
-msgid "to change your choice regarding a meeting."
-msgstr "om uw keuze met betrekking tot een bespreking te veranderen."
-
-#. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:152
 msgid ""
 "You have pending reviews! Click the review button next to an open review to "
 "review that person."
 msgstr ""
-"U heeft openstaande beoordelingen. Klik de 'Beoordeel' knop naast een naam "
+"Je hebt openstaande beoordelingen. Klik de 'Beoordeel' knop naast een naam "
 "om die persoon te beoordelen."
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:155 locale/.ignore/messages_tpl.c:185
+#: locale/.ignore/messages_tpl.c:149 locale/.ignore/messages_tpl.c:191
 msgid "Name reviewee"
 msgstr "Naam beoordeelde"
 
@@ -333,77 +323,103 @@ msgstr "Naam beoordeelde"
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:161 locale/.ignore/messages_tpl.c:191
-#: locale/.ignore/messages_tpl.c:689 locale/.ignore/messages_tpl.c:1184
-#: locale/.ignore/messages_tpl.c:1238
+#: locale/.ignore/messages_tpl.c:155 locale/.ignore/messages_tpl.c:197
+#: locale/.ignore/messages_tpl.c:692 locale/.ignore/messages_tpl.c:1193
+#: locale/.ignore/messages_tpl.c:1247
 msgid "Role"
 msgstr "Rol"
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:173 locale/.ignore/messages_tpl.c:194
+#: locale/.ignore/messages_tpl.c:167 locale/.ignore/messages_tpl.c:200
 msgid "Review"
 msgstr "Beoordeel"
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:176
+#: locale/.ignore/messages_tpl.c:170
 msgid "Edit comments"
 msgstr "Toelichting aanpassen"
 
 #. ./views/feedback/feedback_overview.tpl
+#: locale/.ignore/messages_tpl.c:173
+msgid ""
+"You have not stated that you do not want to have a meeting with someone."
+msgstr "Je hebt niet aangegeven of je een afspraak wilt maken met iemand."
+
+#. ./views/feedback/feedback_overview.tpl
+#: locale/.ignore/messages_tpl.c:176
+msgid "You stated that you want to have a meeting with"
+msgstr "Je hebt aangegeven dat je een afspraak wilt met"
+
+#. ./views/feedback/feedback_overview.tpl
+#: locale/.ignore/messages_tpl.c:179
+msgid "about"
+msgstr "over"
+
+#. ./views/feedback/feedback_overview.tpl
 #: locale/.ignore/messages_tpl.c:182
+msgid "Edit meeting"
+msgstr "Afspraak aanpassen"
+
+#. ./views/feedback/feedback_overview.tpl
+#: locale/.ignore/messages_tpl.c:188
 msgid "Skipped"
 msgstr "Overgeslagen"
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:197
+#: locale/.ignore/messages_tpl.c:203
 msgid "Add to reviewees"
 msgstr "Toevoegen aan lijst"
 
 #. ./views/feedback/feedback_overview.tpl
-#: locale/.ignore/messages_tpl.c:200
+#: locale/.ignore/messages_tpl.c:206
 msgid "Click here for more information about this feedback round"
 msgstr "Klik hier voor meer informatie over deze feedbackronde"
 
-#. ./views/feedback/skip_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:206
-msgid "Are you sure you don't want to review %1 %2?"
-msgstr "Weet u zeker dat u %1 %2 niet wilt beoordelen?"
+#. ./views/feedback/feedback_overview.tpl
+#: locale/.ignore/messages_tpl.c:209
+msgid "Click to hide"
+msgstr "Klik om te verbergen"
 
 #. ./views/feedback/skip_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:209
+#: locale/.ignore/messages_tpl.c:212
+msgid "Are you sure you don't want to review %1 %2?"
+msgstr "Weet je zeker dat je %1 %2 niet wilt beoordelen?"
+
+#. ./views/feedback/skip_confirmation.tpl
+#: locale/.ignore/messages_tpl.c:215
 msgid "Warning"
 msgstr "Waarschuwing"
 
 #. ./views/feedback/skip_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:212
+#: locale/.ignore/messages_tpl.c:218
 msgid "You won't be able to review this person again this round."
-msgstr "U kunt deze persoon deze ronde niet weer beoordelen."
+msgstr "Je kunt deze persoon deze ronde niet weer beoordelen."
 
 #. ./views/feedback/skip_confirmation.tpl
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:218 locale/.ignore/messages_tpl.c:329
-#: controllers/feedback.php:634
+#: locale/.ignore/messages_tpl.c:224 locale/.ignore/messages_tpl.c:332
+#: controllers/feedback.php:714
 msgid "Skip person"
 msgstr "Persoon overslaan"
 
 #. ./views/feedback/edit_feedback.tpl
-#: locale/.ignore/messages_tpl.c:224 locale/.ignore/messages_tpl.c:242
+#: locale/.ignore/messages_tpl.c:230 locale/.ignore/messages_tpl.c:248
 msgid "Rating"
 msgstr "Beoordeling"
 
 #. ./views/feedback/edit_feedback.tpl
-#: locale/.ignore/messages_tpl.c:230 locale/.ignore/messages_tpl.c:248
+#: locale/.ignore/messages_tpl.c:236 locale/.ignore/messages_tpl.c:254
 msgid "Comments"
 msgstr "Toelichtingen"
 
 #. ./views/feedback/edit_feedback.tpl
-#: locale/.ignore/messages_tpl.c:233
+#: locale/.ignore/messages_tpl.c:239
 msgid "I can't review role specific competencies"
 msgstr "Ik kan geen rol specifieke competenties bedenken"
 
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:236 locale/.ignore/messages_tpl.c:317
+#: locale/.ignore/messages_tpl.c:242 locale/.ignore/messages_tpl.c:323
 msgid "Add a comment for the competency %1 here"
 msgstr "Voeg hier een toelichting toe voor de competentie %1"
 
@@ -411,35 +427,36 @@ msgstr "Voeg hier een toelichting toe voor de competentie %1"
 #. ./views/feedback/feedback.tpl
 #. ./views/profile/profile.tpl
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:239 locale/.ignore/messages_tpl.c:245
-#: locale/.ignore/messages_tpl.c:332 locale/.ignore/messages_tpl.c:443
-#: locale/.ignore/messages_tpl.c:575 locale/.ignore/messages_tpl.c:596
+#: locale/.ignore/messages_tpl.c:245 locale/.ignore/messages_tpl.c:251
+#: locale/.ignore/messages_tpl.c:335 locale/.ignore/messages_tpl.c:440
+#: locale/.ignore/messages_tpl.c:557 locale/.ignore/messages_tpl.c:581
+#: locale/.ignore/messages_tpl.c:602
 msgid "Agreements"
 msgstr "Afspraken"
 
 #. ./views/feedback/edit_feedback.tpl
-#: locale/.ignore/messages_tpl.c:251
+#: locale/.ignore/messages_tpl.c:257
 msgid "Add a comment for %1 agreement here"
 msgstr "Voeg hier een toelichting toe voor afspraken over %1"
 
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/feedback/feedback_form.tpl
-#: locale/.ignore/messages_tpl.c:254 locale/.ignore/messages_tpl.c:302
+#: locale/.ignore/messages_tpl.c:260 locale/.ignore/messages_tpl.c:308
 msgid "Extra question"
 msgstr "Extra vraag"
 
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/feedback/feedback_form.tpl
-#: locale/.ignore/messages_tpl.c:257 locale/.ignore/messages_tpl.c:296
-#: locale/.ignore/messages_tpl.c:305
+#. ./views/report/report.tpl
+#: locale/.ignore/messages_tpl.c:263 locale/.ignore/messages_tpl.c:302
+#: locale/.ignore/messages_tpl.c:311 locale/.ignore/messages_tpl.c:608
 msgid "In what way have you contributed to the success of the organisation?"
-msgstr "In welke zin heeft u bijgedragen aan het succes van de organisatie?"
+msgstr "In welke zin heb jij bijgedragen aan het succes van de organisatie?"
 
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/feedback/feedback_form.tpl
-#. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:260 locale/.ignore/messages_tpl.c:299
-#: locale/.ignore/messages_tpl.c:308 locale/.ignore/messages_tpl.c:602
+#: locale/.ignore/messages_tpl.c:266 locale/.ignore/messages_tpl.c:305
+#: locale/.ignore/messages_tpl.c:314
 msgid "In what way has %1 %2 contributed to the success of the organisation?"
 msgstr ""
 "In welke zin heeft %1 %2 bijgedragen aan het succes van de organisatie?"
@@ -447,26 +464,26 @@ msgstr ""
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/feedback/feedback_form.tpl
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:263 locale/.ignore/messages_tpl.c:311
-#: locale/.ignore/messages_tpl.c:350
+#: locale/.ignore/messages_tpl.c:269 locale/.ignore/messages_tpl.c:317
+#: locale/.ignore/messages_tpl.c:353
 msgid "Previous"
 msgstr "Vorige"
 
 #. ./views/feedback/edit_feedback.tpl
 #. ./views/feedback/feedback_meeting.tpl
 #. ./views/feedback/feedback_form.tpl
-#: locale/.ignore/messages_tpl.c:266 locale/.ignore/messages_tpl.c:293
-#: locale/.ignore/messages_tpl.c:314
+#: locale/.ignore/messages_tpl.c:272 locale/.ignore/messages_tpl.c:299
+#: locale/.ignore/messages_tpl.c:320
 msgid "Submit"
 msgstr "Versturen"
 
 #. ./views/feedback/feedback_meeting.tpl
-#: locale/.ignore/messages_tpl.c:269
+#: locale/.ignore/messages_tpl.c:275
 msgid "Meeting"
 msgstr "Beoordeling"
 
 #. ./views/feedback/feedback_meeting.tpl
-#: locale/.ignore/messages_tpl.c:272
+#: locale/.ignore/messages_tpl.c:278
 msgid "Do you wish to have a meeting with someone to discuss the round?"
 msgstr "Wil je de ronde bespreken met iemand?"
 
@@ -474,8 +491,8 @@ msgstr "Wil je de ronde bespreken met iemand?"
 #. ./views/round/round_overview.tpl
 #. ./views/competency/competencies.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:275 locale/.ignore/messages_tpl.c:674
-#: locale/.ignore/messages_tpl.c:977 locale/.ignore/messages_tpl.c:1166
+#: locale/.ignore/messages_tpl.c:281 locale/.ignore/messages_tpl.c:677
+#: locale/.ignore/messages_tpl.c:974 locale/.ignore/messages_tpl.c:1175
 msgid "Yes"
 msgstr "Ja"
 
@@ -483,95 +500,87 @@ msgstr "Ja"
 #. ./views/round/round_overview.tpl
 #. ./views/competency/competencies.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:278 locale/.ignore/messages_tpl.c:671
-#: locale/.ignore/messages_tpl.c:980 locale/.ignore/messages_tpl.c:1163
+#: locale/.ignore/messages_tpl.c:284 locale/.ignore/messages_tpl.c:674
+#: locale/.ignore/messages_tpl.c:977 locale/.ignore/messages_tpl.c:1172
 msgid "No"
 msgstr "Nee"
 
 #. ./views/feedback/feedback_meeting.tpl
-#: locale/.ignore/messages_tpl.c:281
+#: locale/.ignore/messages_tpl.c:287
 msgid "With who?"
 msgstr "Met wie?"
 
 #. ./views/feedback/feedback_meeting.tpl
-#: locale/.ignore/messages_tpl.c:287
+#: locale/.ignore/messages_tpl.c:293
 msgid "What is the subject of the meeting?"
-msgstr "Wat is het onderwerp van de bijeenkomst?"
+msgstr "Wat is het onderwerp van de afspraak?"
 
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:320
-msgid "Add a comment for %1 agreements here"
-msgstr "Voeg hier een toelichting toe voor afspraken over %1"
+#: locale/.ignore/messages_tpl.c:326
+msgid "Add a comment for %1 here"
+msgstr "Voeg hier een toelichting toe voor %1"
 
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:323
+#: locale/.ignore/messages_tpl.c:329
 msgid ""
 "Make sure you submit this form within %1 %2. Otherwise you will be "
 "automatically logged out."
 msgstr ""
-"Zorg er voor dat u dit formulier binnen %1 %2 invult. Anders wordt u "
+"Zorg er voor dat je dit formulier binnen %1 %2 invult. Anders wordt je "
 "automatisch uitgelogd."
 
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:326
-msgid ""
-"You can read the description of a competency by hovering your mouse over it"
-msgstr ""
-"U kunt de beschrijving van een competentie lezen door uw muis over de "
-"competentie te bewegen"
-
-#. ./views/feedback/feedback.tpl
 #. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:335 locale/.ignore/messages_tpl.c:446
-#: locale/.ignore/messages_tpl.c:449 lib/functions.php:146
+#: locale/.ignore/messages_tpl.c:338 locale/.ignore/messages_tpl.c:443
+#: locale/.ignore/messages_tpl.c:446 lib/functions.php:146
 msgid "Work agreements"
 msgstr "Werkafspraken"
 
 #. ./views/feedback/feedback.tpl
 #. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:338 locale/.ignore/messages_tpl.c:452
-#: locale/.ignore/messages_tpl.c:455 lib/functions.php:148
+#: locale/.ignore/messages_tpl.c:341 locale/.ignore/messages_tpl.c:449
+#: locale/.ignore/messages_tpl.c:452 lib/functions.php:148
 msgid "Training agreements"
 msgstr "Scholingafspraken"
 
 #. ./views/feedback/feedback.tpl
 #. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:341 locale/.ignore/messages_tpl.c:458
-#: locale/.ignore/messages_tpl.c:461 lib/functions.php:150
+#: locale/.ignore/messages_tpl.c:344 locale/.ignore/messages_tpl.c:455
+#: locale/.ignore/messages_tpl.c:458 lib/functions.php:150
 msgid "Other agreements"
 msgstr "Overige afspraken"
 
 #. ./views/feedback/feedback.tpl
 #. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:344 locale/.ignore/messages_tpl.c:464
-#: locale/.ignore/messages_tpl.c:467 lib/functions.php:152
+#: locale/.ignore/messages_tpl.c:347 locale/.ignore/messages_tpl.c:461
+#: locale/.ignore/messages_tpl.c:464 lib/functions.php:152
 msgid "Personal goals"
 msgstr "Persoonlijke doelen"
 
 #. ./views/feedback/feedback.tpl
-#: locale/.ignore/messages_tpl.c:353
+#: locale/.ignore/messages_tpl.c:356
 msgid "Next"
 msgstr "Volgende"
 
 #. ./views/department/departments.tpl
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:356 locale/.ignore/messages_tpl.c:386
-#: locale/.ignore/messages_tpl.c:389
+#: locale/.ignore/messages_tpl.c:359 locale/.ignore/messages_tpl.c:389
+#: locale/.ignore/messages_tpl.c:392
 msgid "Department name"
 msgstr "Afdeling naam"
 
 #. ./views/department/departments.tpl
-#: locale/.ignore/messages_tpl.c:359
+#: locale/.ignore/messages_tpl.c:362
 msgid "Manager"
 msgstr "Manager"
 
 #. ./views/department/departments.tpl
-#: locale/.ignore/messages_tpl.c:362
+#: locale/.ignore/messages_tpl.c:365
 msgid "Date created"
 msgstr "Datum aangemaakt"
 
 #. ./views/department/departments.tpl
-#: locale/.ignore/messages_tpl.c:371 controllers/department.php:84
+#: locale/.ignore/messages_tpl.c:374 controllers/department.php:84
 #: controllers/department.php:89 controllers/department.php:119
 #: controllers/department.php:152 controllers/department.php:158
 #: controllers/department.php:175 controllers/department.php:182
@@ -580,128 +589,113 @@ msgid "department"
 msgstr "afdeling"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:374 locale/.ignore/messages_tpl.c:398
-#: locale/.ignore/messages_tpl.c:404
+#: locale/.ignore/messages_tpl.c:377 locale/.ignore/messages_tpl.c:401
+#: locale/.ignore/messages_tpl.c:407
 msgid "Role name"
 msgstr "Naam rol"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:380
+#: locale/.ignore/messages_tpl.c:383
 msgid "Updating department %1"
 msgstr "Afdeling %1 bewerken"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:383
+#: locale/.ignore/messages_tpl.c:386
 msgid "Creating new department"
 msgstr "Nieuwe afdeling aanmaken"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:392
+#: locale/.ignore/messages_tpl.c:395
 msgid "No managers/admins found"
 msgstr "Geen managers/admins gevonden"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:395
+#: locale/.ignore/messages_tpl.c:398
 msgid "Role(s)"
 msgstr "Rol(len)"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:410
+#: locale/.ignore/messages_tpl.c:413
 msgid "Add role"
 msgstr "Rol toevoegen"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:416
+#: locale/.ignore/messages_tpl.c:419
 msgid "Update department"
 msgstr "Afdeling bewerken"
 
 #. ./views/department/department.tpl
-#: locale/.ignore/messages_tpl.c:419
+#: locale/.ignore/messages_tpl.c:422
 msgid "Create new department"
 msgstr "Nieuwe afdeling aanmaken"
 
 #. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:422
-msgid "Agreement name"
-msgstr "Naam afspraak"
-
-#. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:425
-msgid "Agreement description"
-msgstr "Omschrijving afspraak"
-
-#. ./views/profile/profile.tpl
 #. ./views/security/new_password.tpl
-#: locale/.ignore/messages_tpl.c:428 locale/.ignore/messages_tpl.c:431
-#: locale/.ignore/messages_tpl.c:434 locale/.ignore/messages_tpl.c:1082
+#: locale/.ignore/messages_tpl.c:425 locale/.ignore/messages_tpl.c:428
+#: locale/.ignore/messages_tpl.c:431 locale/.ignore/messages_tpl.c:1085
 msgid "New password"
 msgstr "Nieuw wachtwoord"
 
 #. ./views/profile/profile.tpl
 #. ./views/security/new_password.tpl
-#: locale/.ignore/messages_tpl.c:437 locale/.ignore/messages_tpl.c:440
-#: locale/.ignore/messages_tpl.c:1085
+#: locale/.ignore/messages_tpl.c:434 locale/.ignore/messages_tpl.c:437
+#: locale/.ignore/messages_tpl.c:1088
 msgid "Confirm new password"
 msgstr "Bevestig wachtwoord"
 
 #. ./views/profile/profile.tpl
-#: locale/.ignore/messages_tpl.c:473
-msgid "Update profile"
-msgstr "Profiel bijwerken"
+#: locale/.ignore/messages_tpl.c:470
+msgid "Save changes"
+msgstr "Wijzigingen opslaan"
 
 #. ./views/admin/info_message_overview.tpl
-#: locale/.ignore/messages_tpl.c:476
+#: locale/.ignore/messages_tpl.c:473
 msgid "View info message"
 msgstr "Infobericht weergeven"
 
 #. ./views/admin/info_message_overview.tpl
-#: locale/.ignore/messages_tpl.c:479
-msgid "Info message"
-msgstr "Infobericht"
-
-#. ./views/admin/info_message_overview.tpl
-#: locale/.ignore/messages_tpl.c:482
+#. ./views/layout/layout.tpl
+#: locale/.ignore/messages_tpl.c:479 locale/.ignore/messages_tpl.c:1082
 msgid "Close"
 msgstr "Sluiten"
 
 #. ./views/admin/info_message_overview.tpl
-#: locale/.ignore/messages_tpl.c:485
+#: locale/.ignore/messages_tpl.c:482
 msgid "Edit info message"
 msgstr "Infobericht aanpassen"
 
 #. ./views/admin/info_message_overview.tpl
-#: locale/.ignore/messages_tpl.c:488
+#: locale/.ignore/messages_tpl.c:485
 msgid "No info message found"
 msgstr "Geen infobericht gevonden"
 
 #. ./views/admin/info_message_overview.tpl
 #. ./views/admin/info_message.tpl
-#: locale/.ignore/messages_tpl.c:491 locale/.ignore/messages_tpl.c:518
+#: locale/.ignore/messages_tpl.c:488 locale/.ignore/messages_tpl.c:515
 msgid "Create info message"
 msgstr "Infobericht aanmaken"
 
 #. ./views/admin/info_message.tpl
-#: locale/.ignore/messages_tpl.c:494
+#: locale/.ignore/messages_tpl.c:491
 msgid "Updating info message"
 msgstr "Infobericht aanpassen"
 
 #. ./views/admin/info_message.tpl
-#: locale/.ignore/messages_tpl.c:497
+#: locale/.ignore/messages_tpl.c:494
 msgid "Creating info message"
 msgstr "Infobericht aanmaken"
 
 #. ./views/admin/info_message.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:500 locale/.ignore/messages_tpl.c:521
-#: locale/.ignore/messages_tpl.c:767 locale/.ignore/messages_tpl.c:824
+#: locale/.ignore/messages_tpl.c:497 locale/.ignore/messages_tpl.c:521
 #: locale/.ignore/messages_tpl.c:866 locale/.ignore/messages_tpl.c:872
-#: locale/.ignore/messages_tpl.c:896 locale/.ignore/messages_tpl.c:938
-msgid "Show info"
-msgstr "Informatie tonen"
+#: locale/.ignore/messages_tpl.c:938
+msgid "Hide info"
+msgstr "Informatie verbergen"
 
 #. ./views/admin/info_message.tpl
-#: locale/.ignore/messages_tpl.c:503
+#: locale/.ignore/messages_tpl.c:500
 msgid ""
 "This text area can be used to setup an info message. This info message will "
 "be shown the first time somebody logs in and can be used to display any "
@@ -714,161 +708,157 @@ msgstr ""
 #. ./views/admin/info_message.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:506 locale/.ignore/messages_tpl.c:800
-#: locale/.ignore/messages_tpl.c:848 locale/.ignore/messages_tpl.c:920
+#: locale/.ignore/messages_tpl.c:503 locale/.ignore/messages_tpl.c:797
+#: locale/.ignore/messages_tpl.c:845 locale/.ignore/messages_tpl.c:917
 msgid "Note:"
 msgstr "Let op:"
 
 #. ./views/admin/info_message.tpl
-#: locale/.ignore/messages_tpl.c:509
+#: locale/.ignore/messages_tpl.c:506
 msgid ""
 "Unlike the rest of the application, most HTML that you use in this text area "
-"does not get escaped or removed. Only JavaScript, and external links and "
-"resources will be removed."
+"does not get escaped or removed. Only JavaScript and external resources will "
+"be removed."
 msgstr ""
-"In tegenstelling tot de rest van de applicatie zal de meeste HTML die u hier "
-"invoert niet verwijderd of escaped worden. Alleen JavaScript, en externe "
-"links en bronnen zullen verwijderd worden."
+"In tegenstelling tot de rest van de applicatie zal de meeste HTML die je "
+"hier invoert niet verwijderd of escaped worden. Alleen JavaScript en externe "
+"bronnen zullen verwijderd worden."
 
 #. ./views/admin/info_message.tpl
-#: locale/.ignore/messages_tpl.c:515
+#: locale/.ignore/messages_tpl.c:512
 msgid "Update info message"
 msgstr "Infobericht aanpassen"
 
 #. ./views/admin/info_message.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:524 locale/.ignore/messages_tpl.c:869
-#: locale/.ignore/messages_tpl.c:875 locale/.ignore/messages_tpl.c:941
-msgid "Hide info"
-msgstr "Informatie verbergen"
+#: locale/.ignore/messages_tpl.c:518 locale/.ignore/messages_tpl.c:764
+#: locale/.ignore/messages_tpl.c:821 locale/.ignore/messages_tpl.c:863
+#: locale/.ignore/messages_tpl.c:869 locale/.ignore/messages_tpl.c:893
+#: locale/.ignore/messages_tpl.c:935
+msgid "Show info"
+msgstr "Informatie tonen"
 
 #. ./views/report/report_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:530 locale/.ignore/messages_tpl.c:1169
+#: locale/.ignore/messages_tpl.c:527 locale/.ignore/messages_tpl.c:1178
 msgid "View"
 msgstr "Bekijken"
 
 #. ./views/report/report_overview.tpl
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:533 locale/.ignore/messages_tpl.c:722
+#: locale/.ignore/messages_tpl.c:530 locale/.ignore/messages_tpl.c:725
 msgid "In progress"
 msgstr "In uitvoering"
 
 #. ./views/report/report_overview.tpl
-#: locale/.ignore/messages_tpl.c:536
+#: locale/.ignore/messages_tpl.c:533
 msgid "No reports found!"
 msgstr "Geen rapporten gevonden!"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:539 locale/.ignore/messages_tpl.c:542
-#: locale/.ignore/messages_tpl.c:605
+#: locale/.ignore/messages_tpl.c:536 locale/.ignore/messages_tpl.c:539
+#: locale/.ignore/messages_tpl.c:611
 msgid "Own"
 msgstr "Eigen"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:545
+#: locale/.ignore/messages_tpl.c:542
 msgid "Options"
 msgstr "Opties"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:548 locale/.ignore/messages_tpl.c:611
+#: locale/.ignore/messages_tpl.c:545 locale/.ignore/messages_tpl.c:617
 msgid "show"
 msgstr "tonen"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:554
+#: locale/.ignore/messages_tpl.c:551 locale/.ignore/messages_tpl.c:560
 msgid "Select all"
 msgstr "Selecteer alles"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:557
+#: locale/.ignore/messages_tpl.c:554 locale/.ignore/messages_tpl.c:563
 msgid "Deselect all"
 msgstr "Deselecteer alles"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:560
+#: locale/.ignore/messages_tpl.c:566
 msgid "Me about me"
 msgstr "Ik over mezelf"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:563 locale/.ignore/messages_tpl.c:584
+#: locale/.ignore/messages_tpl.c:569 locale/.ignore/messages_tpl.c:590
 msgid "General competencies"
 msgstr "Algemene competenties"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:566 locale/.ignore/messages_tpl.c:572
-#: locale/.ignore/messages_tpl.c:578 locale/.ignore/messages_tpl.c:587
-#: locale/.ignore/messages_tpl.c:593 locale/.ignore/messages_tpl.c:599
+#: locale/.ignore/messages_tpl.c:572 locale/.ignore/messages_tpl.c:578
+#: locale/.ignore/messages_tpl.c:584 locale/.ignore/messages_tpl.c:593
+#: locale/.ignore/messages_tpl.c:599 locale/.ignore/messages_tpl.c:605
 msgid "No reviews found"
 msgstr "Geen beoordelingen gevonden"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:569 locale/.ignore/messages_tpl.c:590
+#: locale/.ignore/messages_tpl.c:575 locale/.ignore/messages_tpl.c:596
 msgid "Role competencies"
 msgstr "Rol competenties"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:581
+#: locale/.ignore/messages_tpl.c:587
 msgid "Others about me"
 msgstr "Anderen over mij"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:608
+#: locale/.ignore/messages_tpl.c:614
 msgid "No reviews found for the current round"
 msgstr "Geen beoordelingen gevonden voor de huidige ronde"
 
 #. ./views/report/report.tpl
-#: locale/.ignore/messages_tpl.c:614
+#: locale/.ignore/messages_tpl.c:620
 msgid "hide"
 msgstr "verbergen"
 
 #. ./views/report/report_pager.tpl
-#: locale/.ignore/messages_tpl.c:617
+#: locale/.ignore/messages_tpl.c:623
 msgid "Previous report"
 msgstr "Vorig rapport"
 
 #. ./views/report/report_pager.tpl
-#: locale/.ignore/messages_tpl.c:620
+#: locale/.ignore/messages_tpl.c:626
 msgid "Next report"
 msgstr "Volgend rapport"
 
 #. ./views/round/start_round_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:623
+#: locale/.ignore/messages_tpl.c:629
 msgid "Are you sure you want to start a round with the following info?"
-msgstr "Weet u zeker dat u een ronde wilt starten met de volgende info?"
-
-#. ./views/round/start_round_confirmation.tpl
-#. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:626 locale/.ignore/messages_tpl.c:749
-msgid "Information"
-msgstr "Informatie"
+msgstr "Weet je zeker dat je een ronde wilt starten met de volgende info?"
 
 #. ./views/round/start_round_confirmation.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:632 locale/.ignore/messages_tpl.c:761
-#: locale/.ignore/messages_tpl.c:887
+#: locale/.ignore/messages_tpl.c:635 locale/.ignore/messages_tpl.c:758
+#: locale/.ignore/messages_tpl.c:884
 msgid "Round closing date"
 msgstr "Ronde sluitingsdatum"
 
 #. ./views/round/start_round_confirmation.tpl
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:635 locale/.ignore/messages_tpl.c:716
+#: locale/.ignore/messages_tpl.c:638 locale/.ignore/messages_tpl.c:719
 msgid "Manual closure"
 msgstr "Handmatig stoppen"
 
 #. ./views/round/start_round_confirmation.tpl
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:638 locale/.ignore/messages_tpl.c:779
-#: locale/.ignore/messages_tpl.c:815
+#: locale/.ignore/messages_tpl.c:641 locale/.ignore/messages_tpl.c:776
+#: locale/.ignore/messages_tpl.c:812
 msgid "Total amount to review"
 msgstr "Totaal aantal te beoordelen"
 
 #. ./views/round/start_round_confirmation.tpl
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:641 locale/.ignore/messages_tpl.c:785
-#: locale/.ignore/messages_tpl.c:818
+#: locale/.ignore/messages_tpl.c:644 locale/.ignore/messages_tpl.c:782
+#: locale/.ignore/messages_tpl.c:815
 msgid "Amount to review from own department"
 msgstr "Aantal te beoordelen van eigen afdeling"
 
@@ -876,9 +866,9 @@ msgstr "Aantal te beoordelen van eigen afdeling"
 #. ./views/round/round_overview.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:644 locale/.ignore/messages_tpl.c:728
-#: locale/.ignore/messages_tpl.c:836 locale/.ignore/messages_tpl.c:854
-#: locale/.ignore/messages_tpl.c:908 locale/.ignore/messages_tpl.c:926
+#: locale/.ignore/messages_tpl.c:647 locale/.ignore/messages_tpl.c:731
+#: locale/.ignore/messages_tpl.c:833 locale/.ignore/messages_tpl.c:851
+#: locale/.ignore/messages_tpl.c:905 locale/.ignore/messages_tpl.c:923
 msgid "Minimum to be reviewed by"
 msgstr "Minimum beoordeeld door"
 
@@ -886,36 +876,36 @@ msgstr "Minimum beoordeeld door"
 #. ./views/round/round_overview.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:647 locale/.ignore/messages_tpl.c:731
-#: locale/.ignore/messages_tpl.c:842 locale/.ignore/messages_tpl.c:857
-#: locale/.ignore/messages_tpl.c:914 locale/.ignore/messages_tpl.c:929
+#: locale/.ignore/messages_tpl.c:650 locale/.ignore/messages_tpl.c:734
+#: locale/.ignore/messages_tpl.c:839 locale/.ignore/messages_tpl.c:854
+#: locale/.ignore/messages_tpl.c:911 locale/.ignore/messages_tpl.c:926
 msgid "Minimum to review"
 msgstr "Minimum aantal te beoordelen"
 
 #. ./views/round/start_round_confirmation.tpl
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:653 locale/.ignore/messages_tpl.c:743
+#: locale/.ignore/messages_tpl.c:656 locale/.ignore/messages_tpl.c:746
 msgid "Start round"
 msgstr "Ronde starten"
 
 #. ./views/round/end_round_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:656
+#: locale/.ignore/messages_tpl.c:659
 msgid "Are you sure you want to end the current round"
-msgstr "Weet u zeker dat u de huidige ronde wilt beëindigen"
+msgstr "Weet je zeker dat je de huidige ronde wilt beëindigen"
 
 #. ./views/round/end_round_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:659
+#: locale/.ignore/messages_tpl.c:662
 msgid "Warning!"
 msgstr "Waarschuwing!"
 
 #. ./views/round/end_round_confirmation.tpl
-#: locale/.ignore/messages_tpl.c:662
+#: locale/.ignore/messages_tpl.c:665
 msgid "This will end the current round."
 msgstr "Dit beëindigd de huidige ronde."
 
 #. ./views/round/end_round_confirmation.tpl
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:668 locale/.ignore/messages_tpl.c:737
+#: locale/.ignore/messages_tpl.c:671 locale/.ignore/messages_tpl.c:740
 msgid "End round"
 msgstr "Ronde beëindigen"
 
@@ -923,10 +913,10 @@ msgstr "Ronde beëindigen"
 #. ./views/security/register.tpl
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:677 locale/.ignore/messages_tpl.c:1112
-#: locale/.ignore/messages_tpl.c:1115 locale/.ignore/messages_tpl.c:1172
-#: locale/.ignore/messages_tpl.c:1214 locale/.ignore/messages_tpl.c:1217
-#: controllers/security.php:430
+#: locale/.ignore/messages_tpl.c:680 locale/.ignore/messages_tpl.c:1121
+#: locale/.ignore/messages_tpl.c:1124 locale/.ignore/messages_tpl.c:1181
+#: locale/.ignore/messages_tpl.c:1223 locale/.ignore/messages_tpl.c:1226
+#: controllers/security.php:432
 msgid "First name"
 msgstr "Voornaam"
 
@@ -934,10 +924,10 @@ msgstr "Voornaam"
 #. ./views/security/register.tpl
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:680 locale/.ignore/messages_tpl.c:1118
-#: locale/.ignore/messages_tpl.c:1121 locale/.ignore/messages_tpl.c:1175
-#: locale/.ignore/messages_tpl.c:1220 locale/.ignore/messages_tpl.c:1223
-#: controllers/security.php:434
+#: locale/.ignore/messages_tpl.c:683 locale/.ignore/messages_tpl.c:1127
+#: locale/.ignore/messages_tpl.c:1130 locale/.ignore/messages_tpl.c:1184
+#: locale/.ignore/messages_tpl.c:1229 locale/.ignore/messages_tpl.c:1232
+#: controllers/security.php:436
 msgid "Last name"
 msgstr "Achternaam"
 
@@ -946,90 +936,84 @@ msgstr "Achternaam"
 #. ./views/security/reset_password.tpl
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:683 locale/.ignore/messages_tpl.c:1124
-#: locale/.ignore/messages_tpl.c:1139 locale/.ignore/messages_tpl.c:1178
-#: locale/.ignore/messages_tpl.c:1226 controllers/security.php:438
+#: locale/.ignore/messages_tpl.c:686 locale/.ignore/messages_tpl.c:1133
+#: locale/.ignore/messages_tpl.c:1148 locale/.ignore/messages_tpl.c:1187
+#: locale/.ignore/messages_tpl.c:1235 controllers/security.php:440
 msgid "Email"
 msgstr "Email"
 
 #. ./views/round/round_overview.tpl
 #. ./views/competency/competencies.tpl
-#: locale/.ignore/messages_tpl.c:692 locale/.ignore/messages_tpl.c:983
+#: locale/.ignore/messages_tpl.c:695 locale/.ignore/messages_tpl.c:980
 msgid "Competency groups"
 msgstr "Competentiegroepen"
 
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:695 locale/.ignore/messages_tpl.c:1190
+#: locale/.ignore/messages_tpl.c:698 locale/.ignore/messages_tpl.c:1199
 msgid "Included? "
 msgstr "Meegenomen? "
 
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:698 locale/.ignore/messages_tpl.c:1193
+#: locale/.ignore/messages_tpl.c:701 locale/.ignore/messages_tpl.c:1202
 msgid "This column shows if a person is included in the feedback round."
 msgstr ""
 "Deze kolom laat zien of een persoon wordt meegenomen in de feedbackronde."
 
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:704 locale/.ignore/messages_tpl.c:1202
+#: locale/.ignore/messages_tpl.c:707 locale/.ignore/messages_tpl.c:1211
 msgid "No users found!"
 msgstr "Geen gebruikers gevonden!"
 
 #. ./views/round/round_overview.tpl
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:707 locale/.ignore/messages_tpl.c:755
-#: locale/.ignore/messages_tpl.c:758 locale/.ignore/messages_tpl.c:881
-#: locale/.ignore/messages_tpl.c:884
+#: locale/.ignore/messages_tpl.c:710 locale/.ignore/messages_tpl.c:752
+#: locale/.ignore/messages_tpl.c:755 locale/.ignore/messages_tpl.c:878
+#: locale/.ignore/messages_tpl.c:881
 msgid "Round description"
 msgstr "Omschrijving ronde"
 
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:710
+#: locale/.ignore/messages_tpl.c:713
 msgid "Date started"
 msgstr "Datum gestart"
 
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:713
+#: locale/.ignore/messages_tpl.c:716
 msgid "Round ending"
 msgstr "Ronde eindigd"
 
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:725
+#: locale/.ignore/messages_tpl.c:728
 msgid "Review count"
 msgstr "Aantal beoordelingen"
 
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:734
+#. ./views/round/edit_round.tpl
+#: locale/.ignore/messages_tpl.c:737 locale/.ignore/messages_tpl.c:875
 msgid "Edit round"
 msgstr "Ronde aanpassen"
 
 #. ./views/round/round_overview.tpl
-#: locale/.ignore/messages_tpl.c:740
+#: locale/.ignore/messages_tpl.c:743
 msgid ""
 "No feedback round currently in progress. You can start a feedback round by "
 "clicking the 'Start round' button."
 msgstr ""
-"Er is momenteel geen ronde in uitvoering. U kunt een ronde starten door op "
+"Er is momenteel geen ronde in uitvoering. Je kunt een ronde starten door op "
 "de 'Start ronde' knop te klikken."
 
 #. ./views/round/round.tpl
-#. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:746 locale/.ignore/messages_tpl.c:863
-#: locale/.ignore/messages_tpl.c:878
+#: locale/.ignore/messages_tpl.c:749 locale/.ignore/messages_tpl.c:860
 msgid "Create round"
 msgstr "Ronde aanmaken"
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:752
-msgid "Any information you wish to display on the feedback overview page"
-msgstr "Informatie die je wilt weergeven op de feedbackpagina"
-
-#. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:764 locale/.ignore/messages_tpl.c:890
+#: locale/.ignore/messages_tpl.c:761 locale/.ignore/messages_tpl.c:887
 msgid ""
 "The date the round will close. If this field is left blank, the round will "
 "have to be ended manually."
@@ -1038,7 +1022,7 @@ msgstr ""
 "ronde handmatig beëindigd moeten worden."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:770
+#: locale/.ignore/messages_tpl.c:767
 msgid ""
 "The following fields can be used to set the amount of people each person has "
 "to review."
@@ -1047,30 +1031,30 @@ msgstr ""
 "stellen die iedere persoon moet beoordelen."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:773
+#: locale/.ignore/messages_tpl.c:770
 msgid "If a field is blank the default values will be used."
 msgstr "Als een veld leeg is worden de standaardwaarden gebruikt."
 
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:776 locale/.ignore/messages_tpl.c:833
-#: locale/.ignore/messages_tpl.c:905
+#: locale/.ignore/messages_tpl.c:773 locale/.ignore/messages_tpl.c:830
+#: locale/.ignore/messages_tpl.c:902
 msgid "Default values"
 msgstr "Standaardwaarden"
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:782
+#: locale/.ignore/messages_tpl.c:779
 msgid "All users in your organisation minus 1, because of the reviewer"
-msgstr "Alle gebruikers in uw organisatie min 1 vanwege de beoordelaar"
+msgstr "Alle gebruikers in je organisatie min 1 vanwege de beoordelaar"
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:788
+#: locale/.ignore/messages_tpl.c:785
 #, c-format
 msgid "66% of the above number, rounded up"
 msgstr "66% van het bovenstaande getal, naar boven afgerond"
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:791
+#: locale/.ignore/messages_tpl.c:788
 msgid ""
 "The amount of people that need to be reviewed from other departments will be "
 "calculated by the system."
@@ -1079,7 +1063,7 @@ msgstr ""
 "door het systeem berekend."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:794
+#: locale/.ignore/messages_tpl.c:791
 msgid ""
 "This number will be: Total amount to review (default: %1) - Amount to review "
 "from own department (default: %2)."
@@ -1088,7 +1072,7 @@ msgstr ""
 "te beoordelen uit eigen afdeling (standaard: %2)."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:797
+#: locale/.ignore/messages_tpl.c:794
 msgid ""
 "If there aren't enough people in the reviewer's own department (default: "
 "%1), all the available people from the department have to be reviewed."
@@ -1097,7 +1081,7 @@ msgstr ""
 "moeten alle beschikbare mensen uit de afdeling beoordeeld worden."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:803
+#: locale/.ignore/messages_tpl.c:800
 msgid ""
 "If there are no people in the reviewer's department he or she won't get any "
 "reviewees, because everybody always has to review atleast 1 person from his/"
@@ -1108,12 +1092,12 @@ msgstr ""
 "afdeling beoordeeld moet worden."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:806
+#: locale/.ignore/messages_tpl.c:803
 msgid "For example:"
 msgstr "Bijvoorbeeld:"
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:809
+#: locale/.ignore/messages_tpl.c:806
 msgid ""
 "Person A has 2 people in his own department. The total amount of people he "
 "has to review is 8."
@@ -1122,7 +1106,7 @@ msgstr ""
 "beoordeeld moet worden is 8."
 
 #. ./views/round/round.tpl
-#: locale/.ignore/messages_tpl.c:812
+#: locale/.ignore/messages_tpl.c:809
 msgid ""
 "Since there are only 2 people in his department, the remaining reviewees "
 "will be: 8 - 2 = 6 people from other departments."
@@ -1132,13 +1116,13 @@ msgstr ""
 
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:821 locale/.ignore/messages_tpl.c:893
+#: locale/.ignore/messages_tpl.c:818 locale/.ignore/messages_tpl.c:890
 msgid "Report options"
 msgstr "Rapport opties"
 
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:827 locale/.ignore/messages_tpl.c:899
+#: locale/.ignore/messages_tpl.c:824 locale/.ignore/messages_tpl.c:896
 msgid ""
 "The following fields can be used to set the amount of people each person has "
 "to be reviewed by and has to review in order to view their own report."
@@ -1149,7 +1133,7 @@ msgstr ""
 
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:830 locale/.ignore/messages_tpl.c:902
+#: locale/.ignore/messages_tpl.c:827 locale/.ignore/messages_tpl.c:899
 msgid ""
 "If a field is blank the default values will be used. If a field has the "
 "value zero (0) there won't be a limit for that field."
@@ -1159,74 +1143,74 @@ msgstr ""
 
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:839 locale/.ignore/messages_tpl.c:845
-#: locale/.ignore/messages_tpl.c:911 locale/.ignore/messages_tpl.c:917
+#: locale/.ignore/messages_tpl.c:836 locale/.ignore/messages_tpl.c:842
+#: locale/.ignore/messages_tpl.c:908 locale/.ignore/messages_tpl.c:914
 #, c-format
 msgid "50% of the default total amount to review, rounded up"
 msgstr "50% van het standaard aantal te beoordelen, naar boven afgerond"
 
 #. ./views/round/round.tpl
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:851 locale/.ignore/messages_tpl.c:923
+#: locale/.ignore/messages_tpl.c:848 locale/.ignore/messages_tpl.c:920
 msgid "These values can be changed after the round has started."
 msgstr "Deze waarden kunnen veranderd worden nadat de ronde is gestart."
 
 #. ./views/round/edit_round.tpl
-#: locale/.ignore/messages_tpl.c:935
+#: locale/.ignore/messages_tpl.c:932
 msgid "Update round"
 msgstr "Ronde bewerken"
 
 #. ./views/competency/competency.tpl
-#: locale/.ignore/messages_tpl.c:944
+#: locale/.ignore/messages_tpl.c:941
 msgid "Updating competency %1"
 msgstr "Competentie %1 aanpassen"
 
 #. ./views/competency/competency.tpl
-#: locale/.ignore/messages_tpl.c:947
+#: locale/.ignore/messages_tpl.c:944
 msgid "Creating new competency"
 msgstr "Nieuwe competentie aanmaken"
 
 #. ./views/competency/competency.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:950 locale/.ignore/messages_tpl.c:953
-#: locale/.ignore/messages_tpl.c:1004 locale/.ignore/messages_tpl.c:1016
-#: locale/.ignore/messages_tpl.c:1073
+#: locale/.ignore/messages_tpl.c:947 locale/.ignore/messages_tpl.c:950
+#: locale/.ignore/messages_tpl.c:1001 locale/.ignore/messages_tpl.c:1013
+#: locale/.ignore/messages_tpl.c:1070
 msgid "Competency name"
 msgstr "Naam competentie"
 
 #. ./views/competency/competency.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:956 locale/.ignore/messages_tpl.c:959
-#: locale/.ignore/messages_tpl.c:1007 locale/.ignore/messages_tpl.c:1019
-#: locale/.ignore/messages_tpl.c:1076
+#: locale/.ignore/messages_tpl.c:953 locale/.ignore/messages_tpl.c:956
+#: locale/.ignore/messages_tpl.c:1004 locale/.ignore/messages_tpl.c:1016
+#: locale/.ignore/messages_tpl.c:1073
 msgid "Competency description"
 msgstr "Omschrijving competentie"
 
 #. ./views/competency/competency.tpl
-#: locale/.ignore/messages_tpl.c:971
+#: locale/.ignore/messages_tpl.c:968
 msgid "Update competency"
 msgstr "Competentie aanpassen"
 
 #. ./views/competency/competency.tpl
-#: locale/.ignore/messages_tpl.c:974
+#: locale/.ignore/messages_tpl.c:971
 msgid "Create competency"
 msgstr "Competentie aanmaken"
 
 #. ./views/competency/competencies.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:986 locale/.ignore/messages_tpl.c:1034
-#: locale/.ignore/messages_tpl.c:1037
+#: locale/.ignore/messages_tpl.c:983 locale/.ignore/messages_tpl.c:1031
+#: locale/.ignore/messages_tpl.c:1034
 msgid "Group name"
 msgstr "Groep naam"
 
 #. ./views/competency/competencies.tpl
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:992 locale/.ignore/messages_tpl.c:1028
+#: locale/.ignore/messages_tpl.c:989 locale/.ignore/messages_tpl.c:1025
 msgid "Is general"
 msgstr "Is algemeen"
 
 #. ./views/competency/competencies.tpl
-#: locale/.ignore/messages_tpl.c:1001 controllers/competencygroup.php:121
+#: locale/.ignore/messages_tpl.c:998 controllers/competencygroup.php:121
 #: controllers/competencygroup.php:125 controllers/competencygroup.php:142
 #: controllers/competencygroup.php:178 controllers/competencygroup.php:184
 #: controllers/competencygroup.php:201 lib/functions.php:45
@@ -1235,200 +1219,211 @@ msgstr "competentiegroep"
 
 #. ./views/competency/competencygroup.tpl
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1010 locale/.ignore/messages_tpl.c:1253
+#: locale/.ignore/messages_tpl.c:1007 locale/.ignore/messages_tpl.c:1262
 msgid "Edit"
 msgstr "Bewerken"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1022
+#: locale/.ignore/messages_tpl.c:1019
 msgid "Updating competency group %1"
 msgstr "Competentiegroep %1 aanpassen"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1025
+#: locale/.ignore/messages_tpl.c:1022
 msgid "Creating new competency group"
 msgstr "Nieuwe competentiegroep aanmaken"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1031
+#: locale/.ignore/messages_tpl.c:1028
 msgid "Checking this will display the current competency group for everybody"
 msgstr ""
-"Als u dit aanvinkt zal de huidige compentiegroep voor iedereen zichtbaar zijn"
+"Als je dit aanvinkt zal de huidige compentiegroep voor iedereen zichtbaar "
+"zijn"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1040 locale/.ignore/messages_tpl.c:1043
+#: locale/.ignore/messages_tpl.c:1037 locale/.ignore/messages_tpl.c:1040
 msgid "Group description"
 msgstr "Omschrijving groep"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1049
+#: locale/.ignore/messages_tpl.c:1046
 msgid "No competencies found"
 msgstr "Geen competenties gevonden"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1061
+#: locale/.ignore/messages_tpl.c:1058
 msgid "Add competency"
 msgstr "Competentie toevoegen"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1067
+#: locale/.ignore/messages_tpl.c:1064
 msgid "Update competency group"
 msgstr "Competentiegroep aanpassen"
 
 #. ./views/competency/competencygroup.tpl
-#: locale/.ignore/messages_tpl.c:1070
+#: locale/.ignore/messages_tpl.c:1067
 msgid "Create competency group"
 msgstr "Competentiegroep aanmaken"
 
 #. ./views/security/new_password.tpl
-#: locale/.ignore/messages_tpl.c:1091
+#: locale/.ignore/messages_tpl.c:1094
 msgid "Change password"
 msgstr "Verander wachtwoord"
 
 #. ./views/security/login.tpl
 #. ./views/security/register.tpl
-#: locale/.ignore/messages_tpl.c:1094 locale/.ignore/messages_tpl.c:1130
-#: controllers/security.php:401 controllers/security.php:405
-#: controllers/security.php:446
+#: locale/.ignore/messages_tpl.c:1097 locale/.ignore/messages_tpl.c:1139
+#: controllers/security.php:403 controllers/security.php:407
+#: controllers/security.php:448
 msgid "Password"
 msgstr "Wachtwoord"
 
 #. ./views/security/login.tpl
-#: locale/.ignore/messages_tpl.c:1097
+#: locale/.ignore/messages_tpl.c:1100
 msgid "Remember me"
 msgstr "Onthoud mij"
 
 #. ./views/security/login.tpl
-#: locale/.ignore/messages_tpl.c:1100
-msgid "Register new organisation"
-msgstr "Nieuwe organisatie registreren"
-
-#. ./views/security/login.tpl
 #: locale/.ignore/messages_tpl.c:1103
-msgid "Forgot password?"
-msgstr "Wachtwoord vergeten?"
+msgid "or"
+msgstr "of"
 
 #. ./views/security/login.tpl
 #: locale/.ignore/messages_tpl.c:1106
 msgid "Login with Google"
 msgstr "Login met Google"
 
-#. ./views/security/register.tpl
+#. ./views/security/login.tpl
 #: locale/.ignore/messages_tpl.c:1109
+msgid "Register new organisation"
+msgstr "Nieuwe organisatie registreren"
+
+#. ./views/security/login.tpl
+#: locale/.ignore/messages_tpl.c:1112
+msgid "Forgot password?"
+msgstr "Wachtwoord vergeten?"
+
+#. ./views/security/register.tpl
+#: locale/.ignore/messages_tpl.c:1115 controllers/security.php:428
+msgid "Organisation name"
+msgstr "Organisatienaam"
+
+#. ./views/security/register.tpl
+#: locale/.ignore/messages_tpl.c:1118
 msgid "Personal information"
 msgstr "Persoonlijke informatie"
 
 #. ./views/security/register.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1127 locale/.ignore/messages_tpl.c:1229
+#: locale/.ignore/messages_tpl.c:1136 locale/.ignore/messages_tpl.c:1238
 msgid "example@email.com"
 msgstr "voorbeeld@email.com"
 
 #. ./views/security/register.tpl
-#: locale/.ignore/messages_tpl.c:1136 controllers/security.php:98
+#: locale/.ignore/messages_tpl.c:1145 controllers/security.php:100
 msgid "Register"
 msgstr "Registreren"
 
 #. ./views/security/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1145 controllers/security.php:262
-#: controllers/security.php:263
+#: locale/.ignore/messages_tpl.c:1154 controllers/security.php:264
+#: controllers/security.php:265
 msgid "Reset password"
 msgstr "Wachtwoord resetten"
 
 #. ./views/email/new_tenant.tpl
-#: locale/.ignore/messages_tpl.c:1148
+#: locale/.ignore/messages_tpl.c:1157
 msgid "You have created a new organisation for GRID360 with the name %1."
-msgstr "U heeft een nieuwe organisatie voor GRID360 aangemaakt met de naam %1."
+msgstr "Je hebt een nieuwe organisatie voor GRID360 aangemaakt met de naam %1."
 
 #. ./views/email/new_tenant.tpl
-#: locale/.ignore/messages_tpl.c:1151
+#: locale/.ignore/messages_tpl.c:1160
 msgid ""
 "You can now log in with the email and password you provided in the "
 "registration form."
 msgstr ""
-"U kunt nu inloggen met het e-mail en wachtwoord dat u in het registratie "
-"formulier heeft opgegeven."
+"Je kunt nu inloggen met het e-mail en wachtwoord dat je in het registratie "
+"formulier hebt opgegeven."
 
 #. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1154
+#: locale/.ignore/messages_tpl.c:1163
 msgid "A password reset was requested for your GRID360 account."
-msgstr "Een wachtwoord reset verzoek is verstuurd naar uw GRID360 account."
+msgstr "Een wachtwoord reset verzoek is verstuurd naar je GRID360 account."
 
 #. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1157
+#: locale/.ignore/messages_tpl.c:1166
 msgid "click here"
 msgstr "Klik hier"
 
 #. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1160
+#: locale/.ignore/messages_tpl.c:1169
 msgid "Please %1 to reset your password."
-msgstr "%1 om uw wachtwoord te resetten."
+msgstr "%1 om je wachtwoord te resetten."
 
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:1187
+#: locale/.ignore/messages_tpl.c:1196
 msgid "User level"
 msgstr "Gebruikerslevel"
 
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:1205 controllers/user.php:135
+#: locale/.ignore/messages_tpl.c:1214 controllers/user.php:135
 #: controllers/user.php:174 controllers/user.php:192 controllers/user.php:198
 #: controllers/user.php:215 controllers/user.php:224
-#: controllers/feedback.php:273 controllers/feedback.php:616
-#: controllers/feedback.php:653 controllers/security.php:313
+#: controllers/feedback.php:287 controllers/feedback.php:696
+#: controllers/feedback.php:733 controllers/security.php:315
 #: lib/functions.php:49
 msgid "user"
 msgstr "gebruiker"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1208
+#: locale/.ignore/messages_tpl.c:1217
 msgid "Updating user %1"
 msgstr "Gebruiker %1 bewerken"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1211
+#: locale/.ignore/messages_tpl.c:1220
 msgid "Creating new user"
 msgstr "Nieuwe gebruiker aanmaken"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1235
+#: locale/.ignore/messages_tpl.c:1244
 msgid "Select department"
 msgstr "Selecteer afdeling"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1241
+#: locale/.ignore/messages_tpl.c:1250
 msgid "Select role"
 msgstr "Selecteer rol"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1247
+#: locale/.ignore/messages_tpl.c:1256
 msgid "Update user"
 msgstr "Gebruiker bewerken"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1250
+#: locale/.ignore/messages_tpl.c:1259
 msgid "Create new user"
 msgstr "Nieuwe gebruiker aanmaken"
 
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1256
+#: locale/.ignore/messages_tpl.c:1265
 msgid "Pause feedback"
 msgstr "Feedback pauzeren"
 
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1259
+#: locale/.ignore/messages_tpl.c:1268
 msgid "Resume feedback"
 msgstr "Feedback hervatten"
 
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1265
+#: locale/.ignore/messages_tpl.c:1274
 msgid "Add %1"
 msgstr "%1 toevoegen"
 
-#: controllers/admin.php:38 controllers/admin.php:42
+#: controllers/admin.php:37 controllers/admin.php:41
 msgid "info message"
 msgstr "infobericht"
 
-#: controllers/admin.php:64
+#: controllers/admin.php:63
 msgid "Info message overview"
 msgstr "Overzicht infobericht"
 
@@ -1440,40 +1435,45 @@ msgstr "Gebruiker bewerken"
 msgid "Report overview for "
 msgstr "Overzicht rapporten van "
 
-#: controllers/report.php:138
+#: controllers/report.php:90
+#, php-format
+msgid "No report found for round '%s'"
+msgstr "Geen rapport gevonden voor de ronde '%s'"
+
+#: controllers/report.php:146
 msgid "Insufficient data available to generate a report."
 msgstr "Onvoldoende data beschikbaar om een rapport te genereren."
 
-#: controllers/report.php:139
+#: controllers/report.php:147
 #, php-format
 msgid "%d of %d people have reviewed you."
-msgstr "%d van %d mensen heeft u beoordeeld."
+msgstr "%d van %d mensen heeft jou beoordeeld."
 
-#: controllers/report.php:140
+#: controllers/report.php:148
 #, php-format
 msgid "A minimum of %d people is needed to generate a report."
 msgstr "Een minimum van %d mensen is nodig om een rapport te genereren."
 
-#: controllers/report.php:149
+#: controllers/report.php:157
 msgid "You haven't reviewed enough people."
-msgstr "U heeft nog niet genoeg mensen beoordeeld."
+msgstr "Je hebt nog niet genoeg mensen beoordeeld."
 
-#: controllers/report.php:150
+#: controllers/report.php:158
 #, php-format
 msgid "You need to review at least %d people."
-msgstr "U moet minstens %d mensen beoordelen."
+msgstr "Je moet minstens %d mensen beoordelen."
 
-#: controllers/report.php:151
+#: controllers/report.php:159
 #, php-format
 msgid "You have reviewed %d of %d people."
-msgstr "U heeft %d van %d mensen beoordeeld"
+msgstr "Je hebt %d van %d mensen beoordeeld"
 
-#: controllers/report.php:231
+#: controllers/report.php:239
 #, php-format
 msgid "Report for %s %s of %s"
 msgstr "Rapport voor %s %s van %s"
 
-#: controllers/report.php:232
+#: controllers/report.php:240
 #, php-format
 msgid "You have been reviewed by %d of %d people"
 msgstr "Beoordeeld door %d van %d mensen"
@@ -1482,59 +1482,67 @@ msgstr "Beoordeeld door %d van %d mensen"
 msgid "A round is already in progress!"
 msgstr "Er is al een ronde in uitvoering!"
 
+#: controllers/round.php:55
+msgid ""
+"A new round cannot be started because some people in your organisation have "
+"not filled in their agreements."
+msgstr ""
+"Een nieuwe ronde kan niet worden gestart omdat sommige mensen in jouw "
+"organisatie nog niet hun afspraken hebben ingevuld."
+
 #: controllers/round.php:67 controllers/round.php:109
 #: controllers/round.php:151
 msgid ""
 "Not enough people in your organisation to start a round. You need at least 4 "
 "people that are included in the feedback round."
 msgstr ""
-"U heeft niet genoeg mensen in uw organisatie om een ronde te starten. U "
-"heeft minstens 4 mensen nodig die worden meegenomen in de feedbackronde."
+"Je hebt niet genoeg mensen in uw organisatie om een ronde te starten. Je "
+"hebt minstens 4 mensen nodig die worden meegenomen in de feedbackronde."
 
-#: controllers/round.php:491
+#: controllers/round.php:490
 msgid "Round created"
 msgstr "Ronde aangemaakt"
 
-#: controllers/round.php:545
+#: controllers/round.php:544
 msgid "Error loading round"
 msgstr "Error bij het laden van de ronde"
 
-#: controllers/round.php:584
+#: controllers/round.php:583
 msgid "round"
 msgstr "ronde"
 
-#: controllers/round.php:600 controllers/round.php:618
+#: controllers/round.php:599 controllers/round.php:617
 msgid "Round not found"
 msgstr "Ronde niet gevonden"
 
-#: controllers/round.php:642
+#: controllers/round.php:641
 msgid "Round ended"
 msgstr "Ronde beëindigd"
 
-#: controllers/round.php:700 controllers/round.php:785
+#: controllers/round.php:699 controllers/round.php:784
 msgid "Round description can't be empty!"
 msgstr "Omschrijving van de ronde mag niet leeg zijn!"
 
-#: controllers/round.php:713 controllers/round.php:798
+#: controllers/round.php:712 controllers/round.php:797
 msgid "Closing date can't be in the past"
 msgstr "Sluitingsdatum kan niet in het verleden zijn"
 
-#: controllers/round.php:719
+#: controllers/round.php:718
 msgid "Total amount to review can't be 0"
 msgstr "Totaal aantal te beoordelen kan niet 0 zijn"
 
-#: controllers/round.php:724
+#: controllers/round.php:723
 msgid "Amount to review from own department can't be 0"
 msgstr "Aantal te beoordelen van eigen afdeling kan niet 0 zijn"
 
-#: controllers/round.php:729
+#: controllers/round.php:728
 msgid ""
 "Total amount to review can't be higher than total users in organisation!"
 msgstr ""
 "Totaal aantal te beoordelen mag niet hoger zijn dat het totaal aantal "
 "gebruikers in de organisatie!"
 
-#: controllers/round.php:734
+#: controllers/round.php:733
 msgid ""
 "Amount to review from own department can't be higher than total users in "
 "organisation!"
@@ -1542,7 +1550,7 @@ msgstr ""
 "Aantal te beoordelen van eigen afdeling mag niet hoger zijn dan totaal "
 "aantal gebruikers in de organisatie!"
 
-#: controllers/round.php:739
+#: controllers/round.php:738
 msgid ""
 "Amount to review from own department can't be higher than total amount to "
 "review!"
@@ -1550,14 +1558,14 @@ msgstr ""
 "Aantal te beoordelen van eigen afdeling mag niet hoger zijn dan totaal "
 "aantal te beoordelen personen!"
 
-#: controllers/round.php:744 controllers/round.php:804
+#: controllers/round.php:743 controllers/round.php:803
 msgid ""
 "Minimum to be reviewed by can't be higher than total users in organisation!"
 msgstr ""
 "Minimum om door beoordeeld te woorden mag niet hoger zijn dat het totaal "
 "aantal gebruikers in de organisatie!"
 
-#: controllers/round.php:749 controllers/round.php:809
+#: controllers/round.php:748 controllers/round.php:808
 msgid "Minimum to review by can't be higher than total users in organisation!"
 msgstr ""
 "Minimum aantal te beoordelen mag niet hoger zijn dat het totaal aantal "
@@ -1578,92 +1586,120 @@ msgstr ""
 #: controllers/feedback.php:90
 #, php-format
 msgid "Your review for %s %s has been edited"
-msgstr "Uw beoordeling voor %s %s is aangepast"
+msgstr "Jouw beoordeling voor %s %s is aangepast"
 
-#: controllers/feedback.php:144
+#: controllers/feedback.php:149
 msgid "No round in progress!"
 msgstr "Geen ronde in uitvoering!"
 
-#: controllers/feedback.php:171 controllers/feedback.php:282
+#: controllers/feedback.php:185 controllers/feedback.php:296
 msgid "You can't review this person!"
-msgstr "U kunt deze persoon niet beoordelen!"
+msgstr "Je kunt deze persoon niet beoordelen!"
 
-#: controllers/feedback.php:178
+#: controllers/feedback.php:192
 msgid "Already reviewed this person!"
-msgstr "U heeft deze persoon al beoordeeld!"
+msgstr "Je hebt deze persoon al beoordeeld!"
 
-#: controllers/feedback.php:189 controllers/feedback.php:300
-#: controllers/feedback.php:429
+#: controllers/feedback.php:203 controllers/feedback.php:314
+#: controllers/feedback.php:449
 #, php-format
 msgid "Step %d of 3"
 msgstr "Stap %d van 3"
 
-#: controllers/feedback.php:191 controllers/feedback.php:302
+#: controllers/feedback.php:205 controllers/feedback.php:316
 msgid "Select 2 positive competencies and 1 points of improvement for "
 msgstr "Selecteer 2 goede punten en 1 verbeterpunt voor "
 
-#: controllers/feedback.php:195 controllers/feedback.php:306
+#: controllers/feedback.php:209 controllers/feedback.php:321
 msgid "yourself"
-msgstr "uzelf"
+msgstr "jezelf"
 
-#: controllers/feedback.php:206
+#: controllers/feedback.php:220
 msgid "minutes"
 msgstr "minuten"
 
-#: controllers/feedback.php:252
+#: controllers/feedback.php:266
 msgid "Must select 3 competencies and provide a comment for each competency."
 msgstr ""
 "3 competenties moeten geselecteerd worden en het commentaarveld moet zijn "
 "ingevuld."
 
-#: controllers/feedback.php:264 controllers/feedback.php:413
+#: controllers/feedback.php:278 controllers/feedback.php:433
 msgid "Step 1 has to be completed first!"
 msgstr "Stap 1 moet eerst voltooid zijn!"
 
-#: controllers/feedback.php:316
+#: controllers/feedback.php:317
+msgid "Review the agreements that "
+msgstr "Beoordeel de afspraken die "
+
+#: controllers/feedback.php:322
+msgid "you have"
+msgstr "jij hebt"
+
+#: controllers/feedback.php:327
+msgid "has"
+msgstr "heeft"
+
+#: controllers/feedback.php:330
+msgid "filled in."
+msgstr "ingevuld."
+
+#: controllers/feedback.php:336
 msgid "Feedback step 2"
 msgstr "Feedback stap 2"
 
-#: controllers/feedback.php:360
+#: controllers/feedback.php:380
 msgid "Must select 3 competencies and provide a comment"
 msgstr ""
 "3 competenties moeten geselecteerd worden en het commentaarveld moet zijn "
 "ingevuld."
 
-#: controllers/feedback.php:379
+#: controllers/feedback.php:399
 msgid "Must provide a comment when reviewing agreements"
 msgstr "Bij het beoordelen van afspraken moet er toelichting worden toegevoegd"
 
-#: controllers/feedback.php:404
+#: controllers/feedback.php:424
 msgid "Step 1 and 2 have to be completed first!"
 msgstr "Stap 1 en 2 moeten eerst voltooid worden!"
 
-#: controllers/feedback.php:535
+#: controllers/feedback.php:556
 #, php-format
 msgid "Your review for %s %s has been saved"
 msgstr "Uw beoordeling voor %s %s is opgeslagen"
 
-#: controllers/feedback.php:603
+#: controllers/feedback.php:617
+msgid "You must select a choice"
+msgstr "Je moet een keuze selecteren"
+
+#: controllers/feedback.php:633
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: controllers/feedback.php:676
+msgid "Your review for yourself has been saved"
+msgstr "Jouw beoordeling over jezelf is opgeslagen"
+
+#: controllers/feedback.php:681
 msgid "Your choice has been saved."
-msgstr "Uw keuze is opgeslagen"
+msgstr "Jouw keuze is opgeslagen"
 
-#: controllers/feedback.php:622
+#: controllers/feedback.php:702
 msgid "Can't skip yourself!"
-msgstr "U kunt uzelf niet overslaan!"
+msgstr "Je kunt jezelf niet overslaan!"
 
-#: controllers/feedback.php:628
+#: controllers/feedback.php:708
 msgid "Can't skip someone of your own department"
-msgstr "U kunt niet iemand van uw eigen afdeling overslaan"
+msgstr "Je kunt niet iemand van jouw eigen afdeling overslaan"
 
-#: controllers/feedback.php:644
+#: controllers/feedback.php:724
 msgid "No user was given"
 msgstr "Geen gebruiker opgegeven"
 
-#: controllers/feedback.php:660
+#: controllers/feedback.php:740
 msgid "This user can't be skipped"
 msgstr "Deze persoon kan niet overgeslagen worden."
 
-#: controllers/feedback.php:669
+#: controllers/feedback.php:749
 msgid "Invalid input"
 msgstr "Ongeldige invoer"
 
@@ -1675,23 +1711,23 @@ msgstr "Ongeldige invoer"
 msgid "competency"
 msgstr "competentie"
 
-#: controllers/profile.php:11 controllers/profile.php:44
+#: controllers/profile.php:11 controllers/profile.php:54
 msgid "Error loading profile"
 msgstr "Error bij het laden van het profiel"
 
-#: controllers/profile.php:31
+#: controllers/profile.php:41
 msgid "Edit profile"
 msgstr "Profiel aanpassen"
 
-#: controllers/profile.php:59 controllers/security.php:409
+#: controllers/profile.php:69 controllers/security.php:411
 msgid "Passwords do not match!"
 msgstr "Wachtwoorden komen niet overeen!"
 
-#: controllers/profile.php:78
+#: controllers/profile.php:88
 msgid "One or more fields was not filled in"
-msgstr "Eén of meerdere is niet ingevuld"
+msgstr "Eén of meerdere velden is niet ingevuld"
 
-#: controllers/profile.php:99
+#: controllers/profile.php:112
 msgid "Profile updated"
 msgstr "Profiel is bijgewerkt"
 
@@ -1699,59 +1735,56 @@ msgstr "Profiel is bijgewerkt"
 msgid "No user with that email exists"
 msgstr "Er is geen gebruiker gevonden met het opgegeven e-mailadres"
 
-#: controllers/security.php:92
+#: controllers/security.php:94
 msgid "Can't register a new organisation when logged in. Please log out first!"
 msgstr ""
-"U kunt geen organisatie registreren als u ingelogd bent. Log eerst uit!"
+"Je kunt geen organisatie registreren als je ingelogd bent. Log eerst uit!"
 
-#: controllers/security.php:164
+#: controllers/security.php:166
 msgid "New tenant registration"
 msgstr "Registratie nieuwe organisatie"
 
-#: controllers/security.php:166
+#: controllers/security.php:168
 msgid "You have successfully registered a new organisation."
-msgstr "U heeft succesvol een nieuwe organisatie geregistreerd."
+msgstr "Je hebt succesvol een nieuwe organisatie geregistreerd."
 
-#: controllers/security.php:221 controllers/security.php:226
-#: controllers/security.php:230 controllers/security.php:234
+#: controllers/security.php:223 controllers/security.php:228
+#: controllers/security.php:232 controllers/security.php:236
 msgid "Wrong email/password combination!"
 msgstr "Onjuiste e-mail/wachtwoord combinatie!"
 
-#: controllers/security.php:257 controllers/security.php:302
+#: controllers/security.php:259 controllers/security.php:304
 msgid "Can't reset your password when logged in. Please log out first!"
-msgstr "U kunt uw wachtwoord niet resetten als u ingelogt bent. Log eerst uit!"
+msgstr ""
+"Je kunt je wachtwoord niet resetten als je ingelogt bent. Log eerst uit!"
 
-#: controllers/security.php:288
+#: controllers/security.php:290
 msgid ""
 "The given ID seems to be invalid. Please check the link you received in your "
 "email or contact the administrator."
 msgstr ""
-"Het opgegeven ID lijkt niet correct te zijn. Controleer de link die u in uw "
-"email heeft gekregen of neem contact op met de beheerder."
+"Het opgegeven ID lijkt niet correct te zijn. Controleer de link die je in "
+"jouw email heeft gekregen of neem contact op met de beheerder."
 
-#: controllers/security.php:342
+#: controllers/security.php:344
 msgid "Your password has been reset!"
-msgstr "Uw wachtwoord is gereset!"
+msgstr "Jouw wachtwoord is gereset!"
 
-#: controllers/security.php:364
+#: controllers/security.php:366
 msgid "Email not found!"
 msgstr "Email is niet gevonden!"
 
-#: controllers/security.php:379
+#: controllers/security.php:381
 msgid "Password reset request"
 msgstr "Wachtwoord reset verzoek"
 
-#: controllers/security.php:385
+#: controllers/security.php:387
 msgid "A confirmation link has been sent to your email"
-msgstr "Een bevestigingslink is naar uw email verstuurd."
+msgstr "Een bevestigingslink is naar jouw email verstuurd."
 
-#: controllers/security.php:397
+#: controllers/security.php:399
 msgid "Error with UUID!"
 msgstr "Error met UUID!"
-
-#: controllers/security.php:426
-msgid "Organisation name"
-msgstr "Organisatienaam"
 
 #: controllers/competencygroup.php:65
 msgid "At least 3 competencies must be created"
@@ -1819,15 +1852,48 @@ msgid "Email already exists!"
 msgstr "Opgegeven email bestaat al!"
 
 #: index.php:37
-#, fuzzy
 msgid "Agreements must be filled in before continuing"
-msgstr "Afspraken moet worden ingevuld voordat u verder kan"
+msgstr "Afspraken moet worden ingevuld voordat je verder kan"
+
+#~ msgid "Information"
+#~ msgstr "Informatie"
+
+#~ msgid "Any information you wish to display on the feedback overview page"
+#~ msgstr "Informatie die je wilt weergeven op de feedbackpagina"
+
+#~ msgid "Update profile"
+#~ msgstr "Profiel bijwerken"
+
+#~ msgid "Add a comment for %1 agreements here"
+#~ msgstr "Voeg hier een toelichting toe voor afspraken over %1"
+
+#~ msgid "You haven't reviewed yourself yet!"
+#~ msgstr "U heeft uzelf nog niet beoordeeld!"
+
+#~ msgid "Click here to review yourself."
+#~ msgstr "Klik hier om uzelf te beoordelen."
+
+#~ msgid "Click here"
+#~ msgstr "Klik hier"
+
+#~ msgid "to change your choice regarding a meeting."
+#~ msgstr "om uw keuze met betrekking tot een bespreking te veranderen."
+
+#~ msgid ""
+#~ "You can read the description of a competency by hovering your mouse over "
+#~ "it"
+#~ msgstr ""
+#~ "U kunt de beschrijving van een competentie lezen door uw muis over de "
+#~ "competentie te bewegen"
+
+#~ msgid "Agreement name"
+#~ msgstr "Naam afspraak"
+
+#~ msgid "Agreement description"
+#~ msgstr "Omschrijving afspraak"
 
 #~ msgid "Updating profile"
 #~ msgstr "Profiel bewerken"
-
-#~ msgid "work"
-#~ msgstr "werk"
 
 #~ msgid "training"
 #~ msgstr "scholing"
@@ -1860,6 +1926,3 @@ msgstr "Afspraken moet worden ingevuld voordat u verder kan"
 
 #~ msgid "Step %d of 2"
 #~ msgstr "Stap %d van 2"
-
-#~ msgid "Error! Must select 3 competencies."
-#~ msgstr "Error! 3 competenties moeten geselecteerd worden."
