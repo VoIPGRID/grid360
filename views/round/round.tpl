@@ -15,7 +15,7 @@
         <label class="control-label" for="{$group_name}">{$label_text}</label>
         <div class="controls">
             <div class="input-append">
-                <input type="number" name="{$input_name}" class="input-mini" value="{$form_values.{$input_name}.value}" min=0 max={$count_users} />
+                <input type="number" name="{$input_name}" class="input-mini" value="{$default_value}" min=0 max={$count_users} />
             </div>
             {call check_if_error var_name="{$input_name}"}
         </div>
@@ -52,11 +52,12 @@
         {assign "default_own" "{{$count_users * 0.66}|ceil}"}
 
         <button id="info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
-        <div id="field-info" class="alert alert-info"> {*TODO: Improve info text*}
+        <div class="alert alert-info">
             {t}The following fields can be used to set the amount of people each person has to review.{/t}
             <br />{t}If a field is blank the default values will be used.{/t}
-            <br />
-            <br /><strong>{t}Default values{/t}:</strong>
+        </div>
+        <div id="field-info" class="alert alert-info">
+            <strong>{t}Default values{/t}:</strong>
             <br />{t}Total amount to review{/t}: {$count_users} ({t}All users in your organisation minus 1, because of the reviewer{/t})
             <br />{t}Amount to review from own department{/t}: {$default_own} ({t}66% of the above number, rounded up{/t})
             <br />
@@ -71,26 +72,27 @@
         </div>
 
         <div class="round-creation-field">
-            {create_control_group input_name="total_amount_to_review" label_text="{t}Total amount to review{/t}"}
-            {create_control_group input_name="own_amount_to_review" label_text="{t}Amount to review from own department{/t}"}
+            {create_control_group input_name="total_amount_to_review" label_text="{t}Total amount to review{/t}" default_value=$count_users}
+            {create_control_group input_name="own_amount_to_review" label_text="{t}Amount to review from own department{/t}" default_value=$default_own}
 
             <fieldset>
                 <legend>{t}Report options{/t}</legend>
 
                 <button id="report-info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
-                <div id="report-field-info" class="alert alert-info"> {*TODO: Improve info text*}
+                <div class="alert alert-info">
                     {t}The following fields can be used to set the amount of people each person has to be reviewed by and has to review in order to view their own report.{/t}
                     <br />{t}If a field is blank the default values will be used. If a field has the value zero (0) there won't be a limit for that field.{/t}
-                    <br />
-                    <br /><strong>{t}Default values{/t}:</strong>
+                </div>
+                <div id="report-field-info" class="alert alert-info">
+                    <strong>{t}Default values{/t}:</strong>
                     <br />{t}Minimum to be reviewed by{/t}: {{$count_users * 0.50}|ceil} ({t}50% of the default total amount to review, rounded up{/t})
                     <br />{t}Minimum to review{/t}: {{$count_users * 0.50}|ceil} ({t}50% of the default total amount to review, rounded up{/t})
                     <br />
                     <br /><strong>{t}Note:{/t}</strong> {t}These values can be changed after the round has started.{/t}
                 </div>
 
-                {create_control_group input_name="min_reviewed_by" label_text="{t}Minimum to be reviewed by{/t}"}
-                {create_control_group input_name="min_to_review" label_text="{t}Minimum to review{/t}"}
+                {create_control_group input_name="min_reviewed_by" label_text="{t}Minimum to be reviewed by{/t}" default_value="{{$count_users * 0.50}|ceil}"}
+                {create_control_group input_name="min_to_review" label_text="{t}Minimum to review{/t}" default_value="{{$count_users * 0.50}|ceil}"}
             </fieldset>
         </div>
 

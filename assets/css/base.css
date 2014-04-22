@@ -253,6 +253,11 @@ button i
     margin-right: 15px;
 }
 
+#field-info
+{
+    display: none;
+}
+
 #report-field-info
 {
     display: none;
