@@ -87,7 +87,7 @@ function view_report()
         else
         {
             // No generated report found, so just display the pager and a message
-            return html($pager . _('No reviews found for the current round'));
+            return html($pager . sprintf(_('No report found for round \'%s\''), $round->description));
         }
     }
     else
