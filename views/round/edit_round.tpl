@@ -24,13 +24,13 @@
 
 <form action="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round/edit" method="post" class="form-horizontal" data-persist="garlic">
     <fieldset>
-        <legend>{t}Create round{/t}</legend>
+        <legend>{t}Edit round{/t}</legend>
 
         <div id="description-group" class="control-group {if isset($form_values.description.error)}error{/if}">
             {if isset($form_values.id.value)}
                 <input type="hidden" name="id" value={$form_values.id.value} />
             {/if}
-            <label class="control-label" for="round-description">{t}Round description{/t}</label>
+            <label class="control-label" for="round-description">{t}Round description{/t} <span class="required">*</span></label>
 
             <div class="controls">
                 <textarea id="round-description" name="description" type="text" placeholder="{t}Round description{/t}" required>{$form_values.description.value}</textarea>
