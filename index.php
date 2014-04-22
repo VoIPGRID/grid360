@@ -28,11 +28,10 @@ function before()
     $uri = str_replace(BASE_URI, '', $_SERVER['REQUEST_URI']);
 
     $user = $_SESSION['current_user'];
-    $info_message = R::findOne('infomessage');
 
-    if(!empty($user) && ($info_message->id == 0 || $user->info_message_read))
+    if(!empty($user))
     {
-        if(!empty($user) && $uri != 'profile' && !has_agreements($user->id))
+        if(!empty($user) && $uri != 'profile' && $uri != 'logout' && !has_agreements($user->id))
         {
             $message = _('Agreements must be filled in before continuing');
             flash('error', $message);
@@ -40,13 +39,16 @@ function before()
         }
         else
         {
+            $info_message = R::findOne('infomessage');
+
+            if($info_message->id != 0 && !$_SESSION['info_message_shown'])
+            {
+                $smarty->assign('info_message', $info_message);
+                $_SESSION['info_message_shown'] = true;
+            }
+
             layout('layout/layout.php');
         }
-    }
-    // Check if the current url isn't infomessage so we don't get a redirect loop
-    else if(!empty($user) && $info_message->id != 0 && $uri != 'infomessage')
-    {
-        redirect_to('infomessage');
     }
     else
     {
@@ -64,7 +66,6 @@ R::freeze(true);
 
 dispatch('/', 'dashboard');
 dispatch('/infomessage', 'info_message');
-dispatch_post('/infomessage', 'info_message_read');
 dispatch('/login', 'login');
 dispatch('/login_google', 'login_google');
 dispatch_post('/login', 'login_post');

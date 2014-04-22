@@ -5,11 +5,6 @@
         <div class="span8">
             <table class="table">
                 <tr>
-                    <input type="hidden" name="information" value="{$form_values.information.value}"/>
-                    <td>{t}Information{/t}</td>
-                    <td>{$form_values.information.value nofilter}</td>
-                </tr>
-                <tr>
                     <input type="hidden" name="description" value="{$form_values.description.value}"/>
                     <td>{t}Description{/t}</td>
                     <td>{$form_values.description.value}</td>

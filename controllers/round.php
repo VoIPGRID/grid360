@@ -455,7 +455,6 @@ function start_round()
     // Only create a round if there are reviewees
     if($reviewee_count > 0)
     {
-        $round->information = $_POST['information'];
         $round->description = $_POST['description'];
 
         if(!empty($_POST['closing_date']))

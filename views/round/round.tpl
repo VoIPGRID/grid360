@@ -26,17 +26,8 @@
     <fieldset>
         <legend>{t}Create round{/t}</legend>
 
-        <div id="information-group" class="control-group {if isset($form_values.information.error)}error{/if}">
-            <label class="control-label" for="round-information">{t}Information{/t}</label>
-
-            <div class="controls">
-                <textarea id="round-information" name="information" type="text" class="input-xxlarge" placeholder="{t}Any information you wish to display on the feedback overview page{/t}" required>{$form_values.information.value}</textarea>
-                {call check_if_error var_name="information"}
-            </div>
-        </div>
-
         <div id="description-group" class="control-group {if isset($form_values.description.error)}error{/if}">
-            <label class="control-label" for="round-description">{t}Round description{/t}</label>
+            <label class="control-label" for="round-description">{t}Round description{/t} <span class="required">*</span></label>
 
             <div class="controls">
                 <textarea id="round-description" name="description" type="text" class="input-xxlarge" placeholder="{t}Round description{/t}" required>{$form_values.description.value}</textarea>

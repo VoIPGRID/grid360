@@ -5,12 +5,12 @@
         <legend>{t}Creating info message{/t}</legend>
     {/if}
 
-    <button id="info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
+    <button id="info-box-button" class="btn btn-link">- {t}Hide info{/t}</button>
     <div id="field-info" class="alert alert-info">
         {t}This text area can be used to setup an info message. This info message will be shown the first time somebody logs in and can be used to display any information you would like to show to your employees.{/t}
         <br />
         <br />
-        <strong>{t}Note:{/t} </strong>{t}Unlike the rest of the application, most HTML that you use in this text area does not get escaped or removed. Only JavaScript, and external links and resources will be removed.{/t}
+        <strong>{t}Note:{/t} </strong>{t}Unlike the rest of the application, most HTML that you use in this text area does not get escaped or removed. Only JavaScript and external resources will be removed.{/t}
     </div>
 
     <br />

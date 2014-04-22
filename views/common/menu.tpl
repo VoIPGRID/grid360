@@ -42,6 +42,7 @@
                                 <li><a href="{$smarty.const.BASE_URI}{$smarty.const.MANAGER_URI}roles">{t}Roles{/t}</a></li>
                                 {if $current_user.userlevel.id == $smarty.const.ADMIN}
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}users">{t}Users{/t}</a></li>
+                                    <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}infomessage/overview">{t}Info message{/t}</a></li>
                                     <li class="divider"></li>
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round">{t}Overview{/t}</a></li>
                                 {/if}
