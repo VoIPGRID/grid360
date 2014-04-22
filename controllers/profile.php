@@ -28,6 +28,16 @@ function edit_profile()
         $smarty->assign('form_values', $form_values);
     }
 
+    $display_password_form = true;
+
+    // Password form should be hidden when logging in with Google or when agreements should be filled in (to avoid confusion)
+    if($_SESSION['google_login'] || $_SESSION['first_time_login'])
+    {
+        $display_password_form = false;
+    }
+
+    $smarty->assign('display_password_form', $display_password_form);
+
     set('title', _('Edit profile'));
 
     return html($smarty->fetch('profile/profile.tpl'));
@@ -73,7 +83,7 @@ function edit_profile_post()
     $agreements->other = trim($_POST['other']);
     $agreements->goals = trim($_POST['goals']);
 
-    if(empty($agreements->work) || empty($agreements->training) || empty($agreements->other) || empty($agreements->goals))
+    if(empty($agreements->work) || empty($agreements->training) || empty($agreements->goals))
     {
         $form_values['agreements']['error'] = _('One or more fields was not filled in');
         $error = true;

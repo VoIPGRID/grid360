@@ -48,6 +48,7 @@ function login_google()
                 R::store($user);
 
                 $_SESSION['current_user'] = $user;
+                $_SESSION['google_login'] = true;
 
                 redirect_to('/');
             }
@@ -63,6 +64,7 @@ function login_google()
             }
 
             $_SESSION['current_user'] = $user;
+            $_SESSION['google_login'] = true;
 
             redirect_to('/');
         }
