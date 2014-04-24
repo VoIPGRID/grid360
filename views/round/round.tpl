@@ -47,15 +47,15 @@
             </div>
         </div>
 
-        <hr />
-
         {assign "default_own" "{{$count_users * 0.66}|ceil}"}
 
-        <button id="info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
+        <legend>{t}Round options{/t}</legend>
         <div class="alert alert-info">
             {t}The following fields can be used to set the amount of people each person has to review.{/t}
             <br />{t}If a field is blank the default values will be used.{/t}
         </div>
+
+        <button id="info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
         <div id="field-info" class="alert alert-info">
             <strong>{t}Default values{/t}:</strong>
             <br />{t}Total amount to review{/t}: {$count_users} ({t}All users in your organisation minus 1, because of the reviewer{/t})
@@ -78,11 +78,12 @@
             <fieldset>
                 <legend>{t}Report options{/t}</legend>
 
-                <button id="report-info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
                 <div class="alert alert-info">
                     {t}The following fields can be used to set the amount of people each person has to be reviewed by and has to review in order to view their own report.{/t}
                     <br />{t}If a field is blank the default values will be used. If a field has the value zero (0) there won't be a limit for that field.{/t}
                 </div>
+
+                <button id="report-info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
                 <div id="report-field-info" class="alert alert-info">
                     <strong>{t}Default values{/t}:</strong>
                     <br />{t}Minimum to be reviewed by{/t}: {{$count_users * 0.50}|ceil} ({t}50% of the default total amount to review, rounded up{/t})
