@@ -6,7 +6,7 @@
     {/if}
 
     <button id="info-box-button" class="btn btn-link">- {t}Hide info{/t}</button>
-    <div id="field-info" class="alert alert-info">
+    <div id="message-field-info" class="alert alert-info">
         {t}This text area can be used to setup an info message. This info message will be shown the first time somebody logs in and can be used to display any information you would like to show to your employees.{/t}
         <br />
         <br />
