@@ -1,21 +1,24 @@
-{if !empty($own_review) && $own_review.status != $smarty.const.REVIEW_COMPLETED}
-    <div class="row-fluid own-review-row">
-        <div class="span5">
-            <h4>{t}Review yourself{/t}</h4>
-            <table class="table table-striped">
-                <tbody>
-                <tr>
-                    <td>{$own_review.reviewee.firstname} {$own_review.reviewee.lastname}</td>
-                    <td>
+{function print_own_review_status}
+    <div class="span5">
+        <h4>{t}Review yourself{/t}</h4>
+        <table class="table table-striped">
+            <tbody>
+            <tr>
+                <td>{$own_review.reviewee.firstname} {$own_review.reviewee.lastname}</td>
+                <td>
+                    {if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
                         <a href="{$smarty.const.BASE_URI}feedback/{$own_review.reviewee.id}">{t}Pending{/t}</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    {else}
+                        <a href="{$smarty.const.BASE_URI}feedback/edit/{$own_review.reviewee.id}">{t}Completed{/t}</a>
+                    {/if}
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-{/if}
-<div class="row-fluid">
+{/function}
+
+{function print_review_status}
     <div class="span5">
         <h4>{t}Review status{/t}</h4>
         {if !empty($roundinfo)}
@@ -32,10 +35,10 @@
                         <tr>
                             <td>{$info.reviewee.firstname} {$info.reviewee.lastname}</td>
                             <td>
-                                {if $info.status == 0}
+                                {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
                                     <a href="{$smarty.const.BASE_URI}feedback/{$info.reviewee.id}">{t}Pending{/t}</a>
                                 {else}
-                                    {t}Completed{/t}
+                                    <a href="{$smarty.const.BASE_URI}feedback/edit/{$info.reviewee.id}">{t}Completed{/t}</a>
                                 {/if}
                             </td>
                         </tr>
@@ -47,7 +50,9 @@
             {t}No round in progress{/t}
         {/if}
     </div>
+{/function}
 
+{function print_report_overview}
     <div class="span5 offset2">
         <h4>{t}Reports{/t}</h4>
         {if !empty($rounds)}
@@ -77,4 +82,24 @@
             {t}No reports found{/t}
         {/if}
     </div>
-</div>
+{/function}
+
+{if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
+    <div class="row-fluid">
+        {print_own_review_status}
+        {print_report_overview}
+    </div>
+{elseif !empty($own_review) && $own_review.status == $smarty.const.REVIEW_COMPLETED}
+    <div class="row-fluid own-review-row">
+        {print_own_review_status}
+    </div>
+    <div class="row-fluid">
+        {print_review_status}
+        {print_report_overview}
+    </div>
+{elseif empty($roundinfo)}
+    <div class="row-fluid">
+        {print_review_status}
+        {print_report_overview}
+    </div>
+{/if}
