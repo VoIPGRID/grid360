@@ -150,24 +150,24 @@
             if(icon.hasClass('smile-active'))
             {
                 icon.attr('class', 'smile-default');
-                icon.parents('.span6').children('input').val(0);
+                icon.parents('.span5').children('input').val(0);
             }
             else if(icon.hasClass('smile-default'))
             {
                 icon.attr('class', 'smile-active');
                 other_icon.attr('class', 'meh-default');
-                icon.parents('.span6').children('input').val(1);
+                icon.parents('.span5').children('input').val(1);
             }
             else if(icon.hasClass('meh-active'))
             {
                 icon.attr('class', 'meh-default');
-                icon.parents('.span6').children('input').val(0);
+                icon.parents('.span5').children('input').val(0);
             }
             else if(icon.hasClass('meh-default'))
             {
                 icon.attr('class', 'meh-active');
                 other_icon.attr('class', 'smile-default');
-                icon.parents('.span6').children('input').val(2);
+                icon.parents('.span5').children('input').val(2);
             }
 
             if(icon.hasClass('smile-active') || icon.hasClass('meh-active'))
