@@ -314,20 +314,17 @@ function feedback_step_2()
     $smarty->assign('step_text', sprintf(_('Step %d of 3'), 2));
 
     $feedback_header_subtext = _('Select 2 positive competencies and 1 points of improvement for ');
-    $agreement_header_subtext = _('Review the agreements that ');
 
     if($reviewee->id == $_SESSION['current_user']->id)
     {
         $feedback_header_subtext .= _('yourself');
-        $agreement_header_subtext .= _('you have');
+        $agreement_header_subtext = _('How have you fullfilled your agreements?');
     }
     else
     {
         $feedback_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname;
-        $agreement_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname . ' ' . _('has') . ' ';
+        $agreement_header_subtext =  sprintf(_('How has %s fulfilled his/her agreements?'), $reviewee->firstname . ' ' . $reviewee->lastname);
     }
-
-    $agreement_header_subtext .= _('filled in.');
 
     $smarty->assign('feedback_header_subtext', $feedback_header_subtext);
     $smarty->assign('agreement_header_subtext', $agreement_header_subtext);
@@ -440,7 +437,9 @@ function feedback_step_3()
 
     if($roundinfo->id == 0)
     {
-        halt(NOT_FOUND);
+        $message = _('You can\'t review this person!');
+        flash('error', $message);
+        redirect_to('feedback');
     }
 
     global $smarty;
