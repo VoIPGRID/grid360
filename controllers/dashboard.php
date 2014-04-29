@@ -50,17 +50,3 @@ function info_message()
 
     return html($smarty->fetch('common/info_message.tpl'));
 }
-
-function info_message_read()
-{
-    security_authorize();
-
-    $user = R::load('user', $_SESSION['current_user']->id);
-    $user->info_message_read = 1;
-
-    R::store($user);
-
-    $_SESSION['current_user'] = $user;
-
-    redirect_to('profile');
-}
