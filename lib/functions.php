@@ -118,7 +118,21 @@ function get_current_round()
 
 function get_general_competencies()
 {
-    return R::findOne('competencygroup', 'general = ?', array(1)); // TODO: Multiple general competencies allowed?
+    return R::findOne('competencygroup', 'general = ?', array(1));
+}
+
+function get_managers()
+{
+    $levels = array(ADMIN, MANAGER);
+
+    $managers = R::$adapter->getAssoc('SELECT user.id, CONCAT(firstname, " ", lastname) as name
+                                       FROM user
+                                       LEFT JOIN userlevel
+                                       ON userlevel.id = user.userlevel_id
+                                       WHERE userlevel.level IN (' . R::genSlots($levels) . ')
+                                       AND user.tenant_id = ' . $_SESSION['current_user']->tenant_id, $levels);
+
+    return $managers;
 }
 
 function has_agreements($user_id)
@@ -129,7 +143,7 @@ function has_agreements($user_id)
     {
         return false;
     }
-    else if(empty($agreements->work) || empty($agreements->training) || empty($agreements->other) || empty($agreements->goals))
+    else if(empty($agreements->work) || empty($agreements->training) || empty($agreements->goals))
     {
         return false;
     }
@@ -222,7 +236,6 @@ function debug_string_backtrace()
 
     return $trace;
 }
-
 
 function englishify_date($date_str)
 {

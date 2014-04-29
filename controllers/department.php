@@ -183,17 +183,3 @@ function delete_department()
     flash('success', $message);
     redirect_to(ADMIN_URI . 'departments');
 }
-
-function get_managers()
-{
-    $levels = array(ADMIN, MANAGER);
-
-    $managers = R::$adapter->getAssoc('SELECT user.id, CONCAT(firstname, " ", lastname) as name
-                                       FROM user
-                                       LEFT JOIN userlevel
-                                       ON userlevel.id = user.userlevel_id
-                                       WHERE userlevel.level IN (' . R::genSlots($levels) . ')
-                                       AND user.tenant_id = ' . $_SESSION['current_user']->tenant_id, $levels);
-
-    return $managers;
-}
