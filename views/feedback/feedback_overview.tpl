@@ -54,7 +54,7 @@
                     {if $meeting.id == 0}
                         {t}You have not stated that you do not want to have a meeting with someone.{/t}
                     {else}
-                        {t}You stated that you want to have a meeting with{/t} <strong>{$meeting.name}</strong> {t}about{/t} <strong>{$meeting.subject}</strong>.
+                        {t}You stated that you want to have a meeting with{/t} <strong>{$meeting.manager.firstname} {$meeting.manager.lastname}</strong> {t}about{/t} <strong>{$meeting.subject}</strong>.
                     {/if}
                     <a href="{$smarty.const.BASE_URI}feedback/meeting">{t}Edit meeting{/t}</a>
                 </div>

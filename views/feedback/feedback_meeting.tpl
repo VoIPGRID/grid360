@@ -1,7 +1,6 @@
 {include file="lib/functions.tpl"}
 
 <form class="form-vertical" action="{$smarty.const.BASE_URI}feedback/meeting" method="post" data-persist="garlic">
-
     <fieldset>
         <legend>{t}Meeting{/t}</legend>
         <div class="control-group">
@@ -18,17 +17,23 @@
         </div>
 
         <div class="meeting-inputs">
-            <div class="control-group {if isset($form_values.name.error)}error{/if}">
+            <div class="control-group {if isset($form_values.manager_id.error)}error{/if}">
                 <label class="control-label" for="name">{t}With who?{/t} <span class="required">*</span></label>
 
                 <div class="controls">
-                    <input id="name" name="name" type="text" placeholder="{t}Name{/t}" class="input-large" value="{$form_values.name.value}" />
-                    {call check_if_error var_name="name"}
+                    <select name="manager_id" data-storage="false">
+                        {foreach $manager_options as $id => $manager}
+                            {if $id != $current_user.id}
+                                <option value="{$id}" {if $id == $form_values.manager_id.value}selected="selected"{/if}>{$manager}</option>
+                            {/if}
+                        {/foreach}
+                    </select>
+                    {call check_if_error var_name="manager_id"}
                 </div>
             </div>
 
             <div class="control-group {if isset($form_values.subject.error)}error{/if}">
-                <label class="control-label">{t}What is the subject of the meeting?{/t}</label>
+                <label class="control-label">{t}What is the subject of the meeting?{/t} <span class="required">*</span></label>
                 <textarea name="subject" class="input-xxlarge">{$form_values.subject.value}</textarea>
                 {call check_if_error var_name="subject"}
             </div>
