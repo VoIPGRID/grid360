@@ -4,7 +4,7 @@
     <form class="form-vertical" action="{$smarty.const.BASE_URI}register" method="post" data-persist="garlic">
         <fieldset>
             <div class="control-group {if isset($form_values.organisation_name.error)}error{/if}">
-                <label class="control-label" for="organisation-name">Organisation name</label>
+                <label class="control-label" for="organisation-name">{t}Organisation name{/t} <span class="required">*</span></label>
 
                 <div class="controls">
                     <div class="input-prepend">
@@ -21,7 +21,7 @@
 
             <div class="control-group {if isset($form_values.firstname.error)}error{/if}">
                 <input type="hidden" name="type" value="user" />
-                <label class="control-label" for="firstname">{t}First name{/t}</label>
+                <label class="control-label" for="firstname">{t}First name{/t} <span class="required">*</span></label>
 
                 <div class="controls">
                     <input id="firstname" name="firstname" type="text" placeholder="{t}First name{/t}" class="input-large" required value="{$form_values.firstname.value}" />
@@ -30,7 +30,7 @@
             </div>
 
             <div class="control-group {if isset($form_values.lastname.error)}error{/if}">
-                <label class="control-label" for="lastname">{t}Last name{/t}</label>
+                <label class="control-label" for="lastname">{t}Last name{/t} <span class="required">*</span></label>
 
                 <div class="controls">
                     <input type="text" name="lastname" id="lastname" placeholder="{t}Last name{/t}" class="input-large" required value="{$form_values.lastname.value}" />
@@ -39,7 +39,7 @@
             </div>
 
             <div class="control-group {if isset($form_values.email.error)}error{/if}">
-                <label class="control-label" for="email">{t}Email{/t}</label>
+                <label class="control-label" for="email">{t}Email{/t} <span class="required">*</span></label>
 
                 <div class="controls">
                     <div class="input-prepend">
@@ -51,7 +51,7 @@
             </div>
 
             <div class="control-group {if isset($form_values.password.error)}error{/if}">
-                <label class="control-label" for="password">{t}Password{/t}</label>
+                <label class="control-label" for="password">{t}Password{/t} <span class="required">*</span></label>
 
                 <div class="controls">
                     <div class="input-prepend">
