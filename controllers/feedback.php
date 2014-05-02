@@ -101,11 +101,6 @@ function view_feedback_overview()
 
     $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, $round->id));
 
-    if($round->id != 0 && $round->status == ROUND_IN_PROGRESS && $own_review->status == REVIEW_IN_PROGRESS)
-    {
-        redirect_to('feedback/' . $user->id);
-    }
-
     $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($user->id, $round->id, REVIEW_SKIPPED));
     R::preload($roundinfo, array('reviewee' => 'user'));
 
@@ -159,7 +154,9 @@ function feedback_step_1()
 
     if($round->id != 0 && $user->id != params('id') && $round->status == ROUND_IN_PROGRESS && $own_review->status == REVIEW_IN_PROGRESS)
     {
-        redirect_to('feedback/' . $user->id);
+        $message = _('You have to review yourself first');
+        flash('error', $message);
+        redirect_to('/');
     }
 
     $reviewee = R::load('user', params('id'));
