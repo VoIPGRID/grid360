@@ -30,6 +30,12 @@ function dashboard()
     $smarty->assign('own_review', $own_review);
     $smarty->assign('page_header', _('Dashboard'));
 
+    if(!empty($own_review) && $own_review->status == REVIEW_IN_PROGRESS)
+    {
+        $change_agreements_text = _('Make sure you edit your profile if there are changes to your agreements');
+        $smarty->assign('change_agreements_text', $change_agreements_text);
+    }
+
     return html($smarty->fetch('common/dashboard.tpl'));
 }
 

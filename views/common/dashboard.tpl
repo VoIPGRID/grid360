@@ -85,6 +85,9 @@
 {/function}
 
 {if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
+    <div class="alert alert-info">
+        <span>{$change_agreements_text}</span>
+    </div>
     <div class="row-fluid">
         {print_own_review_status}
         {print_report_overview}
