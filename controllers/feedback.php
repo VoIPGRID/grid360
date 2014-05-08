@@ -329,17 +329,27 @@ function feedback_step_2()
     if($reviewee->id == $_SESSION['current_user']->id)
     {
         $feedback_header_subtext .= _('yourself');
-        $agreement_header_subtext = _('How have you fullfilled your agreements?');
+        $agreement_header_subtext = _('These are the agreements that you have entered in your profile.
+        Select at least two agreements and review your development in those areas');
     }
+    // Hier staan de werkafspraken die uit het beoordelingsgesprek van  (naam persoon) zijn gekomen.
+    // Geef bij minimaal twee items aan wat jij vindt van de ontwikkeling van (naam persoon) op dat vlak
     else
     {
-        $feedback_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname;
-        $agreement_header_subtext =  sprintf(_('How has %s fulfilled his/her agreements?'), $reviewee->firstname . ' ' . $reviewee->lastname);
+        $feedback_header_subtext .= $reviewee->firstname . ' ' . $reviewee->lastname;
+        $agreement_header_subtext = sprintf(_('These are the agreements that %s has made during on their performance review.
+        Select at least two agreements and review their development in those areas'), $reviewee->firstname . ' ' . $reviewee->lastname);
     }
 
     $smarty->assign('feedback_header_subtext', $feedback_header_subtext);
     $smarty->assign('agreement_header_subtext', $agreement_header_subtext);
     $smarty->assign('form_action_url', '/' . $reviewee->id . '/2');
+
+    // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
+    $smarty->assign('session_lifetime', ini_get('session.gc_maxlifetime') / MINUTES);
+
+    // Make sure you edit this text to match the session_lifetime Smarty variable
+    $smarty->assign('time_text', _('minutes'));
 
     set('title', _('Feedback step 2'));
 
@@ -669,11 +679,14 @@ function feedback_meeting_post()
         }
 
         $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
-        $meeting->fetchAs('user')->with;
 
         if($meeting->id == 0)
         {
             $meeting = R::dispense('meeting');
+        }
+        else
+        {
+            $meeting->fetchAs('user')->with;
         }
 
         $meeting->with = $with;
