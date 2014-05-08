@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 29, 2014 at 12:59 PM
+-- Generation Time: May 08, 2014 at 07:49 AM
 -- Server version: 5.5.35-0ubuntu0.13.10.2
 -- PHP Version: 5.5.3-1ubuntu2.2
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `agreementreview` (
   `round_id` int(11) NOT NULL,
   `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=67 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=87 ;
 
 -- --------------------------------------------------------
 
@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS `agreements` (
   `work` text NOT NULL,
   `training` text NOT NULL,
   `other` text NOT NULL,
-  `tenant_id` int(11) NOT NULL,
   `goals` text NOT NULL,
+  `tenant_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
@@ -129,15 +129,15 @@ CREATE TABLE IF NOT EXISTS `infomessage` (
 CREATE TABLE IF NOT EXISTS `meeting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subject` varchar(255) DEFAULT NULL,
-  `manager_id` int(11) unsigned DEFAULT NULL,
   `user_id` int(11) unsigned DEFAULT NULL,
   `round_id` int(11) unsigned DEFAULT NULL,
   `tenant_id` int(11) NOT NULL,
+  `with_id` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `index_foreignkey_meeting_user` (`manager_id`),
   KEY `cons_fk_meeting_user_id_id` (`user_id`),
-  KEY `index_foreignkey_meeting_round` (`round_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+  KEY `index_foreignkey_meeting_round` (`round_id`),
+  KEY `cons_fk_meeting_with_id_id` (`with_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `review` (
   KEY `index_foreignkey_review_competency` (`competency_id`),
   KEY `index_foreignkey_review_round` (`round_id`),
   KEY `index_foreignkey_review_tenant` (`tenant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2525 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2564 ;
 
 -- --------------------------------------------------------
 
@@ -324,8 +324,8 @@ ALTER TABLE `department`
 --
 ALTER TABLE `meeting`
   ADD CONSTRAINT `cons_fk_meeting_round_id_id` FOREIGN KEY (`round_id`) REFERENCES `round` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `cons_fk_meeting_manager_id_id` FOREIGN KEY (`manager_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
-  ADD CONSTRAINT `cons_fk_meeting_user_id_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `cons_fk_meeting_user_id_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `cons_fk_meeting_with_id_id` FOREIGN KEY (`with_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Constraints for table `review`

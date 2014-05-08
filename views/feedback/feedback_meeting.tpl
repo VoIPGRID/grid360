@@ -17,18 +17,18 @@
         </div>
 
         <div class="meeting-inputs">
-            <div class="control-group {if isset($form_values.manager_id.error)}error{/if}">
+            <div class="control-group {if isset($form_values.user_id.error)}error{/if}">
                 <label class="control-label" for="name">{t}With who?{/t} <span class="required">*</span></label>
 
                 <div class="controls">
-                    <select name="manager_id" data-storage="false">
-                        {foreach $manager_options as $id => $manager}
-                            {if $id != $current_user.id}
-                                <option value="{$id}" {if $id == $form_values.manager_id.value}selected="selected"{/if}>{$manager}</option>
+                    <select name="user_id" data-storage="false">
+                        {foreach $meeting_options as $user}
+                            {if $user.id != $current_user.id}
+                                <option value="{$user.id}" {if $user.id == $form_values.user_id.value}selected="selected"{/if}>{$user.firstname} {$user.lastname}</option>
                             {/if}
                         {/foreach}
                     </select>
-                    {call check_if_error var_name="manager_id"}
+                    {call check_if_error var_name="user_id"}
                 </div>
             </div>
 

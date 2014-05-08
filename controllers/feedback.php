@@ -67,6 +67,8 @@ function edit_feedback_post()
         $reviews[] = $review;
     }
 
+    $agreement_reviews = array();
+
     foreach($_POST['agreement_reviews'] as $review_row)
     {
         $agreement_review = R::findOne('agreementreview', 'id = ? AND reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($review_row['id'], $user->id, $reviewee->id, $current_round->id));
@@ -124,13 +126,23 @@ function view_feedback_overview()
     }
 
     $smarty->assign('current_round', $round);
-    $smarty->assign('roundinfo', $roundinfo);
-    $smarty->assign('own_review', $own_review);
+
+    if($round->id != 0)
+    {
+        $smarty->assign('roundinfo', $roundinfo);
+        $smarty->assign('own_review', $own_review);
+    }
 
     $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($user->id, $round->id));
-    // Preload only works on an array of beans, so using fetchAs
-    $meeting->fetchAs('user')->manager;
-    $smarty->assign('meeting', $meeting);
+
+    if($meeting->id != 0)
+    {
+        // Preload only works on an array of beans, so using fetchAs
+        $meeting->fetchAs('user')->with;
+        $smarty->assign('meeting', $meeting);
+    }
+
+    $smarty->assign('round', $round);
 
     return html($smarty->fetch('feedback/feedback_overview.tpl'));
 }
@@ -570,23 +582,29 @@ function feedback_meeting()
         redirect_to('feedback');
     }
 
-    $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
-    // Preload only works on an array of beans, so using fetchAs
-    $meeting->fetchAs('user')->manager;
-
     global $smarty;
+
+    $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
+
+    if($meeting->id != 0)
+    {
+        // Preload only works on an array of beans, so using fetchAs
+        $meeting->fetchAs('user')->with;
+        $smarty->assign('meeting', $meeting);
+    }
 
     if(!$smarty->getTemplateVars('form_values'))
     {
         $form_values = array();
-        $form_values['manager_id']['value'] = $meeting->manager->id;
+        $form_values['user_id']['value'] = $meeting->with->id;
         $form_values['subject']['value'] = $meeting->subject;
         $form_values['choice']['value'] = 1;
 
         $smarty->assign('form_values', $form_values);
     }
 
-    $smarty->assign('manager_options', get_managers());
+    $users = R::findAll('user');
+    $smarty->assign('meeting_options', $users);
 
     return html($smarty->fetch('feedback/feedback_meeting.tpl'));
 }
@@ -605,13 +623,13 @@ function feedback_meeting_post()
 
     $choice = $_POST['meeting_choice'];
     $subject = trim($_POST['subject']);
-    $manager_id = $_POST['manager_id'];
-    $managers = get_managers();
+    $user_id = $_POST['user_id'];
+    $with = R::load('user', $user_id);
 
     if(!isset($choice))
     {
         $form_values = array();
-        $form_values['manager_id']['value'] = $manager_id;
+        $form_values['user_id']['value'] = $user_id;
         $form_values['subject']['value'] = $subject;
 
         global $smarty;
@@ -626,9 +644,9 @@ function feedback_meeting_post()
     {
         $form_values = array();
 
-        if(!array_key_exists($manager_id, $managers) && $manager_id != $current_user->id)
+        if($with->id == 0 || $user_id == $current_user->id)
         {
-            $form_values['manager_id']['error'] = sprintf(FIELD_REQUIRED, _('Name'));
+            $form_values['user_id']['error'] = sprintf(FIELD_REQUIRED, _('Name'));
         }
 
         if(empty($subject))
@@ -641,7 +659,7 @@ function feedback_meeting_post()
             if(!empty($form_value['error']))
             {
                 global $smarty;
-                $form_values['manager_id']['value'] = $manager_id;
+                $form_values['user_id']['value'] = $user_id;
                 $form_values['subject']['value'] = $subject;
                 $form_values['choice']['value'] = 1;
                 $smarty->assign('form_values', $form_values);
@@ -651,15 +669,14 @@ function feedback_meeting_post()
         }
 
         $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($current_user->id, $round->id));
-        // Preload only works on an array of beans, so using fetchAs
-        $meeting->fetchAs('user')->manager;
+        $meeting->fetchAs('user')->with;
 
         if($meeting->id == 0)
         {
             $meeting = R::dispense('meeting');
         }
 
-        $meeting->manager = R::load('user', $manager_id);
+        $meeting->with = $with;
         $meeting->subject = $subject;
         $meeting->user = $current_user;
         $meeting->round = $round;
