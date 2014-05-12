@@ -355,3 +355,14 @@ button i
 {
     margin-bottom: 25px;
 }
+
+#feedback-overview td,
+#own-review-table td
+{
+    width: 20%;
+}
+
+#own-review-table td:first-child
+{
+    width: 60%;
+}

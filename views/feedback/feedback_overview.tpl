@@ -16,15 +16,22 @@
 
     <div class="row-fluid own-review-row">
         <h4>{t}Review yourself{/t}</h4>
-        <table class="table table-striped">
+        <table id="own-review-table" class="table table-striped">
             <tbody>
             <tr>
                 <td>{$current_user.firstname} {$current_user.lastname}</td>
                 <td>
-                    {if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
-                        <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{t}Pending{/t}</a>
+                    {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
+                        {t}Pending{/t}
                     {else}
-                        <a href="{$smarty.const.BASE_URI}feedback/edit/{$current_user.id}">{t}Completed{/t}</a>
+                        {t}Completed{/t}
+                    {/if}
+                </td>
+                <td>
+                    {if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
+                        <a href="{$smarty.const.BASE_URI}feedback/{$current_user.id}">{t}Review{/t}</a>
+                    {else}
+                        <a href="{$smarty.const.BASE_URI}feedback/edit/{$current_user.id}">{t}Edit comments{/t}</a>
                     {/if}
                 </td>
             </tr>
