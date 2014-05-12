@@ -45,6 +45,7 @@
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}infomessage/overview">{t}Info message{/t}</a></li>
                                     <li class="divider"></li>
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round">{t}Round overview{/t}</a></li>
+                                    <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}meetings">{t}Meeting overview{/t}</a></li>
                                 {/if}
                             </ul>
                         </li>

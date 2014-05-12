@@ -89,6 +89,9 @@ dispatch('/admin/infomessage/create', 'create_info_message');
 dispatch('/admin/infomessage/edit', 'edit_info_message');
 dispatch_post('/admin/infomessage/create', 'info_message_post');
 
+dispatch('/admin/meetings', 'meetings_overview');
+dispatch('/admin/meetings/:id', 'view_round_meetings');
+
 dispatch('/admin/round', 'round_overview');
 dispatch('/admin/round/create', 'create_round');
 dispatch_post('/admin/round/confirm', 'start_round_confirmation');

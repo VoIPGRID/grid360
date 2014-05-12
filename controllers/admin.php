@@ -77,3 +77,39 @@ function edit_info_message()
 
     return html($smarty->fetch('admin/info_message.tpl'));
 }
+
+function meetings_overview()
+{
+    security_authorize(ADMIN);
+
+    global $smarty;
+
+    $rounds = R::findAll('round');
+
+    $smarty->assign('rounds', $rounds);
+
+    return html($smarty->fetch('admin/meeting_overview.tpl'));
+}
+
+function view_round_meetings()
+{
+    security_authorize(ADMIN);
+
+    global $smarty;
+
+    $round = R::load('round', params('id'));
+
+    if($round->id == 0)
+    {
+        $message = sprintf(BEAN_NOT_FOUND, _('round'));
+        flash('error', $message);
+        redirect_to('meetings');
+    }
+
+    $meetings = R::find('meeting', 'round_id = ?', array($round->id));
+    R::preload($meetings, array('with' => 'user'));
+
+    $smarty->assign('meetings', $meetings);
+
+    return html($smarty->fetch('admin/round_meetings.tpl'));
+}
