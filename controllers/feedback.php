@@ -330,14 +330,14 @@ function feedback_step_2()
     {
         $feedback_header_subtext .= _('yourself');
         $agreement_header_subtext = _('These are the agreements that you have entered in your profile.
-        Select at least two agreements and review your development in those areas');
+        Select at least two agreements and review your development in those areas.');
     }
     else
     {
         $feedback_header_subtext .= $reviewee->firstname . ' ' . $reviewee->lastname;
         $name = $reviewee->firstname . ' ' . $reviewee->lastname;
         $agreement_header_subtext = sprintf(_('These are the agreements that %s has made during on their performance review.
-        Select at least two agreements and review their development of %s in those areas'), $name, $name);
+        Select at least two agreements and review their development of %s in those areas.'), $name, $name);
     }
 
     $smarty->assign('feedback_header_subtext', $feedback_header_subtext);
@@ -399,38 +399,43 @@ function feedback_step_2_post()
         }
     }
 
-    $agreements = $_POST['agreements'];
-    $_SESSION['agreements'] = $agreements;
-    $count_agreements = 0;
-    $agreements_error_message = '';
+    $user_agreements = R::findOne('agreements', 'user_id = ?', array($reviewee->id));
 
-    foreach($agreements as $agreement)
+    if($user_agreements->id != 0)
     {
-        if($agreement['value'] != 0)
-        {
-            $count_agreements += 1;
-        }
-    }
+        $agreements = $_POST['agreements'];
+        $_SESSION['agreements'] = $agreements;
+        $count_agreements = 0;
+        $agreements_error_message = '';
 
-    if($count_agreements < 2)
-    {
-        $agreements_error_message = _('At least 2 agreements must be selected and a comment must be provided');
-    }
-    else
-    {
         foreach($agreements as $agreement)
         {
-            if($agreement['value'] != 0 && empty($agreement['comment']))
+            if($agreement['value'] != 0)
             {
-                $agreements_error_message = _('Must provide a comment when reviewing agreements');
+                $count_agreements += 1;
             }
         }
-    }
 
-    if(!empty($agreements_error_message))
-    {
-        flash('error', $agreements_error_message);
-        redirect_to('feedback/' . params('id') . '/2');
+        if($count_agreements < 2)
+        {
+            $agreements_error_message = _('At least 2 agreements must be selected and a comment must be provided');
+        }
+        else
+        {
+            foreach($agreements as $agreement)
+            {
+                if($agreement['value'] != 0 && empty($agreement['comment']))
+                {
+                    $agreements_error_message = _('Must provide a comment when reviewing agreements');
+                }
+            }
+        }
+
+        if(!empty($agreements_error_message))
+        {
+            flash('error', $agreements_error_message);
+            redirect_to('feedback/' . params('id') . '/2');
+        }
     }
 
     redirect_to('feedback/' . $reviewee->id . '/3');

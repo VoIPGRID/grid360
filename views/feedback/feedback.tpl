@@ -19,28 +19,30 @@
 {/function}
 
 {function create_agreements_row}
-    <span class="span12">
-        <div class="control-group">
-            <div class="controls">
-                <label class="checkbox"><strong>{$type_text}</strong>
-                    <br />
-                    <small class="muted">{$agreements[{$type}]|ucfirst}</small>
-                </label>
+    {if !empty($agreements[{$type}])}
+        <span class="span12">
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox"><strong>{$type_text}</strong>
+                        <br />
+                        <small class="muted">{$agreements[{$type}]|ucfirst}</small>
+                    </label>
+                </div>
             </div>
-        </div>
-    </span>
-    <span class="span5">
-        <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
-        <div class="control-group">
-            <div class="controls">
-                <button class="btn btn-link"><span class="smile-default"></span></button>
-                <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
+        </span>
+        <span class="span5">
+            <input type="hidden" value="0" id="{$type}_agreements" name="agreements[{$type}][value]" />
+            <div class="control-group">
+                <div class="controls">
+                    <button class="btn btn-link"><span class="smile-default"></span></button>
+                    <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
+                </div>
             </div>
-        </div>
-    </span>
-    <span class="span5 hide">
-        <textarea class="input-xxlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
-    </span>
+        </span>
+        <span class="span5 hide">
+            <textarea class="input-xxlarge" name="agreements[{$type}][comment]" placeholder="{t type=$type_text}Add a comment for %1 here{/t}">{$smarty.session.agreements[{$type}].comment}</textarea>
+        </span>
+    {/if}
 {/function}
 
 <h4>{$step_text}</h4>
