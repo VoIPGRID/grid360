@@ -34,8 +34,6 @@ function before()
         if(!empty($user) && $uri != 'profile' && $uri != 'logout' && !has_agreements($user->id))
         {
             $_SESSION['first_time_login'] = true;
-            $message = _('Agreements must be filled in before continuing');
-            flash('error', $message);
             redirect_to('profile');
         }
         else
