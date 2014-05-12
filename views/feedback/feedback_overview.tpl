@@ -133,23 +133,7 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-        $('#info-box-button').click(function(event)
-        {
-            if($('#field-info').is(':visible'))
-            {
-                $(this).find('h4').text('+ {t}Click here for more information about this feedback round{/t}');
-            }
-            else
-            {
-                $(this).find('h4').text('- {t}Click to hide{/t}');
-            }
-
-            $('#field-info').slideToggle();
-            event.preventDefault();
-        });
-
         // Not using the create_datatable function I made because I want some extra options
-
         $('#feedback-overview').dataTable({
             "sDom": "",
             "bStateSave": true, // Save the state of the table to localStorage

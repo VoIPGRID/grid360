@@ -73,19 +73,6 @@ function create_round()
 
     $smarty->assign('count_users', $count_users);
 
-    /* find information from previous round to re use */
-    $previous_rounds = R::findAll('round', 'ORDER BY id DESC LIMIT 0,1');
-    if(count($previous_rounds) > 0) {
-        $previous_round = array_pop($previous_rounds);
-
-        $form_values = $smarty->getTemplateVars('form_values');
-        if(!isset($form_values)) {
-            $form_values = array();
-            $form_values['information']['value'] = $previous_round->information;
-            $smarty->assign('form_values', $form_values);
-        }
-    }
-
     return html($smarty->fetch('round/round.tpl'));
 }
 
@@ -686,7 +673,6 @@ function validate_round_form($count_users)
     }
 
     $form_values = array();
-    $form_values['information']['value'] = $_POST['information'];
     $form_values['description']['value'] = $_POST['description'];
     $form_values['closing_date']['value'] = $_POST['closing_date'];
     $form_values['total_amount_to_review']['value'] = $total_amount_to_review;
