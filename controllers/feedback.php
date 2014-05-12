@@ -332,13 +332,12 @@ function feedback_step_2()
         $agreement_header_subtext = _('These are the agreements that you have entered in your profile.
         Select at least two agreements and review your development in those areas');
     }
-    // Hier staan de werkafspraken die uit het beoordelingsgesprek van  (naam persoon) zijn gekomen.
-    // Geef bij minimaal twee items aan wat jij vindt van de ontwikkeling van (naam persoon) op dat vlak
     else
     {
         $feedback_header_subtext .= $reviewee->firstname . ' ' . $reviewee->lastname;
+        $name = $reviewee->firstname . ' ' . $reviewee->lastname;
         $agreement_header_subtext = sprintf(_('These are the agreements that %s has made during on their performance review.
-        Select at least two agreements and review their development in those areas'), $reviewee->firstname . ' ' . $reviewee->lastname);
+        Select at least two agreements and review their development of %s in those areas'), $name, $name);
     }
 
     $smarty->assign('feedback_header_subtext', $feedback_header_subtext);
@@ -366,7 +365,6 @@ function feedback_step_2_post()
     $count_negative = 0;
     $count_comments = 0;
     $competencies = array();
-    $agreement_error = false;
 
     if($reviewee->department_id == $_SESSION['current_user']->department_id)
     {
@@ -403,19 +401,35 @@ function feedback_step_2_post()
 
     $agreements = $_POST['agreements'];
     $_SESSION['agreements'] = $agreements;
+    $count_agreements = 0;
+    $agreements_error_message = '';
 
     foreach($agreements as $agreement)
     {
-        if($agreement['value'] != 0 && empty($agreement['comment']))
+        if($agreement['value'] != 0)
         {
-            $agreement_error = true;
+            $count_agreements += 1;
         }
     }
 
-    if($agreement_error)
+    if($count_agreements < 2)
     {
-        $message = _('Must provide a comment when reviewing agreements');
-        flash('error', $message);
+        $agreements_error_message = _('At least 2 agreements must be selected and a comment must be provided');
+    }
+    else
+    {
+        foreach($agreements as $agreement)
+        {
+            if($agreement['value'] != 0 && empty($agreement['comment']))
+            {
+                $agreements_error_message = _('Must provide a comment when reviewing agreements');
+            }
+        }
+    }
+
+    if(!empty($agreements_error_message))
+    {
+        flash('error', $agreements_error_message);
         redirect_to('feedback/' . params('id') . '/2');
     }
 
