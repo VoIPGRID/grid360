@@ -102,7 +102,7 @@ function create_user_post()
     }
     else
     {
-        $message = sprintf(UPDATE_SUCCESS, 'user', $user->firstname . ' ' . $user->lastname);
+        $message = sprintf(UPDATE_SUCCESS, _('user'), $user->firstname . ' ' . $user->lastname);
     }
 
     R::store($user);
