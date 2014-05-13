@@ -2,6 +2,25 @@
     <h3>{t}Feedback overview{/t}</h3>
 </div>
 
+{if !empty($reviews_completed_message)}
+    <div id="info-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="modal-header">{t}Congratulations{/t}!</h3>
+        </div>
+        <div class="modal-body">
+            <p>{$reviews_completed_message}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{t}Close{/t}</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('#info-message-modal').modal('show');
+    </script>
+{/if}
+
 {if $round.status == $smarty.const.ROUND_IN_PROGRESS}
     {if $own_review.status == $smarty.const.REVIEW_COMPLETED}
         {foreach $roundinfo as $info}

@@ -142,6 +142,13 @@ function view_feedback_overview()
         $smarty->assign('meeting', $meeting);
     }
 
+    $reviews_completed_message = flash_now('reviews_completed_message');
+
+    if(!empty($reviews_completed_message))
+    {
+        $smarty->assign('reviews_completed_message', $reviews_completed_message);
+    }
+
     $smarty->assign('round', $round);
 
     return html($smarty->fetch('feedback/feedback_overview.tpl'));
@@ -594,6 +601,23 @@ function feedback_step_3_post()
     {
         $message = sprintf(_('Your review for %s %s has been saved'), $reviewee->firstname, $reviewee->lastname);
         flash('success', $message);
+
+        $completed_reviews = 0;
+        $all_roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ?', array($current_user->id, get_current_round()->id));
+
+        foreach($all_roundinfo as $info)
+        {
+            if($info->status == REVIEW_COMPLETED)
+            {
+                $completed_reviews += 1;
+            }
+        }
+
+        if($completed_reviews == count($all_roundinfo))
+        {
+            $reviews_completed_message = _('You\'ve completed the review process.');
+            flash('reviews_completed_message', $reviews_completed_message);
+        }
 
         redirect_to('feedback');
     }
