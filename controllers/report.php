@@ -77,7 +77,7 @@ function view_report()
     if($round->status == 0)
     {
         // If the round is over there should be a report ready, so get that file
-        $file_name = 'report_' . $round->id . '_' . $user->id . '_' . strtolower($user->firstname) . '_' . strtolower($user->lastname);
+        $file_name = md5('report_' . $round->id . '_' . $user->id . '_' . strtolower($user->firstname) . '_' . strtolower($user->lastname));
         $file = BASE_DIR . 'reports/' . $file_name;
 
         if(file_exists($file))
@@ -251,7 +251,7 @@ function generate_report($user, $round)
     $lastname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->lastname));
 
     // Store the report
-    $file_name = 'report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname;
+    $file_name = md5('report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname);
 
     $file = BASE_DIR . 'reports/' . $file_name;
     $fh = fopen($file, 'w') or die("can't open file");
