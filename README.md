@@ -37,8 +37,8 @@ Configuring the application
 This will either be local.php or production.php, depending on what you need (local.php for test environment, production.php for live environment)
 2. **Make sure Smarty can read and write templates_c**  
 Most likely you'll need to make sure *www-data* can read and write templates_c
-3. **Create a public folder (for Sacy)**  
-Also make sure that *www-data* can read and write this folder
+3. **Create `public` (for Sacy) and `reports` folders**  
+Also make sure that *www-data* can read and write these folders
 4. **Import grid360.sql**  
 If you don't import this sql file you'll get SQLState errors. This is because the application operates under frozen mode meaning the database won't be dynamically changed by RedBeanPHP
 5. **Setup the cron job**  
