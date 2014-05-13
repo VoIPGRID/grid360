@@ -24,26 +24,24 @@
     {call print_alert type="info" text="{$info}"}
 {/if}
 
-    {if $display_info_message}
-        <div id="info-message-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h3 id="modal-header">{t}Info message{/t}</h3>
-            </div>
-            <div class="modal-body">
-                <p>{$info_message.message nofilter}</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">{t}Close{/t}</button>
-            </div>
+{if $display_info_message}
+    <div id="info-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="modal-header">{t}Info message{/t}</h3>
         </div>
+        <div class="modal-body">
+            <p>{$info_message.message nofilter}</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{t}Close{/t}</button>
+        </div>
+    </div>
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#info-message-modal').modal('show');
-            });
-        </script>
-    {/if}
+    <script type="text/javascript">
+        $('#info-message-modal').modal('show');
+    </script>
+{/if}
 
 {$content nofilter}
 </div>
