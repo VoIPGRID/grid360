@@ -224,11 +224,11 @@ function feedback_step_1()
 
     if($reviewee->id == $_SESSION['current_user']->id)
     {
-        $feedback_header_subtext .= _('yourself');
+        $feedback_header_subtext .= _('yourself') . '.';
     }
     else
     {
-        $feedback_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname;
+        $feedback_header_subtext .=  $reviewee->firstname . ' ' . $reviewee->lastname . '.';
     }
 
     // Make sure you divide by the right constant (either MINUTES OR HOURS) depending on what you want to display
@@ -299,6 +299,13 @@ function feedback_step_2()
     }
 
     $reviewee = R::load('user', params('id'));
+    $competencygroup = $reviewee->role->competencygroup;
+    $agreements = R::findOne('agreements', 'user_id = ?', array($reviewee->id));
+    
+    if($reviewee->department_id != $_SESSION['current_user']->department_id && $agreements->id == 0)
+    {
+        redirect_to('feedback/' . params('id') . '/3');
+    }
 
     if($reviewee->id == 0)
     {
@@ -316,9 +323,6 @@ function feedback_step_2()
         redirect_to('feedback');
     }
 
-    $competencygroup = $reviewee->role->competencygroup;
-    $agreements = R::findOne('agreements', 'user_id = ?', array($reviewee->id));
-
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
 
@@ -335,13 +339,13 @@ function feedback_step_2()
 
     if($reviewee->id == $_SESSION['current_user']->id)
     {
-        $feedback_header_subtext .= _('yourself');
+        $feedback_header_subtext .= _('yourself') . '.';
         $agreement_header_subtext = _('These are the agreements that you have entered in your profile.
         Select at least two agreements and review your development in those areas.');
     }
     else
     {
-        $feedback_header_subtext .= $reviewee->firstname . ' ' . $reviewee->lastname;
+        $feedback_header_subtext .= $reviewee->firstname . ' ' . $reviewee->lastname . '.';
         $name = $reviewee->firstname . ' ' . $reviewee->lastname;
         $agreement_header_subtext = sprintf(_('These are the agreements that %s has made during on their performance review.
         Select at least two agreements and review their development of %s in those areas.'), $name, $name);
