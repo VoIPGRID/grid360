@@ -1,5 +1,9 @@
 {include file="lib/functions.tpl"}
 
+<script type="text/javascript">
+    var base_uri = '{$smarty.const.BASE_URI}';
+</script>
+
 {function print_user_info}
     <tr>
         <td>{$user.firstname|capitalize:true}</td>
@@ -110,7 +114,7 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-        var ignored_columns = [-1, -2]; // Stop the reports and actions columns from being sortable
+        var ignored_columns = [-1]; // Stop the reports and actions columns from being sortable
         create_datatable($('.table.table-striped'), ignored_columns);
     });
 </script>
