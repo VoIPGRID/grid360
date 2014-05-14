@@ -42,37 +42,40 @@
 
         <fieldset>
             <legend>{t}Agreements{/t}</legend>
-
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <th class="span2">{t}Rating{/t}</th>
-                    <th class="span3">{t}Agreements{/t}</th>
-                    <th class="span7">{t}Comments{/t}</th>
-                </tr>
-                </thead>
-                <tbody>
-                {foreach $agreement_reviews as $agreement_review}
+            {if !empty($agreement_reviews)}
+                <table class="table table-striped table-hover">
+                    <thead>
                     <tr>
-                        <td>
-                            {if $agreement_review.selection == 1}
-                                <span class="smile-active"></span>
-                            {elseif $agreement_review.selection == 2}
-                                <span class="meh-active"></span>
-                            {/if}
-                        </td>
-                        <td>{$agreements.{$agreement_review.type}.label} <br />
-                            <small class="muted">{$agreements.{$agreement_review.type}.value}</small>
-                        </td>
-                        <td>
-                            <input type="hidden" name="agreement_reviews[{$agreement_review.id}][type]" value="agreementreview" />
-                            <input type="hidden" name="agreement_reviews[{$agreement_review.id}][id]" value="{$agreement_review.id}" />
-                            <textarea class="input-block-level" name="agreement_reviews[{$agreement_review.id}][comment]" placeholder="{t type=$type}Add a comment for %1 agreement here{/t}">{$agreement_review.comment}</textarea>
-                        </td>
+                        <th class="span2">{t}Rating{/t}</th>
+                        <th class="span3">{t}Agreements{/t}</th>
+                        <th class="span7">{t}Comments{/t}</th>
                     </tr>
-                {/foreach}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {foreach $agreement_reviews as $agreement_review}
+                        <tr>
+                            <td>
+                                {if $agreement_review.selection == 1}
+                                    <span class="smile-active"></span>
+                                {elseif $agreement_review.selection == 2}
+                                    <span class="meh-active"></span>
+                                {/if}
+                            </td>
+                            <td>{$agreements.{$agreement_review.type}.label} <br />
+                                <small class="muted">{$agreements.{$agreement_review.type}.value}</small>
+                            </td>
+                            <td>
+                                <input type="hidden" name="agreement_reviews[{$agreement_review.id}][type]" value="agreementreview" />
+                                <input type="hidden" name="agreement_reviews[{$agreement_review.id}][id]" value="{$agreement_review.id}" />
+                                <textarea class="input-block-level" name="agreement_reviews[{$agreement_review.id}][comment]" placeholder="{t type=$type}Add a comment for %1 agreement here{/t}">{$agreement_review.comment}</textarea>
+                            </td>
+                        </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            {else}
+                {t}No agreement reviews found{/t}
+            {/if}
         </fieldset>
 
         <fieldset>
