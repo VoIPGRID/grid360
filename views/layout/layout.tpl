@@ -25,7 +25,7 @@
 {/if}
 
 {if $display_info_message}
-    <div id="info-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
+    <div id="info-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="modal-header">{t}Info message{/t}</h3>

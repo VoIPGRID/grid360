@@ -3,7 +3,7 @@
 </div>
 
 {if !empty($reviews_completed_message)}
-    <div id="info-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true">
+    <div id="info-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-header" aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="modal-header">{t}Congratulations{/t}!</h3>
@@ -40,7 +40,7 @@
             <tr>
                 <td>{$current_user.firstname} {$current_user.lastname}</td>
                 <td>
-                    {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
+                    {if $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
                         {t}Pending{/t}
                     {else}
                         {t}Completed{/t}
