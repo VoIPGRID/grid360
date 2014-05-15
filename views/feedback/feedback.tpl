@@ -48,7 +48,7 @@
 <h4>{$step_text}</h4>
 
 <div class="alert alert-warning">
-    <span>{t time=$session_lifetime time_text=$time_text}Make sure you submit this form within %1 %2. Otherwise you will be automatically logged out.{/t}</span>
+    <span>{t time=$session_lifetime time_text=$time_text}Make sure you submit this form within %1 %2. Otherwise you will be automatically logged out and you will lose the data you filled in.{/t}</span>
 </div>
 
 {if isset($step) && $step == 1 && $reviewee.department.id != $current_user.department.id}
