@@ -111,10 +111,12 @@
                         </div>
                     {/if}
                 {/if}
-
+                
                 {if isset($skipped_roundinfo)}
+                    <br />
+                    
                     <fieldset>
-                        <legend>{t}Skipped{/t}</legend>
+                        <h4>{t}Skipped{/t}</h4>
                         <form action="{$smarty.const.BASE_URI}feedback/skip/add" method="post">
                         <table id="skipped-roundinfo" class="table table-striped">
                             <thead>
@@ -133,7 +135,6 @@
                                     <td>{$skipped.reviewee.firstname} {$skipped.reviewee.lastname}</td>
                                     <td>{$skipped.reviewee.department.name}</td>
                                     <td>{$skipped.reviewee.role.name}</td>
-                                    <td><a href="{$smarty.const.BASE_URI}feedback/{$skipped.reviewee.id}">{t}Review{/t}</a></td>
                                 </tr>
                             {/foreach}
                             </tbody>
