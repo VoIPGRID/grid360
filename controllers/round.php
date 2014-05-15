@@ -157,6 +157,8 @@ function start_round()
     foreach($users as $reviewer)
     {
         $user_counts[$reviewer->id] = 0;
+        $other_to_review[$reviewer->id] = array();
+        $own_to_review[$reviewer->id] = array();
     }
 
     // Find reviewees for user within user's department
@@ -211,7 +213,7 @@ function start_round()
     // Find reviewees for departments other than the user's
     foreach($users as $reviewer)
     {
-        if(count($own_to_review[$reviewer->id]) != $total_amount_to_review && count($own_to_review) > 0)
+        if(count($own_to_review[$reviewer->id]) != $total_amount_to_review)
         {
             // Get number of possible reviewees for departments other than the user's
             $other_department_users = R::find('user', 'department_id != ? AND status != ?', array($reviewer->department_id, PAUSE_USER_REVIEWS));
