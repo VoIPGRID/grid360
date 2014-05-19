@@ -31,7 +31,7 @@ function before()
 
     if(!empty($user))
     {
-        if(!empty($user) && $uri != 'profile' && $uri != 'logout' && !has_agreements($user->id))
+        if($uri == 'feedback' && !has_agreements($user->id))
         {
             $_SESSION['first_time_login'] = true;
             redirect_to('profile');
@@ -168,6 +168,7 @@ function not_found($errno, $errstr, $errfile=null, $errline=null, $errcontext=nu
 
     return html($smarty->fetch('error/404.tpl'), error_layout());
 }
+
 function server_error($errno, $errstr, $errfile=null, $errline=null, $errcontext=null) {
     global $smarty;
 
