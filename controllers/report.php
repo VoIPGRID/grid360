@@ -77,9 +77,9 @@ function view_report()
     if($round->status == 0)
     {
         // If the round is over there should be a report ready, so get that file
-        $firstname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->firstname));
-        $lastname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->lastname));
-        $file_name = md5('report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname);
+        $firstname = str_replace(' ', '_', strtolower(unaccent_string($user->firstname)));
+        $lastname = str_replace(' ', '_', strtolower(unaccent_string($user->lastname)));
+        $file_name = 'report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname . '.html';
         $file = BASE_DIR . 'reports/' . $file_name;
 
         if(file_exists($file))
@@ -249,14 +249,14 @@ function generate_report($user, $round)
     // Generate the HTML
     $report = $smarty->fetch('report/report.tpl');
 
-    $firstname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->firstname));
-    $lastname = strtolower(iconv('utf8', 'ascii//TRANSLIT', $user->lastname));
+    $firstname = str_replace(' ', '_', strtolower(unaccent_string($user->firstname)));
+    $lastname = str_replace(' ', '_', strtolower(unaccent_string($user->lastname)));
 
     // Store the report
-    $file_name = md5('report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname);
+    $file_name = 'report_' . $round->id . '_' . $user->id . '_' . $firstname . '_' . $lastname . '.html';
 
     $file = BASE_DIR . 'reports/' . $file_name;
-    $fh = fopen($file, 'w') or die("can't open file");
+    $fh = fopen($file, 'w') or die('Can\'t open file');
     fwrite($fh, $report);
 
     fclose($fh);
