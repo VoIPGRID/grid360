@@ -455,7 +455,8 @@ function start_round()
 
         foreach($users as $user)
         {
-           send_mail('Feedback round started', ADMIN_EMAIL, $user->email, 'Round started, you can now log in and start reviewing.');
+            $round_start_message = _('Someone in your organisation started a feedback round. You can now log in and start reviewing.');
+            send_mail(_('Feedback round started'), ADMIN_EMAIL, $user->email, $round_start_message);
         }
 
         $message =  _('Round created');
@@ -606,7 +607,8 @@ function end_round()
     foreach($users as $user)
     {
         generate_report($user, $round);
-        send_mail('Feedback round ended', ADMIN_EMAIL, $user->email, 'Round ended, you can now log in and view your report.');
+        $message = _('Round ended, you can now log in and view your report.');
+        send_mail(_('Feedback round ended'), ADMIN_EMAIL, $user->email, $message);
     }
 
     $message =  _('Round ended');
