@@ -31,7 +31,7 @@ function before()
 
     if(!empty($user))
     {
-        if($uri == 'feedback' && !has_agreements($user->id))
+        if(strpos($uri, 'feedback') !== false && !has_agreements($user->id))
         {
             $_SESSION['first_time_login'] = true;
             redirect_to('profile');
