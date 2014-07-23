@@ -27,7 +27,7 @@ function has_error() {
     return false;
 }
 
-/* mail error information to *ADMIN_EMAIL* */
+/* mail error information to *ERROR_MAIL* */
 function mail_error() {
     /* don't mail if there is nothing to mail about */
     if(!has_error()) {
@@ -96,11 +96,18 @@ function mail_error() {
         require_once(BASE_DIR . 'lib/smarty/libs/Smarty.class.php');
     }
 
+    $email_address = ADMIN_EMAIL;
+
+    if(defined('ERROR_MAIL'))
+    {
+        $email_address = ERROR_MAIL;
+    }
+
     /* create email message */
     $message = Swift_Message::newInstance()
         ->setSubject($subject)
-        ->setFrom(ADMIN_EMAIL)
-        ->setTo(ADMIN_EMAIL)
+        ->setFrom($email_address)
+        ->setTo($email_address)
         ->setBody($body);
 
     /* mark message as html */

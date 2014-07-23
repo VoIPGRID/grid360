@@ -13,6 +13,7 @@ define('CONNECTION', 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME);
 define('APP_NAME', 'yourappname');
 
 define('ADMIN_EMAIL', 'admin@yourhost.com');
+define('ERROR_MAIL', 'error@yourhost.com');
 
 $transport = Swift_MailTransport::newInstance();
 $mailer = Swift_Mailer::newInstance($transport);
