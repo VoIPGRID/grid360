@@ -10,7 +10,7 @@
                 <strong>{$competencies[$competency_id].name}</strong><br />
                 {foreach $reviews as $review}
                     <span class="review-info">
-                        <strong>{if $review.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment nofilter}
+                        <strong>{if $review.reviewer.id == $user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment nofilter}
                     </span>
                     <br />
                 {/foreach}
@@ -31,7 +31,7 @@
                 <strong>{$agreements.{$type}.label}</strong> <small class="muted">({$agreements.{$type}.value})</small><br />
                 {foreach $reviews as $review}
                     <span class="review-info">
-                        <strong>{if $review.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment nofilter}
+                        <strong>{if $review.reviewer.id == $user.id}[{t}Own{/t}]{else}[{$review.reviewer.firstname} {$review.reviewer.lastname}]{/if}</strong> {$review.comment nofilter}
                     </span>
                     <br />
                 {/foreach}
@@ -167,11 +167,11 @@
 
         <div class="row-fluid">
             <span class="span12">
-                <legend>{t firstname=$smarty.session.current_user.firstname lastname=$smarty.session.current_user.lastname}In what way have you contributed to the success of the organisation?{/t}</legend>
+                <legend>{t}In what way have you contributed to the success of the organisation?{/t}</legend>
                 {foreach $roundinfo as $info}
                     {if !empty($info.answer)}
                         <span class="review-info">
-                            <strong>{if $info.reviewer.id == $smarty.session.current_user.id}[{t}Own{/t}]{else}[{$info.reviewer.firstname} {$info.reviewer.lastname}]{/if}</strong> {$info.answer nofilter}
+                            <strong>{if $info.reviewer.id == $user.id}[{t}Own{/t}]{else}[{$info.reviewer.firstname} {$info.reviewer.lastname}]{/if}</strong> {$info.answer nofilter}
                         </span>
                         <br />
                     {/if}
