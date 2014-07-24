@@ -1,13 +1,3 @@
-{function create_radiobuttons}
-    {for $index=1 to 5}
-        {if $index >= $disabled_from && $index <= $disabled_to}
-            <td><input type="radio" name="{$type}[{$competency.id}][rating]" disabled="disabled" /></td>
-        {else}
-            <td><input type="radio" name="{$type}[{$competency.id}][rating]" value="{$index}" /></td>
-        {/if}
-    {/for}
-{/function}
-
 {if $reviewee.id == $smarty.session.current_user.id}
     <h3>{t}In what way have you contributed to the success of the organisation?{/t}</h3>
 {else}
