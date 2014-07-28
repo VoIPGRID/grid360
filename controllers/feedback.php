@@ -808,23 +808,26 @@ function skip_person()
         redirect_to('feedback');
     }
 
-    $reviewee = R::load('user', $_POST['reviewee_id']);
+    $previous_reviewee = R::load('user', $_POST['reviewee_id']);
 
-    if($reviewee->id == 0)
+    if($previous_reviewee->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('user'));
         flash('error', $message);
         redirect_to('feedback');
     }
 
-    if($reviewee->department->id == $_SESSION['current_user']->department->id)
+    if($previous_reviewee->department->id == $_SESSION['current_user']->department->id)
     {
         $message = _('This user can\'t be skipped');
         flash('error', $message);
         redirect_to('feedback/' . params('id'));
     }
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $reviewee->id, get_current_round()->id));
+    $round = get_current_round();
+    $current_user = $_SESSION['current_user'];
+
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $previous_reviewee->id, $round->id));
 
     if($roundinfo->id == 0)
     {
@@ -838,27 +841,78 @@ function skip_person()
 
     R::store($roundinfo);
 
-    $reviewees = R::find('user', 'department_id != ? AND status != ?', array($_SESSION['current_user']->department_id, PAUSE_USER_REVIEWS));
+    unset($roundinfo);
 
-    foreach($reviewees as $id => $reviewee)
+    $reviewees = R::find('user', 'department_id != ? AND status != ?', array($current_user->department_id, PAUSE_USER_REVIEWS));
+    $potential_reviewees = array();
+
+    foreach($reviewees as $reviewee)
     {
-        $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($_SESSION['current_user']->id, $reviewee->id, get_current_round()->id));
+        $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $reviewee->id, $round->id));
 
-        if($roundinfo->id != 0 || !empty($roundinfo))
+        if($roundinfo->id == 0 || empty($roundinfo))
         {
-            // If roundinfo with $reviewer and $reviewee already exists, remove this person from the list of potential reviewees
-            unset($reviewees[$id]);
+            // If roundinfo with $reviewer and $reviewee already exists, don't add this person to the list of potential reviewees
+            $potential_reviewees[] = $reviewee;
         }
     }
 
-    if(!empty($reviewees))
+    if(count($potential_reviewees) == 0)
+    {
+        // If no unskipped reviewees are available, use skipped reviewees as potential reviewees
+        $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status = ? AND round_id = ?', array($current_user->id, $previous_reviewee->id, REVIEW_SKIPPED, $round->id));
+        R::preload($roundinfo, array('reviewee' => 'user'));
+
+        if(count($roundinfo) != 0)
+        {
+            foreach($roundinfo as $info)
+            {
+                $potential_reviewees[] = $info->reviewee;
+            }
+        }
+        else
+        {
+            redirect_to('feedback/' . $_POST['reviewee_id']);
+        }
+    }
+
+    $count_reviewed_by = PHP_INT_MAX;
+    $new_reviewee = null;
+
+    foreach($potential_reviewees as $potential_reviewee)
+    {
+        // Get the person who's reviewed the least
+        $count_reviewee_roundinfo = R::count('roundinfo', 'reviewee_id = ? AND status != ? AND round_id = ?', array($potential_reviewee->id, REVIEW_SKIPPED, $round->id));
+
+        if($count_reviewee_roundinfo < $count_reviewed_by)
+        {
+            $new_reviewee = $potential_reviewee;
+            $count_reviewed_by = $count_reviewee_roundinfo;
+        }
+    }
+
+    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $new_reviewee->id, $round->id));
+    $roundinfo->fetchAs('user')->reviewer;
+    $roundinfo->fetchAs('user')->reviewee;
+
+    if($roundinfo->id == 0)
     {
         $roundinfo = R::dispense('roundinfo');
         $roundinfo->status = 0;
         $roundinfo->answer = '';
-        $roundinfo->round = get_current_round();
-        $roundinfo->reviewer = $_SESSION['current_user'];
-        $roundinfo->reviewee = R::load('user', array_rand($reviewees));
+        $roundinfo->round = $round;
+        $roundinfo->reviewer = $current_user;
+        $roundinfo->reviewee = $new_reviewee;
+
+        R::store($roundinfo);
+    }
+    else
+    {
+        $roundinfo->status = 0;
+        $roundinfo->answer = '';
+        $roundinfo->round = $round;
+        $roundinfo->reviewer = $current_user;
+        $roundinfo->reviewee = $new_reviewee;
 
         R::store($roundinfo);
     }
