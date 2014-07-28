@@ -143,24 +143,14 @@ function generate_report($user, $round)
     if($round->status == 1)
     {
         // If someone hasn't been reviewed enough times, show error and don't show report
-        if($count_reviewed_by < $round->min_reviewed_by)
+        if($count_reviewed_by < $round->min_reviewed_by || $own_review_completed_count < $round->min_to_review)
         {
-            $message = _('Insufficient data available to generate a report.') . '<br />';
-            $message .= _('%d of %d people have reviewed you.') . '<br />';
-            $message .= _('A minimum of %d people is needed to generate a report.');
+            $line1 = _('Your report will be displayed once you\'ve reviewed %d people and %d people have reviewed you.');
+            $message = sprintf($line1, $round->min_to_review, $round->min_reviewed_by) . '<br />';
+            $line2 = _('So far you\'ve been reviewed by') . ' ' . ngettext('%d person', '%d people', $count_reviewed_by) . ' ' . _('and you\'ve reviewed') . ' ' . ngettext('%d person', '%d people', $own_review_completed_count) . '.';
+            $message .= sprintf($line2, $count_reviewed_by, $own_review_completed_count);
             $smarty->assign('insufficient_data', true);
             $smarty->assign('insufficient_reviewed_by', sprintf($message, $count_reviewed_by, $total_review_count, $round->min_reviewed_by));
-            $generate_report = false;
-        }
-
-        // If someone hasn't reviewed enough people, show error and don't show report
-        if($own_review_completed_count < $round->min_to_review)
-        {
-            $message = _('You haven\'t reviewed enough people.') . '<br />';
-            $message .= _('You need to review at least %d people.') . '<br />';
-            $message .= _('You have reviewed %d of %d people.');
-            $smarty->assign('insufficient_data', true);
-            $smarty->assign('insufficient_reviewed', sprintf($message, $round->min_to_review, $own_review_completed_count, $total_own_review_count));
             $generate_report = false;
         }
     }
