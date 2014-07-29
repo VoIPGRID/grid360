@@ -37,6 +37,12 @@ function edit_profile()
     }
 
     $smarty->assign('display_password_form', $display_password_form);
+    $smarty->assign('agreements', $agreements);
+
+    if(!empty($agreements->work) && !empty($agreements->training) && !empty($agreements->goals))
+    {
+        $smarty->assign('display_has_agreements', false);
+    }
 
     set('title', _('Edit profile'));
 
@@ -61,6 +67,7 @@ function edit_profile_post()
 
     $new_password = $_POST['new_password'];
     $new_password_confirm = $_POST['new_password_confirm'];
+    $has_agreements = $_POST['has_agreements'];
 
     if(strlen($new_password) > 0)
     {
@@ -68,6 +75,11 @@ function edit_profile_post()
         {
             $form_values['new_password']['error'] = _('Passwords do not match!');
             $error = true;
+        }
+        else
+        {
+            $hasher = new PasswordHash(8, false);
+            $user->password = $hasher->HashPassword($new_password);
         }
     }
 
@@ -77,16 +89,27 @@ function edit_profile_post()
     {
         $agreements = R::dispense('agreements');
     }
-
-    $agreements->work = trim($_POST['work']);
-    $agreements->training = trim($_POST['training']);
-    $agreements->other = trim($_POST['other']);
-    $agreements->goals = trim($_POST['goals']);
-
-    if(empty($agreements->work) || empty($agreements->training) || empty($agreements->goals))
+    else
     {
-        $form_values['agreements']['error'] = _('One or more fields was not filled in');
-        $error = true;
+        if(isset($has_agreements) && !empty($agreements->work) && !empty($agreements->training) && !empty($agreements->goals))
+        {
+            $form_values['agreements']['error'] = _('There was an error processing the form');
+            $error = true;
+        }
+    }
+
+    if($has_agreements)
+    {
+        $agreements->work = trim($_POST['work']);
+        $agreements->training = trim($_POST['training']);
+        $agreements->other = trim($_POST['other']);
+        $agreements->goals = trim($_POST['goals']);
+
+        if(empty($agreements->work) || empty($agreements->training) || empty($agreements->goals))
+        {
+            $form_values['agreements']['error'] = _('One or more fields was not filled in');
+            $error = true;
+        }
     }
 
     if($error)
@@ -102,9 +125,14 @@ function edit_profile_post()
         return edit_profile();
     }
 
-    $hasher = new PasswordHash(8, false);
-    $user->password = $hasher->HashPassword($new_password);
     $agreements->user = $user;
+
+    if(!isset($has_agreements) && !empty($agreements->work) && !empty($agreements->training) && !empty($agreements->goals))
+    {
+        $has_agreements = true;
+    }
+
+    $agreements->has_agreements = $has_agreements;
 
     R::store($user);
     R::store($agreements);

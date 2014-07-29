@@ -143,7 +143,7 @@ function has_agreements($user_id)
     {
         return false;
     }
-    else if(empty($agreements->work) || empty($agreements->training) || empty($agreements->goals))
+    else if($agreements->has_agreements && empty($agreements->work) || empty($agreements->training) || empty($agreements->goals))
     {
         return false;
     }
