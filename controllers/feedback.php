@@ -302,11 +302,6 @@ function feedback_step_2()
     $competencygroup = $reviewee->role->competencygroup;
     $agreements = R::findOne('agreements', 'user_id = ?', array($reviewee->id));
     
-    if($reviewee->department_id != $_SESSION['current_user']->department_id && $agreements->id == 0)
-    {
-        redirect_to('feedback/' . params('id') . '/3');
-    }
-
     if($reviewee->id == 0)
     {
         $message = sprintf(BEAN_NOT_FOUND, _('user'));
@@ -325,12 +320,7 @@ function feedback_step_2()
 
     global $smarty;
     $smarty->assign('reviewee', $reviewee);
-
-    if($reviewee->department_id == $_SESSION['current_user']->department_id)
-    {
-        $smarty->assign('competencygroup',  $competencygroup);
-    }
-
+    $smarty->assign('competencygroup',  $competencygroup);
     $smarty->assign('agreements',  $agreements);
     $smarty->assign('step', 2);
     $smarty->assign('step_text', sprintf(_('Step %d of 3'), 2));
@@ -379,6 +369,16 @@ function feedback_step_2_post()
 
     if($reviewee->department_id == $_SESSION['current_user']->department_id)
     {
+        // Competencies always have to be reviewed if the reviewee is in the same department as the reviewer
+        $review_competencies = true;
+    }
+    else
+    {
+        $review_competencies = $_POST['review_competencies'];
+    }
+
+    if($review_competencies)
+    {
         foreach($_POST['competencies'] as $competency_id => $competency)
         {
             if($competency['value'] == 1)
@@ -412,7 +412,7 @@ function feedback_step_2_post()
 
     $user_agreements = R::findOne('agreements', 'user_id = ?', array($reviewee->id));
 
-    if($user_agreements->id != 0)
+    if($user_agreements->id != 0 && $user_agreements->has_agreements)
     {
         $agreements = $_POST['agreements'];
         $_SESSION['agreements'] = $agreements;
@@ -516,20 +516,13 @@ function feedback_step_3_post()
         return feedback_step_3();
     }
 
-    if($reviewee->department_id == $_SESSION['current_user']->department_id)
+    if(empty($_SESSION['competencies'][2]) && !empty($_SESSION['no_competencies_comment']))
     {
-        if(empty($_SESSION['competencies'][2]) && !empty($_SESSION['no_competencies_comment']))
-        {
-            $reviews = R::dispense('review', 3);
-        }
-        else
-        {
-            $reviews = R::dispense('review', 6);
-        }
+        $reviews = R::dispense('review', 3);
     }
     else
     {
-        $reviews = R::dispense('review', 3);
+        $reviews = R::dispense('review', 6);
     }
 
     $index = 0;

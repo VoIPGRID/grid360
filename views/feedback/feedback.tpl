@@ -58,6 +58,12 @@
 <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic">
     <div class="row-fluid">
         {if count($competencygroup.ownCompetency) > 0}
+            {if $step == 2}
+                <div>
+                    <input type="hidden" id="review-competencies" name="review_competencies" value="1" data-storage="false" />
+                    <button id="review-competencies-button" class="btn btn-link">{t}I can't review the role competencies{/t}</button>
+                </div>
+            {/if}
             <span class="span12" id="competencies">
                 <fieldset>
                     <legend>{$competencygroup.name}</legend>
@@ -69,7 +75,7 @@
         {/if}
 
         {if $step == 2}
-            {if !empty({$agreements})}
+            {if !empty({$agreements}) && $agreements.has_agreements}
                 <span class="span12 no-left-margin" id="agreements">
                     <fieldset>
                         <legend>{t}Agreements{/t}</legend>
@@ -179,6 +185,26 @@
             else
             {
                 button.parents('.span5').next('.span5').fadeOut(300);
+            }
+
+            event.preventDefault();
+        });
+
+        $('#review-competencies-button').click(function()
+        {
+            var review_competencies = $('#review-competencies').val();
+
+            if(review_competencies == 1)
+            {
+                $('#competencies').slideUp();
+                $('#review-competencies').val(0);
+                $(this).text('{t}I can review the role competencies{/t}');
+            }
+            else
+            {
+                $('#competencies').slideDown();
+                $('#review-competencies').val(1);
+                $(this).text("{t}I can't review the role competencies{/t}");
             }
 
             event.preventDefault();

@@ -82,7 +82,7 @@
                                     <td>{$info.reviewee.role.name}</td>
                                     <td>
                                         {if $info.status == $smarty.const.REVIEW_IN_PROGRESS}
-                                            {t}Pending{/t}
+                                            {t}Not reviewed{/t}
                                         {else}
                                             {t}Completed{/t}
                                         {/if}
