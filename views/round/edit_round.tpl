@@ -57,7 +57,7 @@
                 <legend>{t}Report options{/t}</legend>
 
                 <button id="report-info-box-button" class="btn btn-link">+ {t}Show info{/t}</button>
-                <div id="report-field-info" class="alert alert-info"> {*TODO: Improve info text*}
+                <div id="report-field-info" class="alert alert-info">
                     {t}The following fields can be used to set the amount of people each person has to be reviewed by and has to review in order to view their own report.{/t}
                     <br />{t}If a field is blank the default values will be used. If a field has the value zero (0) there won't be a limit for that field.{/t}
                     <br />
@@ -120,7 +120,7 @@
 
         $('#closing-date').datetimepicker(
         {
-            // Prevent an user from chosing datetimes before the current datetime
+            // Prevent a user from chosing datetimes before the current datetime
             startDate: '{$smarty.now|date_format:'%Y-%m-%d %H:00:00'}',
             // Makes sure the minutes are set to 00
             initialDate: '{$smarty.now|date_format:'%Y-%m-%d %H:00:00'}',
