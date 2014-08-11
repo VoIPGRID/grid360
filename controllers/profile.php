@@ -39,10 +39,14 @@ function edit_profile()
     $smarty->assign('display_password_form', $display_password_form);
     $smarty->assign('agreements', $agreements);
 
+    $display_has_agreements = true;
+
     if(!empty($agreements->work) && !empty($agreements->training) && !empty($agreements->goals))
     {
-        $smarty->assign('display_has_agreements', false);
+        $display_has_agreements = false;
     }
+
+    $smarty->assign('display_has_agreements', $display_has_agreements);
 
     set('title', _('Edit profile'));
 
