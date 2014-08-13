@@ -102,7 +102,7 @@ function edit_profile_post()
         }
     }
 
-    if($has_agreements)
+    if(!isset($has_agreements) || $has_agreements)
     {
         $agreements->work = trim($_POST['work']);
         $agreements->training = trim($_POST['training']);

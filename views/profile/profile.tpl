@@ -34,7 +34,7 @@
 
         <span><p>{t}Here you can enter the agreements you've made in your last performance review{/t}</p></span>
 
-        <div id="profile-agreement-fields"{if $agreements.id == 0 || !$agreements.has_agreements} class="hide"{/if}>
+        <div id="profile-agreement-fields"{if $agreements.id != 0 || !$agreements.has_agreements} class="hide"{/if}>
             <div class="control-group">
                 <label class="control-label" for="work_agreements">{t}Work agreements{/t} <span class="required">*</span></label>
 
@@ -70,12 +70,12 @@
 
         {if $display_has_agreements}
             <div>
-                {if $agreements.id == 0 || !$agreements.has_agreements}
-                    <input type="hidden" id="has-agreements" name="has_agreements" value="0" data-storage="false" />
-                    <button id="has-agreements-button" class="btn btn-link">{t}I have agreements{/t}</button>
-                {else}
+                {if $agreements.id == 0}
                     <input type="hidden" id="has-agreements" name="has_agreements" value="1" data-storage="false" />
                     <button id="has-agreements-button" class="btn btn-link">{t}I haven't made any agreements yet{/t}</button>
+                {else}
+                    <input type="hidden" id="has-agreements" name="has_agreements" value="0" data-storage="false" />
+                    <button id="has-agreements-button" class="btn btn-link">{t}I have agreements{/t}</button>
                 {/if}
             </div>
         {/if}
