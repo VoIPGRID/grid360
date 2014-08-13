@@ -141,7 +141,17 @@ function edit_profile_post()
     R::store($user);
     R::store($agreements);
 
+    $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, get_current_round()->id));
+
     $message = _('Profile updated');
     flash('success', $message);
-    redirect_to('/');
+
+    if($own_review->id != 0 && $own_review->status == REVIEW_IN_PROGRESS)
+    {
+        redirect_to('feedback/' . $user->id);
+    }
+    else
+    {
+        redirect_to('/');
+    }
 }
