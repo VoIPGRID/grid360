@@ -64,7 +64,7 @@
                     <button id="review-competencies-button" class="btn btn-link">{t}I can't review the role competencies{/t}</button>
                 </div>
             {/if}
-            <span class="span12" id="competencies">
+            <span class="span12 no-left-margin" id="competencies">
                 <fieldset>
                     <legend>{$competencygroup.name}</legend>
                     <div class="feedback-header-subtext">{$feedback_header_subtext}</div>

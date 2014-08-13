@@ -369,3 +369,8 @@ button i
 {
     width: 60%;
 }
+
+#review-competencies-button
+{
+    padding-left: 0;
+}
