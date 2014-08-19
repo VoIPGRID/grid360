@@ -45,7 +45,7 @@
                 </span>
             </label>
             <div class="controls">
-                <input type="text" name="closing_date" id="closing-date" value="{$form_values.closing_date.value|date_format:"%e-%b-%Y %R"}" />
+                <input type="text" name="closing_date" id="closing-date" value="{$form_values.closing_date.value|date_format:"%e-%m-%Y %R"}" />
                 {call check_if_error var_name="closing_date"}
             </div>
         </div>
@@ -126,7 +126,7 @@
             initialDate: '{$smarty.now|date_format:'%Y-%m-%d %H:00:00'}',
             minView: 'day',
             maxView: 'year',
-            format: 'dd-M-yyyy hh:ii',
+            format: 'dd-m-yyyy hh:ii',
             language: locale
         });
     });
