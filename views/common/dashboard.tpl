@@ -88,6 +88,13 @@
     <div class="alert alert-info">
         <span>{$change_agreements_text}</span>
     </div>
+{/if}
+
+<div class="dashboard-quote">
+    <span>"Feedback is the breakfast of champions"</span>
+</div>
+
+{if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
     <div class="row-fluid">
         {print_own_review_status}
         {print_report_overview}

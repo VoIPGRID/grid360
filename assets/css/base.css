@@ -374,3 +374,21 @@ button i
 {
     padding-left: 0;
 }
+
+@font-face
+{
+    font-family: ArchitectsDaughter;
+    src: url(../fonts/ArchitectsDaughter.ttf) format('truetype');
+}
+
+.dashboard-quote
+{
+    margin-bottom: 25px;
+}
+
+.dashboard-quote span
+{
+    font-size: 150%;
+    font-family: ArchitectsDaughter, Arial, sans-serif;
+}
+
