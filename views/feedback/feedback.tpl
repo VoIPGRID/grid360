@@ -2,19 +2,21 @@
 
 {function create_choice_row}
     {foreach $competencies as $competency}
-        <span class="span6" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
+        <div class="span6" data-toggle="tooltip" title="{$competency.description}" data-placement="right">
             <input type="hidden" value="0" id="{$competency.id}" name="competencies[{$competency.id}][value]" />
             <div class="control-group">
                 <div class="controls">
-                    <button class="btn btn-link"><span class="smile-default"></span></button>
-                    <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
-                    <label class="checkbox">{$competency.name}</label>
+                    <div class="pull-left">
+                        <button class="btn btn-link"><span class="smile-default"></span></button>
+                        <button class="btn btn-link"><input type="hidden" /><span class="meh-default"></span></button>
+                    </div>
+                    <div class="review-row-name">{$competency.name}</div>
                 </div>
             </div>
-        </span>
-        <span class="span5 hide">
+        </div>
+        <div class="span5 hide">
             <textarea class="input-xxlarge" name="competencies[{$competency.id}][comment]" placeholder="{t competency=$competency.name}Add a comment for the competency %1 here{/t}">{$smarty.session.competencies[{$step}][{$competency.id}].comment}</textarea>
-        </span>
+        </div>
     {/foreach}
 {/function}
 

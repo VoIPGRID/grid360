@@ -392,3 +392,11 @@ button i
     font-family: ArchitectsDaughter, Arial, sans-serif;
 }
 
+.review-row-name
+{
+    padding-left: 20px;
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+}
+
