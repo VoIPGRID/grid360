@@ -2,9 +2,9 @@
     {foreach $review_array[$selection] as $competency_id => $reviews}
         <div class="review-div" data-competency-id="{$competency_id}">
             {if $selection == 1}
-                <span class="smile-active"></span>
+                <span class="smile-active pull-left"></span>
             {elseif $selection == 2}
-                <span class="meh-active"></span>
+                <span class="meh-active pull-left"></span>
             {/if}
             <div class="review-comments">
                 <strong>{$competencies[$competency_id].name}</strong><br />

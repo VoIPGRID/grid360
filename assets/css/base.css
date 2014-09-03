@@ -268,12 +268,16 @@ button i
     display: inline-block;
     vertical-align: top;
     font-size: 12px;
+    word-break: break-word;
 }
 
 .review-comments
 {
     margin-left: 10px;
-    display: inline-block;
+    display: table-cell;
+    height: 50px;
+    vertical-align: middle;
+    padding-left: 15px;
 }
 
 .review-div
