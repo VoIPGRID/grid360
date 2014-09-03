@@ -123,7 +123,7 @@ function report_overview()
     $users = R::findAll('user', ' ORDER BY firstname');
 
     $smarty->assign('users', $users);
-    $smarty->assign('page_header', _('User overview'));
+    $smarty->assign('page_header', _('Users'));
 
     return html($smarty->fetch('admin/report_overview.tpl'));
 }
