@@ -60,12 +60,6 @@
 <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic">
     <div class="row-fluid">
         {if count($competencygroup.ownCompetency) > 0}
-            {if $step == 2}
-                <div>
-                    <input type="hidden" id="review-competencies" name="review_competencies" value="1" data-storage="false" />
-                    <button id="review-competencies-button" class="btn btn-link">{t}I can't review the role competencies{/t}</button>
-                </div>
-            {/if}
             <span class="span12 no-left-margin" id="competencies">
                 <fieldset>
                     <legend>{$competencygroup.name}</legend>
@@ -74,6 +68,12 @@
                     {create_choice_row competencies=$competencygroup.ownCompetency step=$step}
                 </fieldset>
             </span>
+            {if $step == 2 && $reviewee.department.id != $current_user.department.id}
+                <div>
+                    <input type="hidden" id="review-competencies" name="review_competencies" value="1" data-storage="false" />
+                    <button id="review-competencies-button" class="btn btn-link">{t}I can't review the role competencies{/t}</button>
+                </div>
+            {/if}
         {/if}
 
         {if $step == 2}
