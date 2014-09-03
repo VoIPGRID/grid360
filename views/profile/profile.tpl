@@ -34,7 +34,7 @@
 
         <span><p>{t}Here you can enter the agreements you've made in your last performance review{/t}</p></span>
 
-        <div id="profile-agreement-fields"{if $agreements.id != 0 || !$agreements.has_agreements} class="hide"{/if}>
+        <div id="profile-agreement-fields"{if $agreements.id != 0 && !$agreements.has_agreements} class="hide"{/if}>
             <div class="control-group">
                 <label class="control-label" for="work_agreements">{t}Work agreements{/t} <span class="required">*</span></label>
 
