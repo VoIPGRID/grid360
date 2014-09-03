@@ -820,21 +820,14 @@ function skip_person()
     $round = get_current_round();
     $current_user = $_SESSION['current_user'];
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $previous_reviewee->id, $round->id));
+    $old_roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $previous_reviewee->id, $round->id));
 
-    if($roundinfo->id == 0)
+    if($old_roundinfo->id == 0)
     {
         $message = _('Invalid input');
         flash('error', $message);
         redirect_to('feedback');
     }
-
-    // Set status to skipped, but keep in database
-    $roundinfo->status = REVIEW_SKIPPED;
-
-    R::store($roundinfo);
-
-    unset($roundinfo);
 
     $reviewees = R::find('user', 'department_id != ? AND status != ?', array($current_user->department_id, PAUSE_USER_REVIEWS));
     $potential_reviewees = array();
@@ -863,10 +856,20 @@ function skip_person()
                 $potential_reviewees[] = $info->reviewee;
             }
         }
-        else
-        {
-            redirect_to('feedback/' . $_POST['reviewee_id']);
-        }
+    }
+
+    if(count($potential_reviewees) == 0)
+    {
+        $message = _('Unable to skip this person because there are no reviewees available.');
+        flash('info', $message);
+        redirect_to('feedback/' . $_POST['reviewee_id']);
+    }
+    else
+    {
+        // Reviewees available, so skip current person
+        $old_roundinfo->status = REVIEW_SKIPPED;
+        // Set status to skipped, but keep in database
+        R::store($old_roundinfo);
     }
 
     $count_reviewed_by = PHP_INT_MAX;
