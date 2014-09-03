@@ -1,6 +1,6 @@
 <?php
 
-function report_overview()
+function user_report_overview()
 {
     security_authorize();
 

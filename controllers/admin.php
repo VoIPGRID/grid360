@@ -113,3 +113,17 @@ function view_round_meetings()
 
     return html($smarty->fetch('admin/round_meetings.tpl'));
 }
+
+function report_overview()
+{
+    security_authorize(ADMIN);
+
+    global $smarty;
+
+    $users = R::findAll('user', ' ORDER BY firstname');
+
+    $smarty->assign('users', $users);
+    $smarty->assign('page_header', _('User overview'));
+
+    return html($smarty->fetch('admin/report_overview.tpl'));
+}

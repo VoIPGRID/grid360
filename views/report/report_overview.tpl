@@ -24,3 +24,5 @@
 {else}
     </table>{t}No reports found!{/t}
 {/if}
+
+<a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}reports">{t}Back to user list{/t}</a>

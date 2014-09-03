@@ -114,6 +114,8 @@ dispatch('/admin/user/delete/:id', 'delete_user_confirmation');
 dispatch_delete('/admin/user/:id', 'delete_user');
 dispatch('/admin/user/:id', 'edit_user');
 
+dispatch('/admin/reports', 'report_overview');
+
 dispatch('/manager/roles', 'view_roles');
 dispatch('/manager/role/create', 'create_role');
 dispatch_post('/manager/role/:id', 'create_role_post');
@@ -149,7 +151,7 @@ dispatch_post('/feedback/:id/2', 'feedback_step_2_post');
 dispatch('/feedback/:id/3', 'feedback_step_3');
 dispatch_post('/feedback/:id/3', 'feedback_step_3_post');
 
-dispatch('/report/overview/:user_id', 'report_overview');
+dispatch('/report/overview/:user_id', 'user_report_overview');
 dispatch('/report/:round_id/:user_id', 'view_report');
 
 dispatch('/profile', 'edit_profile');

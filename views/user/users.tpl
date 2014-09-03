@@ -19,7 +19,6 @@
             {t}Yes{/t}
         {/if}
         </td>
-        <td><a href="{$smarty.const.BASE_URI}report/overview/{$user.id}">{t}View{/t}</a></td>
         {call print_actions type="user" level="admin"}
     </tr>
 {/function}
@@ -40,7 +39,6 @@
                     <i class="icon-question-sign" data-toggle="tooltip" title="{t}This column shows if a person is included in the feedback round.{/t}" data-placement="right"></i>
                 </span>
             </th>
-            <th>{t}Reports{/t}</th>
             <th>{t}Actions{/t}</th>
         </tr>
     </thead>
