@@ -33,6 +33,8 @@ define('ASSET_COMPILE_OUTPUT_DIR', BASE_DIR . 'public');
 define('ASSET_COMPILE_URL_ROOT', BASE_URI . 'public');
 define('SACY_WRITE_HEADERS', false);
 
+set_include_path(get_include_path() . PATH_SEPARATOR . LIB_DIR . 'google-api-client/src');
+
 /* Setup i18n */
 $supported_locales = array(
     'en' => 'en_US',

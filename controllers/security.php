@@ -1,89 +1,64 @@
 <?php
 
 require_once LIB_DIR . 'LightOpenID/openid.php';
+require_once LIB_DIR . 'google-api-client/src/Google/Client.php';
+require_once LIB_DIR . 'google-api-client/src/Google/Service/Plus.php';
 
 const GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id?id=';
 
 function login_google()
 {
-    $openid = new LightOpenID($_SERVER['HTTP_HOST']);
+    $client = new Google_Client();
+    $client->setApplicationName('GRID360');
+    $client->setClientId(GOOGLE_CLIENT_ID);
+    $client->setClientSecret(GOOGLE_CLIENT_SECRET);
+    $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . BASE_URI . 'login_google');
+    $client->setDeveloperKey(GOOGLE_DEVELOPER_KEY);
+    $client->setScopes('https://www.googleapis.com/auth/userinfo.email');
+    $client->createAuthUrl();
+    $plus = new Google_Service_Plus($client);
 
-    if(!$openid->mode)
+    if(isset($_GET['code']))
     {
-        $openid->identity = GOOGLE_OPENID_URL;
+        $client->authenticate($_GET['code']);
+        $userinfo = $plus->people->get('me');
 
-        // Redirect to $openid->identity to get permission to use user's info
-        redirect_to($openid->authUrl());
-    }
-    else if($openid->mode == 'cancel')
-    {
-        redirect_to('login');
-    }
+        $email = $userinfo['emails'][0]['value'];
 
-    // Save new $openid->identity
-    $user = null;
-    if($openid->validate())
-    {
-        $identity_hash = str_replace(GOOGLE_OPENID_URL, '', $openid->identity);
+        // getAccessToken returns json, so convert to array and get access token
+        $access_token = json_decode($client->getAccessToken(), true)['access_token'];
 
-        // Query existing user
-        $user = R::findOne('user', 'identity = ?', array($identity_hash));
+        $user = R::findOne('user', 'identity = ?', array($access_token));
 
         if($user->id == 0)
         {
-            // Store identity hash
-            $attributes = $openid->getAttributes();
-            if(count($attributes) > 0)
+            $user = R::findOne('user', 'email = ?', array($email));
+
+            if($user->id == 0)
             {
-                $user = R::findOne('user', 'email = ?', array($attributes['contact/email']));
-
-                if($user->id == 0)
-                {
-                    $message = _('No user with that email exists');
-                    flash('error', $message);
-                    redirect_to('login');
-                }
-
-                $user->identity = $identity_hash;
-                R::store($user);
-
-                $_SESSION['current_user'] = $user;
-                $_SESSION['google_login'] = true;
-
-                redirect_to('/');
+                $message = _('No user with that email exists');
+                flash('error', $message);
+                redirect_to('login');
             }
-        }
-        else
-        {
-            // Store user and redirect to frontpage
-            $attributes = $openid->getAttributes();
-            if(count($attributes) > 0)
-            {
-                $user->email = $attributes['contact/email'];
-                R::store($user);
-            }
+
+            $user->identity = $access_token;
+            R::store($user);
 
             $_SESSION['current_user'] = $user;
             $_SESSION['google_login'] = true;
 
             redirect_to('/');
         }
-
-        // Redirect for OpenID incase info is missing
-        if(!isset($user->email))
-        {
-            $openid = new LightOpenID($_SERVER['HTTP_HOST']);
-            $openid->identity = GOOGLE_OPENID_URL . $identity_hash;
-            $openid->required = array(
-                'namePerson',
-                'namePerson/friendly',
-                'namePerson/first',
-                'namePerson/last',
-                'contact/email'
-            );
-
-            redirect_to($openid->authUrl());
-        }
+    }
+    elseif(isset($_GET['error']) && $_GET['error'] == 'access_denied')
+    {
+        redirect_to('login');
+    }
+    else
+    {
+        $message = _('There was an error while logging in, please try again');
+        flash('error', $message);
+        redirect_to('login');
     }
 }
 
@@ -191,6 +166,14 @@ function login()
     global $smarty;
     $smarty->assign('page_header', APP_NAME);
     $smarty->assign('page_header_size', 'h2');
+
+    // This is needed for the Google login
+    $state = md5(rand() . STATE_KEY);
+    $smarty->assign('state', $state);
+    $_SESSION['state'] = $state;
+
+    $redirect_uri = get_redirect_url();
+    $smarty->assign('redirect_uri', $redirect_uri);
 
     if(isset($_GET['error']))
     {

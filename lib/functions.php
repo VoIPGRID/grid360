@@ -259,3 +259,21 @@ function unaccent_string($string)
 
     return strtr($string, $normalize_chars);
 }
+
+/**
+ * Sets up the url which is used when the user logs in with Google
+ * @return string the redirect url
+ */
+function get_redirect_url()
+{
+    if(isset($_SERVER['HTTPS']))
+    {
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != 'off') ? 'https' : 'http';
+    }
+    else
+    {
+        $protocol = 'http';
+    }
+
+    return $protocol . '://' . $_SERVER['HTTP_HOST'] . BASE_URI . 'login_google';
+}

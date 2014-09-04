@@ -28,7 +28,7 @@
                     <input type="checkbox" name="remember_me"> {t}Remember me{/t}
                 </label>
                 <br />
-                <button type="submit" class="btn btn-primary" id="login-button">Login</button> {t}or{/t} <a href="{$smarty.const.BASE_URI}login_google" class="btn">{t}Login with Google{/t}</a>
+                <button type="submit" class="btn btn-primary" id="login-button">Login</button> {t}or{/t} <a href="{$smarty.const.BASE_URI}login_google" class="btn" id="login-button-google">{t}Login with Google{/t}</a>
             </div>
         </div>
         <a href="{$smarty.const.BASE_URI}register">{t}Register new organisation{/t}</a>
@@ -62,6 +62,17 @@
                 $('#password').parents('.control-group').addClass('error');
                 return false;
             }
+        });
+
+        $('#login-button-google').click(function() {
+            $(this).attr('href','https://accounts.google.com/o/oauth2/auth?scope=' +
+                    'email&' +
+                    'state={$state}&' +
+                    'redirect_uri={$redirect_uri}&'+
+                    'response_type=code&' +
+                    'client_id={$smarty.const.GOOGLE_CLIENT_ID}&' +
+                    'access_type=offline');
+            return true; // Continue with the new href.
         });
     });
 </script>
