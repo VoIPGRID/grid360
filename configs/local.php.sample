@@ -15,5 +15,10 @@ define('APP_NAME', 'yourappname');
 define('ADMIN_EMAIL', 'admin@yourhost.com');
 define('ERROR_MAIL', 'error@yourhost.com');
 
+define('STATE_KEY', 'some_random_key');
+define('GOOGLE_CLIENT_ID', 'your_google_client_id');
+define('GOOGLE_CLIENT_SECRET', 'your_google_client_secret');
+define('GOOGLE_DEVELOPER_KEY', 'your_google_developer_key');
+
 $transport = Swift_MailTransport::newInstance();
 $mailer = Swift_Mailer::newInstance($transport);

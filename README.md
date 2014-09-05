@@ -34,7 +34,7 @@ Configuring the application
 ---------------------------
 
 1. **Setup your config file**  
-This will either be local.php or production.php, depending on what you need (local.php for test environment, production.php for live environment)
+This will either be local.php or production.php, depending on what you need (local.php for test environment, production.php for live environment). If you're planning on allowing your users to log in with Google, make sure to setup your [Google credentials](https://developers.google.com/+/web/signin/redirect-uri-flow#step_1_create_a_client_id_and_client_secret) and to add them to the config.
 2. **Make sure Smarty can read and write templates_c**  
 Most likely you'll need to make sure *www-data* can read and write templates_c
 3. **Create `public` (for Sacy) and `reports` folders**  
