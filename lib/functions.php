@@ -264,7 +264,7 @@ function unaccent_string($string)
  * Sets up the url which is used when the user logs in with Google
  * @return string the redirect url
  */
-function get_redirect_url()
+function get_redirect_uri()
 {
     if(isset($_SERVER['HTTPS']))
     {

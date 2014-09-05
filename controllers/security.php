@@ -12,7 +12,7 @@ function login_google()
     $client->setApplicationName('GRID360');
     $client->setClientId(GOOGLE_CLIENT_ID);
     $client->setClientSecret(GOOGLE_CLIENT_SECRET);
-    $client->setRedirectUri('http://' . $_SERVER['HTTP_HOST'] . BASE_URI . 'login_google');
+    $client->setRedirectUri(get_redirect_uri());
     $client->setDeveloperKey(GOOGLE_DEVELOPER_KEY);
     $client->setScopes('https://www.googleapis.com/auth/userinfo.email');
     $client->createAuthUrl();
@@ -172,7 +172,7 @@ function login()
     $smarty->assign('state', $state);
     $_SESSION['state'] = $state;
 
-    $redirect_uri = get_redirect_url();
+    $redirect_uri = get_redirect_uri();
     $smarty->assign('redirect_uri', $redirect_uri);
 
     if(isset($_GET['error']))
