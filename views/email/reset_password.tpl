@@ -1,4 +1,4 @@
-{t firstname={$user.firstname} lastname={$user.lastname}}Dear %1 %2,{/t}
+{t firstname=$user.firstname lastname=$user.lastname}Dear %1 %2{/t},
 <br />
 <br />
 {t}A password reset was requested for your GRID360 account.{/t}<br />
