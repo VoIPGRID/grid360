@@ -26,7 +26,8 @@ function login_google()
         $email = $userinfo['emails'][0]['value'];
 
         // getAccessToken returns json, so convert to array and get access token
-        $access_token = json_decode($client->getAccessToken(), true)['access_token'];
+        $tokens = json_decode($client->getAccessToken(), true);
+        $access_token = $tokens['access_token'];
 
         $user = R::findOne('user', 'identity = ?', array($access_token));
 
