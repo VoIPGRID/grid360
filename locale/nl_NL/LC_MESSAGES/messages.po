@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-03 13:35+0200\n"
+"POT-Creation-Date: 2014-09-08 11:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,8 +39,8 @@ msgstr "Omschrijving rol"
 #. ./views/user/user.tpl
 #: locale/.ignore/messages_tpl.c:14 locale/.ignore/messages_tpl.c:41
 #: locale/.ignore/messages_tpl.c:185 locale/.ignore/messages_tpl.c:224
-#: locale/.ignore/messages_tpl.c:767 locale/.ignore/messages_tpl.c:1271
-#: locale/.ignore/messages_tpl.c:1319
+#: locale/.ignore/messages_tpl.c:767 locale/.ignore/messages_tpl.c:1280
+#: locale/.ignore/messages_tpl.c:1328
 msgid "Department"
 msgstr "Afdeling"
 
@@ -92,7 +92,7 @@ msgstr "Geen competentiegroepen gevonden"
 #: locale/.ignore/messages_tpl.c:938 locale/.ignore/messages_tpl.c:1010
 #: locale/.ignore/messages_tpl.c:1046 locale/.ignore/messages_tpl.c:1142
 #: locale/.ignore/messages_tpl.c:1172 locale/.ignore/messages_tpl.c:1223
-#: locale/.ignore/messages_tpl.c:1232 locale/.ignore/messages_tpl.c:1331
+#: locale/.ignore/messages_tpl.c:1232 locale/.ignore/messages_tpl.c:1340
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -136,7 +136,7 @@ msgstr "Omschrijving"
 #. ./views/user/users.tpl
 #: locale/.ignore/messages_tpl.c:47 locale/.ignore/messages_tpl.c:401
 #: locale/.ignore/messages_tpl.c:782 locale/.ignore/messages_tpl.c:1073
-#: locale/.ignore/messages_tpl.c:1136 locale/.ignore/messages_tpl.c:1286
+#: locale/.ignore/messages_tpl.c:1136 locale/.ignore/messages_tpl.c:1295
 msgid "Actions"
 msgstr "Acties"
 
@@ -190,7 +190,7 @@ msgstr "Status"
 #. ./views/common/dashboard.tpl
 #. ./views/feedback/feedback_overview.tpl
 #: locale/.ignore/messages_tpl.c:80 locale/.ignore/messages_tpl.c:233
-#: controllers/round.php:476
+#: controllers/round.php:480
 msgid "No round in progress"
 msgstr "Geen ronde bezig op dit moment"
 
@@ -229,7 +229,7 @@ msgstr "Je kunt deze actie niet ongedaan maken."
 #. ./views/competency/competencygroup.tpl
 #. ./lib/functions.tpl
 #: locale/.ignore/messages_tpl.c:107 locale/.ignore/messages_tpl.c:1091
-#: locale/.ignore/messages_tpl.c:1157 locale/.ignore/messages_tpl.c:1349
+#: locale/.ignore/messages_tpl.c:1157 locale/.ignore/messages_tpl.c:1358
 msgid "Delete"
 msgstr "Verwijder"
 
@@ -358,8 +358,8 @@ msgstr "Naam beoordeelde"
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
 #: locale/.ignore/messages_tpl.c:188 locale/.ignore/messages_tpl.c:227
-#: locale/.ignore/messages_tpl.c:770 locale/.ignore/messages_tpl.c:1274
-#: locale/.ignore/messages_tpl.c:1325
+#: locale/.ignore/messages_tpl.c:770 locale/.ignore/messages_tpl.c:1283
+#: locale/.ignore/messages_tpl.c:1334
 msgid "Role"
 msgstr "Rol"
 
@@ -511,7 +511,7 @@ msgstr "Wil je de ronde bespreken met iemand?"
 #. ./views/competency/competencies.tpl
 #. ./views/user/users.tpl
 #: locale/.ignore/messages_tpl.c:308 locale/.ignore/messages_tpl.c:755
-#: locale/.ignore/messages_tpl.c:1055 locale/.ignore/messages_tpl.c:1259
+#: locale/.ignore/messages_tpl.c:1055 locale/.ignore/messages_tpl.c:1268
 msgid "Yes"
 msgstr "Ja"
 
@@ -520,7 +520,7 @@ msgstr "Ja"
 #. ./views/competency/competencies.tpl
 #. ./views/user/users.tpl
 #: locale/.ignore/messages_tpl.c:311 locale/.ignore/messages_tpl.c:752
-#: locale/.ignore/messages_tpl.c:1058 locale/.ignore/messages_tpl.c:1256
+#: locale/.ignore/messages_tpl.c:1058 locale/.ignore/messages_tpl.c:1265
 msgid "No"
 msgstr "Nee"
 
@@ -989,9 +989,9 @@ msgstr "Ronde beëindigen"
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
 #: locale/.ignore/messages_tpl.c:758 locale/.ignore/messages_tpl.c:1202
-#: locale/.ignore/messages_tpl.c:1205 locale/.ignore/messages_tpl.c:1262
-#: locale/.ignore/messages_tpl.c:1301 locale/.ignore/messages_tpl.c:1304
-#: controllers/security.php:432
+#: locale/.ignore/messages_tpl.c:1205 locale/.ignore/messages_tpl.c:1271
+#: locale/.ignore/messages_tpl.c:1310 locale/.ignore/messages_tpl.c:1313
+#: controllers/security.php:416
 msgid "First name"
 msgstr "Voornaam"
 
@@ -1000,9 +1000,9 @@ msgstr "Voornaam"
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
 #: locale/.ignore/messages_tpl.c:761 locale/.ignore/messages_tpl.c:1208
-#: locale/.ignore/messages_tpl.c:1211 locale/.ignore/messages_tpl.c:1265
-#: locale/.ignore/messages_tpl.c:1307 locale/.ignore/messages_tpl.c:1310
-#: controllers/security.php:436
+#: locale/.ignore/messages_tpl.c:1211 locale/.ignore/messages_tpl.c:1274
+#: locale/.ignore/messages_tpl.c:1316 locale/.ignore/messages_tpl.c:1319
+#: controllers/security.php:420
 msgid "Last name"
 msgstr "Achternaam"
 
@@ -1012,8 +1012,8 @@ msgstr "Achternaam"
 #. ./views/user/users.tpl
 #. ./views/user/user.tpl
 #: locale/.ignore/messages_tpl.c:764 locale/.ignore/messages_tpl.c:1214
-#: locale/.ignore/messages_tpl.c:1229 locale/.ignore/messages_tpl.c:1268
-#: locale/.ignore/messages_tpl.c:1313 controllers/security.php:440
+#: locale/.ignore/messages_tpl.c:1229 locale/.ignore/messages_tpl.c:1277
+#: locale/.ignore/messages_tpl.c:1322 controllers/security.php:424
 msgid "Email"
 msgstr "Email"
 
@@ -1025,20 +1025,20 @@ msgstr "Competentiegroepen"
 
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:776 locale/.ignore/messages_tpl.c:1280
+#: locale/.ignore/messages_tpl.c:776 locale/.ignore/messages_tpl.c:1289
 msgid "Included? "
 msgstr "Meegenomen? "
 
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:779 locale/.ignore/messages_tpl.c:1283
+#: locale/.ignore/messages_tpl.c:779 locale/.ignore/messages_tpl.c:1292
 msgid "This column shows if a person is included in the feedback round."
 msgstr ""
 "Deze kolom laat zien of een persoon wordt meegenomen in de feedbackronde."
 
 #. ./views/round/round_overview.tpl
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:785 locale/.ignore/messages_tpl.c:1289
+#: locale/.ignore/messages_tpl.c:785 locale/.ignore/messages_tpl.c:1298
 msgid "No users found!"
 msgstr "Geen gebruikers gevonden!"
 
@@ -1299,7 +1299,7 @@ msgstr "competentiegroep"
 
 #. ./views/competency/competencygroup.tpl
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1088 locale/.ignore/messages_tpl.c:1340
+#: locale/.ignore/messages_tpl.c:1088 locale/.ignore/messages_tpl.c:1349
 msgid "Edit"
 msgstr "Bewerken"
 
@@ -1353,8 +1353,8 @@ msgstr "Verander wachtwoord"
 #. ./views/security/login.tpl
 #. ./views/security/register.tpl
 #: locale/.ignore/messages_tpl.c:1178 locale/.ignore/messages_tpl.c:1220
-#: controllers/security.php:403 controllers/security.php:407
-#: controllers/security.php:448
+#: controllers/security.php:387 controllers/security.php:391
+#: controllers/security.php:432
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -1384,7 +1384,7 @@ msgid "Forgot password?"
 msgstr "Wachtwoord vergeten?"
 
 #. ./views/security/register.tpl
-#: locale/.ignore/messages_tpl.c:1196 controllers/security.php:428
+#: locale/.ignore/messages_tpl.c:1196 controllers/security.php:412
 msgid "Organisation name"
 msgstr "Organisatienaam"
 
@@ -1395,28 +1395,48 @@ msgstr "Persoonlijke informatie"
 
 #. ./views/security/register.tpl
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1217 locale/.ignore/messages_tpl.c:1316
+#: locale/.ignore/messages_tpl.c:1217 locale/.ignore/messages_tpl.c:1325
 msgid "example@email.com"
 msgstr "voorbeeld@email.com"
 
 #. ./views/security/register.tpl
-#: locale/.ignore/messages_tpl.c:1226 controllers/security.php:100
+#: locale/.ignore/messages_tpl.c:1226 controllers/security.php:76
 msgid "Register"
 msgstr "Registreren"
 
 #. ./views/security/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1235 controllers/security.php:264
-#: controllers/security.php:265
+#: locale/.ignore/messages_tpl.c:1235 controllers/security.php:248
+#: controllers/security.php:249
 msgid "Reset password"
 msgstr "Wachtwoord resetten"
 
+#. ./views/email/start_round.tpl
+#. ./views/email/reset_password.tpl
+#: locale/.ignore/messages_tpl.c:1238 locale/.ignore/messages_tpl.c:1253
+msgid "Dear %1 %2"
+msgstr "Beste %1 %2"
+
+#. ./views/email/start_round.tpl
+#: locale/.ignore/messages_tpl.c:1241
+msgid "Click here"
+msgstr "Klik hier"
+
+#. ./views/email/start_round.tpl
+#: locale/.ignore/messages_tpl.c:1244
+msgid ""
+"Someone in your organisation started a feedback round. %1 to go to GRID360 "
+"and start reviewing."
+msgstr ""
+"Iemand in jouw organisatie heeft een beoordelingsronde gestart. %1 om naar "
+"GRID360 te gaan en mensen te beoordelen."
+
 #. ./views/email/new_tenant.tpl
-#: locale/.ignore/messages_tpl.c:1238
+#: locale/.ignore/messages_tpl.c:1247
 msgid "You have created a new organisation for GRID360 with the name %1."
 msgstr "Je hebt een nieuwe organisatie voor GRID360 aangemaakt met de naam %1."
 
 #. ./views/email/new_tenant.tpl
-#: locale/.ignore/messages_tpl.c:1241
+#: locale/.ignore/messages_tpl.c:1250
 msgid ""
 "You can now log in with the email and password you provided in the "
 "registration form."
@@ -1425,82 +1445,77 @@ msgstr ""
 "formulier hebt opgegeven."
 
 #. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1244
-msgid "Dear %1 %2"
-msgstr "Beste %1 %2"
-
-#. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1247
+#: locale/.ignore/messages_tpl.c:1256
 msgid "A password reset was requested for your GRID360 account."
 msgstr "Een wachtwoord reset verzoek is verstuurd naar je GRID360 account."
 
 #. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1250
+#: locale/.ignore/messages_tpl.c:1259
 msgid "click here"
 msgstr "Klik hier"
 
 #. ./views/email/reset_password.tpl
-#: locale/.ignore/messages_tpl.c:1253
+#: locale/.ignore/messages_tpl.c:1262
 msgid "Please %1 to reset your password."
 msgstr "%1 om je wachtwoord te resetten."
 
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:1277
+#: locale/.ignore/messages_tpl.c:1286
 msgid "User level"
 msgstr "Gebruikerslevel"
 
 #. ./views/user/users.tpl
-#: locale/.ignore/messages_tpl.c:1292 controllers/user.php:105
+#: locale/.ignore/messages_tpl.c:1301 controllers/user.php:105
 #: controllers/user.php:135 controllers/user.php:174 controllers/user.php:192
 #: controllers/user.php:198 controllers/user.php:215 controllers/user.php:224
 #: controllers/feedback.php:307 controllers/feedback.php:771
-#: controllers/feedback.php:808 controllers/security.php:315
+#: controllers/feedback.php:808 controllers/security.php:299
 #: lib/functions.php:49
 msgid "user"
 msgstr "gebruiker"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1295
+#: locale/.ignore/messages_tpl.c:1304
 msgid "Updating user %1"
 msgstr "Gebruiker %1 bewerken"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1298
+#: locale/.ignore/messages_tpl.c:1307
 msgid "Creating new user"
 msgstr "Nieuwe gebruiker aanmaken"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1322
+#: locale/.ignore/messages_tpl.c:1331
 msgid "Select department"
 msgstr "Selecteer afdeling"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1328
+#: locale/.ignore/messages_tpl.c:1337
 msgid "Select role"
 msgstr "Selecteer rol"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1334
+#: locale/.ignore/messages_tpl.c:1343
 msgid "Update user"
 msgstr "Gebruiker bewerken"
 
 #. ./views/user/user.tpl
-#: locale/.ignore/messages_tpl.c:1337
+#: locale/.ignore/messages_tpl.c:1346
 msgid "Create new user"
 msgstr "Nieuwe gebruiker aanmaken"
 
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1343
+#: locale/.ignore/messages_tpl.c:1352
 msgid "Pause feedback"
 msgstr "Feedback pauzeren"
 
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1346
+#: locale/.ignore/messages_tpl.c:1355
 msgid "Resume feedback"
 msgstr "Feedback hervatten"
 
 #. ./lib/functions.tpl
-#: locale/.ignore/messages_tpl.c:1352
+#: locale/.ignore/messages_tpl.c:1361
 msgid "Add %1"
 msgstr "%1 toevoegen"
 
@@ -1512,7 +1527,7 @@ msgstr "infobericht"
 msgid "Info message overview"
 msgstr "Overzicht infobericht"
 
-#: controllers/admin.php:104 controllers/round.php:555
+#: controllers/admin.php:104 controllers/round.php:559
 msgid "round"
 msgstr "ronde"
 
@@ -1579,67 +1594,59 @@ msgstr ""
 "Je hebt niet genoeg mensen in uw organisatie om een ronde te starten. Je "
 "hebt minstens 4 mensen nodig die worden meegenomen in de feedbackronde."
 
-#: controllers/round.php:458
-msgid ""
-"Someone in your organisation started a feedback round. You can now log in "
-"and start reviewing."
-msgstr ""
-"Iemand in jouw organisatie heeft een beoordelingsronde gestart. Je kunt nu "
-"inloggen en mensen beoordelen."
-
-#: controllers/round.php:459
+#: controllers/round.php:463
 msgid "Feedback round started"
 msgstr "Beoordelingsronde gestart"
 
-#: controllers/round.php:462
+#: controllers/round.php:466
 msgid "Round created"
 msgstr "Ronde aangemaakt"
 
-#: controllers/round.php:516
+#: controllers/round.php:520
 msgid "Error loading round"
 msgstr "Error bij het laden van de ronde"
 
-#: controllers/round.php:571 controllers/round.php:589
+#: controllers/round.php:575 controllers/round.php:593
 msgid "Round not found"
 msgstr "Ronde niet gevonden"
 
-#: controllers/round.php:610
+#: controllers/round.php:614
 msgid "Round ended, you can now log in and view your report."
 msgstr ""
 "De beoordelingsronde is beëindigd. Je kan nu inloggen en je rapport bekijken."
 
-#: controllers/round.php:611
+#: controllers/round.php:615
 msgid "Feedback round ended"
 msgstr "Beoordelingsronde beëindigd"
 
-#: controllers/round.php:614
+#: controllers/round.php:618
 msgid "Round ended"
 msgstr "Ronde beëindigd"
 
-#: controllers/round.php:671 controllers/round.php:756
+#: controllers/round.php:675 controllers/round.php:760
 msgid "Round description can't be empty!"
 msgstr "Omschrijving van de ronde mag niet leeg zijn!"
 
-#: controllers/round.php:684 controllers/round.php:769
+#: controllers/round.php:688 controllers/round.php:773
 msgid "Closing date can't be in the past"
 msgstr "Sluitingsdatum kan niet in het verleden zijn"
 
-#: controllers/round.php:690
+#: controllers/round.php:694
 msgid "Total amount to review can't be 0"
 msgstr "Totaal aantal te beoordelen kan niet 0 zijn"
 
-#: controllers/round.php:695
+#: controllers/round.php:699
 msgid "Amount to review from own department can't be 0"
 msgstr "Aantal te beoordelen van eigen afdeling kan niet 0 zijn"
 
-#: controllers/round.php:700
+#: controllers/round.php:704
 msgid ""
 "Total amount to review can't be higher than total users in organisation!"
 msgstr ""
 "Totaal aantal te beoordelen mag niet hoger zijn dat het totaal aantal "
 "gebruikers in de organisatie!"
 
-#: controllers/round.php:705
+#: controllers/round.php:709
 msgid ""
 "Amount to review from own department can't be higher than total users in "
 "organisation!"
@@ -1647,7 +1654,7 @@ msgstr ""
 "Aantal te beoordelen van eigen afdeling mag niet hoger zijn dan totaal "
 "aantal gebruikers in de organisatie!"
 
-#: controllers/round.php:710
+#: controllers/round.php:714
 msgid ""
 "Amount to review from own department can't be higher than total amount to "
 "review!"
@@ -1655,14 +1662,14 @@ msgstr ""
 "Aantal te beoordelen van eigen afdeling mag niet hoger zijn dan totaal "
 "aantal te beoordelen personen!"
 
-#: controllers/round.php:715 controllers/round.php:775
+#: controllers/round.php:719 controllers/round.php:779
 msgid ""
 "Minimum to be reviewed by can't be higher than total users in organisation!"
 msgstr ""
 "Minimum om door beoordeeld te woorden mag niet hoger zijn dat het totaal "
 "aantal gebruikers in de organisatie!"
 
-#: controllers/round.php:720 controllers/round.php:780
+#: controllers/round.php:724 controllers/round.php:784
 msgid "Minimum to review by can't be higher than total users in organisation!"
 msgstr ""
 "Minimum aantal te beoordelen mag niet hoger zijn dat het totaal aantal "
@@ -1840,7 +1847,7 @@ msgstr "Error bij het laden van het profiel"
 msgid "Edit profile"
 msgstr "Profiel aanpassen"
 
-#: controllers/profile.php:80 controllers/security.php:411
+#: controllers/profile.php:80 controllers/security.php:395
 msgid "Passwords do not match!"
 msgstr "Wachtwoorden komen niet overeen!"
 
@@ -1856,34 +1863,38 @@ msgstr "Eén of meerdere velden is niet ingevuld"
 msgid "Profile updated"
 msgstr "Profiel is bijgewerkt"
 
-#: controllers/security.php:42
+#: controllers/security.php:40
 msgid "No user with that email exists"
 msgstr "Er is geen gebruiker gevonden met het opgegeven e-mailadres"
 
-#: controllers/security.php:94
+#: controllers/security.php:60
+msgid "There was an error while logging in, please try again"
+msgstr "Er is een error opgetreden tijdens het inloggen, probeer het opnieuw."
+
+#: controllers/security.php:70
 msgid "Can't register a new organisation when logged in. Please log out first!"
 msgstr ""
 "Je kunt geen organisatie registreren als je ingelogd bent. Log eerst uit!"
 
-#: controllers/security.php:166
+#: controllers/security.php:142
 msgid "New tenant registration"
 msgstr "Registratie nieuwe organisatie"
 
-#: controllers/security.php:168
+#: controllers/security.php:144
 msgid "You have successfully registered a new organisation."
 msgstr "Je hebt succesvol een nieuwe organisatie geregistreerd."
 
-#: controllers/security.php:223 controllers/security.php:228
-#: controllers/security.php:232 controllers/security.php:236
+#: controllers/security.php:207 controllers/security.php:212
+#: controllers/security.php:216 controllers/security.php:220
 msgid "Wrong email/password combination!"
 msgstr "Onjuiste e-mail/wachtwoord combinatie!"
 
-#: controllers/security.php:259 controllers/security.php:304
+#: controllers/security.php:243 controllers/security.php:288
 msgid "Can't reset your password when logged in. Please log out first!"
 msgstr ""
 "Je kunt je wachtwoord niet resetten als je ingelogt bent. Log eerst uit!"
 
-#: controllers/security.php:290
+#: controllers/security.php:274
 msgid ""
 "The given ID seems to be invalid. Please check the link you received in your "
 "email or contact the administrator."
@@ -1891,23 +1902,23 @@ msgstr ""
 "Het opgegeven ID lijkt niet correct te zijn. Controleer de link die je in "
 "jouw email heeft gekregen of neem contact op met de beheerder."
 
-#: controllers/security.php:344
+#: controllers/security.php:328
 msgid "Your password has been reset!"
 msgstr "Jouw wachtwoord is gereset!"
 
-#: controllers/security.php:366
+#: controllers/security.php:350
 msgid "Email not found!"
 msgstr "Email is niet gevonden!"
 
-#: controllers/security.php:381
+#: controllers/security.php:365
 msgid "Password reset request"
 msgstr "Wachtwoord reset verzoek"
 
-#: controllers/security.php:387
+#: controllers/security.php:371
 msgid "A confirmation link has been sent to your email"
 msgstr "Een bevestigingslink is naar jouw email verstuurd."
 
-#: controllers/security.php:399
+#: controllers/security.php:383
 msgid "Error with UUID!"
 msgstr "Error met UUID!"
 
@@ -2066,9 +2077,6 @@ msgstr "Opgegeven email bestaat al!"
 
 #~ msgid "Click here to review yourself."
 #~ msgstr "Klik hier om uzelf te beoordelen."
-
-#~ msgid "Click here"
-#~ msgstr "Klik hier"
 
 #~ msgid "to change your choice regarding a meeting."
 #~ msgstr "om uw keuze met betrekking tot een bespreking te veranderen."
