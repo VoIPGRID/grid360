@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        {if $display_has_agreements}
+        {if $display_has_agreements || ($agreements.id != 0 && !$agreements.has_agreements)}
             <div>
                 {if $agreements.id == 0}
                     <input type="hidden" id="has-agreements" name="has_agreements" value="1" data-storage="false" />
