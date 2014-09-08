@@ -453,10 +453,14 @@ function start_round()
         // And specify a time in seconds to pause for (30 secs)
         $mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(10, 5));
 
+        global $smarty;
+
         foreach($users as $user)
         {
-            $round_start_message = _('Someone in your organisation started a feedback round. You can now log in and start reviewing.');
-            send_mail(_('Feedback round started'), ADMIN_EMAIL, $user->email, $round_start_message);
+            // Setup the email
+            $smarty->assign('user', $_SESSION['current_user']);
+            $body = $smarty->fetch('email/start_round.tpl');
+            send_mail(_('Feedback round started'), ADMIN_EMAIL, $_SESSION['current_user']->email, $body, true);
         }
 
         $message =  _('Round created');
