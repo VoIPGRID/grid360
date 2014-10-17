@@ -267,7 +267,7 @@ function feedback_step_1_post()
 
         $competency_comment = trim($competency['comment']);
 
-        if(!empty($competency_comment))
+        if(($competency['value'] == 1 || $competency['value'] == 2) && !empty($competency_comment))
         {
             $count_comments += 1;
         }
@@ -394,7 +394,7 @@ function feedback_step_2_post()
 
             $competency_comment = trim($competency['comment']);
 
-            if(!empty($competency_comment))
+            if(($competency['value'] == 1 || $competency['value'] == 2) && !empty($competency_comment))
             {
                 $count_comments += 1;
             }
@@ -849,7 +849,7 @@ function skip_person()
         $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND reviewee_id != ? AND status = ? AND round_id = ?', array($current_user->id, $previous_reviewee->id, REVIEW_SKIPPED, $round->id));
         R::preload($roundinfo, array('reviewee' => 'user'));
 
-        if(count($roundinfo) != 0)
+        if(count($roundinfo) != 0 && $roundinfo->reviewee->id != $current_user->id)
         {
             foreach($roundinfo as $info)
             {
@@ -887,9 +887,7 @@ function skip_person()
         }
     }
 
-    $roundinfo = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $new_reviewee->id, $round->id));
-    $roundinfo->fetchAs('user')->reviewer;
-    $roundinfo->fetchAs('user')->reviewee;
+    $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($current_user->id, $new_reviewee->id, $round->id));
 
     if($roundinfo->id == 0)
     {
