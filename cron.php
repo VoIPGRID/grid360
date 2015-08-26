@@ -24,8 +24,7 @@ try
 
         if($closing_date <= $current_datetime)
         {
-            $round->status = 0;
-            R::store($round);
+            end_round($round);
         }
     }
 

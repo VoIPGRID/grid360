@@ -97,7 +97,7 @@ function create_user_post()
         $user->created = R::isoDateTime();
         $message = sprintf(CREATE_SUCCESS, 'user', $user->firstname . ' ' . $user->lastname);
 
-       send_mail('Your ' . APP_NAME . ' account' , ADMIN_EMAIL, $user->email,
+        send_mail('Your ' . APP_NAME . ' account' , ADMIN_EMAIL, $user->email,
            'Dear ' . $user->firstname . ' ' . $user->lastname . ", \n\n" .  ' you can now log in with: ' . "\nEmail: " . $user->email . "\nPassword: " . $random_password);
     }
     else

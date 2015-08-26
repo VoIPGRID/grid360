@@ -7,8 +7,7 @@
 <h4>{$step_text}</h4>
 
 <div id="feedback-form">
-    <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback/{$reviewee.id}/3" method="post" data-persist="garlic">
-
+    <form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback/{$reviewee.id}/3" method="post" data-persist="garlic" data-destroy="false">
         <fieldset>
             <legend>{t}Extra question{/t}</legend>
             <div class="control-group">

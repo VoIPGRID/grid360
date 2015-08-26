@@ -458,9 +458,9 @@ function start_round()
         foreach($users as $user)
         {
             // Setup the email
-            $smarty->assign('user', $_SESSION['current_user']);
+            $smarty->assign('user', $user);
             $body = $smarty->fetch('email/start_round.tpl');
-            send_mail(_('Feedback round started'), ADMIN_EMAIL, $_SESSION['current_user']->email, $body, true);
+            send_mail(_('Feedback round started'), ADMIN_EMAIL, $user->email, $body, true);
         }
 
         $message =  _('Round created');
@@ -582,11 +582,13 @@ function end_round_confirmation()
     return html($smarty->fetch('round/end_round_confirmation.tpl'));
 }
 
-function end_round()
+function end_round($round=null)
 {
     security_authorize(ADMIN);
 
-    $round = get_current_round();
+    if (empty($round)) {
+        $round = get_current_round();
+    }
 
     if($round->id == 0)
     {

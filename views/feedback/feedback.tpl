@@ -57,7 +57,7 @@
     <a href="{$smarty.const.BASE_URI}feedback/skip/{$reviewee.id}" class="btn btn-large btn-inverse pull-right">{t}Skip person{/t}</a>
 {/if}
 
-<form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic">
+<form class="form-horizontal" action="{$smarty.const.BASE_URI}feedback{$form_action_url}" method="post" data-persist="garlic" data-destroy="false">
     <div class="row-fluid">
         {if count($competencygroup.ownCompetency) > 0}
             <span class="span12 no-left-margin" id="competencies">
