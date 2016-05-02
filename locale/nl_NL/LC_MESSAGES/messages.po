@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-02 15:07+0200\n"
+"POT-Creation-Date: 2016-05-02 15:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1020,7 +1020,7 @@ msgstr "gebruiker"
 #. ./views/feedback/feedback_overview.tpl
 #: locale/.ignore/messages_tpl.c:779
 msgid "Feedback overview"
-msgstr "Overzicht beoordelingen"
+msgstr "Feedbackoverzicht"
 
 #. ./views/feedback/feedback_overview.tpl
 #: locale/.ignore/messages_tpl.c:782
@@ -1085,7 +1085,7 @@ msgstr "Toevoegen aan lijst"
 #. ./views/feedback/edit_feedback.tpl
 #: locale/.ignore/messages_tpl.c:866 locale/.ignore/messages_tpl.c:884
 msgid "Rating"
-msgstr "Beoordeling"
+msgstr "Waardering"
 
 #. ./views/feedback/edit_feedback.tpl
 #: locale/.ignore/messages_tpl.c:872 locale/.ignore/messages_tpl.c:890
@@ -1818,7 +1818,7 @@ msgstr ""
 
 #: controllers/round.php:286
 msgid "Feedback round started"
-msgstr "Beoordelingsronde gestart"
+msgstr "Feedbackronde gestart"
 
 #: controllers/round.php:289
 msgid "Round created"
@@ -1835,11 +1835,11 @@ msgstr "Ronde niet gevonden"
 #: controllers/round.php:439
 msgid "Round ended, you can now log in and view your report."
 msgstr ""
-"De beoordelingsronde is beëindigd. Je kan nu inloggen en je rapport bekijken."
+"De feedbackronde is beëindigd. Je kan nu inloggen en je rapport bekijken."
 
 #: controllers/round.php:440
 msgid "Feedback round ended"
-msgstr "Beoordelingsronde beëindigd"
+msgstr "Feedbackronde beëindigd"
 
 #: controllers/round.php:443
 msgid "Round ended"
