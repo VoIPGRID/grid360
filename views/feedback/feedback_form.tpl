@@ -12,9 +12,9 @@
             <legend>{t}Extra question{/t}</legend>
             <div class="control-group">
                 {if $reviewee.id == $current_user.id}
-                    <label>{t}In what way have you contributed to the success of the organisation?{/t}</label>
+                    <label>{t}Is there any extra feedback you would like to give about yourself?{/t}</label>
                 {else}
-                    <label>{t firstname=$reviewee.firstname lastname=$reviewee.lastname}In what way has %1 %2 contributed to the success of the organisation?{/t}</label>
+                    <label>{t firstname=$reviewee.firstname lastname=$reviewee.lastname}Is there any extra feedback you would like to give to %1 %2?{/t}</label>
                 {/if}
                 <textarea name="extra_question" class="input-xxlarge"></textarea>
             </div>
