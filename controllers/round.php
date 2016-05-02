@@ -145,9 +145,6 @@ function start_round()
     // Number of reviewees per user within user's department (including self)
     $own_amount_to_review = $_POST['own_amount_to_review'];
 
-    // Array that keep track how many times someone has been reviewed
-    $user_counts = array();
-
     // Array with user ids of reviewees in other departments than the user's
     $other_to_review = array();
 
@@ -156,229 +153,62 @@ function start_round()
 
     foreach($users as $reviewer)
     {
-        $user_counts[$reviewer->id] = 0;
         $other_to_review[$reviewer->id] = array();
         $own_to_review[$reviewer->id] = array();
     }
 
-    // Find reviewees for user within user's department
-    foreach($users as $reviewer)
+    $departments = R::findAll('department');
+
+    // Generate reviewees per department
+    foreach($departments as $department)
     {
-        // Get number of possible reviewees within user's department
-        $own_department_users = R::find('user', 'department_id = ? AND id != ? AND status != ?', array($reviewer->department_id, $reviewer->id, PAUSE_USER_REVIEWS));
-        $own_amount_available = count($own_department_users);
+        // Get all users in the department
+        $department_users = R::find('user', 'department_id = ? AND status != ?', array($department->id, PAUSE_USER_REVIEWS));
+        shuffle($department_users);
 
-        // Everybody has to review $user when the number of available reviewee's is less or the same as the minimum required to review
-        if($own_amount_available <= $own_amount_to_review)
-        {
-            // Let the user review everybody available
-            foreach($own_department_users as $user)
-            {
-                $user_counts[$user->id] += 1;
-                $own_to_review[$reviewer->id][] = $user;
-            }
-        }
-        // Continue if there are enough reviewees within user's department
-        else if($own_amount_available > $own_amount_to_review)
-        {
-            // Find max $own_amount_to_review number of reviewees
-            while(count($own_to_review[$reviewer->id]) < $own_amount_to_review)
-            {
-                $available_reviewees = array();
+        $other_department_users = R::find('user', 'department_id != ? AND status != ?', array($department->id, PAUSE_USER_REVIEWS));
+        shuffle($other_department_users);
 
-                foreach($own_department_users as $user)
-                {
-                    if(in_array($user, $own_to_review[$reviewer->id]))
-                    {
-                        continue;
+        echo $department->name . ' [' . count($department_users) . '] (' . $own_amount_to_review . ')<br />';
+
+        for($i = 0; $i < count($department_users); $i++)
+        {
+            $user = $department_users[$i];
+
+            if (count($department_users) > $own_amount_to_review) {
+                $user_index = $i;
+
+                // Keep getting the next person in the list while there are not enough reviewees
+                while (count($own_to_review[$user->id]) < $own_amount_to_review) {
+                    $user_index++;
+
+                    // We've reached the end, so reset the index
+                    if ($user_index >= count($department_users)) {
+                        $user_index = 0;
                     }
 
-                    if($user_counts[$user->id] < $total_amount_to_review)
-                    {
-                        // Still allowed to be reviewed by more users
-                        $available_reviewees[] = $user;
+                    $own_to_review[$user->id][] = $department_users[$user_index];
+                }
+            }
+            else {
+                // Not enough reviewees available in own department, so just add everyone
+                foreach ($department_users as $department_user) {
+                    if ($department_user->id != $user->id) {
+                        $own_to_review[$user->id][] = $department_user;
                     }
                 }
-
-                // Pick random reviewee
-                $reviewee = $available_reviewees[array_rand($available_reviewees)];
-                $user_counts[$reviewee->id] += 1;
-
-                // Add reviewee
-                $own_to_review[$reviewer->id][] = $reviewee;
-            }
-        }
-    }
-
-    // Find reviewees for departments other than the user's
-    foreach($users as $reviewer)
-    {
-        if(count($own_to_review[$reviewer->id]) != $total_amount_to_review)
-        {
-            // Get number of possible reviewees for departments other than the user's
-            $other_department_users = R::find('user', 'department_id != ? AND status != ?', array($reviewer->department_id, PAUSE_USER_REVIEWS));
-            $other_amount_available = count($other_department_users);
-
-            // Add all users as reviewees when there are less than total minus already reviewed reviewees available
-            if($other_amount_available <= ($total_amount_to_review - count($own_to_review[$reviewer->id])))
-            {
-                // Let the user review everybody available
-                foreach($other_department_users as $user)
-                {
-                    $user_counts[$user->id] += 1;
-                    $other_to_review[$reviewer->id][] = $user;
-                }
-            }
-            // Continue if there are enough reviewees in departments other than the user's
-            else if($other_amount_available > ($total_amount_to_review - count($own_to_review[$reviewer->id])))
-            {
-                // Find reviewees
-                while(count($other_to_review[$reviewer->id]) < ($total_amount_to_review - count($own_to_review[$reviewer->id])))
-                {
-                    $available_reviewees = array();
-
-                    foreach($other_department_users as $user)
-                    {
-                        if(in_array($user, $other_to_review[$reviewer->id]))
-                        {
-                            continue;
-                        }
-
-                        if($user_counts[$user->id] < $total_amount_to_review)
-                        {
-                            // Still allowed to be reviewed by more users
-                            $available_reviewees[] = $user;
-                        }
-                    }
-
-                    shuffle($available_reviewees);
-
-                    // Pick random reviewee
-                    $reviewee = $available_reviewees[array_rand($available_reviewees)];
-
-                    $user_counts[$reviewee->id] += 1;
-
-                    // Add reviewee
-                    $other_to_review[$reviewer->id][] = $reviewee;
-                }
-            }
-        }
-    }
-
-    $insufficient_reviewers = array();
-
-    // Find out who hasn't been reviewed enough and add to $insufficient_reviewers array
-    foreach($user_counts as $key => $count)
-    {
-        if(!empty($key) && $count < $total_amount_to_review)
-        {
-            $insufficient_reviewers[] = $users[$key];
-        }
-    }
-
-    $insufficient_reviewees = array();
-
-    // Find out what arrays aren't actually full (check if all reviewee's are not empty) and add to $insufficient_reviewees array
-    foreach($users as $user)
-    {
-        foreach($other_to_review[$user->id] as $key => $reviewee)
-        {
-            if(empty($reviewee))
-            {
-                unset($other_to_review[$user->id][$key]);
-
-                if(!array_key_exists($user->id, $insufficient_reviewees))
-                {
-                    $insufficient_reviewees[$user->id] = $user;
-                }
-            }
-        }
-    }
-
-    // Loop through all users that haven't been reviewed enough
-    foreach($insufficient_reviewers as $user)
-    {
-        // Get all available users from other departments
-        $other_department_users = R::find('user', 'id != ? AND status != ?', array($user->id, PAUSE_USER_REVIEWS));
-
-        // Keep adding $user to other people's $other_to_review while he doesn't have $total_amount_to_review amount of $reviewers
-        while($user_counts[$user->id] < $total_amount_to_review)
-        {
-            $potential_reviewers = array();
-
-            // Get all potential reviewers
-            foreach($other_department_users as $other_user)
-            {
-                if(in_array($user, $other_to_review[$other_user->id]))
-                {
-                    continue;
-                }
-
-                // Only add a person to $available_reviewers if they have enough reviewers themselves
-                if($user_counts[$other_user->id] == $total_amount_to_review)
-                {
-                    $potential_reviewers[] = $other_user;
-                }
             }
 
-            // Get a random person who could potentially review $user
-            $reviewer = $potential_reviewers[array_rand($potential_reviewers)];
+            // Get random reviewees from other departments
+            while (count($other_to_review[$user->id]) < $total_amount_to_review - $own_amount_to_review) {
+                $other_user_index++;
 
-            // Get a random person who doesn't have enough reviewees
-            $insufficient_reviewees_reviewer = $insufficient_reviewees[array_rand($insufficient_reviewees)];
-
-            $potential_reviewees = array();
-
-            // Get the people that could potentially be moved to someone that doesn't have enough reviewees
-            foreach($other_to_review[$reviewer->id] as $reviewee)
-            {
-                if($reviewee->id != $user->id)
-                {
-                    $potential_reviewees[] = $reviewee;
-                }
-            }
-
-            // Get a random reviewee from the potential reviewees
-            $random_reviewee = $potential_reviewees[array_rand($potential_reviewees)];
-
-            // If $random_reviewee has the same department as $insufficient_reviewees_reviewer, try to get someone that isn't in the same department
-            if($random_reviewee->department_id == $insufficient_reviewees_reviewer->department_id)
-            {
-                $potential_reviewees = array();
-
-                // Get a new set of potential reviewees
-                foreach($potential_reviewees as $reviewee)
-                {
-                    if($reviewee->department_id != $insufficient_reviewees_reviewer->department_id)
-                    {
-                        $potential_reviewees[] = $reviewee;
-                    }
+                // We've reached the end, so reset the index
+                if ($other_user_index >= count($other_department_users)) {
+                    $other_user_index = 0;
                 }
 
-                // Get a random reviewee from the potential reviewees
-                $random_reviewee = $potential_reviewees[array_rand($potential_reviewees)];
-            }
-
-            // Only continue if $insufficient_reviewees_reviewer doesn't have $total_amount_to_review reviewees
-            if(count($own_to_review[$insufficient_reviewees_reviewer->id]) + count($other_to_review[$insufficient_reviewees_reviewer->id]) < $total_amount_to_review)
-            {
-                foreach($other_to_review[$reviewer->id] as $key => $reviewee)
-                {
-                    if($reviewee->id == $random_reviewee->id && $random_reviewee->id != $insufficient_reviewees_reviewer->id && !in_array($random_reviewee, $other_to_review[$insufficient_reviewees_reviewer->id]) && !in_array($random_reviewee, $own_to_review[$insufficient_reviewees_reviewer->id]))
-                    {
-                        // Remove current person from $reviewer's $other_to_review
-                        unset($other_to_review[$reviewer->id][$key]);
-
-                        // Add the $random_reviewee to the random person who doesn't have enough reviewees
-                        $other_to_review[$insufficient_reviewees_reviewer->id][] = $random_reviewee;
-
-                        // Add $user to the randomly selected reviewer
-                        $other_to_review[$reviewer->id][] = $user;
-
-                        // Increase the amount of times $user has been reviewed
-                        $user_counts[$user->id] += 1;
-                    }
-                }
+                $other_to_review[$user->id][] = $other_department_users[$other_user_index];
             }
         }
     }
@@ -387,14 +217,7 @@ function start_round()
 
     foreach($users as $reviewer)
     {
-        if(count($own_to_review[$reviewer->id]) == $total_amount_to_review)
-        {
-            $to_review = $own_to_review[$reviewer->id];
-        }
-        else
-        {
-            $to_review = array_merge($own_to_review[$reviewer->id], $other_to_review[$reviewer->id]);
-        }
+        $to_review = array_merge($own_to_review[$reviewer->id], $other_to_review[$reviewer->id]);
 
         // You always have to review yourself, so add $reviewer to $to_review
         $to_review = array_merge($to_review, array($reviewer->id => $reviewer));
@@ -788,4 +611,3 @@ function validate_edit_round_form($count_users, $round)
 
     return $form_values;
 }
-

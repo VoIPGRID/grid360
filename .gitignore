@@ -8,5 +8,5 @@ views/templates_c
 configs/local.php
 configs/production.php
 
-# Test data
-tests/testdata.php
+# Public folder
+public/
