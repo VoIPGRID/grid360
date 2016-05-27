@@ -115,6 +115,7 @@ dispatch_delete('/admin/user/:id', 'delete_user');
 dispatch('/admin/user/:id', 'edit_user');
 
 dispatch('/admin/reports', 'report_overview');
+dispatch('/admin/counts', 'feedback_counts');
 
 dispatch('/manager/roles', 'view_roles');
 dispatch('/manager/role/create', 'create_role');

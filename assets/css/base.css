@@ -403,3 +403,11 @@ button i
     height: 50px;
     vertical-align: middle;
 }
+
+.table.table-striped.counts-table {
+    margin-bottom: 20px !important; 
+}
+
+.table.table-striped.counts-table td {
+    width: 25%;
+}

@@ -169,8 +169,6 @@ function start_round()
         $other_department_users = R::find('user', 'department_id != ? AND status != ?', array($department->id, PAUSE_USER_REVIEWS));
         shuffle($other_department_users);
 
-        echo $department->name . ' [' . count($department_users) . '] (' . $own_amount_to_review . ')<br />';
-
         for($i = 0; $i < count($department_users); $i++)
         {
             $user = $department_users[$i];

@@ -47,6 +47,7 @@
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}round">{t}Round information{/t}</a></li>
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}meetings">{t}Meeting overview{/t}</a></li>
                                     <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}reports">{t}Reports{/t}</a></li>
+                                    <li><a href="{$smarty.const.BASE_URI}{$smarty.const.ADMIN_URI}counts">{t}Feedback counts{/t}</a></li>
                                 {/if}
                             </ul>
                         </li>

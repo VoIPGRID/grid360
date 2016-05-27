@@ -127,3 +127,38 @@ function report_overview()
 
     return html($smarty->fetch('admin/report_overview.tpl'));
 }
+
+function feedback_counts() {
+    security_authorize(ADMIN);
+    
+    global $smarty;
+    
+    $counts = array();
+    $rounds = R::findAll('round');
+    $users = R::findAll('user');
+    
+    foreach($rounds as $round) {
+        $counts[$round->id] = array();
+        
+        foreach($users as $user) {
+            $counts[$round->id][$user->id] = array();
+            
+            $reviewed_count = R::count('roundinfo', 'reviewer_id = ? AND round_id = ? AND status = ?', array($user->id, $round->id, REVIEW_COMPLETED));
+            $total_reviews = R::count('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($user->id, $round->id, REVIEW_SKIPPED));
+            
+            $reviewed_by = R::count('roundinfo', 'reviewee_id = ? AND round_id = ? AND status = ?', array($user->id, $round->id, REVIEW_COMPLETED));
+            $total_reviewed_by = R::count('roundinfo', 'reviewee_id = ? AND round_id = ? AND status != ?', array($user->id, $round->id, REVIEW_SKIPPED));
+            
+            $counts[$round->id][$user->id]['reviewed'] = $reviewed_count;
+            $counts[$round->id][$user->id]['total_reviewed'] = $total_reviews;
+            $counts[$round->id][$user->id]['reviewed_by'] = $reviewed_by;
+            $counts[$round->id][$user->id]['total_reviewed_by'] = $total_reviewed_by;
+        }
+    }
+    
+    $smarty->assign('rounds', $rounds);
+    $smarty->assign('users', $users);
+    $smarty->assign('counts', $counts);
+    
+    return html($smarty->fetch('admin/feedback_counts.tpl'));
+}
