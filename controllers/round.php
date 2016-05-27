@@ -434,8 +434,10 @@ function end_round($round=null)
     foreach($users as $user)
     {
         generate_report($user, $round);
-        $message = _('Round ended, you can now log in and view your report.');
-        send_mail(_('Feedback round ended'), ADMIN_EMAIL, $user->email, $message);
+        // Setup the email
+        $smarty->assign('user', $user);
+        $body = $smarty->fetch('email/end_round.tpl');
+        send_mail(_('Feedback round ended'), ADMIN_EMAIL, $user->email, $body, true);
     }
 
     $message =  _('Round ended');
