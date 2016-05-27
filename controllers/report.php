@@ -158,11 +158,8 @@ function generate_report($user, $round)
     // No need to calculate everything if we're not displaying the report
     if($generate_report)
     {
-        $own_general_reviews = array();
-        $own_role_reviews = array();
         $other_general_reviews = array();
         $other_role_reviews = array();
-        $own_agreement_reviews = array();
         $other_agreement_reviews = array();
 
         $competencies = array();
@@ -200,22 +197,14 @@ function generate_report($user, $round)
 
         foreach($agreement_reviews as $agreement_review)
         {
-            if($agreement_review->reviewer_id == $user->id)
-            {
-                $own_agreement_reviews[$agreement_review->selection][$agreement_review->type][] = $agreement_review;
-            }
-            else
+            if($agreement_review->reviewer_id != $user->id)
             {
                 $other_agreement_reviews[$agreement_review->selection][$agreement_review->type][] = $agreement_review;
             }
         }
 
         $smarty->assign('review_count', count($reviews));
-        $smarty->assign('own_general_reviews', $own_general_reviews);
-        $smarty->assign('own_role_reviews', $own_role_reviews);
-        $smarty->assign('other_general_reviews', $other_general_reviews);
         $smarty->assign('other_role_reviews', $other_role_reviews);
-        $smarty->assign('own_agreement_reviews', $own_agreement_reviews);
         $smarty->assign('other_agreement_reviews', $other_agreement_reviews);
         $smarty->assign('competencies', $competencies);
         $smarty->assign('agreement_reviews', $agreement_reviews);

@@ -95,41 +95,6 @@
             </div>
         </fieldset>
 
-        <h3>{t}Me about me{/t}</h3>
-        <div class="row-fluid">
-            <span class="span6" id="own-general-competencies">
-                <legend>{t}General competencies{/t}</legend>
-                {if count($own_general_reviews) > 0}
-                    {print_review review_array=$own_general_reviews selection=1}
-                    {print_review review_array=$own_general_reviews selection=2}
-                {else}
-                    {t}No reviews found{/t}
-                {/if}
-            </span>
-
-            <span class="span6" id="own-role-competencies">
-                <legend>{t}Role competencies{/t}</legend>
-                {if count($own_role_reviews) > 0}
-                    {print_review review_array=$own_role_reviews selection=1}
-                    {print_review review_array=$own_role_reviews selection=2}
-                {else}
-                    {t}No reviews found{/t}
-                {/if}
-            </span>
-        </div>
-
-        <div class="row-fluid">
-            <span class="span6" id="own-agreement-reviews">
-                    <legend>{t}Agreements{/t}</legend>
-                {if count($own_agreement_reviews) > 0}
-                    {print_agreement_review review_array=$own_agreement_reviews selection=1}
-                    {print_agreement_review review_array=$own_agreement_reviews selection=2}
-                {else}
-                    {t}No reviews found{/t}
-                {/if}
-            </span>
-        </div>
-
         <h3>{t}Others about me{/t}</h3>
         <div class="row-fluid">
             <span class="span6" id="other-general-competencies">
@@ -156,7 +121,7 @@
         <div class="row-fluid">
             <span class="span6" id="other-agreement-reviews">
                 <legend>{t}Agreements{/t}</legend>
-                {if count($own_agreement_reviews) > 0}
+                {if count($other_agreement_reviews) > 0}
                     {print_agreement_review review_array=$other_agreement_reviews selection=1}
                     {print_agreement_review review_array=$other_agreement_reviews selection=2}
                 {else}

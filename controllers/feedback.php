@@ -101,11 +101,9 @@ function view_feedback_overview()
     $round = get_current_round();
     $user = $_SESSION['current_user'];
 
-    $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, $round->id));
-
     $roundinfo = R::find('roundinfo', 'reviewer_id = ? AND round_id = ? AND status != ?', array($user->id, $round->id, REVIEW_SKIPPED));
     R::preload($roundinfo, array('reviewee' => 'user'));
-
+    
     foreach($roundinfo as $id => $info)
     {
         if($info->reviewee->status == 0)
@@ -130,9 +128,8 @@ function view_feedback_overview()
     if($round->id != 0)
     {
         $smarty->assign('roundinfo', $roundinfo);
-        $smarty->assign('own_review', $own_review);
     }
-
+    
     $meeting = R::findOne('meeting', 'user_id = ? AND round_id = ?', array($user->id, $round->id));
 
     if($meeting->id != 0)
@@ -168,15 +165,6 @@ function feedback_step_1()
     }
 
     $user = $_SESSION['current_user'];
-
-    $own_review = R::findOne('roundinfo', 'reviewer_id = ? AND reviewee_id = ? AND round_id = ?', array($user->id, $user->id, $round->id));
-
-    if($round->id != 0 && $user->id != params('id') && $round->status == ROUND_IN_PROGRESS && $own_review->status == REVIEW_IN_PROGRESS)
-    {
-        $message = _('You have to review yourself first');
-        flash('error', $message);
-        redirect_to('/');
-    }
 
     $reviewee = R::load('user', params('id'));
 
