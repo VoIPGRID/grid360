@@ -84,32 +84,15 @@
     </div>
 {/function}
 
-{if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
-    <div class="alert alert-info">
-        <span>{$change_agreements_text}</span>
-    </div>
-{/if}
+<div class="alert alert-info">
+    <span>{$change_agreements_text}</span>
+</div>
 
 <div class="dashboard-quote">
     <span>"Feedback is the breakfast of champions"</span>
 </div>
 
-{if !empty($own_review) && $own_review.status == $smarty.const.REVIEW_IN_PROGRESS}
-    <div class="row-fluid">
-        {print_own_review_status}
-        {print_report_overview}
-    </div>
-{elseif !empty($own_review) && $own_review.status == $smarty.const.REVIEW_COMPLETED}
-    <div class="row-fluid own-review-row">
-        {print_own_review_status}
-    </div>
-    <div class="row-fluid">
-        {print_review_status}
-        {print_report_overview}
-    </div>
-{elseif empty($roundinfo)}
-    <div class="row-fluid">
-        {print_review_status}
-        {print_report_overview}
-    </div>
-{/if}
+<div class="row-fluid">
+    {print_review_status}
+    {print_report_overview}
+</div>
