@@ -425,6 +425,7 @@ function end_round($round=null)
     $users = R::find('user', 'status != ?', array(PAUSE_USER_REVIEWS));
 
     global $mailer;
+    global $smarty;
     // Use AntiFlood to re-connect after 100 emails
     $mailer->registerPlugin(new Swift_Plugins_AntiFloodPlugin(10));
 
