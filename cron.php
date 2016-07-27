@@ -24,7 +24,7 @@ try
 
         if($closing_date <= $current_datetime)
         {
-            end_round($round);
+            end_round($round, false);
         }
     }
 
@@ -55,7 +55,7 @@ function server_error($errno, $exception = null)
     $subject = 'Error while running cron in ' . $exception->getFile() . ' on line ' . $exception->getLine();
     $body = $smarty->fetch(dirname(__FILE__) . '/views/email/server_error.tpl');
 
-    send_mail($subject, ADMIN_EMAIL, ADMIN_EMAIL, $body);
+    send_mail($subject, ERROR_EMAIL, ERROR_EMAIL, $body);
 }
 
 function shutdown()

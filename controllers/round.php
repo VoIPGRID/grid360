@@ -403,9 +403,11 @@ function end_round_confirmation()
     return html($smarty->fetch('round/end_round_confirmation.tpl'));
 }
 
-function end_round($round=null)
+function end_round($round = null, $authorize = true)
 {
-    security_authorize(ADMIN);
+    if ($authorize) {
+        security_authorize(ADMIN);
+    }
 
     if (empty($round)) {
         $round = get_current_round();
